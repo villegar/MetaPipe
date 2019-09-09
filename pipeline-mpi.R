@@ -304,7 +304,7 @@ individuals.phenotyped.np <- summary(x.non.parametric)[[2]]
    }
 }
 # Obtain LOD scores for all features and markers
-cl <- startMPIcluster(outfile=paste0('./info_parallel_QTL.log'))
+cl <- startMPIcluster()
 registerDoMPI(cl)
 x.normal.scanone <- foreach(i=2:ncol(x.normal$pheno),
                      .combine = cbind,
