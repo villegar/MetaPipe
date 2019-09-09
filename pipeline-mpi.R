@@ -47,7 +47,7 @@ transformation.values <- c(2,exp(1))#,3,4,5,6,7,8,9,10
 input.filename <- "sp.csv"
 SEED <- 20190901 # Seed for QTL Analysis
 LOD.THRESHOLD <- 3 # LOD threhold for QTL Analysis
-PERMUTATIONS <- 100 # Number of permutations for QTL Analysis
+PERMUTATIONS <- 1000 # Number of permutations for QTL Analysis
 
 # Environment configuration
 dir.create(file.path(getwd(), plots.directory), showWarnings = FALSE) # Directory for plots
