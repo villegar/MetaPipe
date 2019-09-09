@@ -663,11 +663,15 @@ foreach(i=1:nrow(true.qtl),
         }
 
 closeCluster(cl) # Stop cluster
+
 write.csv(x.normal.scanone, file = paste0(output.files.prefix,".normal.scanone.csv"))
 write.csv(x.normal.summary.mapping, file = paste0(output.files.prefix,".summary.mapping.csv"), row.names=FALSE, na="")
 write.csv(x.non.parametric.scanone, file = paste0(output.files.prefix,".non.parametric.scanone.csv"))
 write.csv(x.non.parametric.summary.mapping, file = paste0(output.files.prefix,".non.parametric.summary.mapping.csv"), row.names=FALSE, na="")
 write.csv(true.qtl, file = paste0(output.files.prefix,".true.qtl.csv"), row.names=FALSE, na="")
 
+# Classify QTLs by LG and Peak Position
+classified.qtl <- true.qtl[order(true.qtl$lg,true.qtl$pos.peak),]
+write.csv(classified.qtl, file = paste0(output.files.prefix,".classified.qtl.csv"), row.names=FALSE, na="")
 print("Done with QTL Analysis")
 mpi.quit()
