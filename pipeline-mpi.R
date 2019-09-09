@@ -631,6 +631,11 @@ x.non.parametric.summary.mapping <- foreach(i=2:ncol(x.non.parametric$pheno),
                                               }
                                               record
                                             }
+
+# Generate effect plots
+#x2 <- sim.geno(x)
+#effectplot(x2, pheno.col = "M155T28", mname1 = "gbs_13_305342", main = NULL)
+
 closeCluster(cl) # Stop cluster
 write.csv(x.normal.scanone, file = paste0(output.files.prefix,".normal.scanone.csv"))
 write.csv(x.normal.summary.mapping, file = paste0(output.files.prefix,".summary.mapping.csv"), row.names=FALSE, na="")
