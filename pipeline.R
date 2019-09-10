@@ -36,6 +36,7 @@ source("transformations.R")
 # Resources
 cores <- detectCores()
 CPUS <- cores[1] - 1
+closeAllConnections()
 
 # Global parameters
 plots.directory <- "metabolomics"
@@ -679,4 +680,4 @@ write.csv(x.summary.mapping, file = paste0(output.files.prefix,".non.parametric.
 #summary(npout1,  perms=np_perm, alpha=0.05, pvalues=TRUE)
 #summary(np_perm)
 print("Done with QTL Analysis")
-
+closeAllConnections()

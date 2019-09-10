@@ -638,30 +638,30 @@ x.non.parametric.summary.mapping <- foreach(i=2:ncol(x.non.parametric$pheno),
 x2.non.parametric <- sim.geno(x.non.parametric)
 x2.normal <- sim.geno(x.normal)
 #effectplot(x2, pheno.col = "M155T28", mname1 = "gbs_13_305342", main = NULL)
-true.qtl <- rbind.fill(x.normal.summary.mapping[x.normal.summary.mapping$p5.qtl,],
+t.qtl <- rbind.fill(x.normal.summary.mapping[x.normal.summary.mapping$p5.qtl,],
                        x.non.parametric.summary.mapping[x.non.parametric.summary.mapping$p5.qtl,])
-#features.true.qtl <- as.character(true.qtl$trait)
+#features.t.qtl <- as.character(t.qtl$trait)
 
-foreach(i=1:nrow(true.qtl),
-        .packages = c("latex2exp","qtl","R.devices")) %dopar% {
-          if(true.qtl[i,]$method == "normal-scanone"){
-            if(true.qtl[i,]$transf == "log"){
-              ylab <- paste0("$\\log_{",true.qtl[i,]$transf.val,"}(",true.qtl[i,]$trait,")$")
-            } else if(true.qtl[i,]$transf == "root"){
-              ylab <- paste0("$\\sqrt[",true.qtl[i,]$transf.val,"]{",true.qtl[i,]$trait,"}$")
-            } else if(true.qtl[i,]$transf == "power"){
-              ylab <- paste0("$(",true.qtl[i,]$trait,")^",true.qtl[i,]$transf.val,"$")
-            } else {
-              ylab <- true.qtl[i,]$trait
-            }
-            effect.plot <- savePlot(effectplot(x2.normal, pheno.col = true.qtl[i,]$trait, mname1 = true.qtl[i,]$marker, main = NULL, ylab = ylab),
-                                    paste0(plots.directory,"/EFF-",true.qtl[i,]$trait,"-",true.qtl[i,]$marker))
-          } else {
-            ylab <- true.qtl[i,]$trait
-            effect.plot <- savePlot(effectplot(x2.non.parametric, pheno.col = true.qtl[i,]$trait, mname1 = true.qtl[i,]$marker, main = NULL, ylab = ylab),
-                                  paste0(plots.directory,"/EFF-NP",true.qtl[i,]$trait,"-",true.qtl[i,]$marker))
-          }
-        }
+#foreach(i=1:nrow(t.qtl),
+#        .packages = c("latex2exp","qtl","R.devices")) %dopar% {
+#          if(t.qtl[i,]$method == "normal-scanone"){
+#            if(t.qtl[i,]$transf == "log"){
+#              ylab <- paste0("$\\log_{",t.qtl[i,]$transf.val,"}(",t.qtl[i,]$trait,")$")
+#            } else if(t.qtl[i,]$transf == "root"){
+#              ylab <- paste0("$\\sqrt[",t.qtl[i,]$transf.val,"]{",t.qtl[i,]$trait,"}$")
+#            } else if(t.qtl[i,]$transf == "power"){
+#              ylab <- paste0("$(",t.qtl[i,]$trait,")^",t.qtl[i,]$transf.val,"$")
+#            } else {
+#              ylab <- t.qtl[i,]$trait
+#            }
+#            effect.plot <- savePlot(effectplot(x2.normal, pheno.col = t.qtl[i,]$trait, mname1 = t.qtl[i,]$marker, main = NULL, ylab = ylab),
+#                                    paste0(plots.directory,"/EFF-",t.qtl[i,]$trait,"-",t.qtl[i,]$marker))
+#          } else {
+#            ylab <- t.qtl[i,]$trait
+#            effect.plot <- savePlot(effectplot(x2.non.parametric, pheno.col = t.qtl[i,]$trait, mname1 = t.qtl[i,]$marker, main = NULL, ylab = ylab),
+#                                  paste0(plots.directory,"/EFF-NP",t.qtl[i,]$trait,"-",t.qtl[i,]$marker))
+#          }
+#        }
 
 closeCluster(cl) # Stop cluster
 
@@ -669,10 +669,10 @@ write.csv(x.normal.scanone, file = paste0(output.files.prefix,".normal.scanone.c
 write.csv(x.normal.summary.mapping, file = paste0(output.files.prefix,".summary.mapping.csv"), row.names=FALSE, na="")
 write.csv(x.non.parametric.scanone, file = paste0(output.files.prefix,".non.parametric.scanone.csv"))
 write.csv(x.non.parametric.summary.mapping, file = paste0(output.files.prefix,".non.parametric.summary.mapping.csv"), row.names=FALSE, na="")
-write.csv(true.qtl, file = paste0(output.files.prefix,".true.qtl.csv"), row.names=FALSE, na="")
+write.csv(t.qtl, file = paste0(output.files.prefix,".t.qtl.csv"), row.names=FALSE, na="")
 
 # Classify QTLs by LG and Peak Position
-classified.qtl <- true.qtl[order(true.qtl$lg,true.qtl$pos.peak),]
+classified.qtl <- t.qtl[order(t.qtl$lg,t.qtl$pos.peak),]
 write.csv(classified.qtl, file = paste0(output.files.prefix,".classified.qtl.csv"), row.names=FALSE, na="")
 print("Done with QTL Analysis")
 mpi.quit()
