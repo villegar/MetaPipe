@@ -284,6 +284,7 @@ individuals.phenotyped <- summary(x.normal)[[2]]
 x.non.parametric <- read.cross("csvs",".",
                                paste0(output.files.prefix,".non.parametric.gen.csv"),
                                paste0(output.files.prefix,".non.parametric.phe.csv"))
+features.np <- colnames(x.non.parametric$pheno)
 x.non.parametric <- jittermap(x.non.parametric)
 x.non.parametric <- calc.genoprob(x.non.parametric, step=1, error.prob=0.001)
 
@@ -644,7 +645,7 @@ true.qtl <- rbind.fill(x.normal.summary.mapping[x.normal.summary.mapping$p5.qtl,
 foreach(i=1:nrow(true.qtl),
         .packages = c("latex2exp","qtl","R.devices")) %dopar% {
           if(true.qtl[i,]$method == "normal-scanone"){
-            if(true.qtl[i,]$transf = "log"){
+            if(true.qtl[i,]$transf == "log"){
               ylab <- paste0("$\\log_{",true.qtl[i,]$transf.val,"}(",true.qtl[i,]$trait,")$")
             } else if(true.qtl[i,]$transf == "root"){
               ylab <- paste0("$\\sqrt[",true.qtl[i,]$transf.val,"]{",true.qtl[i,]$trait,"}$")
