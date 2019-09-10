@@ -19,7 +19,7 @@ library(VIM)
 # Parallel Libraries
 library(foreach)
 library(doParallel)
-library(Rmpi)
+#library(Rmpi)
 #library(snow)
 
 # PCA Libraries
