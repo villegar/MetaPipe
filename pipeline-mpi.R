@@ -640,28 +640,31 @@ x2.normal <- sim.geno(x.normal)
 #effectplot(x2, pheno.col = "M155T28", mname1 = "gbs_13_305342", main = NULL)
 t.qtl <- rbind.fill(x.normal.summary.mapping[x.normal.summary.mapping$p5.qtl,],
                        x.non.parametric.summary.mapping[x.non.parametric.summary.mapping$p5.qtl,])
-#features.t.qtl <- as.character(t.qtl$trait)
+features.t.qtl <- as.character(t.qtl$trait)
+markers.t.qtl <- as.character(t.qtl$marker)
 
-#foreach(i=1:nrow(t.qtl),
-#        .packages = c("latex2exp","qtl","R.devices")) %dopar% {
-#          if(t.qtl[i,]$method == "normal-scanone"){
-#            if(t.qtl[i,]$transf == "log"){
-#              ylab <- paste0("$\\log_{",t.qtl[i,]$transf.val,"}(",t.qtl[i,]$trait,")$")
-#            } else if(t.qtl[i,]$transf == "root"){
-#              ylab <- paste0("$\\sqrt[",t.qtl[i,]$transf.val,"]{",t.qtl[i,]$trait,"}$")
-#            } else if(t.qtl[i,]$transf == "power"){
-#              ylab <- paste0("$(",t.qtl[i,]$trait,")^",t.qtl[i,]$transf.val,"$")
-#            } else {
-#              ylab <- t.qtl[i,]$trait
-#            }
-#            effect.plot <- savePlot(effectplot(x2.normal, pheno.col = t.qtl[i,]$trait, mname1 = t.qtl[i,]$marker, main = NULL, ylab = ylab),
-#                                    paste0(plots.directory,"/EFF-",t.qtl[i,]$trait,"-",t.qtl[i,]$marker))
-#          } else {
-#            ylab <- t.qtl[i,]$trait
-#            effect.plot <- savePlot(effectplot(x2.non.parametric, pheno.col = t.qtl[i,]$trait, mname1 = t.qtl[i,]$marker, main = NULL, ylab = ylab),
-#                                  paste0(plots.directory,"/EFF-NP",t.qtl[i,]$trait,"-",t.qtl[i,]$marker))
-#          }
-#        }
+effect.plots <- foreach(i=1:nrow(t.qtl),
+        .packages = c("latex2exp","qtl","R.devices")) %dopar% {
+          if(t.qtl[i,]$method == "normal-scanone"){
+            if(t.qtl[i,]$transf == "log"){
+              ylab <- paste0("$\\log_{",t.qtl[i,]$transf.val,"}(",features.t.qtl[i],")$")
+            } else if(t.qtl[i,]$transf == "root"){
+              ylab <- paste0("$\\sqrt[",t.qtl[i,]$transf.val,"]{",features.t.qtl[i],"}$")
+            } else if(t.qtl[i,]$transf == "power"){
+              ylab <- paste0("$(",features.t.qtl[i],")^",t.qtl[i,]$transf.val,"$")
+            } else {
+              ylab <- features.t.qtl[i]
+            }
+            effect.plot <- savePlot(effectplot(x2.normal, pheno.col = features.t.qtl[i], 
+                                               mname1 = markers.t.qtl[i], main = NULL, ylab = TeX(ylab)),
+                                    paste0(plots.directory,"/EFF-",features.t.qtl[i],"-",markers.t.qtl[i]))
+          } else {
+            ylab <- features.t.qtl[i]
+            effect.plot <- savePlot(effectplot(x2.non.parametric, pheno.col = as.character(features.t.qtl[i]), 
+                                               mname1 = markers.t.qtl[i], main = NULL, ylab = TeX(ylab)),
+                                    paste0(plots.directory,"/EFF-NP",features.t.qtl[i],"-",markers.t.qtl[i]))
+          }
+        }
 
 closeCluster(cl) # Stop cluster
 
@@ -673,6 +676,8 @@ write.csv(t.qtl, file = paste0(output.files.prefix,".t.qtl.csv"), row.names=FALS
 
 # Classify QTLs by LG and Peak Position
 classified.qtl <- t.qtl[order(t.qtl$lg,t.qtl$pos.peak),]
+classified.qtl$group <- with(classified.qtl,
+                             paste0("chr",lg,"-mrk",marker))
 write.csv(classified.qtl, file = paste0(output.files.prefix,".classified.qtl.csv"), row.names=FALSE, na="")
 print("Done with QTL Analysis")
 mpi.quit()
