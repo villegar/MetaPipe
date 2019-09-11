@@ -662,7 +662,7 @@ effect.plots <- foreach(i=1:nrow(t.qtl),
             ylab <- features.t.qtl[i]
             effect.plot <- savePlot(effectplot(x2.non.parametric, pheno.col = as.character(features.t.qtl[i]), 
                                                mname1 = markers.t.qtl[i], main = NULL, ylab = TeX(ylab)),
-                                    paste0(plots.directory,"/EFF-NP",features.t.qtl[i],"-",markers.t.qtl[i]))
+                                    paste0(plots.directory,"/EFF-NP-",features.t.qtl[i],"-",markers.t.qtl[i]))
           }
         }
 
