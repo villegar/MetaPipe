@@ -639,7 +639,9 @@ x2.non.parametric <- sim.geno(x.non.parametric)
 x2.normal <- sim.geno(x.normal)
 #effectplot(x2, pheno.col = "M155T28", mname1 = "gbs_13_305342", main = NULL)
 t.qtl <- rbind.fill(x.normal.summary.mapping[x.normal.summary.mapping$p5.qtl,],
-                       x.non.parametric.summary.mapping[x.non.parametric.summary.mapping$p5.qtl,])
+                    x.non.parametric.summary.mapping[x.non.parametric.summary.mapping$p5.qtl,])
+threshold3.qtl <- rbind.fill(x.normal.summary.mapping[x.normal.summary.mapping$lod.peak > THRESHOLD,],
+                             x.non.parametric.summary.mapping[x.non.parametric.summary.mapping$lod.peak > THRESHOLD,])
 features.t.qtl <- as.character(t.qtl$trait)
 markers.t.qtl <- as.character(t.qtl$marker)
 
@@ -669,10 +671,11 @@ effect.plots <- foreach(i=1:nrow(t.qtl),
 closeCluster(cl) # Stop cluster
 
 write.csv(x.normal.scanone, file = paste0(output.files.prefix,".normal.scanone.csv"))
-write.csv(x.normal.summary.mapping, file = paste0(output.files.prefix,".summary.mapping.csv"), row.names=FALSE, na="")
+write.csv(x.normal.summary.mapping, file = paste0(output.files.prefix,".normal.summary.mapping.csv"), row.names=FALSE, na="")
 write.csv(x.non.parametric.scanone, file = paste0(output.files.prefix,".non.parametric.scanone.csv"))
 write.csv(x.non.parametric.summary.mapping, file = paste0(output.files.prefix,".non.parametric.summary.mapping.csv"), row.names=FALSE, na="")
-write.csv(t.qtl, file = paste0(output.files.prefix,".t.qtl.csv"), row.names=FALSE, na="")
+write.csv(t.qtl, file = paste0(output.files.prefix,".true.qtl.csv"), row.names=FALSE, na="")
+write.csv(threshold3.qtl, file = paste0(output.files.prefix,".threshold3.qtl.csv"), row.names=FALSE, na="")
 
 # Classify QTLs by LG and Peak Position
 classified.qtl <- t.qtl[order(t.qtl$lg,t.qtl$pos.peak),]
