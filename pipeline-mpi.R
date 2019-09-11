@@ -640,7 +640,7 @@ x2.normal <- sim.geno(x.normal)
 #effectplot(x2, pheno.col = "M155T28", mname1 = "gbs_13_305342", main = NULL)
 t.qtl <- rbind.fill(x.normal.summary.mapping[x.normal.summary.mapping$p5.qtl,],
                     x.non.parametric.summary.mapping[x.non.parametric.summary.mapping$p5.qtl,])
-threshold3.qtl <- rbind.fill(x.normal.summary.mapping[x.normal.summary.mapping$lod.peak > THRESHOLD,],
+threshold3.qtl <- rbind.fill(x.normal.summary.mapping[x.normal.summary.mapping$lod.peak > LOD.THRESHOLD,],
                              x.non.parametric.summary.mapping[x.non.parametric.summary.mapping$lod.peak > THRESHOLD,])
 features.t.qtl <- as.character(t.qtl$trait)
 markers.t.qtl <- as.character(t.qtl$marker)
