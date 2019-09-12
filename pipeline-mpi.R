@@ -312,7 +312,7 @@ x.normal.cim <- foreach(i=2:ncol(x.normal$pheno),
                      .packages = c("ggplot2","grid","gridExtra","latex2exp","qtl","R.devices")) %dopar% {
                        
                        # Run single scan
-                       normal.cim <-  cim(x.normal, pheno.col = i,  model = "normal", method = "hk")
+                       normal.cim <-  cim(x.normal, pheno.col = i,  method = "hk")
                        if(i == 2){
                          record <- data.frame(
                            chr = normal.cim$chr,
@@ -377,7 +377,7 @@ x.normal.summary.mapping <- foreach(i=2:ncol(x.normal$pheno),
                                       }
                                       
                                       # Run single scan
-                                      normal.cim <-  cim(x.normal, pheno.col = i,  model = "normal", method = "hk")
+                                      normal.cim <-  cim(x.normal, pheno.col = i,  method = "hk")
                                       summary.normal.cim <- summary(normal.cim, threshold = LOD.THRESHOLD)
                                       lod.count <- nrow(summary.normal.cim)
                                       if(lod.count){
@@ -438,7 +438,7 @@ x.normal.summary.mapping <- foreach(i=2:ncol(x.normal$pheno),
                                         #summary(normal.cim, threshold = 3)
                                         #lod.plot <- plot(normal.cim, ylab="LOD Score")
                                         #cat(paste0("cim: ",i,"\t\tLODs: ",lod.count,"\n"))
-                                        normal.cim.per <- cim(x.normal, pheno.col = i, model = "normal", method = "hk", n.perm = PERMUTATIONS)
+                                        normal.cim.per <- cim(x.normal, pheno.col = i, method = "hk", n.perm = PERMUTATIONS)
                                         p5 <- summary(normal.cim.per)[[1]]  #  5% percent
                                         p10 <- summary(normal.cim.per)[[2]] # 10% percent
                                         
@@ -465,7 +465,7 @@ x.normal.summary.mapping <- foreach(i=2:ncol(x.normal$pheno),
                                           #qtl_s <- makeqtl(x.normal, chr[m], pos[m], what=c("prob"))
                                           #f <- as.formula(paste0("y~",paste0("Q",seq(1:nrow(summary.normal.cim)), collapse = " + ")))
                                           f <- as.formula(paste0("y~",paste0("Q",m, collapse = " + ")))
-                                          fitqtl <- fitqtl(x.normal, pheno.col = i, qtl_s, formula = f , get.ests = TRUE, model = "normal", method="hk")
+                                          fitqtl <- fitqtl(x.normal, pheno.col = i, qtl_s, formula = f , get.ests = TRUE, method="hk")
                                           summary.fitqtl <- summary(fitqtl)
                                           
                                           if(length(summary.fitqtl)){
