@@ -1,13 +1,17 @@
 # Log Transformation and Pareto scaling
 ## Pareto scaling function
 #This function is adapted from Stephen C. Grace and Dane A. Hudson 
-paretoscale=function(z){
+paretoscale2=function(z){
   colmean=apply(z,2,mean)
   colsd=apply(z,2,sd)
   colsqrtsd=sqrt(colsd)
   rv=sweep(z,2,colmean,"-")
   rv=sweep(rv,2,colsqrtsd, "/")
   return(rv)
+}
+
+paretoscale <- function(z){
+  return(z)
 }
 
 ## Log transformation
