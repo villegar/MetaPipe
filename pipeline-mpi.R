@@ -307,23 +307,23 @@ individuals.phenotyped.np <- summary(x.non.parametric)[[2]]
 # Obtain LOD scores for all features and markers
 cl <- startMPIcluster()
 registerDoMPI(cl)
-x.normal.scanone <- foreach(i=2:ncol(x.normal$pheno),
+x.normal.cim <- foreach(i=2:ncol(x.normal$pheno),
                      .combine = cbind,
                      .packages = c("ggplot2","grid","gridExtra","latex2exp","qtl","R.devices")) %dopar% {
                        
                        # Run single scan
-                       normal.scanone <-  scanone(x.normal, pheno.col = i,  model = "normal", method = "hk")
+                       normal.cim <-  cim(x.normal, pheno.col = i,  model = "normal", method = "hk")
                        if(i == 2){
                          record <- data.frame(
-                           chr = normal.scanone$chr,
-                           pos = normal.scanone$pos,
-                           lod = normal.scanone$lod,
-                           row.names = rownames(normal.scanone)
+                           chr = normal.cim$chr,
+                           pos = normal.cim$pos,
+                           lod = normal.cim$lod,
+                           row.names = rownames(normal.cim)
                          )
                          colnames(record)[3] <- features[i]
                        }
                        else{
-                         record <- data.frame(data = normal.scanone$lod)
+                         record <- data.frame(data = normal.cim$lod)
                          colnames(record) <- features[i]
                        }
                        record
@@ -353,7 +353,7 @@ x.normal.summary.mapping <- foreach(i=2:ncol(x.normal$pheno),
                                         p.val = NA,
                                         transf = transformation.info$transf,
                                         transf.val = transformation.info$transf.value,
-                                        method = "normal-scanone",
+                                        method = "normal-cim",
                                         p5.qtl = FALSE,
                                         p10.qtl = FALSE
                                       )
@@ -377,9 +377,9 @@ x.normal.summary.mapping <- foreach(i=2:ncol(x.normal$pheno),
                                       }
                                       
                                       # Run single scan
-                                      normal.scanone <-  scanone(x.normal, pheno.col = i,  model = "normal", method = "hk")
-                                      summary.normal.scanone <- summary(normal.scanone, threshold = LOD.THRESHOLD)
-                                      lod.count <- nrow(summary.normal.scanone)
+                                      normal.cim <-  cim(x.normal, pheno.col = i,  model = "normal", method = "hk")
+                                      summary.normal.cim <- summary(normal.cim, threshold = LOD.THRESHOLD)
+                                      lod.count <- nrow(summary.normal.cim)
                                       if(lod.count){
                                         for(k in 1:lod.count){
                                           if(k > 1){
@@ -390,14 +390,14 @@ x.normal.summary.mapping <- foreach(i=2:ncol(x.normal$pheno),
                                           }else{
                                             new.record <- record # Copy record structured and data
                                           }
-                                          #lod.count <- sum(normal.scanone$lod >= LOD.THRESHOLD)
+                                          #lod.count <- sum(normal.cim$lod >= LOD.THRESHOLD)
                                           
-                                          #peak.lod <- normal.scanone$lod == max(normal.scanone$lod)
+                                          #peak.lod <- normal.cim$lod == max(normal.cim$lod)
                                           # Extract Peak QTL information
-                                          new.record$lg <- summary.normal.scanone[k,"chr"]
-                                          new.record$lod.peak <- summary.normal.scanone[k,"lod"]
-                                          new.record$pos.peak <- summary.normal.scanone[k,"pos"]
-                                          marker <- rownames(summary.normal.scanone)[k]
+                                          new.record$lg <- summary.normal.cim[k,"chr"]
+                                          new.record$lod.peak <- summary.normal.cim[k,"lod"]
+                                          new.record$pos.peak <- summary.normal.cim[k,"pos"]
+                                          marker <- rownames(summary.normal.cim)[k]
                                           # Verify if current QTL has a pseudomarker
                                           marker.info <- transform.pseudomarker(x.normal,marker,new.record$lg,new.record$pos.peak)
                                           new.record$marker <- marker.info[1]
@@ -407,9 +407,9 @@ x.normal.summary.mapping <- foreach(i=2:ncol(x.normal$pheno),
                                             new.record$qtl.ID <- with(new.record, sprintf("%s:%s@%f",features[i],lg,pos.peak))
                                           }
                                           
-                                          p95.bayesian <- bayesint(normal.scanone, chr = new.record$lg ,expandtomarkers = TRUE, prob = 0.95)
+                                          p95.bayesian <- bayesint(normal.cim, chr = new.record$lg ,expandtomarkers = TRUE, prob = 0.95)
                                           p95.bayesian <- unique(p95.bayesian)
-                                          #p95.bayesian <- summary(normal.scanone,  perms=normal.scanone.per, alpha=0.5, pvalues=TRUE)
+                                          #p95.bayesian <- summary(normal.cim,  perms=normal.cim.per, alpha=0.5, pvalues=TRUE)
                                           low.bound <- 1#p95.bayesian$pos == min(p95.bayesian$pos)
                                           upper.bound <- p95.bayesian$pos == max(p95.bayesian$pos)
                                           
@@ -435,15 +435,15 @@ x.normal.summary.mapping <- foreach(i=2:ncol(x.normal$pheno),
                                         }
                                         
                                         #if(lod.count > 0){
-                                        #summary(normal.scanone, threshold = 3)
-                                        #lod.plot <- plot(normal.scanone, ylab="LOD Score")
-                                        #cat(paste0("Scanone: ",i,"\t\tLODs: ",lod.count,"\n"))
-                                        normal.scanone.per <- scanone(x.normal, pheno.col = i, model = "normal", method = "hk", n.perm = PERMUTATIONS)
-                                        p5 <- summary(normal.scanone.per)[[1]]  #  5% percent
-                                        p10 <- summary(normal.scanone.per)[[2]] # 10% percent
+                                        #summary(normal.cim, threshold = 3)
+                                        #lod.plot <- plot(normal.cim, ylab="LOD Score")
+                                        #cat(paste0("cim: ",i,"\t\tLODs: ",lod.count,"\n"))
+                                        normal.cim.per <- cim(x.normal, pheno.col = i, model = "normal", method = "hk", n.perm = PERMUTATIONS)
+                                        p5 <- summary(normal.cim.per)[[1]]  #  5% percent
+                                        p10 <- summary(normal.cim.per)[[2]] # 10% percent
                                         
                                         
-                                        lod.plot <- savePlot(plot(normal.scanone, ylab="LOD Score") +
+                                        lod.plot <- savePlot(plot(normal.cim, ylab="LOD Score") +
                                                                abline(h=p5, lwd=2, lty="solid", col="red") +
                                                                abline(h=p10, lwd=2, lty="solid", col="red"),
                                                              paste0(plots.directory,"/LOD-",features[i]), width = 18)
@@ -457,13 +457,13 @@ x.normal.summary.mapping <- foreach(i=2:ncol(x.normal$pheno),
                                         if(!is.na(p10.index)&& any(p10.index)){ record[p10.index,]$p10.qtl <- TRUE }
                                         
                                         
-                                        chr <- as.numeric(summary.normal.scanone$chr)
-                                        pos <- as.numeric(summary.normal.scanone$pos)
+                                        chr <- as.numeric(summary.normal.cim$chr)
+                                        pos <- as.numeric(summary.normal.cim$pos)
                                         qtl_s <- makeqtl(x.normal, chr, pos, what=c("prob"))
                                         
                                         for(m in 1:length(chr)){
                                           #qtl_s <- makeqtl(x.normal, chr[m], pos[m], what=c("prob"))
-                                          #f <- as.formula(paste0("y~",paste0("Q",seq(1:nrow(summary.normal.scanone)), collapse = " + ")))
+                                          #f <- as.formula(paste0("y~",paste0("Q",seq(1:nrow(summary.normal.cim)), collapse = " + ")))
                                           f <- as.formula(paste0("y~",paste0("Q",m, collapse = " + ")))
                                           fitqtl <- fitqtl(x.normal, pheno.col = i, qtl_s, formula = f , get.ests = TRUE, model = "normal", method="hk")
                                           summary.fitqtl <- summary(fitqtl)
@@ -484,23 +484,23 @@ x.normal.summary.mapping <- foreach(i=2:ncol(x.normal$pheno),
 # Non-parametric QTL
 print("Starting with Non-Parametric QTL Analysis")
 
-x.non.parametric.scanone <- foreach(i=2:ncol(x.non.parametric$pheno),
+x.non.parametric.cim <- foreach(i=2:ncol(x.non.parametric$pheno),
                                     .combine = cbind,
                                     .packages = c("ggplot2","grid","gridExtra","latex2exp","qtl","R.devices")) %dopar% {
                                       
                                       # Run single scan
-                                      non.parametric.scanone <-  scanone(x.non.parametric, pheno.col = i,  model = "np")
+                                      non.parametric.cim <-  cim(x.non.parametric, pheno.col = i,  model = "np")
                                       if(i == 2){
                                         record <- data.frame(
-                                          chr = non.parametric.scanone$chr,
-                                          pos = non.parametric.scanone$pos,
-                                          lod = non.parametric.scanone$lod,
-                                          row.names = rownames(non.parametric.scanone)
+                                          chr = non.parametric.cim$chr,
+                                          pos = non.parametric.cim$pos,
+                                          lod = non.parametric.cim$lod,
+                                          row.names = rownames(non.parametric.cim)
                                         )
                                         colnames(record)[3] <- features.np[i]
                                       }
                                       else{
-                                        record <- data.frame(data = non.parametric.scanone$lod)
+                                        record <- data.frame(data = non.parametric.cim$lod)
                                         colnames(record) <- features.np[i]
                                       }
                                       record
@@ -532,7 +532,7 @@ x.non.parametric.summary.mapping <- foreach(i=2:ncol(x.non.parametric$pheno),
                                                 #p.val = NA,
                                                 #transf = transformation.info$transf,
                                                 #transf.val = transformation.info$transf.value,
-                                                method = "non.parametric-scanone",
+                                                method = "non.parametric-cim",
                                                 p5.qtl = FALSE,
                                                 p10.qtl = FALSE
                                               )
@@ -556,9 +556,9 @@ x.non.parametric.summary.mapping <- foreach(i=2:ncol(x.non.parametric$pheno),
                                               }
                                               
                                               # Run single scan
-                                              non.parametric.scanone <-  scanone(x.non.parametric, pheno.col = i,  model = "np")
-                                              summary.non.parametric.scanone <- summary(non.parametric.scanone, threshold = LOD.THRESHOLD)
-                                              lod.count <- nrow(summary.non.parametric.scanone)
+                                              non.parametric.cim <-  cim(x.non.parametric, pheno.col = i,  model = "np")
+                                              summary.non.parametric.cim <- summary(non.parametric.cim, threshold = LOD.THRESHOLD)
+                                              lod.count <- nrow(summary.non.parametric.cim)
                                               if(lod.count){
                                                 for(k in 1:lod.count){
                                                   if(k > 1){
@@ -569,14 +569,14 @@ x.non.parametric.summary.mapping <- foreach(i=2:ncol(x.non.parametric$pheno),
                                                   }else{
                                                     new.record <- record # Copy record structured and data
                                                   }
-                                                  #lod.count <- sum(non.parametric.scanone$lod >= LOD.THRESHOLD)
+                                                  #lod.count <- sum(non.parametric.cim$lod >= LOD.THRESHOLD)
                                                   
-                                                  #peak.lod <- non.parametric.scanone$lod == max(non.parametric.scanone$lod)
+                                                  #peak.lod <- non.parametric.cim$lod == max(non.parametric.cim$lod)
                                                   # Extract Peak QTL information
-                                                  new.record$lg <- summary.non.parametric.scanone[k,"chr"]
-                                                  new.record$lod.peak <- summary.non.parametric.scanone[k,"lod"]
-                                                  new.record$pos.peak <- summary.non.parametric.scanone[k,"pos"]
-                                                  marker <- rownames(summary.non.parametric.scanone)[k]
+                                                  new.record$lg <- summary.non.parametric.cim[k,"chr"]
+                                                  new.record$lod.peak <- summary.non.parametric.cim[k,"lod"]
+                                                  new.record$pos.peak <- summary.non.parametric.cim[k,"pos"]
+                                                  marker <- rownames(summary.non.parametric.cim)[k]
                                                   # Verify if current QTL has a pseudomarker
                                                   marker.info <- transform.pseudomarker(x.non.parametric,marker,new.record$lg,new.record$pos.peak)
                                                   new.record$marker <- marker.info[1]
@@ -586,9 +586,9 @@ x.non.parametric.summary.mapping <- foreach(i=2:ncol(x.non.parametric$pheno),
                                                     new.record$qtl.ID <- with(new.record, sprintf("%s:%s@%f",features.np[i],lg,pos.peak))
                                                   }
                                                   
-                                                  p95.bayesian <- bayesint(non.parametric.scanone, chr = new.record$lg ,expandtomarkers = TRUE, prob = 0.95)
+                                                  p95.bayesian <- bayesint(non.parametric.cim, chr = new.record$lg ,expandtomarkers = TRUE, prob = 0.95)
                                                   p95.bayesian <- unique(p95.bayesian)
-                                                  #p95.bayesian <- summary(non.parametric.scanone,  perms=non.parametric.scanone.per, alpha=0.5, pvalues=TRUE)
+                                                  #p95.bayesian <- summary(non.parametric.cim,  perms=non.parametric.cim.per, alpha=0.5, pvalues=TRUE)
                                                   low.bound <- 1#p95.bayesian$pos == min(p95.bayesian$pos)
                                                   upper.bound <- p95.bayesian$pos == max(p95.bayesian$pos)
                                                   
@@ -612,12 +612,12 @@ x.non.parametric.summary.mapping <- foreach(i=2:ncol(x.non.parametric$pheno),
                                                   }
                                                 }
                                                 
-                                                non.parametric.scanone.per <- scanone(x.non.parametric, pheno.col = i, model = "np", n.perm = PERMUTATIONS)
-                                                p5 <- summary(non.parametric.scanone.per)[[1]]  #  5% percent
-                                                p10 <- summary(non.parametric.scanone.per)[[2]] # 10% percent
+                                                non.parametric.cim.per <- cim(x.non.parametric, pheno.col = i, model = "np", n.perm = PERMUTATIONS)
+                                                p5 <- summary(non.parametric.cim.per)[[1]]  #  5% percent
+                                                p10 <- summary(non.parametric.cim.per)[[2]] # 10% percent
                                                 
                                                 
-                                                lod.plot <- savePlot(plot(non.parametric.scanone, ylab="LOD Score") +
+                                                lod.plot <- savePlot(plot(non.parametric.cim, ylab="LOD Score") +
                                                                        abline(h=p5, lwd=2, lty="solid", col="red") +
                                                                        abline(h=p10, lwd=2, lty="solid", col="red"),
                                                                      paste0(plots.directory,"/LOD-NP-",features.np[i]), width = 18)
@@ -647,7 +647,7 @@ markers.t.qtl <- as.character(t.qtl$marker)
 
 effect.plots <- foreach(i=1:nrow(t.qtl),
         .packages = c("latex2exp","qtl","R.devices")) %dopar% {
-          if(t.qtl[i,]$method == "normal-scanone"){
+          if(t.qtl[i,]$method == "normal-cim"){
             if(t.qtl[i,]$transf == "log"){
               ylab <- paste0("$\\log_{",t.qtl[i,]$transf.val,"}(",features.t.qtl[i],")$")
             } else if(t.qtl[i,]$transf == "root"){
@@ -670,9 +670,9 @@ effect.plots <- foreach(i=1:nrow(t.qtl),
 
 closeCluster(cl) # Stop cluster
 
-write.csv(x.normal.scanone, file = paste0(output.files.prefix,".normal.scanone.csv"))
+write.csv(x.normal.cim, file = paste0(output.files.prefix,".normal.cim.csv"))
 write.csv(x.normal.summary.mapping, file = paste0(output.files.prefix,".normal.summary.mapping.csv"), row.names=FALSE, na="")
-write.csv(x.non.parametric.scanone, file = paste0(output.files.prefix,".non.parametric.scanone.csv"))
+write.csv(x.non.parametric.cim, file = paste0(output.files.prefix,".non.parametric.cim.csv"))
 write.csv(x.non.parametric.summary.mapping, file = paste0(output.files.prefix,".non.parametric.summary.mapping.csv"), row.names=FALSE, na="")
 write.csv(t.qtl, file = paste0(output.files.prefix,".true.qtl.csv"), row.names=FALSE, na="")
 write.csv(threshold3.qtl, file = paste0(output.files.prefix,".threshold3.qtl.csv"), row.names=FALSE, na="")
