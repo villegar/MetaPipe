@@ -489,7 +489,7 @@ x.non.parametric.cim <- foreach(i=2:ncol(x.non.parametric$pheno),
                                     .packages = c("ggplot2","grid","gridExtra","latex2exp","qtl","R.devices")) %dopar% {
                                       
                                       # Run single scan
-                                      non.parametric.cim <-  cim(x.non.parametric, pheno.col = i,  model = "np")
+                                      non.parametric.cim <-  cim(x.non.parametric, pheno.col = i)
                                       if(i == 2){
                                         record <- data.frame(
                                           chr = non.parametric.cim$chr,
@@ -556,7 +556,7 @@ x.non.parametric.summary.mapping <- foreach(i=2:ncol(x.non.parametric$pheno),
                                               }
                                               
                                               # Run single scan
-                                              non.parametric.cim <-  cim(x.non.parametric, pheno.col = i,  model = "np")
+                                              non.parametric.cim <-  cim(x.non.parametric, pheno.col = i)
                                               summary.non.parametric.cim <- summary(non.parametric.cim, threshold = LOD.THRESHOLD)
                                               lod.count <- nrow(summary.non.parametric.cim)
                                               if(lod.count){
@@ -612,7 +612,7 @@ x.non.parametric.summary.mapping <- foreach(i=2:ncol(x.non.parametric$pheno),
                                                   }
                                                 }
                                                 
-                                                non.parametric.cim.per <- cim(x.non.parametric, pheno.col = i, model = "np", n.perm = PERMUTATIONS)
+                                                non.parametric.cim.per <- cim(x.non.parametric, pheno.col = i, n.perm = PERMUTATIONS)
                                                 p5 <- summary(non.parametric.cim.per)[[1]]  #  5% percent
                                                 p10 <- summary(non.parametric.cim.per)[[2]] # 10% percent
                                                 
