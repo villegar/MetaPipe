@@ -1,3 +1,4 @@
+args = commandArgs(trailingOnly=TRUE) # Command line arguments
 # Install libraries
 #install.packages(c("Amelia","ggplot2","grid","gridExtra","latex2exp","psych","R.devices","tidyverse","VIM"), dependencies=T)
 #install.packages(c("doParallel","foreach"), dependencies=T)
@@ -37,6 +38,16 @@ source("transformations.R")
 cores <- detectCores()
 CPUS <- cores[1] - 1
 
+if(length(args) < 1){
+  PERMUTATIONS <- 1000 # Number of permutations for QTL Analysis
+  DROP.NA <- TRUE
+} else if(length(args) < 2){
+  PERMUTATIONS <- args[1] # Number of permutations for QTL Analysis
+  DROP.NA <- TRUE
+} else {
+  PERMUTATIONS <- args[1] # Number of permutations for QTL Analysis
+  DROP.NA <- args[2]
+}
 # Global parameters
 plots.directory <- "metabolomics"
 excluded.columns <- c(1,2,3)
@@ -46,7 +57,7 @@ transformation.values <- c(2,exp(1))#,3,4,5,6,7,8,9,10
 input.filename <- "sp.csv"
 SEED <- 20190901 # Seed for QTL Analysis
 LOD.THRESHOLD <- 3 # LOD threhold for QTL Analysis
-PERMUTATIONS <- 1000 # Number of permutations for QTL Analysis
+
 
 # Environment configuration
 dir.create(file.path(getwd(), plots.directory), showWarnings = FALSE) # Directory for plots
