@@ -40,13 +40,13 @@ CPUS <- cores[1] - 1
 
 if(length(args) < 1){
   PERMUTATIONS <- 1000 # Number of permutations for QTL Analysis
-  DROP.NA <- TRUE
+  REPLACE.NA <- TRUE
 } else if(length(args) < 2){
   PERMUTATIONS <- args[1] # Number of permutations for QTL Analysis
-  DROP.NA <- TRUE
+  REPLACE.NA <- TRUE
 } else {
   PERMUTATIONS <- args[1] # Number of permutations for QTL Analysis
-  DROP.NA <- args[2]
+  REPLACE.NA <- args[2]
 }
 # Global parameters
 plots.directory <- "metabolomics"
@@ -78,9 +78,10 @@ meansp.rows <- nrow(meansp)
 
 # Replacement of Missing Values
 # Missing values are replaced by half of the minimum non-zero value for each feature.
-NA2halfmin <- function(x) suppressWarnings(replace(x, is.na(x), (min(x, na.rm = TRUE)/2)))
-meansp[,-excluded.columns] <- lapply(meansp[,-excluded.columns], NA2halfmin)
-
+if(REPLACE.NA){
+  NA2halfmin <- function(x) suppressWarnings(replace(x, is.na(x), (min(x, na.rm = TRUE)/2)))
+  meansp[,-excluded.columns] <- lapply(meansp[,-excluded.columns], NA2halfmin)
+}
 
 # Missing values plot
 #missmap(meansp, main = "Missing values vs observed")
