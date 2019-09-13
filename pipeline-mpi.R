@@ -255,8 +255,8 @@ non.parametric.phe$Generation <- NULL
 non.parametric.gen <- rbind(geno.map[1:2,],inner_join(non.parametric.phe,geno.map, by="ID")[,colnames(geno.map)])
 
 # Clean phenotypic data
-non.parametric.empty.features <- sapply(non.parametric.phe, function(x) all(is.na(x)))
-normal.empty.features <- sapply(normal.phe, function(x) all(is.na(x)))
+non.parametric.empty.features <- sapply(non.parametric.phe, function(x) all(is.na(x)) || all(is.infinite(x)))
+normal.empty.features <- sapply(normal.phe, function(x) all(is.na(x)) || all(is.infinite(x)))
 #non.parametric.phe.ncols <- ncol(non.parametric.phe)
 #normal.phe.ncols <- ncol(normal.phe)
 non.parametric.phe[non.parametric.empty.features] <- NULL
