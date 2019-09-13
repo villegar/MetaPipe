@@ -20,8 +20,6 @@ library(VIM)
 # Parallel Libraries
 library(foreach)
 library(doParallel)
-library(Rmpi)
-library(doMPI)
 #library(snow)
 
 # PCA Libraries
@@ -291,6 +289,10 @@ x.non.parametric <- calc.genoprob(x.non.parametric, step=1, error.prob=0.001)
 print("Starting with QTL Analysis")
 print("Starting with Normal QTL Analysis")
 individuals.phenotyped.np <- summary(x.non.parametric)[[2]]
+
+# Load MPI libraries
+library(Rmpi)
+library(doMPI)
 
 # In case R exits unexpectedly, have it automatically clean up
 # resources taken up by Rmpi (slaves, memory, etc...)
