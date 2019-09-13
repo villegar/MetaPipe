@@ -41,12 +41,19 @@ CPUS <- cores[1] - 1
 if(length(args) < 1){
   PERMUTATIONS <- 1000 # Number of permutations for QTL Analysis
   REPLACE.NA <- TRUE
+  PARETO.SCALING <- FALSE
 } else if(length(args) < 2){
   PERMUTATIONS <- args[1] # Number of permutations for QTL Analysis
   REPLACE.NA <- TRUE
+  PARETO.SCALING <- FALSE
+} else if(length(args < 3)){
+  PERMUTATIONS <- args[1] # Number of permutations for QTL Analysis
+  REPLACE.NA <- args[2]
+  PARETO.SCALING <- FALSE
 } else {
   PERMUTATIONS <- args[1] # Number of permutations for QTL Analysis
   REPLACE.NA <- args[2]
+  PARETO.SCALING <- args[3]
 }
 # Global parameters
 plots.directory <- "metabolomics"
@@ -106,7 +113,7 @@ generate.boxplots <- function(meansp,ggplot.save){
 #generate.boxplots(meansp,ggplot.save)
 
 features <- colnames(meansp)
-meansp.pareto <- paretoscale(log(meansp[,-excluded.columns],2))
+
 print("Starting with Normality Assessment")
 cl <- makeCluster(CPUS, outfile=paste0('./info_parallel.log'))
 registerDoParallel(cl)
@@ -170,20 +177,20 @@ for(i in 1:length.normal.features){
 }
 
 # Append excluded columns for transformation 
-pareto.normal.meansp <- cbind(meansp[,excluded.columns],paretoscale(normal.meansp))
-#pareto.non.parametric.meansp <- cbind(meansp[,excluded.columns],paretoscale(non.parametric.meansp[,-excluded.columns]))
-pareto.non.parametric.meansp <- cbind(meansp[,excluded.columns],paretoscale(non.parametric.meansp))
+if(PARETO.SCALING){ # Apply Pareto Scaling
+  transformed.normal.meansp <- cbind(meansp[,excluded.columns],paretoscale(normal.meansp))
+  transformed.non.parametric.meansp <- cbind(meansp[,excluded.columns],paretoscale(non.parametric.meansp))
+} else { # No Scaling
+  transformed.normal.meansp <- cbind(meansp[,excluded.columns],normal.meansp)
+  transformed.non.parametric.meansp <- cbind(meansp[,excluded.columns],non.parametric.meansp)
+}
 normal.meansp <- cbind(meansp[,excluded.columns],normal.meansp)
 
-#colnames(pareto.normal.meansp)[excluded.columns] <- colnames(meansp)[excluded.columns]
-#colnames(pareto.non.parametric.meansp)[excluded.columns] <- colnames(meansp)[excluded.columns]
-#colnames(normal.meansp)[excluded.columns] <- colnames(meansp)[excluded.columns]
-
-write.csv(transformed.meansp, file = paste0(output.files.prefix,".transformed.meansp.csv"), row.names=FALSE)
+write.csv(transformed.meansp, file = paste0(output.files.prefix,".transformed.all.meansp.csv"), row.names=FALSE)
 write.csv(normal.meansp, file = paste0(output.files.prefix,".normal.meansp.csv"), row.names=FALSE)
 write.csv(non.parametric.meansp, file = paste0(output.files.prefix,".non.parametric.meansp.csv"), row.names=FALSE)
-write.csv(pareto.normal.meansp, file = paste0(output.files.prefix,".pareto.normal.meansp.csv"), row.names=FALSE)
-write.csv(pareto.non.parametric.meansp, file = paste0(output.files.prefix,".pareto.non.parametric.meansp.csv"), row.names=FALSE)
+write.csv(transformed.normal.meansp, file = paste0(output.files.prefix,".transformed.normal.meansp.csv"), row.names=FALSE)
+write.csv(transformed.non.parametric.meansp, file = paste0(output.files.prefix,".transformed.non.parametric.meansp.csv"), row.names=FALSE)
 
 # Statistics
 normal <- nrow(normal.transformed.meansp[normal.transformed.meansp$transf == "",])/meansp.rows
@@ -212,9 +219,9 @@ cat("\n\n") # Clean output
 
 # PCA analysis with mean (used no missing data) 
 
-#pareto.normal.meansp <- read.csv("pareto.normal.meansp.csv")
-#pareto.normal.meansp$X <- NULL
-#pareto.normal.meansp <- pareto.normal.meansp[order(as.character(pareto.normal.meansp$ID)),]
+#transformed.normal.meansp <- read.csv("transformed.normal.meansp.csv")
+#transformed.normal.meansp$X <- NULL
+#transformed.normal.meansp <- transformed.normal.meansp[order(as.character(transformed.normal.meansp$ID)),]
 
 
 # Prepocessing data for QTL Analysis
@@ -223,26 +230,26 @@ colnames(geno.map)[1] <- "ID"
 geno.map$ID <- as.character(geno.map$ID)
 
 ## Normal features
-pareto.normal.meansp$GenoID <- with(pareto.normal.meansp,
-                                    gsub(" ","0",paste0(Generation,"_",sprintf("%3s",as.character(ID))))
+transformed.normal.meansp$GenoID <- with(transformed.normal.meansp,
+                                         gsub(" ","0",paste0(Generation,"_",sprintf("%3s",as.character(ID))))
 )
-pareto.normal.meansp$ID <- pareto.normal.meansp$GenoID
-pareto.normal.meansp$GenoID <- NULL
+transformed.normal.meansp$ID <- transformed.normal.meansp$GenoID
+transformed.normal.meansp$GenoID <- NULL
 
-normal.phe <- inner_join(pareto.normal.meansp,geno.map, by="ID")[,colnames(pareto.normal.meansp)]
+normal.phe <- inner_join(transformed.normal.meansp,geno.map, by="ID")[,colnames(transformed.normal.meansp)]
 normal.phe$Group <- NULL
 normal.phe$Generation <- NULL
 normal.gen <- rbind(geno.map[1:2,],inner_join(normal.phe,geno.map, by="ID")[,colnames(geno.map)])
 
 
 ## Non-parametric features
-pareto.non.parametric.meansp$GenoID <- with(pareto.non.parametric.meansp,
-                                    gsub(" ","0",paste0(Generation,"_",sprintf("%3s",as.character(ID))))
+transformed.non.parametric.meansp$GenoID <- with(transformed.non.parametric.meansp,
+                                                 gsub(" ","0",paste0(Generation,"_",sprintf("%3s",as.character(ID))))
 )
-pareto.non.parametric.meansp$ID <- pareto.non.parametric.meansp$GenoID
-pareto.non.parametric.meansp$GenoID <- NULL
+transformed.non.parametric.meansp$ID <- transformed.non.parametric.meansp$GenoID
+transformed.non.parametric.meansp$GenoID <- NULL
 
-non.parametric.phe <- inner_join(pareto.non.parametric.meansp,geno.map, by="ID")[,colnames(pareto.non.parametric.meansp)]
+non.parametric.phe <- inner_join(transformed.non.parametric.meansp,geno.map, by="ID")[,colnames(transformed.non.parametric.meansp)]
 non.parametric.phe$Group <- NULL
 non.parametric.phe$Generation <- NULL
 non.parametric.gen <- rbind(geno.map[1:2,],inner_join(non.parametric.phe,geno.map, by="ID")[,colnames(geno.map)])
