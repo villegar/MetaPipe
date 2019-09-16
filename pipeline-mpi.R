@@ -7,28 +7,28 @@ args = commandArgs(trailingOnly=TRUE) # Command line arguments
 #install.packages("qtl2", repos="http://rqtl.org/qtl2cran")
 
 # General Libraries
-library(Amelia)
-library(ggplot2)
-library(grid)
-library(gridExtra)
-library(latex2exp)
-library(plyr)
-library(psych)
-library(R.devices)
-library(tidyverse)
-library(VIM)
+library(Amelia, quietly = TRUE)
+library(ggplot2, quietly = TRUE)
+library(grid, quietly = TRUE)
+library(gridExtra, quietly = TRUE)
+library(latex2exp, quietly = TRUE)
+library(plyr, quietly = TRUE)
+library(psych, quietly = TRUE)
+library(R.devices, quietly = TRUE)
+library(tidyverse, quietly = TRUE)
+library(VIM, quietly = TRUE)
 
 # Parallel Libraries
-library(foreach)
-library(doParallel)
-#library(snow)
+library(foreach, quietly = TRUE)
+library(doParallel, quietly = TRUE)
+#library(snow, quietly = TRUE)
 
 # PCA Libraries
-library(FactoMineR)
-library(factoextra)
+library(FactoMineR, quietly = TRUE)
+library(factoextra, quietly = TRUE)
 
 # QTL Analysis
-library(qtl)
+library(qtl, quietly = TRUE)
 
 # Source util functions
 source("plots.utils.R")
