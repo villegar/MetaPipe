@@ -45,33 +45,33 @@ if(length(args) < 1){
   OUT.PREFIX <- "metabolomics"
   PLOTS.DIR <- "metabolomics"
 } else if(length(args) < 2){
-  PERMUTATIONS <- args[1] # Number of permutations for QTL Analysis
+  PERMUTATIONS <- as.numeric(args[1]) # Number of permutations for QTL Analysis
   REPLACE.NA <- TRUE
   PARETO.SCALING <- FALSE
   OUT.PREFIX <- "metabolomics"
   PLOTS.DIR <- "metabolomics"
 } else if(length(args) < 3){
-  PERMUTATIONS <- args[1] # Number of permutations for QTL Analysis
-  REPLACE.NA <- args[2]
+  PERMUTATIONS <- as.numeric(args[1]) # Number of permutations for QTL Analysis
+  REPLACE.NA <- as.logical(args[2])
   PARETO.SCALING <- FALSE
   OUT.PREFIX <- "metabolomics"
   PLOTS.DIR <- "metabolomics"
 } else if(length(args) < 4){
-  PERMUTATIONS <- args[1] # Number of permutations for QTL Analysis
-  REPLACE.NA <- args[2]
-  PARETO.SCALING <- args[3]
+  PERMUTATIONS <- as.numeric(args[1]) # Number of permutations for QTL Analysis
+  REPLACE.NA <- as.logical(args[2])
+  PARETO.SCALING <- as.logical(args[3])
   OUT.PREFIX <- "metabolomics"
   PLOTS.DIR <- "metabolomics"
 } else if(length(args) < 5){
-  PERMUTATIONS <- args[1] # Number of permutations for QTL Analysis
-  REPLACE.NA <- args[2]
-  PARETO.SCALING <- args[3]
+  PERMUTATIONS <- as.numeric(args[1]) # Number of permutations for QTL Analysis
+  REPLACE.NA <- as.logical(args[2])
+  PARETO.SCALING <- as.logical(args[3])
   OUT.PREFIX <- args[4]
   PLOTS.DIR <- "metabolomics"
 } else {
-  PERMUTATIONS <- args[1] # Number of permutations for QTL Analysis
-  REPLACE.NA <- args[2]
-  PARETO.SCALING <- args[3]
+  PERMUTATIONS <- as.numeric(args[1]) # Number of permutations for QTL Analysis
+  REPLACE.NA <- as.logical(args[2])
+  PARETO.SCALING <- as.logical(args[3])
   OUT.PREFIX <- args[4]
   PLOTS.DIR <- args[5]
 }
