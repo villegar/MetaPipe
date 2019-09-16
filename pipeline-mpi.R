@@ -50,19 +50,19 @@ if(length(args) < 1){
   PARETO.SCALING <- FALSE
   OUT.PREFIX <- "metabolomics"
   PLOTS.DIR <- "metabolomics"
-} else if(length(args < 3)){
+} else if(length(args) < 3){
   PERMUTATIONS <- args[1] # Number of permutations for QTL Analysis
   REPLACE.NA <- args[2]
   PARETO.SCALING <- FALSE
   OUT.PREFIX <- "metabolomics"
   PLOTS.DIR <- "metabolomics"
-} else if(length(args < 4)){
+} else if(length(args) < 4){
   PERMUTATIONS <- args[1] # Number of permutations for QTL Analysis
   REPLACE.NA <- args[2]
   PARETO.SCALING <- args[3]
   OUT.PREFIX <- "metabolomics"
   PLOTS.DIR <- "metabolomics"
-} else if(length(args < 5)){
+} else if(length(args) < 5){
   PERMUTATIONS <- args[1] # Number of permutations for QTL Analysis
   REPLACE.NA <- args[2]
   PARETO.SCALING <- args[3]
