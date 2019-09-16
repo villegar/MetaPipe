@@ -662,7 +662,7 @@ x2.normal <- sim.geno(x.normal)
 t.qtl <- rbind.fill(x.normal.summary.mapping[x.normal.summary.mapping$p5.qtl,],
                     x.non.parametric.summary.mapping[x.non.parametric.summary.mapping$p5.qtl,])
 threshold3.qtl <- rbind.fill(x.normal.summary.mapping[x.normal.summary.mapping$lod.peak > LOD.THRESHOLD,],
-                             x.non.parametric.summary.mapping[x.non.parametric.summary.mapping$lod.peak > THRESHOLD,])
+                             x.non.parametric.summary.mapping[x.non.parametric.summary.mapping$lod.peak > LOD.THRESHOLD,])
 features.t.qtl <- as.character(t.qtl$trait)
 markers.t.qtl <- as.character(t.qtl$marker)
 
