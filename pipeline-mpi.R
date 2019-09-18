@@ -84,6 +84,7 @@ transformation.values <- c(2,exp(1))#,3,4,5,6,7,8,9,10
 input.filename <- "sp.csv"
 SEED <- 20190901 # Seed for QTL Analysis
 LOD.THRESHOLD <- 3 # LOD threhold for QTL Analysis
+NA.COUNT.THRESHOLD <- 0.5 # Allows 50% of NAs per feature
 
 
 # Environment configuration
@@ -108,7 +109,17 @@ meansp.rows <- nrow(meansp)
 if(REPLACE.NA){
   NA2halfmin <- function(x) suppressWarnings(replace(x, is.na(x), (min(x, na.rm = TRUE)/2)))
   meansp[,-excluded.columns] <- lapply(meansp[,-excluded.columns], NA2halfmin)
+} else {
+  NACount <- which(colMeans(is.na(meansp[,-excluded.columns])) >= NA.COUNT.THRESHOLD) + length.excluded.columns
+  if(length(NACount)){
+    write.csv(meansp[,c(excluded.columns,NACount)], file = paste0(OUT.PREFIX,".NA.meansp.csv"), row.names=FALSE)
+    cat(paste0("The following features were dropped because they have ",(NA.COUNT.THRESHOLD*100),"% or more missing values:\n"))
+    cat(colnames(meansp)[NACount])
+    meansp[,NACount] <- NULL
+  }
 }
+
+write.csv(meansp, file = paste0(OUT.PREFIX,".all.meansp.csv"), row.names=FALSE)
 
 # Missing values plot
 #missmap(meansp, main = "Missing values vs observed")
