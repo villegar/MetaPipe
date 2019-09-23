@@ -747,5 +747,13 @@ if(!PARETO.SCALING){ # Apply Pareto Scaling
 #transformed.normal.meansp <- read.csv(paste0(OUT.PREFIX,".all.meansp.csv"))
 #transformed.normal.meansp$X <- NULL
 #transformed.normal.meansp <- transformed.normal.meansp[order(as.character(transformed.normal.meansp$ID)),]
-
+#transformed.normal.meansp$Group <- NULL
 res.pca <- PCA(transformed.normal.meansp,  graph = FALSE, scale.unit = TRUE)
+#fviz_screeplot(res.pca, addlabels = TRUE, ylim = c(0, 50))
+#res.pca$eig
+# Biplot with top 10 features 
+fviz_pca_biplot(res.pca, col.var="contrib",
+                gradient.cols = c("green","red","blue"),#"#00AFBB" "#E7B800", "#FC4E07"),
+                select.var = list(contrib = 10),
+                label="var",addEllipses=TRUE, ellipse.level=0.95, repel = TRUE # Avoid text overlapping
+)
