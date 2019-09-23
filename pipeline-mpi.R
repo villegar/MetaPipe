@@ -731,19 +731,21 @@ print("Done with QTL Analysis")
 mpi.quit()
 
 # For both PCA and LDA the data must have no NAs and must be scaled
+meansp <- read.csv(paste0(OUT.PREFIX,".all.meansp.csv"))
 if(!REPLACE.NA){
   NA2halfmin <- function(x) suppressWarnings(replace(x, is.na(x), (min(x, na.rm = TRUE)/2)))
   meansp[,-excluded.columns] <- lapply(meansp[,-excluded.columns], NA2halfmin)
 }
 if(!PARETO.SCALING){ # Apply Pareto Scaling
-  transformed.normal.meansp <- cbind(meansp[,excluded.columns],paretoscale(normal.meansp))
+  transformed.normal.meansp <- cbind(meansp[,excluded.columns],paretoscale(meansp[,-excluded.columns]))
+  transformed.normal.meansp <- paretoscale(meansp[,-excluded.columns])
   #transformed.non.parametric.meansp <- cbind(meansp[,excluded.columns],paretoscale(non.parametric.meansp))
 }
 
 # PCA analysis with mean (used no missing data) 
 #OUT.PREFIX <- "S1-metabolomics"
 #transformed.normal.meansp <- read.csv(paste0(OUT.PREFIX,".all.meansp.csv"))
-transformed.normal.meansp$X <- NULL
-transformed.normal.meansp <- transformed.normal.meansp[order(as.character(transformed.normal.meansp$ID)),]
+#transformed.normal.meansp$X <- NULL
+#transformed.normal.meansp <- transformed.normal.meansp[order(as.character(transformed.normal.meansp$ID)),]
 
-
+res.pca <- PCA(transformed.normal.meansp,  graph = FALSE, scale.unit = TRUE)
