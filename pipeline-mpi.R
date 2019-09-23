@@ -248,13 +248,6 @@ for(i in 1:nrow(transformations)){
 }
 cat("\n\n") # Clean output
 
-# PCA analysis with mean (used no missing data) 
-
-#transformed.normal.meansp <- read.csv("transformed.normal.meansp.csv")
-#transformed.normal.meansp$X <- NULL
-#transformed.normal.meansp <- transformed.normal.meansp[order(as.character(transformed.normal.meansp$ID)),]
-
-
 # Prepocessing data for QTL Analysis
 geno.map <- read.csv("OriginalMap.csv")
 colnames(geno.map)[1] <- "ID"
@@ -736,3 +729,21 @@ classified.qtl$group <- with(classified.qtl,
 write.csv(classified.qtl, file = paste0(OUT.PREFIX,".classified.qtl.csv"), row.names=FALSE, na="")
 print("Done with QTL Analysis")
 mpi.quit()
+
+# For both PCA and LDA the data must have no NAs and must be scaled
+if(!REPLACE.NA){
+  NA2halfmin <- function(x) suppressWarnings(replace(x, is.na(x), (min(x, na.rm = TRUE)/2)))
+  meansp[,-excluded.columns] <- lapply(meansp[,-excluded.columns], NA2halfmin)
+}
+if(!PARETO.SCALING){ # Apply Pareto Scaling
+  transformed.normal.meansp <- cbind(meansp[,excluded.columns],paretoscale(normal.meansp))
+  #transformed.non.parametric.meansp <- cbind(meansp[,excluded.columns],paretoscale(non.parametric.meansp))
+}
+
+# PCA analysis with mean (used no missing data) 
+#OUT.PREFIX <- "S1-metabolomics"
+#transformed.normal.meansp <- read.csv(paste0(OUT.PREFIX,".all.meansp.csv"))
+transformed.normal.meansp$X <- NULL
+transformed.normal.meansp <- transformed.normal.meansp[order(as.character(transformed.normal.meansp$ID)),]
+
+
