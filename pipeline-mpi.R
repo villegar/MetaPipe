@@ -397,10 +397,12 @@ library(doMPI)
      .Call("mpi_finalize")
    }
 }
-# Obtain LOD scores for all features and markers
-cl <- startMPIcluster()
-registerDoMPI(cl)
 
+# Obtain LOD scores for all features and markers
+#cl <- startMPIcluster()
+#registerDoMPI(cl)
+makeCluster(CPUS, outfile=paste0('./info_mpi_parallel.log'), type = "MPI")
+registerDoParallel(cl)
 x.normal.summary.mapping <- foreach(i=2:ncol(x.normal$pheno),
                                     .combine = rbind,
                                     .packages = c("ggplot2","grid","gridExtra","latex2exp","qtl","R.devices")) %dopar% {
@@ -717,7 +719,8 @@ effect.plots <- foreach(i=1:nrow(t.qtl),
           }
         }
 
-closeCluster(cl) # Stop cluster
+#closeCluster(cl) # Stop cluster
+stopCluster.MPIcluster(c1)
 
 write.csv(x.normal.scanone, file = paste0(OUT.PREFIX,".normal.scanone.csv"))
 write.csv(x.normal.summary.mapping, file = paste0(OUT.PREFIX,".normal.summary.mapping.csv"), row.names=FALSE, na="")
