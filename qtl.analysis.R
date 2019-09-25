@@ -1,3 +1,4 @@
+# Normal QTL Analysis
 x.normal.summary.mapping <- function(i){
   library(qtl)
   library(ggplot2)
@@ -138,6 +139,127 @@ x.normal.summary.mapping <- function(i){
         record[m,]$est.dom <- estimates[2]
       }
     }
+  }
+  return(record)
+}
+
+# Non-parametric QTL Analysis
+x.non.parametric.summary.mapping <- function(i){
+  library(qtl)
+  library(ggplot2)
+  library(latex2exp)
+  
+  record <- data.frame(
+    ID = i - 1,
+    qtl.ID = NA,
+    trait = features.np[i],
+    ind = individuals.phenotyped.np,
+    lg = NA,
+    lod.peak = NA,
+    pos.peak = NA,
+    marker = NA,
+    pos.p95.bay.int = NA,
+    marker.p95.bay.int = NA,
+    #pvar = NA,
+    #est.add = NA,
+    #est.dom = NA,
+    p5.lod.thr = NA,
+    p10.lod.thr = NA,
+    #p.val = NA,
+    #transf = transformation.info$transf,
+    #transf.val = transformation.info$transf.value,
+    method = "non.parametric-scanone",
+    p5.qtl = FALSE,
+    p10.qtl = FALSE
+  )
+  
+  is.pseudo.marker <- function(marker){
+    if(grepl("loc",marker)){
+      return(TRUE)
+    }
+    return(FALSE)
+  }
+  
+  transform.pseudomarker <- function(cross, marker, chr, pos){
+    new.marker <- marker
+    new.pos <- pos
+    if(is.pseudo.marker(marker)){
+      marker.info <- find.markerpos(cross, find.marker(cross, chr = chr, pos = pos))
+      new.marker <- rownames(marker.info)
+      new.pos <- marker.info$pos
+    }
+    return(c(new.marker,as.character(new.pos)))
+  }
+  
+  # Run single scan
+  non.parametric.scanone <-  scanone(x.non.parametric, pheno.col = i,  model = "np")
+  summary.non.parametric.scanone <- summary(non.parametric.scanone, threshold = LOD.THRESHOLD)
+  lod.count <- nrow(summary.non.parametric.scanone)
+  if(lod.count){
+    for(k in 1:lod.count){
+      if(k > 1){
+        new.record <- record[1,] # Create copy of record object
+      }else{
+        new.record <- record # Copy record structured and data
+      }
+      # Extract Peak QTL information
+      new.record$lg <- summary.non.parametric.scanone[k,"chr"]
+      new.record$lod.peak <- summary.non.parametric.scanone[k,"lod"]
+      new.record$pos.peak <- summary.non.parametric.scanone[k,"pos"]
+      marker <- rownames(summary.non.parametric.scanone)[k]
+      # Verify if current QTL has a pseudomarker
+      marker.info <- transform.pseudomarker(x.non.parametric,marker,new.record$lg,new.record$pos.peak)
+      new.record$marker <- marker.info[1]
+      new.record$pos.peak <- as.numeric(marker.info[2])
+      
+      if(!is.na(new.record$lg)){
+        new.record$qtl.ID <- with(new.record, sprintf("%s:%s@%f",features.np[i],lg,pos.peak))
+      }
+      
+      p95.bayesian <- bayesint(non.parametric.scanone, chr = new.record$lg ,expandtomarkers = TRUE, prob = 0.95)
+      p95.bayesian <- unique(p95.bayesian)
+      #p95.bayesian <- summary(non.parametric.scanone,  perms=non.parametric.scanone.per, alpha=0.5, pvalues=TRUE)
+      low.bound <- 1#p95.bayesian$pos == min(p95.bayesian$pos)
+      upper.bound <- p95.bayesian$pos == max(p95.bayesian$pos)
+      
+      p95.bayesian$marker <- NA # Add new column for markers, prevent duplicated row names
+      # Verify if the Bayesian interval QTLs have pseudomarkers
+      for(l in 1:nrow(p95.bayesian)){
+        marker <- rownames(p95.bayesian)[l]
+        marker.info <- transform.pseudomarker(x.non.parametric,marker,p95.bayesian[l,"chr"],p95.bayesian[l,"pos"])
+        p95.bayesian[l,"marker"] <- marker.info[1]
+        p95.bayesian[l,"pos"] <- as.numeric(marker.info[2])
+      }
+      new.record$pos.p95.bay.int <- paste0(p95.bayesian[low.bound,"pos"],"-",
+                                           p95.bayesian[upper.bound,"pos"])
+      new.record$marker.p95.bay.int <- paste0(p95.bayesian[low.bound,"marker"],"-",
+                                              p95.bayesian[upper.bound,"marker"])
+      
+      if(k > 1){
+        record <- rbind(record,new.record)
+      }else{
+        record <- new.record
+      }
+    }
+    
+    non.parametric.scanone.per <- scanone(x.non.parametric, pheno.col = i, model = "np", n.perm = PERMUTATIONS)
+    p5 <- summary(non.parametric.scanone.per)[[1]]  #  5% percent
+    p10 <- summary(non.parametric.scanone.per)[[2]] # 10% percent
+    
+    
+    lod.plot <- savePlot(plot(non.parametric.scanone, ylab="LOD Score") +
+                           abline(h=p5, lwd=2, lty="solid", col="red") +
+                           abline(h=p10, lwd=2, lty="solid", col="red"),
+                         paste0(PLOTS.DIR,"/LOD-NP-",features.np[i]), width = 18)
+    
+    record[,]$p5.lod.thr <- p5
+    record[,]$p10.lod.thr <- p10
+    
+    p5.index <- record$lod.peak >= p5
+    p10.index <- record$lod.peak >= p10
+    if(!is.na(p5.index) && any(p5.index)){ record[p5.index,]$p5.qtl <- TRUE }
+    if(!is.na(p10.index)&& any(p10.index)){ record[p10.index,]$p10.qtl <- TRUE }
+    
   }
   return(record)
 }
