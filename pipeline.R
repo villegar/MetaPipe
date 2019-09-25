@@ -1,3 +1,4 @@
+args = commandArgs(trailingOnly=TRUE) # Command line arguments
 # Install libraries
 #install.packages(c("Amelia","ggplot2","grid","gridExtra","latex2exp","psych","R.devices","tidyverse","VIM"), dependencies=T)
 #install.packages(c("doParallel","foreach"), dependencies=T)
@@ -38,19 +39,56 @@ cores <- detectCores()
 CPUS <- cores[1] - 1
 closeAllConnections()
 
+if(length(args) < 1){
+  PERMUTATIONS <- 1000 # Number of permutations for QTL Analysis
+  REPLACE.NA <- TRUE
+  PARETO.SCALING <- FALSE
+  OUT.PREFIX <- "metabolomics"
+  PLOTS.DIR <- "metabolomics"
+} else if(length(args) < 2){
+  PERMUTATIONS <- as.numeric(args[1]) # Number of permutations for QTL Analysis
+  REPLACE.NA <- TRUE
+  PARETO.SCALING <- FALSE
+  OUT.PREFIX <- "metabolomics"
+  PLOTS.DIR <- "metabolomics"
+} else if(length(args) < 3){
+  PERMUTATIONS <- as.numeric(args[1]) # Number of permutations for QTL Analysis
+  REPLACE.NA <- as.logical(args[2])
+  PARETO.SCALING <- FALSE
+  OUT.PREFIX <- "metabolomics"
+  PLOTS.DIR <- "metabolomics"
+} else if(length(args) < 4){
+  PERMUTATIONS <- as.numeric(args[1]) # Number of permutations for QTL Analysis
+  REPLACE.NA <- as.logical(args[2])
+  PARETO.SCALING <- as.logical(args[3])
+  OUT.PREFIX <- "metabolomics"
+  PLOTS.DIR <- "metabolomics"
+} else if(length(args) < 5){
+  PERMUTATIONS <- as.numeric(args[1]) # Number of permutations for QTL Analysis
+  REPLACE.NA <- as.logical(args[2])
+  PARETO.SCALING <- as.logical(args[3])
+  OUT.PREFIX <- args[4]
+  PLOTS.DIR <- "metabolomics"
+} else {
+  PERMUTATIONS <- as.numeric(args[1]) # Number of permutations for QTL Analysis
+  REPLACE.NA <- as.logical(args[2])
+  PARETO.SCALING <- as.logical(args[3])
+  OUT.PREFIX <- args[4]
+  PLOTS.DIR <- args[5]
+}
+
+cat(paste0("CMD Parameters: (",PERMUTATIONS,",",REPLACE.NA,",",PARETO.SCALING,",",OUT.PREFIX,",",PLOTS.DIR,")"))
+
 # Global parameters
-plots.directory <- "metabolomics"
 excluded.columns <- c(1,2,3)
 length.excluded.columns <- length(excluded.columns)
-output.files.prefix <- "metabolomics"
 transformation.values <- c(2,exp(1))#,3,4,5,6,7,8,9,10
 input.filename <- "sp.csv"
 SEED <- 20190901 # Seed for QTL Analysis
 LOD.THRESHOLD <- 3 # LOD threhold for QTL Analysis
-PERMUTATIONS <- 1000 # Number of permutations for QTL Analysis
 
 # Environment configuration
-dir.create(file.path(getwd(), plots.directory), showWarnings = FALSE) # Directory for plots
+dir.create(file.path(getwd(), PLOTS.DIR), showWarnings = FALSE) # Directory for plots
 
 # Load and Cleaning Data
 sp <- read.csv(input.filename)
@@ -115,7 +153,7 @@ transformed.meansp <- foreach(i=(length.excluded.columns + 1):ncol(meansp),
                            if(sum(is.finite(meansp[,i]), na.rm = TRUE)>2){
                              pvalue <- shapiro.test(meansp[,i])[[2]] # Assess normality of feature before transforming it
                              if(pvalue <= 0.05){ # Data must be transformed
-                               record <- transform.data(pvalue,meansp[,i],features[i],i,length.excluded.columns, plots.directory, transformation.values)
+                               record <- transform.data(pvalue,meansp[,i],features[i],i,length.excluded.columns, PLOTS.DIR, transformation.values)
                                
                                if(length(record)){
                                  record$flag <- "Normal"
@@ -134,7 +172,7 @@ transformed.meansp <- foreach(i=(length.excluded.columns + 1):ncol(meansp),
                              else{ # Normal data
                                xlab <- features[i]
                                transformation <- "NORM"
-                               name.prefix <- paste0(plots.directory,"/HIST_",(i - length.excluded.columns),"_",transformation)
+                               name.prefix <- paste0(PLOTS.DIR,"/HIST_",(i - length.excluded.columns),"_",transformation)
                                generate.histogram(meansp[,i],features[i],name.prefix,xlab)
                                record$flag <- "Normal"
                              }
@@ -168,11 +206,11 @@ normal.meansp <- cbind(meansp[,excluded.columns],normal.meansp)
 #colnames(pareto.non.parametric.meansp)[excluded.columns] <- colnames(meansp)[excluded.columns]
 #colnames(normal.meansp)[excluded.columns] <- colnames(meansp)[excluded.columns]
 
-write.csv(transformed.meansp, file = paste0(output.files.prefix,".transformed.meansp.csv"), row.names=FALSE)
-write.csv(normal.meansp, file = paste0(output.files.prefix,".normal.meansp.csv"), row.names=FALSE)
-write.csv(non.parametric.meansp, file = paste0(output.files.prefix,".non.parametric.meansp.csv"), row.names=FALSE)
-write.csv(pareto.normal.meansp, file = paste0(output.files.prefix,".pareto.normal.meansp.csv"), row.names=FALSE)
-write.csv(pareto.non.parametric.meansp, file = paste0(output.files.prefix,".pareto.non.parametric.meansp.csv"), row.names=FALSE)
+write.csv(transformed.meansp, file = paste0(OUT.PREFIX,".transformed.meansp.csv"), row.names=FALSE)
+write.csv(normal.meansp, file = paste0(OUT.PREFIX,".normal.meansp.csv"), row.names=FALSE)
+write.csv(non.parametric.meansp, file = paste0(OUT.PREFIX,".non.parametric.meansp.csv"), row.names=FALSE)
+write.csv(pareto.normal.meansp, file = paste0(OUT.PREFIX,".pareto.normal.meansp.csv"), row.names=FALSE)
+write.csv(pareto.non.parametric.meansp, file = paste0(OUT.PREFIX,".pareto.non.parametric.meansp.csv"), row.names=FALSE)
 
 # Statistics
 normal <- nrow(normal.transformed.meansp[normal.transformed.meansp$transf == "",])/meansp.rows
@@ -198,13 +236,6 @@ for(i in 1:nrow(transformations)){
   cat(nrow(tmp)/meansp.rows)
 }
 cat("\n\n") # Clean output
-
-# PCA analysis with mean (used no missing data) 
-
-#pareto.normal.meansp <- read.csv("pareto.normal.meansp.csv")
-#pareto.normal.meansp$X <- NULL
-#pareto.normal.meansp <- pareto.normal.meansp[order(as.character(pareto.normal.meansp$ID)),]
-
 
 # Prepocessing data for QTL Analysis
 geno.map <- read.csv("OriginalMap.csv")
@@ -256,24 +287,24 @@ if(any(normal.empty.features)){
 
 # Write genotypic and phenotypic dataset
 ## Normal features
-write.csv(normal.gen, file = paste0(output.files.prefix,".normal.gen.csv"), row.names=FALSE)
-write.csv(normal.phe, file = paste0(output.files.prefix,".normal.phe.csv"), row.names=FALSE)
+write.csv(normal.gen, file = paste0(OUT.PREFIX,".normal.gen.csv"), row.names=FALSE)
+write.csv(normal.phe, file = paste0(OUT.PREFIX,".normal.phe.csv"), row.names=FALSE)
 ## Non-parametric features
-write.csv(non.parametric.gen, file = paste0(output.files.prefix,".non.parametric.gen.csv"), row.names=FALSE)
-write.csv(non.parametric.phe, file = paste0(output.files.prefix,".non.parametric.phe.csv"), row.names=FALSE)
+write.csv(non.parametric.gen, file = paste0(OUT.PREFIX,".non.parametric.gen.csv"), row.names=FALSE)
+write.csv(non.parametric.phe, file = paste0(OUT.PREFIX,".non.parametric.phe.csv"), row.names=FALSE)
 
 
 # QTL Analysis
 #metabolomics.normal <- read.cross("csvs",".",
-#                                paste0(output.files.prefix,".normal.gen.csv"),
-#                                paste0(output.files.prefix,".normal.phe.csv"))
+#                                paste0(OUT.PREFIX,".normal.gen.csv"),
+#                                paste0(OUT.PREFIX,".normal.phe.csv"))
 #metabolomics.non.parametric <- read.cross("csvs",".",
-#                                paste0(output.files.prefix,".non.parametric.gen.csv"),
-#                                paste0(output.files.prefix,".non.parametric.phe.csv"))
+#                                paste0(OUT.PREFIX,".non.parametric.gen.csv"),
+#                                paste0(OUT.PREFIX,".non.parametric.phe.csv"))
 
 x <- read.cross("csvs",".",
-                paste0(output.files.prefix,".normal.gen.csv"),
-                paste0(output.files.prefix,".normal.phe.csv"))
+                paste0(OUT.PREFIX,".normal.gen.csv"),
+                paste0(OUT.PREFIX,".normal.phe.csv"))
 features <- colnames(x$pheno)
 set.seed(SEED)
 x <- jittermap(x)
@@ -307,11 +338,11 @@ x.scanone <- foreach(i=2:ncol(x$pheno),
                        record
                      }
 stopCluster(cl) # Stop cluster
-write.csv(x.scanone, file = paste0(output.files.prefix,".normal.scanone.csv"))
+write.csv(x.scanone, file = paste0(OUT.PREFIX,".normal.scanone.csv"))
 
 cl <- makeCluster(ceiling(CPUS*0.2), outfile=paste0('./info_parallel_QTL.log'))
 registerDoParallel(cl)
-x.summary.mapping <- foreach(i=2:ncol(x$pheno),
+x.normal.summary.mapping <- foreach(i=2:ncol(x$pheno),
                          .combine = rbind,
                          .packages = c("ggplot2","grid","gridExtra","latex2exp","qtl","R.devices")) %dopar% {
                            transformation.info <- normal.transformed.meansp$feature == features[i]
@@ -429,7 +460,7 @@ x.summary.mapping <- foreach(i=2:ncol(x$pheno),
                                lod.plot <- savePlot(plot(normal.scanone, ylab="LOD Score") + 
                                                       abline(h=p5, lwd=2, lty="solid", col="red") +
                                                       abline(h=p10, lwd=2, lty="solid", col="red"),
-                                                    paste0(plots.directory,"/LOD-",features[i]), width = 18)
+                                                    paste0(PLOTS.DIR,"/LOD-",features[i]), width = 18)
                                
                                record[,]$p5.lod.thr <- p5
                                record[,]$p10.lod.thr <- p10
@@ -482,15 +513,15 @@ x.summary.mapping <- foreach(i=2:ncol(x$pheno),
                            record
                          }
 stopCluster(cl) # Stop cluster
-#tmp <- x.summary.mapping
+#tmp <- x.normal.summary.mapping
 #tmp$qtl[!is.na(tmp$qtl)] <- 1:length(tmp$qtl[!is.na(tmp$qtl)])
-#x.summary.mapping <- tmp
-write.csv(x.summary.mapping, file = paste0(output.files.prefix,".summary.mapping.csv"), row.names=FALSE, na="")
+#x.normal.summary.mapping <- tmp
+write.csv(x.normal.summary.mapping, file = paste0(OUT.PREFIX,".normal.summary.mapping.csv"), row.names=FALSE, na="")
 
 # Non-parametric QTL
 x <- read.cross("csvs",".",
-                paste0(output.files.prefix,".non.parametric.gen.csv"),
-                paste0(output.files.prefix,".non.parametric.phe.csv"))
+                paste0(OUT.PREFIX,".non.parametric.gen.csv"),
+                paste0(OUT.PREFIX,".non.parametric.phe.csv"))
 features <- colnames(x$pheno)
 #set.seed(SEED)
 x <- jittermap(x)
@@ -523,11 +554,11 @@ x.scanone <- foreach(i=2:ncol(x$pheno),
                        record
                      }
 stopCluster(cl) # Stop cluster
-write.csv(x.scanone, file = paste0(output.files.prefix,".non.parametric.scanone.csv"))
+write.csv(x.scanone, file = paste0(OUT.PREFIX,".non.parametric.scanone.csv"))
 
 cl <- makeCluster(ceiling(CPUS*0.2), outfile=paste0('./info_parallel_QTL.log'))
 registerDoParallel(cl)
-x.summary.mapping <- foreach(i=2:ncol(x$pheno),
+x.non.parametric.summary.mapping <- foreach(i=2:ncol(x$pheno),
                              .combine = rbind,
                              .packages = c("ggplot2","grid","gridExtra","latex2exp","qtl","R.devices")) %dopar% {
                                #transformation.info <- non.parametric.transformed.meansp$feature == features[i]
@@ -641,7 +672,7 @@ x.summary.mapping <- foreach(i=2:ncol(x$pheno),
                                  lod.plot <- savePlot(plot(non.parametric.scanone, ylab="LOD Score") + 
                                                         abline(h=p5, lwd=2, lty="solid", col="red") +
                                                         abline(h=p10, lwd=2, lty="solid", col="red"),
-                                                      paste0(plots.directory,"/LOD-NP-",features[i]), width = 18)
+                                                      paste0(PLOTS.DIR,"/LOD-NP-",features[i]), width = 18)
                                  
                                  record[,]$p5.lod.thr <- p5
                                  record[,]$p10.lod.thr <- p10
@@ -650,25 +681,12 @@ x.summary.mapping <- foreach(i=2:ncol(x$pheno),
                                  p10.index <- record$lod.peak >= p10
                                  if(!is.na(p5.index) && any(p5.index)){ record[p5.index,]$p5.qtl <- TRUE }
                                  if(!is.na(p10.index)&& any(p10.index)){ record[p10.index,]$p10.qtl <- TRUE }
-                                 
-                                 
-                                 # No needed for this data set
-                                 #refinqtl <- refineqtl(x, qtl = qtl_s, pheno.col = i, formula = f, verbose = FALSE, model = "np", method="hk")
-                                 #refinqtl
-                                 
-                                 #fitqtl <- fitqtl(x, pheno.col = i, refinqtl, formula = f, get.ests = TRUE, model = "np", method="hk")
-                                 #summary(fitqtl)
-                                 
-                                 
-                                 ## find additional QTLs
-                                 #out.aq <- addqtl(x, qtl = refinqtl, pheno.col = i, formula = f, method="hk")
-                                 #max(out.aq)
                                }
                                record
                              }
 stopCluster(cl) # Stop cluster
 
-write.csv(x.summary.mapping, file = paste0(output.files.prefix,".non.parametric.summary.mapping.csv"), row.names=FALSE, na="")
+write.csv(x.non.parametric.summary.mapping, file = paste0(OUT.PREFIX,".non.parametric.summary.mapping.csv"), row.names=FALSE, na="")
 #x=jittermap(x)
 #x=calc.genoprob(x,step=1, error.prob=0.001)
 #npout1 = scanone(x,pheno.col = "MeanLat200212h",  model = "2part")
@@ -680,4 +698,97 @@ write.csv(x.summary.mapping, file = paste0(output.files.prefix,".non.parametric.
 #summary(npout1,  perms=np_perm, alpha=0.05, pvalues=TRUE)
 #summary(np_perm)
 print("Done with QTL Analysis")
+
+x.normal <- read.cross("csvs",".",
+                       paste0(OUT.PREFIX,".normal.gen.csv"),
+                       paste0(OUT.PREFIX,".normal.phe.csv"))
+features <- colnames(x.normal$pheno)
+set.seed(SEED)
+x.normal <- jittermap(x.normal)
+x.normal <- calc.genoprob(x.normal, step=1, error.prob=0.001)
+individuals.phenotyped <- summary(x.normal)[[2]]
+
+x.non.parametric <- read.cross("csvs",".",
+                               paste0(OUT.PREFIX,".non.parametric.gen.csv"),
+                               paste0(OUT.PREFIX,".non.parametric.phe.csv"))
+features.np <- colnames(x.non.parametric$pheno)
+x.non.parametric <- jittermap(x.non.parametric)
+x.non.parametric <- calc.genoprob(x.non.parametric, step=1, error.prob=0.001)
+
+# Generate effect plots
+x2.non.parametric <- sim.geno(x.non.parametric)
+x2.normal <- sim.geno(x.normal)
+#effectplot(x2, pheno.col = "M155T28", mname1 = "gbs_13_305342", main = NULL)
+t.qtl <- rbind.fill(x.normal.summary.mapping[x.normal.summary.mapping$p5.qtl,],
+                    x.non.parametric.summary.mapping[x.non.parametric.summary.mapping$p5.qtl,])
+threshold3.qtl <- rbind.fill(x.normal.summary.mapping[x.normal.summary.mapping$lod.peak > LOD.THRESHOLD,],
+                             x.non.parametric.summary.mapping[x.non.parametric.summary.mapping$lod.peak > LOD.THRESHOLD,])
+features.t.qtl <- as.character(t.qtl$trait)
+markers.t.qtl <- as.character(t.qtl$marker)
+
+cl <- makeCluster(ceiling(CPUS), outfile=paste0('./info_parallel_QTL.log'))
+registerDoParallel(cl)
+effect.plots <- foreach(i=1:nrow(t.qtl),
+                        .packages = c("latex2exp","qtl","R.devices")) %dopar% {
+                          if(t.qtl[i,]$method == "normal-scanone"){
+                            if(t.qtl[i,]$transf == "log"){
+                              ylab <- paste0("$\\log_{",t.qtl[i,]$transf.val,"}(",features.t.qtl[i],")$")
+                            } else if(t.qtl[i,]$transf == "root"){
+                              ylab <- paste0("$\\sqrt[",t.qtl[i,]$transf.val,"]{",features.t.qtl[i],"}$")
+                            } else if(t.qtl[i,]$transf == "power"){
+                              ylab <- paste0("$(",features.t.qtl[i],")^",t.qtl[i,]$transf.val,"$")
+                            } else {
+                              ylab <- features.t.qtl[i]
+                            }
+                            effect.plot <- savePlot(effectplot(x2.normal, pheno.col = features.t.qtl[i], 
+                                                               mname1 = markers.t.qtl[i], main = NULL, ylab = TeX(ylab)),
+                                                    paste0(PLOTS.DIR,"/EFF-",features.t.qtl[i],"-",markers.t.qtl[i]))
+                          } else {
+                            ylab <- features.t.qtl[i]
+                            effect.plot <- savePlot(effectplot(x2.non.parametric, pheno.col = as.character(features.t.qtl[i]), 
+                                                               mname1 = markers.t.qtl[i], main = NULL, ylab = TeX(ylab)),
+                                                    paste0(PLOTS.DIR,"/EFF-NP-",features.t.qtl[i],"-",markers.t.qtl[i]))
+                          }
+                        }
+stopCluster(cl) # Stop cluster
+
+write.csv(t.qtl, file = paste0(OUT.PREFIX,".true.qtl.csv"), row.names=FALSE, na="")
+write.csv(threshold3.qtl, file = paste0(OUT.PREFIX,".threshold3.qtl.csv"), row.names=FALSE, na="")
+
+# Classify QTLs by LG and Peak Position
+classified.qtl <- t.qtl[order(t.qtl$lg,t.qtl$pos.peak),]
+classified.qtl$group <- with(classified.qtl,
+                             paste0("chr",lg,"-mrk",marker))
+write.csv(classified.qtl, file = paste0(OUT.PREFIX,".classified.qtl.csv"), row.names=FALSE, na="")
+print("Done with QTL Analysis")
+
+
+# For both PCA and LDA the data must have no NAs and must be scaled
+meansp <- read.csv(paste0(OUT.PREFIX,".all.meansp.csv"))
+if(!REPLACE.NA){
+  NA2halfmin <- function(x) suppressWarnings(replace(x, is.na(x), (min(x, na.rm = TRUE)/2)))
+  meansp[,-excluded.columns] <- lapply(meansp[,-excluded.columns], NA2halfmin)
+}
+if(!PARETO.SCALING){ # Apply Pareto Scaling
+  transformed.normal.meansp <- cbind(meansp[,excluded.columns],paretoscale(meansp[,-excluded.columns]))
+  transformed.normal.meansp <- paretoscale(meansp[,-excluded.columns])
+  #transformed.non.parametric.meansp <- cbind(meansp[,excluded.columns],paretoscale(non.parametric.meansp))
+}
+
+# PCAnalysis with mean (used no missing data) 
+#OUT.PREFIX <- "S1-metabolomics"
+#transformed.normal.meansp <- read.csv(paste0(OUT.PREFIX,".all.meansp.csv"))
+#transformed.normal.meansp$X <- NULL
+#transformed.normal.meansp <- transformed.normal.meansp[order(as.character(transformed.normal.meansp$ID)),]
+#transformed.normal.meansp$Group <- NULL
+res.pca <- PCA(transformed.normal.meansp,  graph = FALSE, scale.unit = TRUE)
+#fviz_screeplot(res.pca, addlabels = TRUE, ylim = c(0, 50))
+#res.pca$eig
+# Biplot with top 10 features 
+savePlot(fviz_pca_biplot(res.pca, col.var="contrib",
+                         gradient.cols = c("green","red","blue"),#"#00AFBB" "#E7B800", "#FC4E07"),
+                         select.var = list(contrib = 10),
+                         label="var",addEllipses=TRUE, ellipse.level=0.95, repel = TRUE  # Avoid text overlapping
+),
+paste0(PLOTS.DIR,"/PCA-biplot.top10"))
 closeAllConnections()
