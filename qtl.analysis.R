@@ -1,5 +1,3 @@
-list('features','individuals.phenotyped','normal.transformed.meansp','transformation.info','x.normal','LOD.THRESHOLD')
-
 x.normal.summary.mapping <- function(i){
   library(qtl)
   library(ggplot2)
