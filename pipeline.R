@@ -86,6 +86,7 @@ transformation.values <- c(2,exp(1))#,3,4,5,6,7,8,9,10
 input.filename <- "sp.csv"
 SEED <- 20190901 # Seed for QTL Analysis
 LOD.THRESHOLD <- 3 # LOD threhold for QTL Analysis
+NA.COUNT.THRESHOLD <- 0.5 # Allows 50% of NAs per feature
 
 # Environment configuration
 dir.create(file.path(getwd(), PLOTS.DIR), showWarnings = FALSE) # Directory for plots
@@ -106,9 +107,20 @@ meansp.rows <- nrow(meansp)
 
 # Replacement of Missing Values
 # Missing values are replaced by half of the minimum non-zero value for each feature.
-NA2halfmin <- function(x) suppressWarnings(replace(x, is.na(x), (min(x, na.rm = TRUE)/2)))
-meansp[,-excluded.columns] <- lapply(meansp[,-excluded.columns], NA2halfmin)
+if(REPLACE.NA){
+  NA2halfmin <- function(x) suppressWarnings(replace(x, is.na(x), (min(x, na.rm = TRUE)/2)))
+  meansp[,-excluded.columns] <- lapply(meansp[,-excluded.columns], NA2halfmin)
+} else {
+  NACount <- which(colMeans(is.na(meansp[,-excluded.columns])) >= NA.COUNT.THRESHOLD) + length.excluded.columns
+  if(length(NACount)){
+    write.csv(meansp[,c(excluded.columns,NACount)], file = paste0(OUT.PREFIX,".NA.meansp.csv"), row.names=FALSE)
+    cat(paste0("The following features were dropped because they have ",(NA.COUNT.THRESHOLD*100),"% or more missing values:\n"))
+    cat(colnames(meansp)[NACount])
+    meansp[,NACount] <- NULL
+  }
+}
 
+write.csv(meansp, file = paste0(OUT.PREFIX,".all.meansp.csv"), row.names=FALSE)
 
 # Missing values plot
 #missmap(meansp, main = "Missing values vs observed")
@@ -197,20 +209,20 @@ for(i in 1:length.normal.features){
 }
 
 # Append excluded columns for transformation 
-pareto.normal.meansp <- cbind(meansp[,excluded.columns],paretoscale(normal.meansp))
-#pareto.non.parametric.meansp <- cbind(meansp[,excluded.columns],paretoscale(non.parametric.meansp[,-excluded.columns]))
-pareto.non.parametric.meansp <- cbind(meansp[,excluded.columns],paretoscale(non.parametric.meansp))
+if(PARETO.SCALING){ # Apply Pareto Scaling
+  transformed.normal.meansp <- cbind(meansp[,excluded.columns],paretoscale(normal.meansp))
+  transformed.non.parametric.meansp <- cbind(meansp[,excluded.columns],paretoscale(non.parametric.meansp))
+} else { # No Scaling
+  transformed.normal.meansp <- cbind(meansp[,excluded.columns],normal.meansp)
+  transformed.non.parametric.meansp <- cbind(meansp[,excluded.columns],non.parametric.meansp)
+}
 normal.meansp <- cbind(meansp[,excluded.columns],normal.meansp)
 
-#colnames(pareto.normal.meansp)[excluded.columns] <- colnames(meansp)[excluded.columns]
-#colnames(pareto.non.parametric.meansp)[excluded.columns] <- colnames(meansp)[excluded.columns]
-#colnames(normal.meansp)[excluded.columns] <- colnames(meansp)[excluded.columns]
-
-write.csv(transformed.meansp, file = paste0(OUT.PREFIX,".transformed.meansp.csv"), row.names=FALSE)
+write.csv(transformed.meansp, file = paste0(OUT.PREFIX,".transformed.all.meansp.csv"), row.names=FALSE)
 write.csv(normal.meansp, file = paste0(OUT.PREFIX,".normal.meansp.csv"), row.names=FALSE)
 write.csv(non.parametric.meansp, file = paste0(OUT.PREFIX,".non.parametric.meansp.csv"), row.names=FALSE)
-write.csv(pareto.normal.meansp, file = paste0(OUT.PREFIX,".pareto.normal.meansp.csv"), row.names=FALSE)
-write.csv(pareto.non.parametric.meansp, file = paste0(OUT.PREFIX,".pareto.non.parametric.meansp.csv"), row.names=FALSE)
+write.csv(transformed.normal.meansp, file = paste0(OUT.PREFIX,".transformed.normal.meansp.csv"), row.names=FALSE)
+write.csv(transformed.non.parametric.meansp, file = paste0(OUT.PREFIX,".transformed.non.parametric.meansp.csv"), row.names=FALSE)
 
 # Statistics
 normal <- nrow(normal.transformed.meansp[normal.transformed.meansp$transf == "",])/meansp.rows
