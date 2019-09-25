@@ -145,7 +145,6 @@ generate.boxplots <- function(meansp,ggplot.save){
 #generate.boxplots(meansp,ggplot.save)
 
 features <- colnames(meansp)
-meansp.pareto <- paretoscale(log(meansp[,-excluded.columns],2))
 print("Starting with Normality Assessment")
 cl <- makeCluster(CPUS, outfile=paste0('./info_parallel.log'))
 registerDoParallel(cl)
@@ -255,33 +254,33 @@ colnames(geno.map)[1] <- "ID"
 geno.map$ID <- as.character(geno.map$ID)
 
 ## Normal features
-pareto.normal.meansp$GenoID <- with(pareto.normal.meansp,
-                                    gsub(" ","0",paste0(Generation,"_",sprintf("%3s",as.character(ID))))
+transformed.normal.meansp$GenoID <- with(transformed.normal.meansp,
+                                         gsub(" ","0",paste0(Generation,"_",sprintf("%3s",as.character(ID))))
 )
-pareto.normal.meansp$ID <- pareto.normal.meansp$GenoID
-pareto.normal.meansp$GenoID <- NULL
+transformed.normal.meansp$ID <- transformed.normal.meansp$GenoID
+transformed.normal.meansp$GenoID <- NULL
 
-normal.phe <- inner_join(pareto.normal.meansp,geno.map, by="ID")[,colnames(pareto.normal.meansp)]
+normal.phe <- inner_join(transformed.normal.meansp,geno.map, by="ID")[,colnames(transformed.normal.meansp)]
 normal.phe$Group <- NULL
 normal.phe$Generation <- NULL
 normal.gen <- rbind(geno.map[1:2,],inner_join(normal.phe,geno.map, by="ID")[,colnames(geno.map)])
 
 
 ## Non-parametric features
-pareto.non.parametric.meansp$GenoID <- with(pareto.non.parametric.meansp,
-                                    gsub(" ","0",paste0(Generation,"_",sprintf("%3s",as.character(ID))))
+transformed.non.parametric.meansp$GenoID <- with(transformed.non.parametric.meansp,
+                                                 gsub(" ","0",paste0(Generation,"_",sprintf("%3s",as.character(ID))))
 )
-pareto.non.parametric.meansp$ID <- pareto.non.parametric.meansp$GenoID
-pareto.non.parametric.meansp$GenoID <- NULL
+transformed.non.parametric.meansp$ID <- transformed.non.parametric.meansp$GenoID
+transformed.non.parametric.meansp$GenoID <- NULL
 
-non.parametric.phe <- inner_join(pareto.non.parametric.meansp,geno.map, by="ID")[,colnames(pareto.non.parametric.meansp)]
+non.parametric.phe <- inner_join(transformed.non.parametric.meansp,geno.map, by="ID")[,colnames(transformed.non.parametric.meansp)]
 non.parametric.phe$Group <- NULL
 non.parametric.phe$Generation <- NULL
 non.parametric.gen <- rbind(geno.map[1:2,],inner_join(non.parametric.phe,geno.map, by="ID")[,colnames(geno.map)])
 
 # Clean phenotypic data
-non.parametric.empty.features <- sapply(non.parametric.phe, function(x) all(is.na(x)))
-normal.empty.features <- sapply(normal.phe, function(x) all(is.na(x)))
+non.parametric.empty.features <- sapply(non.parametric.phe, function(x) all(is.na(x)) || all(is.infinite(x)))
+normal.empty.features <- sapply(normal.phe, function(x) all(is.na(x)) || all(is.infinite(x)))
 #non.parametric.phe.ncols <- ncol(non.parametric.phe)
 #normal.phe.ncols <- ncol(normal.phe)
 non.parametric.phe[non.parametric.empty.features] <- NULL
