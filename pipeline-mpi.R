@@ -333,6 +333,54 @@ print("Starting with QTL Analysis")
 print("Starting with Normal QTL Analysis")
 individuals.phenotyped.np <- summary(x.non.parametric)[[2]]
 
+# Non-MPI cluster for single run Scanone
+cl <- makeCluster(CPUS, outfile=paste0('./info_parallel.log'))
+registerDoParallel(cl)
+x.normal.scanone <- foreach(i=2:ncol(x.normal$pheno),
+                            .combine = cbind,
+                            .packages = c("ggplot2","grid","gridExtra","latex2exp","qtl","R.devices")) %dopar% {
+                              
+                              # Run single scan
+                              normal.scanone <-  scanone(x.normal, pheno.col = i,  model = "normal", method = "hk")
+                              if(i == 2){
+                                record <- data.frame(
+                                  chr = normal.scanone$chr,
+                                  pos = normal.scanone$pos,
+                                  lod = normal.scanone$lod,
+                                  row.names = rownames(normal.scanone)
+                                )
+                                colnames(record)[3] <- features[i]
+                              }
+                              else{
+                                record <- data.frame(data = normal.scanone$lod)
+                                colnames(record) <- features[i]
+                              }
+                              record
+                            }
+
+x.non.parametric.scanone <- foreach(i=2:ncol(x.non.parametric$pheno),
+                                    .combine = cbind,
+                                    .packages = c("ggplot2","grid","gridExtra","latex2exp","qtl","R.devices")) %dopar% {
+                                      
+                                      # Run single scan
+                                      non.parametric.scanone <-  scanone(x.non.parametric, pheno.col = i,  model = "np")
+                                      if(i == 2){
+                                        record <- data.frame(
+                                          chr = non.parametric.scanone$chr,
+                                          pos = non.parametric.scanone$pos,
+                                          lod = non.parametric.scanone$lod,
+                                          row.names = rownames(non.parametric.scanone)
+                                        )
+                                        colnames(record)[3] <- features.np[i]
+                                      }
+                                      else{
+                                        record <- data.frame(data = non.parametric.scanone$lod)
+                                        colnames(record) <- features.np[i]
+                                      }
+                                      record
+                                    }
+stopCluster(cl) # Stop cluster
+
 # Load MPI libraries
 library(Rmpi)
 library(doMPI)
@@ -352,27 +400,6 @@ library(doMPI)
 # Obtain LOD scores for all features and markers
 cl <- startMPIcluster()
 registerDoMPI(cl)
-x.normal.scanone <- foreach(i=2:ncol(x.normal$pheno),
-                     .combine = cbind,
-                     .packages = c("ggplot2","grid","gridExtra","latex2exp","qtl","R.devices")) %dopar% {
-                       
-                       # Run single scan
-                       normal.scanone <-  scanone(x.normal, pheno.col = i,  model = "normal", method = "hk")
-                       if(i == 2){
-                         record <- data.frame(
-                           chr = normal.scanone$chr,
-                           pos = normal.scanone$pos,
-                           lod = normal.scanone$lod,
-                           row.names = rownames(normal.scanone)
-                         )
-                         colnames(record)[3] <- features[i]
-                       }
-                       else{
-                         record <- data.frame(data = normal.scanone$lod)
-                         colnames(record) <- features[i]
-                       }
-                       record
-                     }
 
 x.normal.summary.mapping <- foreach(i=2:ncol(x.normal$pheno),
                                     .combine = rbind,
@@ -528,29 +555,6 @@ x.normal.summary.mapping <- foreach(i=2:ncol(x.normal$pheno),
                                     }
 # Non-parametric QTL
 print("Starting with Non-Parametric QTL Analysis")
-
-x.non.parametric.scanone <- foreach(i=2:ncol(x.non.parametric$pheno),
-                                    .combine = cbind,
-                                    .packages = c("ggplot2","grid","gridExtra","latex2exp","qtl","R.devices")) %dopar% {
-                                      
-                                      # Run single scan
-                                      non.parametric.scanone <-  scanone(x.non.parametric, pheno.col = i,  model = "np")
-                                      if(i == 2){
-                                        record <- data.frame(
-                                          chr = non.parametric.scanone$chr,
-                                          pos = non.parametric.scanone$pos,
-                                          lod = non.parametric.scanone$lod,
-                                          row.names = rownames(non.parametric.scanone)
-                                        )
-                                        colnames(record)[3] <- features.np[i]
-                                      }
-                                      else{
-                                        record <- data.frame(data = non.parametric.scanone$lod)
-                                        colnames(record) <- features.np[i]
-                                      }
-                                      record
-                                    }
-
 
 x.non.parametric.summary.mapping <- foreach(i=2:ncol(x.non.parametric$pheno),
                                             .combine = rbind,
