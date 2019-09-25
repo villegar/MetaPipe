@@ -732,7 +732,7 @@ classified.qtl$group <- with(classified.qtl,
                              paste0("chr",lg,"-mrk",marker))
 write.csv(classified.qtl, file = paste0(OUT.PREFIX,".classified.qtl.csv"), row.names=FALSE, na="")
 print("Done with QTL Analysis")
-mpi.quit()
+
 
 # For both PCA and LDA the data must have no NAs and must be scaled
 meansp <- read.csv(paste0(OUT.PREFIX,".all.meansp.csv"))
@@ -761,4 +761,6 @@ savePlot(fviz_pca_biplot(res.pca, col.var="contrib",
                          select.var = list(contrib = 10),
                          label="var",addEllipses=TRUE, ellipse.level=0.95, repel = TRUE  # Avoid text overlapping
 ),
-paste0(PLOTS.DIR,"/",OUT.PREFIX,".PCA.biplot.top10"))
+paste0(PLOTS.DIR,"/PCA-biplot.top10"))
+
+mpi.quit()
