@@ -1,8 +1,12 @@
+list('features','individuals.phenotyped','normal.transformed.meansp','transformation.info','x.normal','LOD.THRESHOLD')
+
 x.normal.summary.mapping <- function(i){
+  library(qtl)
+  library(ggplot2)
+  library(latex2exp)
   transformation.info <- normal.transformed.meansp$feature == features[i]
   transformation.info <- normal.transformed.meansp[transformation.info,c("transf","transf.value")][1,]
   record <- data.frame(
-    ID = i - 1,
     qtl.ID = NA,
     trait = features[i],
     ind = individuals.phenotyped,
@@ -50,10 +54,7 @@ x.normal.summary.mapping <- function(i){
   if(lod.count){
     for(k in 1:lod.count){
       if(k > 1){
-        #new.record <- record[0,] # Create an empty record object
-        #new.record[1,] <- NA
         new.record <- record[1,] # Create copy of record object
-        #new.record$ID <- NA # Drop the feature ID
       }else{
         new.record <- record # Copy record structured and data
       }
