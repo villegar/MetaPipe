@@ -749,7 +749,7 @@ if(!PARETO.SCALING){ # Apply Pareto Scaling
   #transformed.non.parametric.meansp <- cbind(meansp[,excluded.columns],paretoscale(non.parametric.meansp))
 }
 
-# PCA analysis with mean (used no missing data) 
+# PCAnalysis with mean (used no missing data) 
 #OUT.PREFIX <- "S1-metabolomics"
 #transformed.normal.meansp <- read.csv(paste0(OUT.PREFIX,".all.meansp.csv"))
 #transformed.normal.meansp$X <- NULL
@@ -765,5 +765,8 @@ savePlot(fviz_pca_biplot(res.pca, col.var="contrib",
                          label="var",addEllipses=TRUE, ellipse.level=0.95, repel = TRUE  # Avoid text overlapping
 ),
 paste0(PLOTS.DIR,"/PCA-biplot.top10"))
+
+# LDAnalysis
+
 
 mpi.quit()
