@@ -782,18 +782,18 @@ if(!REPLACE.NA){
   meansp[,-excluded.columns] <- lapply(meansp[,-excluded.columns], NA2halfmin)
 }
 if(!PARETO.SCALING){ # Apply Pareto Scaling
-  transformed.normal.meansp <- cbind(meansp[,excluded.columns],paretoscale(meansp[,-excluded.columns]))
-  transformed.normal.meansp <- paretoscale(meansp[,-excluded.columns])
+  transformed.meansp <- cbind(meansp[,excluded.columns],paretoscale(meansp[,-excluded.columns]))
+  transformed.meansp <- paretoscale(meansp[,-excluded.columns])
   #transformed.non.parametric.meansp <- cbind(meansp[,excluded.columns],paretoscale(non.parametric.meansp))
 }
 
 # PCAnalysis with mean (used no missing data) 
 #OUT.PREFIX <- "S1-metabolomics"
-#transformed.normal.meansp <- read.csv(paste0(OUT.PREFIX,".all.meansp.csv"))
-#transformed.normal.meansp$X <- NULL
-#transformed.normal.meansp <- transformed.normal.meansp[order(as.character(transformed.normal.meansp$ID)),]
-#transformed.normal.meansp$Group <- NULL
-res.pca <- PCA(transformed.normal.meansp,  graph = FALSE, scale.unit = TRUE)
+#transformed.meansp <- read.csv(paste0(OUT.PREFIX,".all.meansp.csv"))
+#transformed.meansp$X <- NULL
+#transformed.meansp <- transformed.meansp[order(as.character(transformed.meansp$ID)),]
+#transformed.meansp$Group <- NULL
+res.pca <- PCA(transformed.meansp,  graph = FALSE, scale.unit = TRUE)
 #fviz_screeplot(res.pca, addlabels = TRUE, ylim = c(0, 50))
 #res.pca$eig
 # Biplot with top 10 features 
@@ -803,4 +803,9 @@ savePlot(fviz_pca_biplot(res.pca, col.var="contrib",
                          label="var",addEllipses=TRUE, ellipse.level=0.95, repel = TRUE  # Avoid text overlapping
 ),
 paste0(PLOTS.DIR,"/PCA-biplot.top10"))
+
+# LDAnalysis
+colored.transformed.meansp <- cbind(transformed.meansp$Group,transformed.meansp[,-excluded.columns])
+colnames(colored.transformed.meansp)[1] <- "FruitColor"
+fit <- lda(FruitColor ~ ., data = colored.transformed.meansp)
 closeAllConnections()
