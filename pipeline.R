@@ -781,6 +781,7 @@ if(!REPLACE.NA){
   NA2halfmin <- function(x) suppressWarnings(replace(x, is.na(x), (min(x, na.rm = TRUE)/2)))
   meansp[,-excluded.columns] <- lapply(meansp[,-excluded.columns], NA2halfmin)
 }
+transformed.meansp <- meansp # No scaling
 #if(!PARETO.SCALING){ # Apply Pareto Scaling
 #  transformed.meansp <- cbind(meansp[,excluded.columns],paretoscale(meansp[,-excluded.columns]))
 #}
@@ -803,15 +804,16 @@ savePlot(fviz_pca_biplot(res.pca, col.var="contrib",
 paste0(PLOTS.DIR,"/PCA-biplot.top10"))
 
 # LDAnalysis
-transformed.meansp.diff.by.color <- data.frame(feature = colnames(transformed.meansp)[-excluded.columns],
-                                               black.mean = NA,
-                                               white.mean = NA,
-                                               mean.diff = NA)
+#transformed.meansp.diff.by.color <- data.frame(feature = colnames(transformed.meansp)[-excluded.columns],
+#                                               black.mean = NA,
+#                                               white.mean = NA,
+#                                               mean.diff = NA)
 transformed.meansp.diff.by.color <- data.frame(t(aggregate(transformed.meansp[,-excluded.columns], list(transformed.meansp$Group), mean))[-1,])
 transformed.meansp.diff.by.color$X1 <- as.numeric(as.character(transformed.meansp.diff.by.color$X1))
 transformed.meansp.diff.by.color$X2 <- as.numeric(as.character(transformed.meansp.diff.by.color$X2))
 colnames(transformed.meansp.diff.by.color) <- c("black.mean","white.mean")
 transformed.meansp.diff.by.color$mean.diff <- with(transformed.meansp.diff.by.color, black.mean-white.mean)
+transformed.meansp.diff.by.color <- transformed.meansp.diff.by.color[order(transformed.meansp.diff.by.color$mean.diff),]
 
 colored.transformed.meansp <- cbind(transformed.meansp$Group,transformed.meansp[,-excluded.columns])
 colnames(colored.transformed.meansp)[1] <- "FruitColor"
