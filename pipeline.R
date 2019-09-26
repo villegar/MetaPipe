@@ -781,21 +781,19 @@ if(!REPLACE.NA){
   NA2halfmin <- function(x) suppressWarnings(replace(x, is.na(x), (min(x, na.rm = TRUE)/2)))
   meansp[,-excluded.columns] <- lapply(meansp[,-excluded.columns], NA2halfmin)
 }
-if(!PARETO.SCALING){ # Apply Pareto Scaling
-  transformed.meansp <- cbind(meansp[,excluded.columns],paretoscale(meansp[,-excluded.columns]))
-  transformed.meansp <- paretoscale(meansp[,-excluded.columns])
-  #transformed.non.parametric.meansp <- cbind(meansp[,excluded.columns],paretoscale(non.parametric.meansp))
-}
+#if(!PARETO.SCALING){ # Apply Pareto Scaling
+#  transformed.meansp <- cbind(meansp[,excluded.columns],paretoscale(meansp[,-excluded.columns]))
+#}
 
 # PCAnalysis with mean (used no missing data) 
-#OUT.PREFIX <- "S1-metabolomics"
-#transformed.meansp <- read.csv(paste0(OUT.PREFIX,".all.meansp.csv"))
-#transformed.meansp$X <- NULL
-#transformed.meansp <- transformed.meansp[order(as.character(transformed.meansp$ID)),]
-#transformed.meansp$Group <- NULL
-res.pca <- PCA(transformed.meansp,  graph = FALSE, scale.unit = TRUE)
-#fviz_screeplot(res.pca, addlabels = TRUE, ylim = c(0, 50))
-#res.pca$eig
+##OUT.PREFIX <- "S1-metabolomics"
+##transformed.meansp <- read.csv(paste0(OUT.PREFIX,".all.meansp.csv"))
+##transformed.meansp$X <- NULL
+##transformed.meansp <- transformed.meansp[order(as.character(transformed.meansp$ID)),]
+##transformed.meansp$Group <- NULL
+res.pca <- PCA(transformed.meansp[,-excluded.columns],  graph = FALSE, scale.unit = TRUE)
+##fviz_screeplot(res.pca, addlabels = TRUE, ylim = c(0, 50))
+##res.pca$eig
 # Biplot with top 10 features 
 savePlot(fviz_pca_biplot(res.pca, col.var="contrib",
                          gradient.cols = c("green","red","blue"),#"#00AFBB" "#E7B800", "#FC4E07"),
@@ -805,6 +803,16 @@ savePlot(fviz_pca_biplot(res.pca, col.var="contrib",
 paste0(PLOTS.DIR,"/PCA-biplot.top10"))
 
 # LDAnalysis
+transformed.meansp.diff.by.color <- data.frame(feature = colnames(transformed.meansp)[-excluded.columns],
+                                               black.mean = NA,
+                                               white.mean = NA,
+                                               mean.diff = NA)
+transformed.meansp.diff.by.color <- data.frame(t(aggregate(transformed.meansp[,-excluded.columns], list(transformed.meansp$Group), mean))[-1,])
+transformed.meansp.diff.by.color$X1 <- as.numeric(as.character(transformed.meansp.diff.by.color$X1))
+transformed.meansp.diff.by.color$X2 <- as.numeric(as.character(transformed.meansp.diff.by.color$X2))
+colnames(transformed.meansp.diff.by.color) <- c("black.mean","white.mean")
+transformed.meansp.diff.by.color$mean.diff <- with(transformed.meansp.diff.by.color, black.mean-white.mean)
+
 colored.transformed.meansp <- cbind(transformed.meansp$Group,transformed.meansp[,-excluded.columns])
 colnames(colored.transformed.meansp)[1] <- "FruitColor"
 fit <- lda(FruitColor ~ ., data = colored.transformed.meansp)
