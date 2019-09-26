@@ -815,7 +815,13 @@ colnames(transformed.meansp.diff.by.color) <- c("black.mean","white.mean")
 transformed.meansp.diff.by.color$mean.diff <- with(transformed.meansp.diff.by.color, black.mean-white.mean)
 transformed.meansp.diff.by.color <- transformed.meansp.diff.by.color[order(transformed.meansp.diff.by.color$mean.diff),]
 
+top.200 <- rownames(transformed.meansp.diff.by.color)[1:10]
 colored.transformed.meansp <- cbind(transformed.meansp$Group,transformed.meansp[,-excluded.columns])
+colored.transformed.meansp <- cbind(transformed.meansp$Group,transformed.meansp[,top.200])
 colnames(colored.transformed.meansp)[1] <- "FruitColor"
 fit <- lda(FruitColor ~ ., data = colored.transformed.meansp)
+
+lda.data <- cbind(colored.transformed.meansp, predict(fit)$x)
+ggplot(lda.data, aes(LD1, LD2)) +
+  geom_point(aes(color = FruitColor))
 closeAllConnections()
