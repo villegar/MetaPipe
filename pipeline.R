@@ -9,6 +9,7 @@ args = commandArgs(trailingOnly=TRUE) # Command line arguments
 # General Libraries
 library(Amelia)
 library(ggplot2)
+library(gplots)
 library(grid)
 library(gridExtra)
 library(latex2exp)
@@ -845,8 +846,61 @@ savePlot(ggplot(lda.data.top200, aes(LD1,LD2)) +
   stat_ellipse(aes(x=LD1, y=LD2, fill = FruitColor), alpha = 0.2, geom = "polygon"),
   paste0(PLOTS.DIR,"/LDA-top200-dataset"))
 toc(log = TRUE) # LDAnalysis
+
+tic("Heatmap for true QTLs")
+# Heatmap
+x.normal.lod.scores <- read.csv(paste0(OUT.PREFIX,".normal.scanone.csv"))
+x.non.parametric.lod.scores <- read.csv(paste0(OUT.PREFIX,".non.parametric.scanone.csv"))
+true.qtl <- read.csv(paste0(OUT.PREFIX,".true.qtl.csv"))
+true.qtl.features <- unique(as.character(true.qtl$trait))
+x.normal.lod.scores.true.qtl <- x.normal.lod.scores[, which(names(x.normal.lod.scores) %in% true.qtl.features)]
+x.non.parametric.lod.scores.true.qtl <- x.non.parametric.lod.scores[, which(names(x.non.parametric.lod.scores) %in% true.qtl.features)]
+lod.scores <- cbind(x.normal.lod.scores.true.qtl,x.non.parametric.lod.scores.true.qtl)
+lod.scores <- matrix(as.numeric(unlist(lod.scores)), nrow=nrow(lod.scores))
+rownames(lod.scores) <- x.normal.lod.scores$X
+colnames(lod.scores) <- true.qtl.features
+obs.by.chr <- table(x.normal.lod.scores$chr)
+colnams.chr <- rep(NA,length(x.normal.lod.scores$X))
+k <- 1
+for(i in 1:length(obs.by.chr)){
+  colnams.chr[k] <- paste0("chr ",i)
+  k <- k + obs.by.chr[i]
+}
+#rownames(lod.scores) <- colnams.chr
+
+savePlot(heatmap.2(lod.scores, Rowv = FALSE, Colv = FALSE, 
+                   scale = "none",
+                   margins = c(6, 1),
+                   trace = "none", 
+                   tracecol = "black",
+                   symkey = FALSE, 
+                   symbreaks = FALSE, 
+                   dendrogram = "none",
+                   density.info = "histogram", 
+                   denscol = "black",
+                   key.par=list(mar=c(3.5,0,3,0)),
+                   cexRow = 0.8,
+                   labRow = colnams.chr,
+                   lmat=rbind(c(5, 4, 2), c(6, 1, 3)), lhei=c(2.5, 5), lwid=c(1, 10, 1))
+         ,paste0(PLOTS.DIR,"/HEAT-without-dendrogram", 16, 16))
+
+savePlot(heatmap.2(lod.scores, Rowv = FALSE, Colv = TRUE, 
+                   scale = "none",
+                   margins = c(6, 6),
+                   trace = "none", 
+                   tracecol = "black",
+                   symkey = FALSE, 
+                   symbreaks = FALSE, 
+                   dendrogram = "column",
+                   density.info = "histogram", 
+                   denscol = "black",
+                   col = rev(heat.colors(n = 10)),
+                   cexRow = 0.8,
+                   labRow = colnams.chr,
+                   key.par=list(mar=c(3.5,3,3,0)))
+         ,paste0(PLOTS.DIR,"/HEAT-with-dendrogram-all.10co"))
+toc(log = TRUE) # Heatmap for true QTLs
 closeAllConnections()
 toc(log = TRUE) # Total
 log.txt <- tic.log(format = TRUE)
 write(unlist(log.txt), paste0(OUT.PREFIX,".log.times.p",PERMUTATIONS,".txt"))
-
