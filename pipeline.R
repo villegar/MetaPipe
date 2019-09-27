@@ -829,8 +829,8 @@ colnames(colored.transformed.meansp.top200)[1] <- "FruitColor"
 fit.full <- lda(FruitColor ~ ., data = colored.transformed.meansp.full)
 fit.top200 <- lda(FruitColor ~ ., data = colored.transformed.meansp.top200)
 
-lda.data.full <- cbind(colored.transformed.meansp, predict(fit.full)$x)
-lda.data.top200 <- cbind(colored.transformed.meansp, predict(fit.top200)$x)
+lda.data.full <- cbind(colored.transformed.meansp.full, predict(fit.full)$x)
+lda.data.top200 <- cbind(colored.transformed.meansp.top200, predict(fit.top200)$x)
 savePlot(ggplot(lda.data.full, aes(LD1,LD2)) +
   geom_point(aes(color = FruitColor)) +
   stat_ellipse(aes(x=LD1, y=LD2, fill = FruitColor), alpha = 0.2, geom = "polygon"),
