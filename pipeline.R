@@ -790,24 +790,35 @@ savePlot(fviz_pca_biplot(res.pca, col.var="contrib",
 paste0(PLOTS.DIR,"/PCA-biplot.top10"))
 
 # LDAnalysis
-#transformed.meansp.diff.by.color <- data.frame(feature = colnames(transformed.meansp)[-excluded.columns],
-#                                               black.mean = NA,
-#                                               white.mean = NA,
-#                                               mean.diff = NA)
-transformed.meansp.diff.by.color <- data.frame(t(aggregate(transformed.meansp[,-excluded.columns], list(transformed.meansp$Group), mean))[-1,])
+## Create an "unknown" group name for missing data
+transformed.meansp$Group <- as.character(transformed.meansp$Group)
+transformed.meansp$Group[is.na(transformed.meansp$Group)] <- "Unknown"
+
+## Calculate mean by color
+transformed.meansp.diff.by.color <- 
+  data.frame(t(aggregate(transformed.meansp[,-excluded.columns], list(transformed.meansp$Group), mean))[-1,])
 transformed.meansp.diff.by.color$X1 <- as.numeric(as.character(transformed.meansp.diff.by.color$X1))
 transformed.meansp.diff.by.color$X2 <- as.numeric(as.character(transformed.meansp.diff.by.color$X2))
 colnames(transformed.meansp.diff.by.color) <- c("black.mean","white.mean")
 transformed.meansp.diff.by.color$mean.diff <- with(transformed.meansp.diff.by.color, black.mean-white.mean)
 transformed.meansp.diff.by.color <- transformed.meansp.diff.by.color[order(transformed.meansp.diff.by.color$mean.diff),]
 
-top.200 <- rownames(transformed.meansp.diff.by.color)[1:10]
-colored.transformed.meansp <- cbind(transformed.meansp$Group,transformed.meansp[,-excluded.columns])
-colored.transformed.meansp <- cbind(transformed.meansp$Group,transformed.meansp[,top.200])
-colnames(colored.transformed.meansp)[1] <- "FruitColor"
-fit <- lda(FruitColor ~ ., data = colored.transformed.meansp)
+## Whole dataset and Top 200 features LDA
+top.200 <- rownames(transformed.meansp.diff.by.color)[1:200] # There's something funny after 75
+colored.transformed.meansp.full <- cbind(transformed.meansp$Group,transformed.meansp[,-excluded.columns])
+colored.transformed.meansp.top200 <- cbind(transformed.meansp$Group,transformed.meansp[,top.200])
+colnames(colored.transformed.meansp.full)[1] <- "FruitColor"
+colnames(colored.transformed.meansp.top200)[1] <- "FruitColor"
+fit.full <- lda(FruitColor ~ ., data = colored.transformed.meansp.full)
+fit.top200 <- lda(FruitColor ~ ., data = colored.transformed.meansp.top200)
 
-lda.data <- cbind(colored.transformed.meansp, predict(fit)$x)
-ggplot(lda.data, aes(LD1, LD2)) +
-  geom_point(aes(color = FruitColor))
+lda.data.full <- cbind(colored.transformed.meansp, predict(fit.full)$x)
+lda.data.top200 <- cbind(colored.transformed.meansp, predict(fit.top200)$x)
+ggplot(lda.data.full, aes(LD1,LD2)) +
+  geom_point(aes(color = FruitColor)) +
+  stat_ellipse(aes(x=LD1, y=LD2, fill = FruitColor), alpha = 0.2, geom = "polygon")
+ggplot(lda.data.top200, aes(LD1,LD2)) +
+  geom_point(aes(color = FruitColor)) +
+  stat_ellipse(aes(x=LD1, y=LD2, fill = FruitColor), alpha = 0.2, geom = "polygon")
 closeAllConnections()
+
