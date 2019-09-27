@@ -217,6 +217,7 @@ if(PARETO.SCALING){ # Apply Pareto Scaling
   transformed.non.parametric.meansp <- cbind(meansp[,excluded.columns],non.parametric.meansp)
 }
 normal.meansp <- cbind(meansp[,excluded.columns],normal.meansp)
+non.parametric.meansp <- cbind(meansp[,excluded.columns],non.parametric.meansp)
 
 write.csv(transformed.meansp, file = paste0(OUT.PREFIX,".transformed.all.meansp.csv"), row.names=FALSE)
 write.csv(normal.meansp, file = paste0(OUT.PREFIX,".normal.meansp.csv"), row.names=FALSE)
