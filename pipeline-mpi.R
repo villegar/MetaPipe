@@ -16,6 +16,7 @@ library(MASS, quietly = TRUE)
 library(plyr, quietly = TRUE)
 library(psych, quietly = TRUE)
 library(R.devices, quietly = TRUE)
+library(tictoc, quietly = TRUE)
 library(tidyverse, quietly = TRUE)
 library(VIM, quietly = TRUE)
 
@@ -87,10 +88,11 @@ SEED <- 20190901 # Seed for QTL Analysis
 LOD.THRESHOLD <- 3 # LOD threhold for QTL Analysis
 NA.COUNT.THRESHOLD <- 0.5 # Allows 50% of NAs per feature
 
-
 # Environment configuration
 dir.create(file.path(getwd(), PLOTS.DIR), showWarnings = FALSE) # Directory for plots
 
+tic("Total")
+tic("Loading and pre-processing")
 # Load and Cleaning Data
 sp <- read.csv(input.filename)
 ncols <- ncol(sp)
@@ -122,6 +124,7 @@ if(REPLACE.NA){
 
 write.csv(meansp, file = paste0(OUT.PREFIX,".all.meansp.csv"), row.names=FALSE)
 
+toc() # Loading and pre-processing
 # Missing values plot
 #missmap(meansp, main = "Missing values vs observed")
 
@@ -141,9 +144,9 @@ generate.boxplots <- function(meansp,ggplot.save){
   stopCluster(cl1) # Stop cluster
   print("Done with Boxplots")
 }
-
 #generate.boxplots(meansp,ggplot.save)
 
+tic("Normality Assessment")
 features <- colnames(meansp)
 
 print("Starting with Normality Assessment")
@@ -195,6 +198,8 @@ transformed.meansp <- foreach(i=(length.excluded.columns + 1):ncol(meansp),
 stopCluster(cl) # Stop cluster
 print("Done with Normality Assessment")
 
+toc() # Normality Assessment
+tic("Transformed data post-processing")
 normal.transformed.meansp <- transformed.meansp[transformed.meansp$flag == "Normal",]
 non.parametric.transformed.meansp <- transformed.meansp[transformed.meansp$flag == "Non-normal",]
 non.parametric.features <- unique(as.character(non.parametric.transformed.meansp$feature))
@@ -250,6 +255,9 @@ for(i in 1:nrow(transformations)){
 }
 cat("\n\n") # Clean output
 
+toc() # Transformed data post-processing
+tic("QTL analysis")
+tic("QTL analysis preprocessing")
 # Prepocessing data for QTL Analysis
 geno.map <- read.csv("OriginalMap.csv")
 colnames(geno.map)[1] <- "ID"
@@ -306,7 +314,8 @@ write.csv(normal.phe, file = paste0(OUT.PREFIX,".normal.phe.csv"), row.names=FAL
 write.csv(non.parametric.gen, file = paste0(OUT.PREFIX,".non.parametric.gen.csv"), row.names=FALSE)
 write.csv(non.parametric.phe, file = paste0(OUT.PREFIX,".non.parametric.phe.csv"), row.names=FALSE)
 
-
+toc() # QTL analysis preprocessing
+tic("Normal QTL Analysis: Single scanone")
 # QTL Analysis
 x.normal <- read.cross("csvs",".",
                 paste0(OUT.PREFIX,".normal.gen.csv"),
@@ -352,7 +361,8 @@ x.normal.scanone <- foreach(i=2:ncol(x.normal$pheno),
                               }
                               record
                             }
-
+toc() # Normal QTL Analysis: Single scanone
+tic("Non-parametric QTL Analysis: Single scanone")
 x.non.parametric.scanone <- foreach(i=2:ncol(x.non.parametric$pheno),
                                     .combine = cbind,
                                     .packages = c("ggplot2","grid","gridExtra","latex2exp","qtl","R.devices")) %dopar% {
@@ -375,7 +385,8 @@ x.non.parametric.scanone <- foreach(i=2:ncol(x.non.parametric$pheno),
                                       record
                                     }
 stopCluster(cl) # Stop cluster
-
+toc() # Non-parametric QTL Analysis: Single scanone
+tic("Normal QTL analysis: Summary mapping")
 # Load MPI libraries
 library(Rmpi)
 library(doMPI)
@@ -550,6 +561,8 @@ x.normal.summary.mapping <- foreach(i=2:ncol(x.normal$pheno),
                                       }
                                       record
                                     }
+toc() # Normal QTL analysis: Summary mapping
+tic("Non-parametric QTL analysis: Summary mapping")
 # Non-parametric QTL
 print("Starting with Non-Parametric QTL Analysis")
 
@@ -679,7 +692,8 @@ x.non.parametric.summary.mapping <- foreach(i=2:ncol(x.non.parametric$pheno),
                                               }
                                               record
                                             }
-
+toc() # Non-normal QTL analysis: Summary mapping
+tic("Effect plots and QTL analysis postprocessing")
 # Generate effect plots
 x2.non.parametric <- sim.geno(x.non.parametric)
 x2.normal <- sim.geno(x.normal)
@@ -729,8 +743,9 @@ classified.qtl <- t.qtl[order(t.qtl$lg,t.qtl$pos.peak),]
 classified.qtl$group <- with(classified.qtl,
                              paste0("chr",lg,"-mrk",marker))
 write.csv(classified.qtl, file = paste0(OUT.PREFIX,".classified.qtl.csv"), row.names=FALSE, na="")
+toc() # Effect plots and QTL analysis postprocessing
 print("Done with QTL Analysis")
-
+toc() # QTL analysis
 
 # For both PCA and LDA the data must have no NAs and must be scaled
 meansp <- read.csv(paste0(OUT.PREFIX,".all.meansp.csv"))
@@ -744,6 +759,7 @@ if(!PARETO.SCALING){ # Apply Pareto Scaling
   #transformed.non.parametric.meansp <- cbind(meansp[,excluded.columns],paretoscale(non.parametric.meansp))
 }
 
+tic("PCAnalysis")
 # PCAnalysis with mean (used no missing data) 
 #OUT.PREFIX <- "S1-metabolomics"
 #transformed.normal.meansp <- read.csv(paste0(OUT.PREFIX,".all.meansp.csv"))
@@ -760,7 +776,8 @@ savePlot(fviz_pca_biplot(res.pca, col.var="contrib",
                          label="var",addEllipses=TRUE, ellipse.level=0.95, repel = TRUE  # Avoid text overlapping
 ),
 paste0(PLOTS.DIR,"/PCA-biplot.top10"))
-
+toc() # PCAnalysis
+tic("LDAnalysis")
 # LDAnalysis
 ## Create an "unknown" group name for missing data
 transformed.meansp$Group <- as.character(transformed.meansp$Group)
@@ -795,6 +812,8 @@ savePlot(ggplot(lda.data.top200, aes(LD1,LD2)) +
            geom_point(aes(color = FruitColor)) +
            stat_ellipse(aes(x=LD1, y=LD2, fill = FruitColor), alpha = 0.2, geom = "polygon"),
          paste0(PLOTS.DIR,"/LDA-top200-dataset"))
+toc() # LDAnalysis
 closeAllConnections()
 
 mpi.quit()
+toc() # Total
