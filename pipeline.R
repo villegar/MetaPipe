@@ -822,6 +822,6 @@ savePlot(ggplot(lda.data.full, aes(LD1,LD2)) +
 savePlot(ggplot(lda.data.top200, aes(LD1,LD2)) +
   geom_point(aes(color = FruitColor)) +
   stat_ellipse(aes(x=LD1, y=LD2, fill = FruitColor), alpha = 0.2, geom = "polygon"),
-  paste0(PLOTS.DIR,"/LDA-full-dataset"))
+  paste0(PLOTS.DIR,"/LDA-top200-dataset"))
 closeAllConnections()
 
