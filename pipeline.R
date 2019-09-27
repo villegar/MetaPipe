@@ -816,12 +816,16 @@ transformed.meansp.diff.by.color <-
   data.frame(t(aggregate(transformed.meansp[,-excluded.columns], list(transformed.meansp$Group), mean))[-1,])
 transformed.meansp.diff.by.color$X1 <- as.numeric(as.character(transformed.meansp.diff.by.color$X1))
 transformed.meansp.diff.by.color$X2 <- as.numeric(as.character(transformed.meansp.diff.by.color$X2))
-colnames(transformed.meansp.diff.by.color) <- c("black.mean","white.mean")
+colnames(transformed.meansp.diff.by.color) <- c("black.mean","white.mean","unknown.mean")
 transformed.meansp.diff.by.color$mean.diff <- with(transformed.meansp.diff.by.color, black.mean-white.mean)
-transformed.meansp.diff.by.color <- transformed.meansp.diff.by.color[order(transformed.meansp.diff.by.color$mean.diff),]
-
+transformed.meansp.diff.by.color <- transformed.meansp.diff.by.color[order(transformed.meansp.diff.by.color$black.mean, decreasing = T),]
+top.100.black <- rownames(transformed.meansp.diff.by.color)[1:100]
+transformed.meansp.diff.by.color <- transformed.meansp.diff.by.color[order(transformed.meansp.diff.by.color$white.mean, decreasing = T),]
+top.100.white <- rownames(transformed.meansp.diff.by.color)[1:100]
 ## Whole dataset and Top 200 features LDA
-top.200 <- rownames(transformed.meansp.diff.by.color)[1:200] # There's something funny after 75
+
+top.200 <- unique(c(top.100.black,top.100.white))
+#top.200 <- rownames(transformed.meansp.diff.by.color)[1:200] # There's something funny after 75
 colored.transformed.meansp.full <- cbind(transformed.meansp$Group,transformed.meansp[,-excluded.columns])
 colored.transformed.meansp.top200 <- cbind(transformed.meansp$Group,transformed.meansp[,top.200])
 colnames(colored.transformed.meansp.full)[1] <- "FruitColor"
