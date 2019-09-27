@@ -346,7 +346,7 @@ x.scanone <- foreach(i=2:ncol(x$pheno),
 stopCluster(cl) # Stop cluster
 write.csv(x.scanone, file = paste0(OUT.PREFIX,".normal.scanone.csv"))
 
-cl <- makeCluster(ceiling(CPUS*0.2), outfile=paste0('./info_parallel_QTL.log'))
+cl <- makeCluster(ceiling(CPUS*0.5), outfile=paste0('./info_parallel_QTL.log'))
 registerDoParallel(cl)
 x.normal.summary.mapping <- foreach(i=2:ncol(x$pheno),
                          .combine = rbind,
@@ -562,7 +562,7 @@ x.scanone <- foreach(i=2:ncol(x$pheno),
 stopCluster(cl) # Stop cluster
 write.csv(x.scanone, file = paste0(OUT.PREFIX,".non.parametric.scanone.csv"))
 
-cl <- makeCluster(ceiling(CPUS*0.2), outfile=paste0('./info_parallel_QTL.log'))
+cl <- makeCluster(ceiling(CPUS*0.5), outfile=paste0('./info_parallel_QTL.log'))
 registerDoParallel(cl)
 x.non.parametric.summary.mapping <- foreach(i=2:ncol(x$pheno),
                              .combine = rbind,
@@ -693,16 +693,7 @@ x.non.parametric.summary.mapping <- foreach(i=2:ncol(x$pheno),
 stopCluster(cl) # Stop cluster
 
 write.csv(x.non.parametric.summary.mapping, file = paste0(OUT.PREFIX,".non.parametric.summary.mapping.csv"), row.names=FALSE, na="")
-#x=jittermap(x)
-#x=calc.genoprob(x,step=1, error.prob=0.001)
-#npout1 = scanone(x,pheno.col = "MeanLat200212h",  model = "2part")
-#summary(npout1)
-#summary(npout1, threshold = 3)
-#plot(npout1, ylab="LOD score")
 
-#np_perm=scanone(x,pheno.col = "MeanLat200212h", model = "2part", n.perm = 1000 )
-#summary(npout1,  perms=np_perm, alpha=0.05, pvalues=TRUE)
-#summary(np_perm)
 print("Done with QTL Analysis")
 
 x.normal <- read.cross("csvs",".",
