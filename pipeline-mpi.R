@@ -307,13 +307,6 @@ write.csv(non.parametric.phe, file = paste0(OUT.PREFIX,".non.parametric.phe.csv"
 
 
 # QTL Analysis
-#metabolomics.normal <- read.cross("csvs",".",
-#                                paste0(OUT.PREFIX,".normal.gen.csv"),
-#                                paste0(OUT.PREFIX,".normal.phe.csv"))
-#metabolomics.non.parametric <- read.cross("csvs",".",
-#                                paste0(OUT.PREFIX,".non.parametric.gen.csv"),
-#                                paste0(OUT.PREFIX,".non.parametric.phe.csv"))
-
 x.normal <- read.cross("csvs",".",
                 paste0(OUT.PREFIX,".normal.gen.csv"),
                 paste0(OUT.PREFIX,".normal.phe.csv"))
