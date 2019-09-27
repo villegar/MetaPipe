@@ -42,13 +42,13 @@ closeAllConnections()
 
 if(length(args) < 1){
   PERMUTATIONS <- 1000 # Number of permutations for QTL Analysis
-  REPLACE.NA <- TRUE
+  REPLACE.NA <- FALSE
   PARETO.SCALING <- FALSE
   OUT.PREFIX <- "metabolomics"
   PLOTS.DIR <- "metabolomics"
 } else if(length(args) < 2){
   PERMUTATIONS <- as.numeric(args[1]) # Number of permutations for QTL Analysis
-  REPLACE.NA <- TRUE
+  REPLACE.NA <- FALSE
   PARETO.SCALING <- FALSE
   OUT.PREFIX <- "metabolomics"
   PLOTS.DIR <- "metabolomics"
