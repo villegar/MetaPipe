@@ -79,9 +79,11 @@ if(length(args) < 1){
   OUT.PREFIX <- args[4]
   PLOTS.DIR <- args[5]
 }
-OUT.PREFIX <- "09262019v2"
+OUT.PREFIX <- "09262019v3"
 PLOTS.DIR <- OUT.PREFIX
 PERMUTATIONS = 100
+
+tic.clearlog()
 cat(paste0("CMD Parameters: (",PERMUTATIONS,",",REPLACE.NA,",",PARETO.SCALING,",",OUT.PREFIX,",",PLOTS.DIR,")"))
 
 # Global parameters

@@ -78,6 +78,7 @@ if(length(args) < 1){
   PLOTS.DIR <- args[5]
 }
 
+tic.clearlog()
 cat(paste0("CMD Parameters: (",PERMUTATIONS,",",REPLACE.NA,",",PARETO.SCALING,",",OUT.PREFIX,",",PLOTS.DIR,")"))
 # Global parameters
 excluded.columns <- c(1,2,3)
