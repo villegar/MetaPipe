@@ -79,9 +79,6 @@ if(length(args) < 1){
   OUT.PREFIX <- args[4]
   PLOTS.DIR <- args[5]
 }
-OUT.PREFIX <- "09262019v3"
-PLOTS.DIR <- OUT.PREFIX
-PERMUTATIONS = 100
 
 tic.clearlog()
 cat(paste0("CMD Parameters: (",PERMUTATIONS,",",REPLACE.NA,",",PARETO.SCALING,",",OUT.PREFIX,",",PLOTS.DIR,")"))
@@ -130,7 +127,7 @@ if(REPLACE.NA){
 }
 
 write.csv(meansp, file = paste0(OUT.PREFIX,".all.meansp.csv"), row.names=FALSE)
-toc() # Loading and pre-processing
+toc(log = TRUE) # Loading and pre-processing
 
 # Missing values plot
 #missmap(meansp, main = "Missing values vs observed")
@@ -205,7 +202,7 @@ transformed.meansp <- foreach(i=(length.excluded.columns + 1):ncol(meansp),
 stopCluster(cl) # Stop cluster
 print("Done with Normality Assessment")
 
-toc() # Normality Assessment
+toc(log = TRUE) # Normality Assessment
 tic("Transformed data post-processing")
 normal.transformed.meansp <- transformed.meansp[transformed.meansp$flag == "Normal",]
 non.parametric.transformed.meansp <- transformed.meansp[transformed.meansp$flag == "Non-normal",]
@@ -262,7 +259,7 @@ for(i in 1:nrow(transformations)){
 }
 cat("\n\n") # Clean output
 
-toc() # Transformed data post-processing
+toc(log = TRUE) # Transformed data post-processing
 tic("QTL analysis")
 tic("QTL analysis preprocessing")
 # Prepocessing data for QTL Analysis
@@ -321,7 +318,7 @@ write.csv(normal.phe, file = paste0(OUT.PREFIX,".normal.phe.csv"), row.names=FAL
 write.csv(non.parametric.gen, file = paste0(OUT.PREFIX,".non.parametric.gen.csv"), row.names=FALSE)
 write.csv(non.parametric.phe, file = paste0(OUT.PREFIX,".non.parametric.phe.csv"), row.names=FALSE)
 
-toc() # QTL analysis preprocessing
+toc(log = TRUE) # QTL analysis preprocessing
 tic("Normal QTL analysis")
 # QTL Analysis
 x <- read.cross("csvs",".",
@@ -540,7 +537,7 @@ stopCluster(cl) # Stop cluster
 #x.normal.summary.mapping <- tmp
 write.csv(x.normal.summary.mapping, file = paste0(OUT.PREFIX,".normal.summary.mapping.csv"), row.names=FALSE, na="")
 
-toc() # Normal QTL analysis
+toc(log = TRUE) # Normal QTL analysis
 tic("Non-parametric QTL analysis")
 # Non-parametric QTL
 x <- read.cross("csvs",".",
@@ -711,7 +708,7 @@ x.non.parametric.summary.mapping <- foreach(i=2:ncol(x$pheno),
 stopCluster(cl) # Stop cluster
 
 write.csv(x.non.parametric.summary.mapping, file = paste0(OUT.PREFIX,".non.parametric.summary.mapping.csv"), row.names=FALSE, na="")
-toc() # Non-parametric QTL analysis
+toc(log = TRUE) # Non-parametric QTL analysis
 tic("QTL analysis postprocessing")
 x.normal <- read.cross("csvs",".",
                        paste0(OUT.PREFIX,".normal.gen.csv"),
@@ -775,8 +772,8 @@ classified.qtl$group <- with(classified.qtl,
                              paste0("chr",lg,"-mrk",marker))
 write.csv(classified.qtl, file = paste0(OUT.PREFIX,".classified.qtl.csv"), row.names=FALSE, na="")
 print("Done with QTL Analysis")
-toc() # QTL analysis postprocessing
-toc() # QTL analysis
+toc(log = TRUE) # QTL analysis postprocessing
+toc(log = TRUE) # QTL analysis
 
 
 # For both PCA and LDA the data must have no NAs and must be scaled
@@ -807,7 +804,7 @@ savePlot(fviz_pca_biplot(res.pca, col.var="contrib",
                          label="var",addEllipses=TRUE, ellipse.level=0.95, repel = TRUE  # Avoid text overlapping
 ),
 paste0(PLOTS.DIR,"/PCA-biplot.top10"))
-toc() # PCAnalysis
+toc(log = TRUE) # PCAnalysis
 tic("LDAnalysis")
 # LDAnalysis
 ## Create an "unknown" group name for missing data
@@ -843,9 +840,9 @@ savePlot(ggplot(lda.data.top200, aes(LD1,LD2)) +
   geom_point(aes(color = FruitColor)) +
   stat_ellipse(aes(x=LD1, y=LD2, fill = FruitColor), alpha = 0.2, geom = "polygon"),
   paste0(PLOTS.DIR,"/LDA-top200-dataset"))
-toc() # LDAnalysis
+toc(log = TRUE) # LDAnalysis
 closeAllConnections()
-toc() # Total
+toc(log = TRUE) # Total
 log.txt <- tic.log(format = TRUE)
 write(unlist(log.txt), paste0(OUT.PREFIX,".log.times.p",PERMUTATIONS,".txt"))
 
