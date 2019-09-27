@@ -817,3 +817,6 @@ closeAllConnections()
 
 mpi.quit()
 toc() # Total
+
+log.txt <- tic.log(format = TRUE)
+write(unlist(log.txt), paste0(OUT.PREFIX,".log.times.p",PERMUTATIONS,".txt"))

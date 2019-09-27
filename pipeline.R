@@ -79,7 +79,9 @@ if(length(args) < 1){
   OUT.PREFIX <- args[4]
   PLOTS.DIR <- args[5]
 }
-
+OUT.PREFIX <- "09262019v2"
+PLOTS.DIR <- OUT.PREFIX
+PERMUTATIONS = 100
 cat(paste0("CMD Parameters: (",PERMUTATIONS,",",REPLACE.NA,",",PARETO.SCALING,",",OUT.PREFIX,",",PLOTS.DIR,")"))
 
 # Global parameters
@@ -842,3 +844,6 @@ savePlot(ggplot(lda.data.top200, aes(LD1,LD2)) +
 toc() # LDAnalysis
 closeAllConnections()
 toc() # Total
+log.txt <- tic.log(format = TRUE)
+write(unlist(log.txt), paste0(OUT.PREFIX,".log.times.p",PERMUTATIONS,".txt"))
+
