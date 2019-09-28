@@ -799,12 +799,12 @@ res.pca <- PCA(transformed.meansp[,-excluded.columns],  graph = FALSE, scale.uni
 ##fviz_screeplot(res.pca, addlabels = TRUE, ylim = c(0, 50))
 ##res.pca$eig
 # Biplot with top 10 features 
-savePlot(fviz_pca_biplot(res.pca, col.var="contrib",
+savePlotTIFF(fviz_pca_biplot(res.pca, col.var="contrib",
                          gradient.cols = c("green","red","blue"),#"#00AFBB" "#E7B800", "#FC4E07"),
                          select.var = list(contrib = 10),
                          label="var",addEllipses=TRUE, ellipse.level=0.95, repel = TRUE  # Avoid text overlapping
 ),
-paste0(PLOTS.DIR,"/PCA-biplot.top10"))
+paste0(PLOTS.DIR,"/PCA-biplot.top10"),12,6)
 toc(log = TRUE) # PCAnalysis
 tic("LDAnalysis")
 # LDAnalysis
@@ -836,15 +836,15 @@ fit.top200 <- lda(FruitColor ~ ., data = colored.transformed.meansp.top200)
 
 lda.data.full <- cbind(colored.transformed.meansp.full, predict(fit.full)$x)
 lda.data.top200 <- cbind(colored.transformed.meansp.top200, predict(fit.top200)$x)
-savePlot(ggplot(lda.data.full, aes(LD1,LD2)) +
+savePlotTIFF(ggplot(lda.data.full, aes(LD1,LD2)) +
   geom_point(aes(color = FruitColor)) +
   stat_ellipse(aes(x=LD1, y=LD2, fill = FruitColor), alpha = 0.2, geom = "polygon"),
   paste0(PLOTS.DIR,"/LDA-full-dataset"))
   
-savePlot(ggplot(lda.data.top200, aes(LD1,LD2)) +
+savePlotTIFF(ggplot(lda.data.top200, aes(LD1,LD2)) +
   geom_point(aes(color = FruitColor)) +
   stat_ellipse(aes(x=LD1, y=LD2, fill = FruitColor), alpha = 0.2, geom = "polygon"),
-  paste0(PLOTS.DIR,"/LDA-top200-dataset"))
+  paste0(PLOTS.DIR,"/LDA-top200-dataset.h7"), height = 7)
 toc(log = TRUE) # LDAnalysis
 
 tic("Heatmap for true QTLs")
@@ -868,6 +868,7 @@ for(i in 1:length(obs.by.chr)){
 }
 #rownames(lod.scores) <- colnams.chr
 
+# Heatmap without dendrogram
 savePlot(heatmap.2(lod.scores, Rowv = FALSE, Colv = FALSE, 
                    scale = "none",
                    margins = c(6, 1),
@@ -879,26 +880,49 @@ savePlot(heatmap.2(lod.scores, Rowv = FALSE, Colv = FALSE,
                    density.info = "histogram", 
                    denscol = "black",
                    key.par=list(mar=c(3.5,0,3,0)),
+                   col = rev(heat.colors(n = 10)),
                    cexRow = 0.8,
                    labRow = colnams.chr,
                    lmat=rbind(c(5, 4, 2), c(6, 1, 3)), lhei=c(2.5, 5), lwid=c(1, 10, 1))
          ,paste0(PLOTS.DIR,"/HEAT-without-dendrogram", 16, 16))
 
-savePlot(heatmap.2(lod.scores, Rowv = FALSE, Colv = TRUE, 
-                   scale = "none",
-                   margins = c(6, 6),
-                   trace = "none", 
-                   tracecol = "black",
-                   symkey = FALSE, 
-                   symbreaks = FALSE, 
-                   dendrogram = "column",
-                   density.info = "histogram", 
-                   denscol = "black",
-                   col = rev(heat.colors(n = 10)),
-                   cexRow = 0.8,
-                   labRow = colnams.chr,
-                   key.par=list(mar=c(3.5,3,3,0)))
-         ,paste0(PLOTS.DIR,"/HEAT-with-dendrogram-all.10co"))
+# Heatmap with dendrogram and key at the top-left corner
+savePlotTIFF(heatmap.2(lod.scores, Rowv = FALSE, Colv = TRUE, 
+                       scale = "none",
+                       margins = c(6, 6),
+                       trace = "none", 
+                       tracecol = "black",
+                       symkey = FALSE, 
+                       symbreaks = FALSE, 
+                       dendrogram = "column",
+                       density.info = "histogram", 
+                       denscol = "black",
+                       col = rev(heat.colors(n = 100)),
+                       cexRow = 0.8,
+                       cexCol = 0.8,
+                       labRow = colnams.chr,
+                       lmat=rbind(c(5, 4, 2), c(6, 1, 3)), lhei=c(2.5, 5), lwid=c(1, 10, 1),
+                       key.par=list(mar=c(3.5,3,3,0)))
+             ,paste0(PLOTS.DIR,"/HEAT-with-dendrogram-all.100cov2"))
+
+# Heatmap with dendrogram and key at the bottom
+savePlotTIFF(heatmap.2(lod.scores, Rowv = FALSE, Colv = TRUE, 
+                       scale = "none",
+                       #margins = c(6, 6),
+                       trace = "none", 
+                       tracecol = "black",
+                       symkey = FALSE, 
+                       symbreaks = FALSE, 
+                       dendrogram = "column",
+                       density.info = "histogram", 
+                       denscol = "black",
+                       col = rev(heat.colors(n = 100)),
+                       cexRow = 0.8,
+                       cexCol = 0.8,
+                       labRow = colnams.chr,
+                       lmat=rbind(c(0,3),c(2,1),c(0,4)), lhei=c(2,6,2), lwid=c(0.3, 7),
+                       key.par=list(mar=c(3.5,1.5,2.5,5)))
+             ,paste0(PLOTS.DIR,"/HEAT-with-dendrogram-all-bottom-key.100co"))
 toc(log = TRUE) # Heatmap for true QTLs
 closeAllConnections()
 toc(log = TRUE) # Total
