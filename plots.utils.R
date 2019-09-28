@@ -5,6 +5,18 @@ savePlot <- function(myPlot,name, width = 6, height = 6) {
   dev.off()
 }
 
+savePlotTIFF <- function(myPlot,name, width = 6, height = 6) {
+  tiff(paste0(name,".tiff"), width = width, height = height, units = 'in', res = 300, type = "cairo")
+  print(myPlot)
+  dev.off()
+}
+
+savePlotPDF <- function(myPlot,name, width = 6, height = 6) {
+  pdf(paste0(name,".pdf"), width = width, height = height)
+  print(myPlot)
+  dev.off()
+}
+
 ggplot.save <- function(myPlot,name){
   suppressGraphics({
     ggsave(
