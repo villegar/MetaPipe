@@ -64,7 +64,11 @@ library(reshape)
 library(ggplot2)
 df <- melt(meansp.top.features, id=c("ID"))
 colnames(df) <- c("ID","Feature","Value")
-df$Value <- scale(df$Value)
-ggplot(df[1:203,], aes(Feature, Value, fill = Feature)) + 
-  geom_violin(trim = FALSE) + coord_flip() +
-  scale_fill_brewer(palette="YlGnBu") + theme_bw()
+#df$Value <- with(df,(Value-min(Value))/(max(Value)-min(Value)))
+cols <- brewer.pal(n = length(pca.top200.true.qtl), name = "YlGnBu")
+for(i in 1:length(pca.top200.true.qtl)){
+  savePlot(ggplot(df[df$Feature == pca.top200.true.qtl[i],], aes(Feature, Value, fill = Feature)) + 
+             geom_violin(trim = FALSE) + coord_flip() +
+             scale_fill_brewer(cols[i]) + theme_bw() + ylab("") + xlab("") + theme(legend.position = "none"),
+           paste0("Top200.true.qtl.violin.",pca.top200.true.qtl[i]))
+}
