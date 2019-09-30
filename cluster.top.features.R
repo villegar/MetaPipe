@@ -62,6 +62,7 @@ for(i in 1:ncol(meansp.top.features)){
 meansp.top.features$ID <- as.numeric(rownames(meansp.top.features))
 library(reshape)
 library(ggplot2)
+library(gridExtra)
 df <- melt(meansp.top.features, id=c("ID"))
 colnames(df) <- c("ID","Feature","Value")
 #df$Value <- with(df,(Value-min(Value))/(max(Value)-min(Value)))
@@ -69,6 +70,123 @@ cols <- brewer.pal(n = length(pca.top200.true.qtl), name = "YlGnBu")
 for(i in 1:length(pca.top200.true.qtl)){
   savePlot(ggplot(df[df$Feature == pca.top200.true.qtl[i],], aes(Feature, Value, fill = Feature)) + 
              geom_violin(trim = FALSE) + coord_flip() +
-             scale_fill_brewer(cols[i]) + theme_bw() + ylab("") + xlab("") + theme(legend.position = "none"),
+             geom_dotplot(binaxis='y', stackdir='center', dotsize = 0.5, fill = "black" ) + 
+             scale_fill_brewer(cols[i]) + theme_bw() + ylab("Ion concentration") + xlab("") + theme(legend.position = "none"),
            paste0("Top200.true.qtl.violin.",pca.top200.true.qtl[i]))
 }
+
+for(i in 1:length(pca.top200.true.qtl)){
+  savePlot(ggplot(df[df$Feature == pca.top200.true.qtl[i],], aes(Feature, Value, fill = Feature)) + 
+             geom_violin(trim = FALSE) + coord_flip() +
+             geom_dotplot(binaxis='y', stackdir='center', dotsize = 0.5, fill = "black" ) + 
+             scale_fill_manual(values = c("#CBD3EB")) +
+             #scale_fill_brewer(cols[i]) + 
+             theme_bw() + ylab("") + xlab("") + theme(legend.position = "none"),
+           paste0("Top200.true.qtl.violin.",pca.top200.true.qtl[i]))
+}
+
+plots <- vector(mode="list", length = 4)
+for(i in 1:length(pca.top200.true.qtl)){
+  plots[i] <- ggplot(df[df$Feature == pca.top200.true.qtl[i],], aes(Feature, Value, fill = Feature)) + 
+               geom_violin(trim = FALSE) + coord_flip() +
+               geom_dotplot(binaxis='y', stackdir='center', dotsize = 0.5, fill = "black" ) + 
+               scale_fill_manual(values = c("#CBD3EB")) +
+               #scale_fill_brewer(cols[i]) + 
+               theme_bw() + ylab("") + xlab("") + theme(legend.position = "none")
+}
+DOT.SIZE <- 0.4
+plot1 <- ggplot(df[df$Feature == pca.top200.true.qtl[1],], aes(Feature, Value, fill = Feature)) + 
+  geom_violin(trim = FALSE) + coord_flip() +
+  geom_dotplot(binaxis='y', stackdir='center', dotsize = DOT.SIZE, fill = "black" ) + 
+  scale_fill_manual(values = c("#CBD3EB")) +
+  theme_bw() + ylab("") + xlab("") + theme(legend.position = "none", panel.border = element_blank(), panel.grid.major = element_blank(),
+                                           panel.grid.minor = element_blank(),
+                                           axis.text.x = element_blank(),
+                                           axis.text.y = element_blank(),
+                                           axis.ticks = element_blank()) +
+  scale_y_discrete(breaks = c(0,max(df[df$Feature == pca.top200.true.qtl[1],"Value"])),
+                   labels = c(0,round(max(df[df$Feature == pca.top200.true.qtl[1],"Value"]))))
+plot2 <- ggplot(df[df$Feature == pca.top200.true.qtl[2],], aes(Feature, Value, fill = Feature)) + 
+  geom_violin(trim = FALSE) + coord_flip() +
+  geom_dotplot(binaxis='y', stackdir='center', dotsize = DOT.SIZE, fill = "black" ) + 
+  scale_fill_manual(values = c("#CBD3EB")) +
+  theme_bw() + ylab("") + xlab("") + theme(legend.position = "none", panel.border = element_blank(), panel.grid.major = element_blank(),
+                                           panel.grid.minor = element_blank(),
+                                           axis.text.x = element_blank(),
+                                           axis.text.y = element_blank(),
+                                           axis.ticks = element_blank()) +
+  scale_y_discrete(breaks = c(0,max(df[df$Feature == pca.top200.true.qtl[2],"Value"])), 
+                   labels = c(0,round(max(df[df$Feature == pca.top200.true.qtl[2],"Value"]))))
+plot3 <- ggplot(df[df$Feature == pca.top200.true.qtl[3],], aes(Feature, Value, fill = Feature)) + 
+  geom_violin(trim = FALSE) + coord_flip() +
+  geom_dotplot(binaxis='y', stackdir='center', dotsize = DOT.SIZE, fill = "black" ) + 
+  scale_fill_manual(values = c("#CBD3EB")) +
+  theme_bw() + ylab("") + xlab("") + theme(legend.position = "none", panel.border = element_blank(), panel.grid.major = element_blank(),
+                                           panel.grid.minor = element_blank(),
+                                           axis.text.x = element_blank(),
+                                           axis.text.y = element_blank(),
+                                           axis.ticks = element_blank()) +
+  scale_y_discrete(breaks = c(0,max(df[df$Feature == pca.top200.true.qtl[3],"Value"])), 
+                   labels = c(0,round(max(df[df$Feature == pca.top200.true.qtl[3],"Value"])))) +
+  margin(0,0,0,0)
+plot4 <- ggplot(df[df$Feature == pca.top200.true.qtl[4],], aes(Feature, Value, fill = Feature)) + 
+  geom_violin(trim = FALSE) + coord_flip() +
+  geom_dotplot(binaxis='y', stackdir='center', dotsize = DOT.SIZE, fill = "black" ) + 
+  scale_fill_manual(values = c("#CBD3EB")) +
+  theme_bw() + ylab("") + xlab("") + theme(legend.position = "none", panel.border = element_blank(), panel.grid.major = element_blank(),
+                                           panel.grid.minor = element_blank(),
+                                           axis.text.x = element_blank(),
+                                           axis.text.y = element_blank(),
+                                           axis.ticks = element_blank()) +
+  scale_y_discrete(breaks = c(0,max(df[df$Feature == pca.top200.true.qtl[4],"Value"])), 
+                   labels = c(0,round(max(df[df$Feature == pca.top200.true.qtl[4],"Value"]))))
+gA <- ggplotGrob(plot1)
+gB <- ggplotGrob(plot2)
+gC <- ggplotGrob(plot3)
+gD <- ggplotGrob(plot4)
+grid::grid.newpage()
+grid::grid.draw(rbind(gA, gB, gC, gD))
+lay <- rbind(c(NA,NA,3,3,3,3,3,NA),
+             c(1,2,  3,3,3,3,3,4),
+             c(NA,NA,3,3,3,3,3,NA))
+lay <- rbind(c(NA,NA,3,3,3,3,3,NA),
+             c(1,2,  3,3,3,3,3,4),
+             c(NA,NA,3,3,3,3,3,NA),
+             c(NA,NA,7,7,7,7,7,NA),
+             c(5,6,  7,7,7,7,7,8),
+             c(NA,NA,7,7,7,7,7,NA),
+             c(NA,NA,11,11,11,11,11,NA),
+             c(9,10, 11,11,11,11,11,12),
+             c(NA,NA,11,11,11,11,11,NA),
+             c(NA,NA,15,15,15,15,15,NA),
+             c(13,14,15,15,15,15,15,16),
+             c(NA,NA,15,15,15,15,15,NA))
+grid.arrange(textGrob(pca.top200.true.qtl[1]), textGrob("0"), plot1, textGrob(max(df[df$Feature == pca.top200.true.qtl[1],"Value"])),
+             textGrob(pca.top200.true.qtl[2]), textGrob("0"), plot2, textGrob(max(df[df$Feature == pca.top200.true.qtl[2],"Value"])),
+             textGrob(pca.top200.true.qtl[3]), textGrob("0"), plot3, textGrob(max(df[df$Feature == pca.top200.true.qtl[3],"Value"])),
+             textGrob(pca.top200.true.qtl[4]), textGrob("0"), plot4, textGrob(max(df[df$Feature == pca.top200.true.qtl[4],"Value"])),
+             layout_matrix = lay)
+
+savePlot(grid.arrange(textGrob(pca.top200.true.qtl[1]), textGrob("0"), plot1, textGrob(max(df[df$Feature == pca.top200.true.qtl[1],"Value"])),
+                      textGrob(pca.top200.true.qtl[2]), textGrob("0"), plot2, textGrob(max(df[df$Feature == pca.top200.true.qtl[2],"Value"])),
+                      textGrob(pca.top200.true.qtl[3]), textGrob("0"), plot3, textGrob(max(df[df$Feature == pca.top200.true.qtl[3],"Value"])),
+                      textGrob(pca.top200.true.qtl[4]), textGrob("0"), plot4, textGrob(max(df[df$Feature == pca.top200.true.qtl[4],"Value"])),
+                      layout_matrix = lay),
+         paste0("grid"),width = 10)
+grid.arrange(plot1, plot2, plot3, plot4, nrow = 4)
+
+i <- 1
+#df[df$Feature == pca.top200.true.qtl[i],]
+ggplot(df[df$Feature != "M338T1357",], aes(Feature, Value, fill = Feature)) + 
+  geom_violin(trim = FALSE) + coord_flip() +
+  geom_dotplot(binaxis='y', stackdir='center', dotsize = 0.4, fill = "black" ) + 
+  scale_fill_brewer(palette="YlGnBu") + theme_bw() + ylab("") + xlab("") + theme(legend.position = "bottom", panel.border = element_blank(), panel.grid.major = element_blank(),
+                                                                                 panel.grid.minor = element_blank())
+
+cat("Feature\t\t Max \t Min")
+for(i in 1:length(pca.top200.true.qtl)){
+  subsewt <- df[df$Feature == pca.top200.true.qtl[i],]$Value
+  cat(pca.top200.true.qtl[i],"\t", max(subsewt), " \t",min(subsewt),"\n")     #0033A0  
+}
+
+grid.arrange(p1, p2, nrow = 1)
