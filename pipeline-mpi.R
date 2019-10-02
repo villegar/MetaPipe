@@ -407,10 +407,10 @@ library(doMPI)
 }
 
 # Obtain LOD scores for all features and markers
-#cl <- startMPIcluster()
-#registerDoMPI(cl)
-makeCluster(CPUS, outfile=paste0('./info_mpi_parallel.log'), type = "MPI")
-registerDoParallel(cl)
+cl <- startMPIcluster()
+registerDoMPI(cl)
+#makeCluster(CPUS, outfile=paste0('./info_mpi_parallel.log'), type = "MPI")
+#registerDoParallel(cl)
 x.normal.summary.mapping <- foreach(i=2:ncol(x.normal$pheno),
                                     .combine = rbind,
                                     .packages = c("ggplot2","grid","gridExtra","latex2exp","qtl","R.devices")) %dopar% {
