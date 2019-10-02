@@ -9,6 +9,7 @@ args = commandArgs(trailingOnly=TRUE) # Command line arguments
 # General Libraries
 library(Amelia, quietly = TRUE)
 library(ggplot2, quietly = TRUE)
+library(gplots)
 library(grid, quietly = TRUE)
 library(gridExtra, quietly = TRUE)
 library(latex2exp, quietly = TRUE)
@@ -754,11 +755,12 @@ if(!REPLACE.NA){
   NA2halfmin <- function(x) suppressWarnings(replace(x, is.na(x), (min(x, na.rm = TRUE)/2)))
   meansp[,-excluded.columns] <- lapply(meansp[,-excluded.columns], NA2halfmin)
 }
-if(!PARETO.SCALING){ # Apply Pareto Scaling
-  transformed.normal.meansp <- cbind(meansp[,excluded.columns],paretoscale(meansp[,-excluded.columns]))
-  transformed.normal.meansp <- paretoscale(meansp[,-excluded.columns])
-  #transformed.non.parametric.meansp <- cbind(meansp[,excluded.columns],paretoscale(non.parametric.meansp))
-}
+# if(!PARETO.SCALING){ # Apply Pareto Scaling
+#   transformed.normal.meansp <- cbind(meansp[,excluded.columns],paretoscale(meansp[,-excluded.columns]))
+#   transformed.normal.meansp <- paretoscale(meansp[,-excluded.columns])
+#   #transformed.non.parametric.meansp <- cbind(meansp[,excluded.columns],paretoscale(non.parametric.meansp))
+# }
+transformed.meansp <- meansp # No scaling
 
 tic("PCAnalysis")
 # PCAnalysis with mean (used no missing data) 
@@ -767,7 +769,7 @@ tic("PCAnalysis")
 #transformed.normal.meansp$X <- NULL
 #transformed.normal.meansp <- transformed.normal.meansp[order(as.character(transformed.normal.meansp$ID)),]
 #transformed.normal.meansp$Group <- NULL
-res.pca <- PCA(transformed.normal.meansp,  graph = FALSE, scale.unit = TRUE)
+res.pca <- PCA(transformed.meansp[,-excluded.columns],  graph = FALSE, scale.unit = TRUE)
 #fviz_screeplot(res.pca, addlabels = TRUE, ylim = c(0, 50))
 #res.pca$eig
 # Biplot with top 10 features 
@@ -776,7 +778,7 @@ savePlot(fviz_pca_biplot(res.pca, col.var="contrib",
                          select.var = list(contrib = 10),
                          label="var",addEllipses=TRUE, ellipse.level=0.95, repel = TRUE  # Avoid text overlapping
 ),
-paste0(PLOTS.DIR,"/PCA-biplot.top10"))
+paste0(PLOTS.DIR,"/PCA-biplot.top10"),12,6)
 toc() # PCAnalysis
 tic("LDAnalysis")
 # LDAnalysis
@@ -789,12 +791,15 @@ transformed.meansp.diff.by.color <-
   data.frame(t(aggregate(transformed.meansp[,-excluded.columns], list(transformed.meansp$Group), mean))[-1,])
 transformed.meansp.diff.by.color$X1 <- as.numeric(as.character(transformed.meansp.diff.by.color$X1))
 transformed.meansp.diff.by.color$X2 <- as.numeric(as.character(transformed.meansp.diff.by.color$X2))
-colnames(transformed.meansp.diff.by.color) <- c("black.mean","white.mean")
+colnames(transformed.meansp.diff.by.color) <- c("black.mean","white.mean","unknown.mean")
 transformed.meansp.diff.by.color$mean.diff <- with(transformed.meansp.diff.by.color, black.mean-white.mean)
-transformed.meansp.diff.by.color <- transformed.meansp.diff.by.color[order(transformed.meansp.diff.by.color$mean.diff),]
-
+transformed.meansp.diff.by.color <- transformed.meansp.diff.by.color[order(transformed.meansp.diff.by.color$black.mean, decreasing = T),]
+top.100.black <- rownames(transformed.meansp.diff.by.color)[1:100]
+transformed.meansp.diff.by.color <- transformed.meansp.diff.by.color[order(transformed.meansp.diff.by.color$white.mean, decreasing = T),]
+top.100.white <- rownames(transformed.meansp.diff.by.color)[1:100]
 ## Whole dataset and Top 200 features LDA
-top.200 <- rownames(transformed.meansp.diff.by.color)[1:200] # There's something funny after 75
+
+top.200 <- unique(c(top.100.black,top.100.white))
 colored.transformed.meansp.full <- cbind(transformed.meansp$Group,transformed.meansp[,-excluded.columns])
 colored.transformed.meansp.top200 <- cbind(transformed.meansp$Group,transformed.meansp[,top.200])
 colnames(colored.transformed.meansp.full)[1] <- "FruitColor"
@@ -804,16 +809,93 @@ fit.top200 <- lda(FruitColor ~ ., data = colored.transformed.meansp.top200)
 
 lda.data.full <- cbind(colored.transformed.meansp.full, predict(fit.full)$x)
 lda.data.top200 <- cbind(colored.transformed.meansp.top200, predict(fit.top200)$x)
-savePlot(ggplot(lda.data.full, aes(LD1,LD2)) +
-           geom_point(aes(color = FruitColor)) +
-           stat_ellipse(aes(x=LD1, y=LD2, fill = FruitColor), alpha = 0.2, geom = "polygon"),
-         paste0(PLOTS.DIR,"/LDA-full-dataset"))
+savePlotTIFF(ggplot(lda.data.full, aes(LD1,LD2)) +
+               geom_point(aes(color = FruitColor)) +
+               stat_ellipse(aes(x=LD1, y=LD2, fill = FruitColor), alpha = 0.2, geom = "polygon"),
+             paste0(PLOTS.DIR,"/LDA-full-dataset"))
 
-savePlot(ggplot(lda.data.top200, aes(LD1,LD2)) +
-           geom_point(aes(color = FruitColor)) +
-           stat_ellipse(aes(x=LD1, y=LD2, fill = FruitColor), alpha = 0.2, geom = "polygon"),
-         paste0(PLOTS.DIR,"/LDA-top200-dataset"))
-toc() # LDAnalysis
+savePlotTIFF(ggplot(lda.data.top200, aes(LD1,LD2)) +
+               geom_point(aes(color = FruitColor)) +
+               stat_ellipse(aes(x=LD1, y=LD2, fill = FruitColor), alpha = 0.2, geom = "polygon"),
+             paste0(PLOTS.DIR,"/LDA-top200-dataset.h7"), height = 7)
+toc(log = TRUE) # LDAnalysis
+
+tic("Heatmap for true QTLs")
+# Heatmap
+x.normal.lod.scores <- read.csv(paste0(OUT.PREFIX,".normal.scanone.csv"))
+x.non.parametric.lod.scores <- read.csv(paste0(OUT.PREFIX,".non.parametric.scanone.csv"))
+true.qtl <- read.csv(paste0(OUT.PREFIX,".true.qtl.csv"))
+true.qtl.features <- unique(as.character(true.qtl$trait))
+x.normal.lod.scores.true.qtl <- x.normal.lod.scores[, which(names(x.normal.lod.scores) %in% true.qtl.features)]
+x.non.parametric.lod.scores.true.qtl <- x.non.parametric.lod.scores[, which(names(x.non.parametric.lod.scores) %in% true.qtl.features)]
+lod.scores <- cbind(x.normal.lod.scores.true.qtl,x.non.parametric.lod.scores.true.qtl)
+lod.scores <- matrix(as.numeric(unlist(lod.scores)), nrow=nrow(lod.scores))
+rownames(lod.scores) <- x.normal.lod.scores$X
+colnames(lod.scores) <- true.qtl.features
+obs.by.chr <- table(x.normal.lod.scores$chr)
+colnams.chr <- rep(NA,length(x.normal.lod.scores$X))
+k <- 1
+for(i in 1:length(obs.by.chr)){
+  colnams.chr[k] <- paste0("chr ",i)
+  k <- k + obs.by.chr[i]
+}
+
+# Heatmap without dendrogram
+savePlot(heatmap.2(lod.scores, Rowv = FALSE, Colv = FALSE, 
+                   scale = "none",
+                   margins = c(6, 1),
+                   trace = "none", 
+                   tracecol = "black",
+                   symkey = FALSE, 
+                   symbreaks = FALSE, 
+                   dendrogram = "none",
+                   density.info = "histogram", 
+                   denscol = "black",
+                   key.par=list(mar=c(3.5,0,3,0)),
+                   col = rev(heat.colors(n = 10)),
+                   cexRow = 0.8,
+                   labRow = colnams.chr,
+                   lmat=rbind(c(5, 4, 2), c(6, 1, 3)), lhei=c(2.5, 5), lwid=c(1, 10, 1))
+         ,paste0(PLOTS.DIR,"/HEAT-without-dendrogram", 16, 16))
+
+# Heatmap with dendrogram and key at the top-left corner
+savePlotTIFF(heatmap.2(lod.scores, Rowv = FALSE, Colv = TRUE, 
+                       scale = "none",
+                       margins = c(6, 6),
+                       trace = "none", 
+                       tracecol = "black",
+                       symkey = FALSE, 
+                       symbreaks = FALSE, 
+                       dendrogram = "column",
+                       density.info = "histogram", 
+                       denscol = "black",
+                       col = rev(heat.colors(n = 100)),
+                       cexRow = 0.8,
+                       cexCol = 0.8,
+                       labRow = colnams.chr,
+                       lmat=rbind(c(5, 4, 2), c(6, 1, 3)), lhei=c(2.5, 5), lwid=c(1, 10, 1),
+                       key.par=list(mar=c(3.5,3,3,0)))
+             ,paste0(PLOTS.DIR,"/HEAT-with-dendrogram-all.100cov2"))
+
+# Heatmap with dendrogram and key at the bottom
+savePlotTIFF(heatmap.2(lod.scores, Rowv = FALSE, Colv = TRUE, 
+                       scale = "none",
+                       #margins = c(6, 6),
+                       trace = "none", 
+                       tracecol = "black",
+                       symkey = FALSE, 
+                       symbreaks = FALSE, 
+                       dendrogram = "column",
+                       density.info = "histogram", 
+                       denscol = "black",
+                       col = rev(heat.colors(n = 100)),
+                       cexRow = 0.8,
+                       cexCol = 0.8,
+                       labRow = colnams.chr,
+                       lmat=rbind(c(0,3),c(2,1),c(0,4)), lhei=c(2,6,2), lwid=c(0.3, 7),
+                       key.par=list(mar=c(3.5,1.5,2.5,5)))
+             ,paste0(PLOTS.DIR,"/HEAT-with-dendrogram-all-bottom-key.100co"))
+toc(log = TRUE) # Heatmap for true QTLs
 closeAllConnections()
 
 mpi.quit()
