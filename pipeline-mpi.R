@@ -898,8 +898,8 @@ savePlotTIFF(heatmap.2(lod.scores, Rowv = FALSE, Colv = TRUE,
 toc(log = TRUE) # Heatmap for true QTLs
 closeAllConnections()
 
-mpi.quit()
 toc(log = TRUE) # Total
 
 log.txt <- tic.log(format = TRUE)
 write(unlist(log.txt), paste0(OUT.PREFIX,".log.times.p",PERMUTATIONS,".txt"))
+mpi.quit()
