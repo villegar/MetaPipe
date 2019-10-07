@@ -730,8 +730,8 @@ effect.plots <- foreach(i=1:nrow(t.qtl),
           }
         }
 
-#closeCluster(cl) # Stop cluster
-stopCluster.MPIcluster(c1)
+closeCluster(cl) # Stop cluster
+#stopCluster.MPIcluster(c1)
 
 write.csv(x.normal.scanone, file = paste0(OUT.PREFIX,".normal.scanone.csv"))
 write.csv(x.normal.summary.mapping, file = paste0(OUT.PREFIX,".normal.summary.mapping.csv"), row.names=FALSE, na="")
