@@ -226,6 +226,12 @@ if(PARETO.SCALING){ # Apply Pareto Scaling
 normal.meansp <- cbind(meansp[,excluded.columns],normal.meansp)
 non.parametric.meansp <- cbind(meansp[,excluded.columns],non.parametric.meansp)
 
+#transformations <- read.csv("metabolomics.transformed.all.meansp.csv")
+transformations <- transformed.meansp[transformed.meansp$flag == "Normal",]
+transformations[,c("flag","index","values")] <- NULL
+transformations <- unique(transformations)
+
+write.csv(transformations, file = paste0(OUT.PREFIX,".normal.transformations.summary.csv"), row.names=FALSE, na="")
 write.csv(transformed.meansp, file = paste0(OUT.PREFIX,".transformed.all.meansp.csv"), row.names=FALSE)
 write.csv(normal.meansp, file = paste0(OUT.PREFIX,".normal.meansp.csv"), row.names=FALSE)
 write.csv(non.parametric.meansp, file = paste0(OUT.PREFIX,".non.parametric.meansp.csv"), row.names=FALSE)
@@ -398,7 +404,7 @@ library(doMPI)
 .Last <- function(){
    if (is.loaded("mpi_initialize")){
      if (mpi.comm.size(1) > 0){
-       print("Please use mpi.close.Rslaves() to close slaves.")
+       print("Please use mpi.close.Rslaves() to close workers.")
        mpi.close.Rslaves()
      }
      print("Please use mpi.quit() to quit R")
