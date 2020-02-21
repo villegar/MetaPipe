@@ -3,3 +3,4 @@
 
 # ignore SLURM hostfiles
 *.host.*
+.Rproj.user
