@@ -1,0 +1,14 @@
+Package: MetaPipe
+Title: MetaPipe: A High-Performance Computing pipeline for QTL mapping of large metabolomic datasets
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Roberto",
+           family = "Villegas-Diaz",
+           role = c("aut", "cre"),
+           email = "villegas.roberto@hotmail.com",
+           comment = c(ORCID = "0000-0001-5036-8661"))
+Description: What the package does (one paragraph).
+License: 
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.0.2
