@@ -38,6 +38,7 @@ library(qtl)
 source("plots.utils.R")
 source("transformations.R")
 
+main <- function(){
 # Resources
 cores <- detectCores()
 CPUS <- cores[1] - 1
@@ -928,3 +929,4 @@ closeAllConnections()
 toc(log = TRUE) # Total
 log.txt <- tic.log(format = TRUE)
 write(unlist(log.txt), paste0(OUT.PREFIX,".log.times.p",PERMUTATIONS,".txt"))
+}

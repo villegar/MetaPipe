@@ -13,6 +13,7 @@ library(doParallel)
 source("plots.utils.R")
 source("transformations.R")
 
+normality <- function(){
 # Resources
 cores <- detectCores()
 CPUS <- cores[1] - 1
@@ -129,3 +130,4 @@ for(i in 1:nrow(transformations)){
   cat(nrow(tmp)/meansp.rows)
 }
 cat("\n\n") # Clean output
+}

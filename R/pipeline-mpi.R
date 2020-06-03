@@ -37,6 +37,7 @@ library(qtl, quietly = TRUE)
 source("plots.utils.R")
 source("transformations.R")
 
+main_mpi <- function(){
 # Resources
 cores <- detectCores()
 CPUS <- cores[1] - 1
@@ -909,3 +910,4 @@ toc(log = TRUE) # Total
 log.txt <- tic.log(format = TRUE)
 write(unlist(log.txt), paste0(OUT.PREFIX,".log.times.p",PERMUTATIONS,".txt"))
 mpi.quit()
+}
