@@ -1,25 +1,39 @@
+#' Function to save a graphical object to disk in 
+#' Portable Network Graphics (PNG) format.
+#'
+#' @param myPlot graphical object
+#' @param name output name with or without path
+#' @param width width in inches
+#' @param height height in inches
+#'
+#' @export
+#'
+#' @examples
+#' norm_histo <- hist(rnorm(100), main = "Histogram of Normal Distribution")
+#' savePlot(norm_histo, "hist")
+#' 
+#' @seealso \code{\link{savePlotPDF}} and \code{\link{savePlotTIFF}}
 savePlot <- function(myPlot,name, width = 6, height = 6) {
-  #pdf(paste0(name,".pdf"), width = 6, height = 6, units = 'in', res = 300)
-  png(paste0(name,".png"), width = width, height = height, units = 'in', res = 300, type = "cairo")
+  grDevices::png(paste0(name,".png"), width = width, height = height, units = 'in', res = 300, type = "cairo")
   print(myPlot)
-  dev.off()
+  grDevices::dev.off()
 }
 
 savePlotTIFF <- function(myPlot,name, width = 6, height = 6) {
-  tiff(paste0(name,".tiff"), width = width, height = height, units = 'in', res = 300, type = "cairo")
+  grDevices::tiff(paste0(name,".tiff"), width = width, height = height, units = 'in', res = 300, type = "cairo")
   print(myPlot)
-  dev.off()
+  grDevices::dev.off()
 }
 
 savePlotPDF <- function(myPlot,name, width = 6, height = 6) {
-  pdf(paste0(name,".pdf"), width = width, height = height)
+  grDevices::pdf(paste0(name,".pdf"), width = width, height = height)
   print(myPlot)
-  dev.off()
+  grDevices::dev.off()
 }
 
 ggplot.save <- function(myPlot,name){
-  suppressGraphics({
-    ggsave(
+  R.devices::suppressGraphics({
+    ggplot2::ggsave(
       paste0(name,".png"),
       plot   = myPlot,
       device = 'png',
@@ -44,20 +58,20 @@ generate.overlay.histogram <- function(original,transformed,feature,name.prefix,
     original = original, 
     transformed = transformed
   )
-  original.plot <- ggplot(data = histogram, aes(histogram$original)) +
-    geom_histogram(alpha = ALPHA, aes(y = ..count..), position = 'identity', bins = BINS, col = "black", fill = "#FFDF01") + #"#B2182B") +
-    theme(axis.text.x = element_text(angle = 60, hjust = 1)) + 
-    labs(title=paste("Feature",feature), x='', y='') +
-    xlab(paste0(feature))
+  original.plot <- ggplot2::ggplot(data = histogram, ggplot2::aes(histogram$original)) +
+    ggplot2::geom_histogram(alpha = ALPHA, ggplot2::aes(y = ggplot2::stat_count()), position = 'identity', bins = BINS, col = "black", fill = "#FFDF01") + #"#B2182B") +
+    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 60, hjust = 1)) + 
+    ggplot2::labs(title=paste("Feature",feature), x='', y='') +
+    ggplot2::xlab(paste0(feature))
   
-  transformed.plot <- ggplot(data = histogram, aes(histogram$transformed)) +
-    geom_histogram(alpha = ALPHA, aes(y = ..count..), position = 'identity', bins = BINS, col = "black", fill = "#0057A7") + #"#2166AC") +
-    # geom_density(aes(y=..density..)) + 
-    theme(axis.text.x = element_text(angle = 60, hjust = 1)) + 
-    labs(x='', y='') +
-    xlab(TeX(xlab))
+  transformed.plot <- ggplot2::ggplot(data = histogram, ggplot2::aes(histogram$transformed)) +
+    ggplot2::geom_histogram(alpha = ALPHA, ggplot2::aes(y = ggplot2::stat_count()), position = 'identity', bins = BINS, col = "black", fill = "#0057A7") + #"#2166AC") +
+    # geom_density(ggplot2::aes(y=..density..)) + 
+    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 60, hjust = 1)) + 
+    ggplot2::labs(x='', y='') +
+    ggplot2::xlab(latex2exp::TeX(xlab))
   
-  ggplot.save(grid.draw(rbind(ggplotGrob(original.plot),ggplotGrob(transformed.plot), size = "last")),
+  ggplot.save(grid::grid.draw(rbind(ggplot2::ggplotGrob(original.plot),ggplot2::ggplotGrob(transformed.plot), size = "last")),
               paste0(name.prefix,"_",feature))
 }
 
@@ -70,11 +84,11 @@ generate.histogram <- function(data,feature,name.prefix,xlab){
   ALPHA <- 1
   BINS <- 20
   histogram <- data.frame(original = data)
-  myPlot <- ggplot(data = histogram, aes(histogram$original)) +
-    geom_histogram(alpha = ALPHA, aes(y = ..count..), position = 'identity', bins = BINS, col = "black", fill = "#7FCDBB") + #"#90C978") +
-    # geom_density(aes(y=..density..)) + 
-    theme(axis.text.x = element_text(angle = 60, hjust = 1)) + 
-    labs(title=paste("Feature",feature), x='', y='') +
-    xlab(paste0(feature))
+  myPlot <- ggplot2::ggplot(data = histogram, ggplot2::aes(histogram$original)) +
+    ggplot2::geom_histogram(alpha = ALPHA, ggplot2::aes(y = ggplot2::stat_count()), position = 'identity', bins = BINS, col = "black", fill = "#7FCDBB") + #"#90C978") +
+    # geom_density(ggplot2::aes(y=..density..)) + 
+    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 60, hjust = 1)) + 
+    ggplot2::labs(title=paste("Feature",feature), x='', y='') +
+    ggplot2::xlab(paste0(feature))
   ggplot.save(myPlot,paste0(name.prefix,"_",feature))
 }
