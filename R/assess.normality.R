@@ -10,8 +10,8 @@ library(foreach)
 library(doParallel)
 
 # Source util functions
-source("plots.utils.R")
-source("transformations.R")
+# source("plots.utils.R")
+# source("transformations.R")
 
 normality <- function(){
 # Resources

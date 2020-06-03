@@ -34,8 +34,8 @@ library(factoextra, quietly = TRUE)
 library(qtl, quietly = TRUE)
 
 # Source util functions
-source("plots.utils.R")
-source("transformations.R")
+# source("plots.utils.R")
+# source("transformations.R")
 
 main_mpi <- function(){
 # Resources
