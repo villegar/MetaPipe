@@ -19,8 +19,8 @@ else
   rm openmpi-$VERSION.tar.gz
   echo "Configuring and building OpenMPI $VERSION"
   cd openmpi-$VERSION
-  ./configure --prefix=`pwd` &> log.config
-  make -j 4 all &> log.make
+  ./configure --prefix=`pwd`
+  make -j 4 all
   make install
   export MPI_DIR=`pwd`
   export PATH=$PATH:`pwd`/bin
