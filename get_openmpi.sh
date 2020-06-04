@@ -13,13 +13,14 @@ if [ -f "openmpi-$VERSION/bin/mpirun"]; then
   export LDFLAGS="-L`pwd`/openmpi-$VERSION/lib"
 else
   echo "Downloading OpenMPI $VERSION source"
+  rm -rf openmpi-$VERSION
   wget https://download.open-mpi.org/release/open-mpi/v4.0/openmpi-$VERSION.tar.gz
   tar xfz openmpi-$VERSION.tar.gz
   rm openmpi-$VERSION.tar.gz
   echo "Configuring and building OpenMPI $VERSION"
   cd openmpi-$VERSION
-  ./configure --prefix=`pwd`
-  make -j 4 all
+  ./configure --prefix=`pwd` &> log.config
+  make -j 4 all &> log.make
   make install
   export MPI_DIR=`pwd`
   export PATH=$PATH:`pwd`/bin
