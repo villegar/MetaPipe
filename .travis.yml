@@ -8,7 +8,8 @@ cache:
 
 # Build OpenMPI
 before_install:
- - sh ./get_openmpi.sh 
+ #- sh ./get_openmpi.sh 
+ - sudo apt-get -y install openmpi-bin libopenmpi-dev
   
 repos:
   CRAN: https://cloud.r-project.org
