@@ -1,10 +1,14 @@
 #!/usr/bin/env sh
 
+export VERSION=4.0.3
 # check if OpenMPI is cached from previous build
 if [ -f "openmpi/bin/mpirun"]; then
   echo "Using cached OpenMPI"
+  echo "Expected: /home/travis/build/villegar/MetaPipe/openmpi-4.0.3"
+  export PATH=$PATH:$(pwd)/openmpi-$VERSION/bin
+  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)/openmpi-$VERSION/lib
+  echo "Found: $PATH"
 else
-  export VERSION=4.0.3
   echo "Downloading OpenMPI $VERSION source"
   wget https://download.open-mpi.org/release/open-mpi/v4.0/openmpi-$VERSION.tar.gz
   tar xfz openmpi-$VERSION.tar.gz
