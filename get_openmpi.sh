@@ -9,8 +9,8 @@ if [ -f "openmpi-$VERSION/bin/mpirun"]; then
   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:`pwd`/openmpi-$VERSION/lib
   export LIBRARY_PATH=$LIBRARY_PATH:`pwd`/openmpi-$VERSION/lib
   export C_INCLUDE_PATH=C_INCLUDE_PATH:`pwd`/openmpi-$VERSION/include
-  setenv CPPFLAGS="-I/`pwd`/openmpi-$VERSION/include"
-  setenv LDFLAGS="-L/`pwd`/openmpi-$VERSION/lib"
+  set CPPFLAGS "-I/`pwd`/openmpi-$VERSION/include"
+  set LDFLAGS "-L/`pwd`/openmpi-$VERSION/lib"
 else
   echo "Downloading OpenMPI $VERSION source"
   wget https://download.open-mpi.org/release/open-mpi/v4.0/openmpi-$VERSION.tar.gz
@@ -26,8 +26,8 @@ else
   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:`pwd`/lib
   export LIBRARY_PATH=$LIBRARY_PATH:`pwd`/lib
   export C_INCLUDE_PATH=C_INCLUDE_PATH:`pwd`/include
-  setenv CPPFLAGS="-I/`pwd`/include"
-  setenv LDFLAGS="-L/`pwd`/lib"
+  set CPPFLAGS "-I/`pwd`/include"
+  set LDFLAGS "-L/`pwd`/lib"
   echo $CPPFLAGS
   ls `pwd`/include
   echo "Done installing OpenMPI $VERSION"
