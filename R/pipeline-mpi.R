@@ -37,6 +37,10 @@ library(qtl, quietly = TRUE)
 # source("plots.utils.R")
 # source("transformations.R")
 
+# Load MPI libraries
+library(Rmpi)
+library(doMPI)
+
 main_mpi <- function(){
 # Resources
 cores <- detectCores()
@@ -396,9 +400,7 @@ x.non.parametric.scanone <- foreach(i=2:ncol(x.non.parametric$pheno),
 stopCluster(cl) # Stop cluster
 toc(log = TRUE) # Non-parametric QTL Analysis: Single scanone
 tic("Normal QTL analysis: Summary mapping")
-# Load MPI libraries
-library(Rmpi)
-library(doMPI)
+
 
 # In case R exits unexpectedly, have it automatically clean up
 # resources taken up by Rmpi (slaves, memory, etc...)
@@ -409,7 +411,8 @@ library(doMPI)
        mpi.close.Rslaves()
      }
      print("Please use mpi.quit() to quit R")
-     .Call("mpi_finalize")
+     mpi.quit()
+     # .Call("mpi_finalize", PACKAGE = "Rmpi")
    }
 }
 

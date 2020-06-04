@@ -19,12 +19,42 @@ savePlot <- function(myPlot,name, width = 6, height = 6) {
   grDevices::dev.off()
 }
 
+#' Function to save a graphical object to disk in 
+#' Tagged Image File Format (TIFF) format.
+#'
+#' @param myPlot graphical object
+#' @param name output name with or without path
+#' @param width width in inches
+#' @param height height in inches
+#'
+#' @export
+#'
+#' @examples
+#' norm_histo <- hist(rnorm(100), main = "Histogram of Normal Distribution")
+#' savePlotTIFF(norm_histo, "hist")
+#' 
+#' @seealso \code{\link{savePlotPDF}} and \code{\link{savePlot}}
 savePlotTIFF <- function(myPlot,name, width = 6, height = 6) {
   grDevices::tiff(paste0(name,".tiff"), width = width, height = height, units = 'in', res = 300, type = "cairo")
   print(myPlot)
   grDevices::dev.off()
 }
 
+#' Function to save a graphical object to disk in 
+#' Portable Document Format (PDF) format.
+#'
+#' @param myPlot graphical object
+#' @param name output name with or without path
+#' @param width width in inches
+#' @param height height in inches
+#'
+#' @export
+#'
+#' @examples
+#' norm_histo <- hist(rnorm(100), main = "Histogram of Normal Distribution")
+#' savePlotPDF(norm_histo, "hist")
+#' 
+#' @seealso \code{\link{savePlot}} and \code{\link{savePlotTIFF}}
 savePlotPDF <- function(myPlot,name, width = 6, height = 6) {
   grDevices::pdf(paste0(name,".pdf"), width = width, height = height)
   print(myPlot)
