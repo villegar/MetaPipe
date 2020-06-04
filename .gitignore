@@ -1,14 +1,6 @@
-# ignore all logs
-*.log
-# ignore SLURM hostfiles
-*.host.*
 .Rproj.user
-packrat/lib*/
 .RData
 .Rbuildignore
 .Rhistory
 .Rprofile
-ionomics*
-simmac*
-metabolomics*
-MetaPipe*
+LICENSE.md
