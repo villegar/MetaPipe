@@ -2,24 +2,28 @@
 
 export VERSION=4.0.3
 # check if OpenMPI is cached from previous build
-if [ -f "openmpi/bin/mpirun"]; then
-  echo "Using cached OpenMPI"
-  echo "Expected: /home/travis/build/villegar/MetaPipe/openmpi-4.0.3"
+if [ -f "openmpi-$VERSION/bin/mpirun"]; then
+  echo "Using cached for OpenMPI $VERSION"
+  export MPI_DIR=`pwd`
   export PATH=$PATH:`pwd`/openmpi-$VERSION/bin
   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:`pwd`/openmpi-$VERSION/lib
-  echo "Found: $PATH"
+  export LIBRARY_PATH=$LIBRARY_PATH:`pwd`/openmpi-$VERSION/lib
+  export C_INCLUDE_PATH=C_INCLUDE_PATH:`pwd`/openmpi-$VERSION/include
 else
   echo "Downloading OpenMPI $VERSION source"
   wget https://download.open-mpi.org/release/open-mpi/v4.0/openmpi-$VERSION.tar.gz
   tar xfz openmpi-$VERSION.tar.gz
   rm openmpi-$VERSION.tar.gz
-  echo "Configuring and building openmpi"
+  echo "Configuring and building OpenMPI $VERSION"
   cd openmpi-$VERSION
   ./configure --prefix=`pwd`
   make -j 4 all
   make install
+  export MPI_DIR=`pwd`
   export PATH=$PATH:`pwd`/bin
   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:`pwd`/lib
-  echo "PATH: $PATH"
+  export LIBRARY_PATH=$LIBRARY_PATH:`pwd`/lib
+  export C_INCLUDE_PATH=C_INCLUDE_PATH:`pwd`/include
+  echo "Done installing OpenMPI $VERSION"
   cd ..
 fi
