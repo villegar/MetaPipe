@@ -1,4 +1,6 @@
-language: R
+language: r
+os: linux
+dist: xenial
 cache:
  packages: true
  directories:
