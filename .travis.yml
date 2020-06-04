@@ -10,6 +10,9 @@ cache:
 before_install:
  #- sh ./get_openmpi.sh 
  - sudo apt-get -y install openmpi-bin libopenmpi-dev
+ 
+after_success:
+  - bash <(curl -s https://codecov.io/bash) -t 1dc4c6b5-b456-4867-9d01-5f6132141923
   
 repos:
   CRAN: https://cloud.r-project.org
