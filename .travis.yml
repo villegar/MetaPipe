@@ -1,6 +1,5 @@
 language: r
-cache:
-  packages: true
+cache: packages
   
 repos:
   CRAN: https://cloud.r-project.org
