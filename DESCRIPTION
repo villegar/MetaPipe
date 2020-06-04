@@ -16,8 +16,10 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.0
-Imports: Amelia, doMPI, doParallel, factoextra, FactoMineR, foreach, ggplot2, gplots, grDevices, grid, 
-          gridExtra, latex2exp, MASS, plyr, psych, qtl, R.devices, tictoc, 
-          tidyverse, VIM
-Suggests: Rmpi
+Imports: 
+    Amelia, doMPI, doParallel, factoextra, FactoMineR, foreach, ggplot2, gplots, grDevices, grid, 
+    gridExtra, latex2exp, MASS, plyr, psych, qtl, Rmpi, R.devices, tictoc, 
+    tidyverse, VIM
+Suggests:
+    testthat
 Depends: R (>= 3.6)
