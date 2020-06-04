@@ -1,5 +1,12 @@
-language: r
-cache: packages
+language: R
+cache:
+ packages
+ directories:
+  - openmpi-4.0.3   # cache OpenMPI
+
+# Build OpenMPI
+before_install:
+ - sh ./get_openmpi.sh 
   
 repos:
   CRAN: https://cloud.r-project.org
