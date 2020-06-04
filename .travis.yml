@@ -1,6 +1,6 @@
 language: R
 cache:
- packages
+ packages: true
  directories:
   - openmpi-4.0.3   # cache OpenMPI
 
