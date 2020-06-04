@@ -175,7 +175,7 @@ transformed.meansp <- foreach(i=(length.excluded.columns + 1):ncol(meansp),
                            if(sum(is.finite(meansp[,i]), na.rm = TRUE)>2){
                              pvalue <- shapiro.test(meansp[,i])[[2]] # Assess normality of feature before transforming it
                              if(pvalue <= 0.05){ # Data must be transformed
-                               record <- transform.data(pvalue,meansp[,i],features[i],i,length.excluded.columns, PLOTS.DIR, transformation.values)
+                               record <- transform_data(pvalue,meansp[,i],features[i],i,length.excluded.columns, PLOTS.DIR, transformation.values)
                                
                                if(length(record)){
                                  record$flag <- "Normal"

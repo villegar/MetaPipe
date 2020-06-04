@@ -10,8 +10,7 @@ paretoscale=function(z){
   return(rv)
 }
 
-## Log transformation
-log.transformation <- function(shapiro, data, feature){
+log_transformation <- function(shapiro, data, feature){
   logBases <- c(2,exp(1),3,4,5,6,7,8,9,10)
   
   record <- data.frame(
@@ -40,11 +39,10 @@ log.transformation <- function(shapiro, data, feature){
       return(record)
     }
   }
-  return(root.transformation(shapiro, data, feature))
+  return(root_transformation(shapiro, data, feature))
 }
 
-## Power transformation
-power.transformation <- function(shapiro, data, feature){
+power_transformation <- function(shapiro, data, feature){
   powers <- c(2,exp(1),3,4,5,6,7,8,9,10)
   
   record <- data.frame(
@@ -62,8 +60,6 @@ power.transformation <- function(shapiro, data, feature){
       transformed <- data^p
       if(p == exp(1))
         p <- "e"
-      #print(paste0("After X^",p," transformation ",pvalue," - originally ",shapiro))
-      #is.pow <- TRUE
       xlab <- paste0("$(",feature,")^",p,"$")
       transformation <- paste0("POW_",p)
       name.prefix <- paste0("plots/HIST_",(i-3),"_",transformation)
@@ -77,8 +73,7 @@ power.transformation <- function(shapiro, data, feature){
   return(data.frame())
 }
 
-## Root transformation
-root.transformation <- function(shapiro, data, feature){
+root_transformation <- function(shapiro, data, feature){
   roots <- c(2,exp(1),3,4,5,6,7,8,9,10)
   
   record <- data.frame(
@@ -107,11 +102,10 @@ root.transformation <- function(shapiro, data, feature){
       return(record)
     }
   }
-  return(power.transformation(shapiro, data, feature, record))
+  return(power_transformation(shapiro, data, feature))
 }
 
-## 
-transform.data <- function(shapiro, data, feature, index, 
+transform_data <- function(shapiro, data, feature, index, 
                            offset = 3, plots.directory = "plots", 
                            transformation.values = c(2,exp(1),3,4,5,6,7,8,9,10)){
   #logBases <- c(2,exp(1),3,4,5,6,7,8,9,10)

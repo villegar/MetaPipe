@@ -51,7 +51,7 @@ transformed.meansp <- foreach(i=(1 + length.excluded.columns):ncol(meansp),
                                     pvalue <- shapiro.test(meansp[,i])[[2]]
                                   })
                                   if(pvalue <= 0.05){ # Data must be transformed
-                                    record <- transform.data(pvalue,meansp[,i],features[i],i,length.excluded.columns, plots.directory, transformation.values)
+                                    record <- transform_data(pvalue,meansp[,i],features[i],i,length.excluded.columns, plots.directory, transformation.values)
                                     if(length(record)){
                                       record$flag <- "Normal"
                                     }
