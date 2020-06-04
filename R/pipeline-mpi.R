@@ -34,7 +34,7 @@ library(factoextra, quietly = TRUE)
 library(qtl, quietly = TRUE)
 
 # Source util functions
-# source("plots.utils.R")
+# source("plots-utils.R")
 # source("transformations.R")
 
 # Load MPI libraries
