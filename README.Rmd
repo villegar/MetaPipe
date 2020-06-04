@@ -18,7 +18,7 @@ MetaPipe: A High-Performance Computing pipeline for QTL mapping of large metabol
 
 <!-- badges: start -->
 <!-- [![Build Status](https://travis-ci.com/villegar/MetaPipe.svg?branch=master)](https://travis-ci.com/villegar/MetaPipe) -->
-`r badger::badge_travis("villegar/MetaPipe")`
+`r badger::badge_travis("villegar/MetaPipe", is_commercial = TRUE)`
 `r badger::badge_devel("villegar/MetaPipe", "blue")`
 `r badger::badge_code_size("villegar/MetaPipe")`
 <!-- `r badger::badge_dependencies("MetaPipe")` -->
