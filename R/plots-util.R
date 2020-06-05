@@ -81,6 +81,20 @@ ggplot_save <- function(myPlot,name){
 ## feature = data feature
 ## name.prefix = prefix for the file name
 ## xlab = label for x-axis
+#' Title
+#'
+#' @param original 
+#' @param transformed 
+#' @param feature 
+#' @param name.prefix 
+#' @param xlab 
+#'
+#' @export
+#'
+#' @examples
+#' norm_dist <- rnorm(100)
+#' norm_dist_transformed <- norm_dist^2
+#' compare_hist(norm_dist, norm_dist_transformed, "XYZ", "xyz_hist","")
 compare_hist <- function(original,transformed,feature,name.prefix,xlab){
   ALPHA <- 1
   BINS <- 20
@@ -88,14 +102,14 @@ compare_hist <- function(original,transformed,feature,name.prefix,xlab){
     original = original, 
     transformed = transformed
   )
-  original.plot <- ggplot2::ggplot(data = histogram, ggplot2::aes(histogram$original)) +
-    ggplot2::geom_histogram(alpha = ALPHA, ggplot2::aes(y = ggplot2::stat_count()), position = 'identity', bins = BINS, col = "black", fill = "#FFDF01") + #"#B2182B") +
+  original.plot <- ggplot2::ggplot(data = histogram, ggplot2::aes(original)) +
+    ggplot2::geom_histogram(alpha = ALPHA, ggplot2::aes(y = ..count..), position = 'identity', bins = BINS, col = "black", fill = "#FFDF01") + #"#B2182B") +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 60, hjust = 1)) + 
     ggplot2::labs(title=paste("Feature",feature), x='', y='') +
     ggplot2::xlab(paste0(feature))
   
-  transformed.plot <- ggplot2::ggplot(data = histogram, ggplot2::aes(histogram$transformed)) +
-    ggplot2::geom_histogram(alpha = ALPHA, ggplot2::aes(y = ggplot2::stat_count()), position = 'identity', bins = BINS, col = "black", fill = "#0057A7") + #"#2166AC") +
+  transformed.plot <- ggplot2::ggplot(data = histogram, ggplot2::aes(transformed)) +
+    ggplot2::geom_histogram(alpha = ALPHA, ggplot2::aes(y = ..count..), position = 'identity', bins = BINS, col = "black", fill = "#0057A7") + #"#2166AC") +
     # geom_density(ggplot2::aes(y=..density..)) + 
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 60, hjust = 1)) + 
     ggplot2::labs(x='', y='') +
