@@ -32,7 +32,7 @@ log_transformation <- function(shapiro, data, feature){
       xlab <- paste0("$\\log_{",base,"}(",feature,")$")
       transformation <- paste0("LOG_",base)
       name.prefix <- paste0("plots/HIST_",(i-3),"_",transformation)
-      generate.overlay.histogram(data,transformed,feature,name.prefix,xlab)
+      compare_hist(data,transformed,feature,name.prefix,xlab)
       record$values <- transformed
       record$transf <- "log"
       record$transf.value <- base
@@ -63,7 +63,7 @@ power_transformation <- function(shapiro, data, feature){
       xlab <- paste0("$(",feature,")^",p,"$")
       transformation <- paste0("POW_",p)
       name.prefix <- paste0("plots/HIST_",(i-3),"_",transformation)
-      generate.overlay.histogram(data,transformed,feature,name.prefix,xlab)
+      compare_hist(data,transformed,feature,name.prefix,xlab)
       record$values <- transformed
       record$transf <- "power"
       record$transf.value <- p
@@ -95,7 +95,7 @@ root_transformation <- function(shapiro, data, feature){
       xlab <- paste0("$\\sqrt[",r,"]{",feature,"}$")
       transformation <- paste0("ROOT_",r)
       name.prefix <- paste0("plots/HIST_",(i-3),"_",transformation)
-      generate.overlay.histogram(data,transformed,feature,name.prefix,xlab)
+      compare_hist(data,transformed,feature,name.prefix,xlab)
       record$values <- transformed
       record$transf <- "root"
       record$transf.value <- r
@@ -146,7 +146,7 @@ transform_data <- function(shapiro, data, feature, index,
     xlab <- paste0("$\\log_{",base,"}(",feature,")$")
     transformation <- paste0("LOG_",base)
     name.prefix <- paste0(plots.directory,"/HIST_",(index - offset),"_",transformation)
-    generate.overlay.histogram(data,transformed,feature,name.prefix,xlab)
+    compare_hist(data,transformed,feature,name.prefix,xlab)
     record$values <- transformed
     record$transf <- "log"
     record$transf.value <- base
@@ -160,7 +160,7 @@ transform_data <- function(shapiro, data, feature, index,
     xlab <- paste0("$(",feature,")^",p,"$")
     transformation <- paste0("POW_",p)
     name.prefix <- paste0(plots.directory,"/HIST_",(index - offset),"_",transformation)
-    generate.overlay.histogram(data,transformed,feature,name.prefix,xlab)
+    compare_hist(data,transformed,feature,name.prefix,xlab)
     record$values <- transformed
     record$transf <- "power"
     record$transf.value <- p
@@ -174,7 +174,7 @@ transform_data <- function(shapiro, data, feature, index,
     xlab <- paste0("$\\sqrt[",r,"]{",feature,"}$")
     transformation <- paste0("ROOT_",r)
     name.prefix <- paste0(plots.directory,"/HIST_",(index - offset),"_",transformation)
-    generate.overlay.histogram(data,transformed,feature,name.prefix,xlab)
+    compare_hist(data,transformed,feature,name.prefix,xlab)
     record$values <- transformed
     record$transf <- "root"
     record$transf.value <- r

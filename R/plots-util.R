@@ -81,7 +81,7 @@ ggplot_save <- function(myPlot,name){
 ## feature = data feature
 ## name.prefix = prefix for the file name
 ## xlab = label for x-axis
-generate.overlay.histogram <- function(original,transformed,feature,name.prefix,xlab){
+compare_hist <- function(original,transformed,feature,name.prefix,xlab){
   ALPHA <- 1
   BINS <- 20
   histogram <- data.frame(
