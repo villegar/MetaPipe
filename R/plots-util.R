@@ -9,8 +9,8 @@
 #' @export
 #'
 #' @examples
-#' norm_histo <- hist(rnorm(100), main = "Histogram of Normal Distribution")
-#' savePlot(norm_histo, "hist")
+#' savePlot(hist(rnorm(100), main = "Histogram of Normal Distribution"), 
+#' "hist")
 #' 
 #' @seealso \code{\link{savePlotPDF}} and \code{\link{savePlotTIFF}}
 savePlot <- function(myPlot,name, width = 6, height = 6) {
@@ -30,8 +30,8 @@ savePlot <- function(myPlot,name, width = 6, height = 6) {
 #' @export
 #'
 #' @examples
-#' norm_histo <- hist(rnorm(100), main = "Histogram of Normal Distribution")
-#' savePlotTIFF(norm_histo, "hist")
+#' savePlotTIFF(hist(rnorm(100), main = "Histogram of Normal Distribution"), 
+#' "hist")
 #' 
 #' @seealso \code{\link{savePlotPDF}} and \code{\link{savePlot}}
 savePlotTIFF <- function(myPlot,name, width = 6, height = 6) {
@@ -51,8 +51,8 @@ savePlotTIFF <- function(myPlot,name, width = 6, height = 6) {
 #' @export
 #'
 #' @examples
-#' norm_histo <- hist(rnorm(100), main = "Histogram of Normal Distribution")
-#' savePlotPDF(norm_histo, "hist")
+#' savePlotPDF(hist(rnorm(100), main = "Histogram of Normal Distribution"), 
+#' "hist")
 #' 
 #' @seealso \code{\link{savePlot}} and \code{\link{savePlotTIFF}}
 savePlotPDF <- function(myPlot,name, width = 6, height = 6) {
@@ -61,7 +61,7 @@ savePlotPDF <- function(myPlot,name, width = 6, height = 6) {
   grDevices::dev.off()
 }
 
-ggplot.save <- function(myPlot,name){
+ggplot_save <- function(myPlot,name){
   R.devices::suppressGraphics({
     ggplot2::ggsave(
       paste0(name,".png"),
@@ -101,7 +101,7 @@ generate.overlay.histogram <- function(original,transformed,feature,name.prefix,
     ggplot2::labs(x='', y='') +
     ggplot2::xlab(latex2exp::TeX(xlab))
   
-  ggplot.save(grid::grid.draw(rbind(ggplot2::ggplotGrob(original.plot),ggplot2::ggplotGrob(transformed.plot), size = "last")),
+  ggplot_save(grid::grid.draw(rbind(ggplot2::ggplotGrob(original.plot),ggplot2::ggplotGrob(transformed.plot), size = "last")),
               paste0(name.prefix,"_",feature))
 }
 
@@ -120,5 +120,5 @@ generate.histogram <- function(data,feature,name.prefix,xlab){
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 60, hjust = 1)) + 
     ggplot2::labs(title=paste("Feature",feature), x='', y='') +
     ggplot2::xlab(paste0(feature))
-  ggplot.save(myPlot,paste0(name.prefix,"_",feature))
+  ggplot_save(myPlot,paste0(name.prefix,"_",feature))
 }
