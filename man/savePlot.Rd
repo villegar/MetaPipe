@@ -21,8 +21,8 @@ Function to save a graphical object to disk in
 Portable Network Graphics (PNG) format.
 }
 \examples{
-norm_histo <- hist(rnorm(100), main = "Histogram of Normal Distribution")
-savePlot(norm_histo, "hist")
+savePlot(hist(rnorm(100), main = "Histogram of Normal Distribution"), 
+"hist")
 
 }
 \seealso{

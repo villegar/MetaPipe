@@ -21,8 +21,8 @@ Function to save a graphical object to disk in
 Portable Document Format (PDF) format.
 }
 \examples{
-norm_histo <- hist(rnorm(100), main = "Histogram of Normal Distribution")
-savePlotPDF(norm_histo, "hist")
+savePlotPDF(hist(rnorm(100), main = "Histogram of Normal Distribution"), 
+"hist")
 
 }
 \seealso{
