@@ -83,11 +83,11 @@ ggplot_save <- function(myPlot,name){
 ## xlab = label for x-axis
 #' Title
 #'
-#' @param original 
-#' @param transformed 
-#' @param feature 
-#' @param name.prefix 
-#' @param xlab 
+#' @param original Original data
+#' @param transformed Transformed data
+#' @param feature Feature name
+#' @param name.prefix File prefix
+#' @param xlab x-axis label
 #'
 #' @export
 #'
