@@ -134,7 +134,7 @@ toc(log = TRUE) # Loading and pre-processing
 # Missing values plot
 #missmap(meansp, main = "Missing values vs observed")
 
-generate.boxplots <- function(meansp,ggplot.save){
+generate.boxplots <- function(meansp,ggplot_save){
   print("Generating Boxplots")
   cl <- makeCluster(CPUS, outfile=paste0('./info_parallel.log')) # Make cluster
   registerDoParallel(cl)  # Register cluster
@@ -145,13 +145,13 @@ generate.boxplots <- function(meansp,ggplot.save){
                           geom_boxplot(aes(fill= "")) +
                           theme(axis.text.x = element_text(angle = 60, hjust = 1))+ 
                           labs(title=paste("Feature",features[i]), x='ID', y='')
-                        ggplot.save(myPlot,paste0("BOX_",(i - length.excluded.columns),"_",features[i]))
+                        ggplot_save(myPlot,paste0("BOX_",(i - length.excluded.columns),"_",features[i]))
                       }
   stopCluster(cl1) # Stop cluster
   print("Done with Boxplots")
 }
 
-#generate.boxplots(meansp,ggplot.save)
+#generate.boxplots(meansp,ggplot_save)
 
 tic("Normality Assessment")
 features <- colnames(meansp)
