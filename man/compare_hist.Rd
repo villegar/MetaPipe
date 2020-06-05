@@ -7,15 +7,15 @@
 compare_hist(original, transformed, feature, name.prefix, xlab)
 }
 \arguments{
-\item{original}{}
+\item{original}{Original data}
 
-\item{transformed}{}
+\item{transformed}{Transformed data}
 
-\item{feature}{}
+\item{feature}{Feature name}
 
-\item{name.prefix}{}
+\item{name.prefix}{File prefix}
 
-\item{xlab}{}
+\item{xlab}{x-axis label}
 }
 \description{
 Title
