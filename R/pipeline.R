@@ -35,7 +35,7 @@ library(factoextra)
 library(qtl)
 
 # Source util functions
-# source("plots-utils.R")
+# source("plots-util.R")
 # source("transformations.R")
 
 main <- function(){
