@@ -79,14 +79,14 @@ ggplot_save <- function(myPlot,name){
 ## original = original data
 ## transformed = transformed data
 ## feature = data feature
-## name.prefix = prefix for the file name
+## prefix = prefix for the file name
 ## xlab = label for x-axis
 #' Title
 #'
 #' @param original Original data
 #' @param transformed Transformed data
 #' @param feature Feature name
-#' @param name.prefix File prefix
+#' @param prefix File prefix
 #' @param xlab x-axis label
 #'
 #' @export
@@ -95,7 +95,7 @@ ggplot_save <- function(myPlot,name){
 #' norm_dist <- rnorm(100)
 #' norm_dist_transformed <- norm_dist^2
 #' compare_hist(norm_dist, norm_dist_transformed, "XYZ", "xyz_hist", "x")
-compare_hist <- function(original, transformed, feature, name.prefix, xlab){
+compare_hist <- function(original, transformed, feature, prefix, xlab){
   ALPHA <- 1
   BINS <- 20
   histogram <- data.frame(
@@ -116,19 +116,19 @@ compare_hist <- function(original, transformed, feature, name.prefix, xlab){
     ggplot2::xlab(latex2exp::TeX(xlab))
   
   ggplot_save(grid::grid.draw(rbind(ggplot2::ggplotGrob(original.plot),ggplot2::ggplotGrob(transformed.plot), size = "last")),
-              paste0(name.prefix,"_",feature))
+              paste0(prefix,"_",feature))
 }
 
 # This function generates a single histogram
 ## data = input data
 ## feature = data feature
-## name.prefix = prefix for the file name
+## prefix = prefix for the file name
 ## xlab = label for x-axis
 #' Title
 #'
 #' @param data Histogram data
 #' @param feature Feature name
-#' @param name.prefix File prefix
+#' @param prefix File prefix
 #' @param xlab x-axis label
 #'
 #' @export
@@ -136,7 +136,7 @@ compare_hist <- function(original, transformed, feature, name.prefix, xlab){
 #' @examples
 #' norm_dist <- rnorm(100)
 #' generate_hist(norm_dist, "XYZ", "xyz_hist", "x")
-generate_hist <- function(data, feature, name.prefix, xlab){
+generate_hist <- function(data, feature, prefix, xlab){
   ALPHA <- 1
   BINS <- 20
   histogram <- data.frame(original = data)
@@ -146,5 +146,5 @@ generate_hist <- function(data, feature, name.prefix, xlab){
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 60, hjust = 1)) + 
     ggplot2::labs(title=paste("Feature",feature), x='', y='') +
     ggplot2::xlab(paste0(feature))
-  ggplot_save(myPlot,paste0(name.prefix,"_",feature))
+  ggplot_save(myPlot,paste0(prefix,"_",feature))
 }
