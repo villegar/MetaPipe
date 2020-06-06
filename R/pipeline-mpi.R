@@ -195,7 +195,7 @@ transformed.meansp <- foreach(i=(length.excluded.columns + 1):ncol(meansp),
                                xlab <- features[i]
                                transformation <- "NORM"
                                name.prefix <- paste0(PLOTS.DIR,"/HIST_",(i - length.excluded.columns),"_",transformation)
-                               generate.histogram(meansp[,i],features[i],name.prefix,xlab)
+                               generate_hist(meansp[,i],features[i],name.prefix,xlab)
                                record$flag <- "Normal"
                              }
                            }

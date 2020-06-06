@@ -13,7 +13,7 @@
 #' "hist")
 #' 
 #' @seealso \code{\link{savePlotPDF}} and \code{\link{savePlotTIFF}}
-savePlot <- function(myPlot,name, width = 6, height = 6) {
+savePlot <- function(myPlot, name, width = 6, height = 6) {
   grDevices::png(paste0(name,".png"), width = width, height = height, units = 'in', res = 300, type = "cairo")
   print(myPlot)
   grDevices::dev.off()
@@ -34,7 +34,7 @@ savePlot <- function(myPlot,name, width = 6, height = 6) {
 #' "hist")
 #' 
 #' @seealso \code{\link{savePlotPDF}} and \code{\link{savePlot}}
-savePlotTIFF <- function(myPlot,name, width = 6, height = 6) {
+savePlotTIFF <- function(myPlot, name, width = 6, height = 6) {
   grDevices::tiff(paste0(name,".tiff"), width = width, height = height, units = 'in', res = 300, type = "cairo")
   print(myPlot)
   grDevices::dev.off()
@@ -55,7 +55,7 @@ savePlotTIFF <- function(myPlot,name, width = 6, height = 6) {
 #' "hist")
 #' 
 #' @seealso \code{\link{savePlot}} and \code{\link{savePlotTIFF}}
-savePlotPDF <- function(myPlot,name, width = 6, height = 6) {
+savePlotPDF <- function(myPlot, name, width = 6, height = 6) {
   grDevices::pdf(paste0(name,".pdf"), width = width, height = height)
   print(myPlot)
   grDevices::dev.off()
@@ -94,8 +94,8 @@ ggplot_save <- function(myPlot,name){
 #' @examples
 #' norm_dist <- rnorm(100)
 #' norm_dist_transformed <- norm_dist^2
-#' compare_hist(norm_dist, norm_dist_transformed, "XYZ", "xyz_hist","")
-compare_hist <- function(original,transformed,feature,name.prefix,xlab){
+#' compare_hist(norm_dist, norm_dist_transformed, "XYZ", "xyz_hist", "x")
+compare_hist <- function(original, transformed, feature, name.prefix, xlab){
   ALPHA <- 1
   BINS <- 20
   histogram <- data.frame(
@@ -124,12 +124,24 @@ compare_hist <- function(original,transformed,feature,name.prefix,xlab){
 ## feature = data feature
 ## name.prefix = prefix for the file name
 ## xlab = label for x-axis
-generate.histogram <- function(data,feature,name.prefix,xlab){
+#' Title
+#'
+#' @param data Histogram data
+#' @param feature Feature name
+#' @param name.prefix File prefix
+#' @param xlab x-axis label
+#'
+#' @export
+#'
+#' @examples
+#' norm_dist <- rnorm(100)
+#' generate_hist(norm_dist, "XYZ", "xyz_hist", "x")
+generate_hist <- function(data, feature, name.prefix, xlab){
   ALPHA <- 1
   BINS <- 20
   histogram <- data.frame(original = data)
-  myPlot <- ggplot2::ggplot(data = histogram, ggplot2::aes(histogram$original)) +
-    ggplot2::geom_histogram(alpha = ALPHA, ggplot2::aes(y = ggplot2::stat_count()), position = 'identity', bins = BINS, col = "black", fill = "#7FCDBB") + #"#90C978") +
+  myPlot <- ggplot2::ggplot(data = histogram, ggplot2::aes(original)) +
+    ggplot2::geom_histogram(alpha = ALPHA, ggplot2::aes(y = ..count..), position = 'identity', bins = BINS, col = "black", fill = "#7FCDBB") + #"#90C978") +
     # geom_density(ggplot2::aes(y=..density..)) + 
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 60, hjust = 1)) + 
     ggplot2::labs(title=paste("Feature",feature), x='', y='') +
