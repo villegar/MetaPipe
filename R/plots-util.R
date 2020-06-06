@@ -14,10 +14,10 @@
 #' 
 #' @seealso \code{\link{savePlotPDF}} and \code{\link{savePlotTIFF}}
 savePlot <- function(myPlot, name, width = 6, height = 6) {
-  grDevices::png(paste0(name,".png"), 
+  grDevices::png(paste0(name, ".png"), 
                  width = width, 
                  height = height, 
-                 units = 'in', 
+                 units = "in", 
                  res = 300, 
                  type = "cairo")
   print(myPlot)
@@ -40,10 +40,10 @@ savePlot <- function(myPlot, name, width = 6, height = 6) {
 #' 
 #' @seealso \code{\link{savePlotPDF}} and \code{\link{savePlot}}
 savePlotTIFF <- function(myPlot, name, width = 6, height = 6) {
-  grDevices::tiff(paste0(name,".tiff"), 
+  grDevices::tiff(paste0(name, ".tiff"), 
                   width = width, 
                   height = height, 
-                  units = 'in', 
+                  units = "in", 
                   res = 300, 
                   type = "cairo")
   print(myPlot)
@@ -66,8 +66,8 @@ savePlotTIFF <- function(myPlot, name, width = 6, height = 6) {
 #' 
 #' @seealso \code{\link{savePlot}} and \code{\link{savePlotTIFF}}
 savePlotPDF <- function(myPlot, name, width = 6, height = 6) {
-  grDevices::pdf(paste0(name,".pdf"), 
-                 width = width, 
+  grDevices::pdf(paste0(name, ".pdf"),
+                 width = width,
                  height = height)
   print(myPlot)
   grDevices::dev.off()
@@ -76,9 +76,9 @@ savePlotPDF <- function(myPlot, name, width = 6, height = 6) {
 ggplot_save <- function(myPlot,name){
   R.devices::suppressGraphics({
     ggplot2::ggsave(
-      paste0(name,".png"),
+      paste0(name, ".png"),
       plot   = myPlot,
-      device = 'png',
+      device = "png",
       width  = 6,
       height = 6,
       dpi    = 300,
@@ -117,25 +117,25 @@ compare_hist <- function(original, transformed, feature, prefix, xlab){
   original.plot <- ggplot2::ggplot(data = histogram, ggplot2::aes(original)) +
     ggplot2::geom_histogram(alpha = ALPHA, 
                             ggplot2::aes(y = ..count..), 
-                            position = 'identity', 
+                            position = "identity", 
                             bins = BINS, 
                             col = "black", 
                             fill = "#FFDF01") +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 60, hjust = 1)) + 
-    ggplot2::labs(title=paste("Feature",feature), x='', y='') +
+    ggplot2::labs(title=paste("Feature",feature), x="", y="") +
     ggplot2::xlab(paste0(feature))
   
   transformed.plot <- ggplot2::ggplot(data = histogram, 
                                       ggplot2::aes(transformed)) +
     ggplot2::geom_histogram(alpha = ALPHA, 
                             ggplot2::aes(y = ..count..), 
-                            position = 'identity', 
+                            position = "identity", 
                             bins = BINS, 
                             col = "black", 
                             fill = "#0057A7") +
     # geom_density(ggplot2::aes(y=..density..)) + 
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 60, hjust = 1)) + 
-    ggplot2::labs(x='', y='') +
+    ggplot2::labs(x="", y="") +
     ggplot2::xlab(latex2exp::TeX(xlab))
   
   ggplot_save(grid::grid.draw(rbind(ggplot2::ggplotGrob(original.plot),
@@ -169,13 +169,13 @@ generate_hist <- function(data, feature, prefix, xlab){
   myPlot <- ggplot2::ggplot(data = histogram, ggplot2::aes(original)) +
     ggplot2::geom_histogram(alpha = ALPHA, 
                             ggplot2::aes(y = ..count..), 
-                            position = 'identity', 
+                            position = "identity", 
                             bins = BINS, 
                             col = "black", 
                             fill = "#7FCDBB") +
     # geom_density(ggplot2::aes(y=..density..)) + 
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 60, hjust = 1)) + 
-    ggplot2::labs(title=paste("Feature",feature), x='', y='') +
+    ggplot2::labs(title=paste("Feature",feature), x="", y="") +
     ggplot2::xlab(paste0(feature))
   ggplot_save(myPlot,paste0(prefix,"_",feature))
 }
