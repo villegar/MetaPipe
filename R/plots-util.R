@@ -14,7 +14,12 @@
 #' 
 #' @seealso \code{\link{savePlotPDF}} and \code{\link{savePlotTIFF}}
 savePlot <- function(myPlot, name, width = 6, height = 6) {
-  grDevices::png(paste0(name,".png"), width = width, height = height, units = 'in', res = 300, type = "cairo")
+  grDevices::png(paste0(name,".png"), 
+                 width = width, 
+                 height = height, 
+                 units = 'in', 
+                 res = 300, 
+                 type = "cairo")
   print(myPlot)
   grDevices::dev.off()
 }
@@ -35,7 +40,12 @@ savePlot <- function(myPlot, name, width = 6, height = 6) {
 #' 
 #' @seealso \code{\link{savePlotPDF}} and \code{\link{savePlot}}
 savePlotTIFF <- function(myPlot, name, width = 6, height = 6) {
-  grDevices::tiff(paste0(name,".tiff"), width = width, height = height, units = 'in', res = 300, type = "cairo")
+  grDevices::tiff(paste0(name,".tiff"), 
+                  width = width, 
+                  height = height, 
+                  units = 'in', 
+                  res = 300, 
+                  type = "cairo")
   print(myPlot)
   grDevices::dev.off()
 }
@@ -56,7 +66,9 @@ savePlotTIFF <- function(myPlot, name, width = 6, height = 6) {
 #' 
 #' @seealso \code{\link{savePlot}} and \code{\link{savePlotTIFF}}
 savePlotPDF <- function(myPlot, name, width = 6, height = 6) {
-  grDevices::pdf(paste0(name,".pdf"), width = width, height = height)
+  grDevices::pdf(paste0(name,".pdf"), 
+                 width = width, 
+                 height = height)
   print(myPlot)
   grDevices::dev.off()
 }
@@ -103,19 +115,33 @@ compare_hist <- function(original, transformed, feature, prefix, xlab){
     transformed = transformed
   )
   original.plot <- ggplot2::ggplot(data = histogram, ggplot2::aes(original)) +
-    ggplot2::geom_histogram(alpha = ALPHA, ggplot2::aes(y = ..count..), position = 'identity', bins = BINS, col = "black", fill = "#FFDF01") + #"#B2182B") +
+    ggplot2::geom_histogram(alpha = ALPHA, 
+                            ggplot2::aes(y = ..count..), 
+                            position = 'identity', 
+                            bins = BINS, 
+                            col = "black", 
+                            fill = "#FFDF01") +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 60, hjust = 1)) + 
     ggplot2::labs(title=paste("Feature",feature), x='', y='') +
     ggplot2::xlab(paste0(feature))
   
-  transformed.plot <- ggplot2::ggplot(data = histogram, ggplot2::aes(transformed)) +
-    ggplot2::geom_histogram(alpha = ALPHA, ggplot2::aes(y = ..count..), position = 'identity', bins = BINS, col = "black", fill = "#0057A7") + #"#2166AC") +
+  transformed.plot <- ggplot2::ggplot(data = histogram, 
+                                      ggplot2::aes(transformed)) +
+    ggplot2::geom_histogram(alpha = ALPHA, 
+                            ggplot2::aes(y = ..count..), 
+                            position = 'identity', 
+                            bins = BINS, 
+                            col = "black", 
+                            fill = "#0057A7") +
     # geom_density(ggplot2::aes(y=..density..)) + 
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 60, hjust = 1)) + 
     ggplot2::labs(x='', y='') +
     ggplot2::xlab(latex2exp::TeX(xlab))
   
-  ggplot_save(grid::grid.draw(rbind(ggplot2::ggplotGrob(original.plot),ggplot2::ggplotGrob(transformed.plot), size = "last")),
+  ggplot_save(grid::grid.draw(rbind(ggplot2::ggplotGrob(original.plot),
+                                    ggplot2::ggplotGrob(transformed.plot), 
+                                    size = "last")
+                              ),
               paste0(prefix,"_",feature))
 }
 
@@ -141,7 +167,12 @@ generate_hist <- function(data, feature, prefix, xlab){
   BINS <- 20
   histogram <- data.frame(original = data)
   myPlot <- ggplot2::ggplot(data = histogram, ggplot2::aes(original)) +
-    ggplot2::geom_histogram(alpha = ALPHA, ggplot2::aes(y = ..count..), position = 'identity', bins = BINS, col = "black", fill = "#7FCDBB") + #"#90C978") +
+    ggplot2::geom_histogram(alpha = ALPHA, 
+                            ggplot2::aes(y = ..count..), 
+                            position = 'identity', 
+                            bins = BINS, 
+                            col = "black", 
+                            fill = "#7FCDBB") +
     # geom_density(ggplot2::aes(y=..density..)) + 
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 60, hjust = 1)) + 
     ggplot2::labs(title=paste("Feature",feature), x='', y='') +
