@@ -4,7 +4,7 @@
 \alias{compare_hist}
 \title{Title}
 \usage{
-compare_hist(original, transformed, feature, name.prefix, xlab)
+compare_hist(original, transformed, feature, prefix, xlab)
 }
 \arguments{
 \item{original}{Original data}
@@ -13,7 +13,7 @@ compare_hist(original, transformed, feature, name.prefix, xlab)
 
 \item{feature}{Feature name}
 
-\item{name.prefix}{File prefix}
+\item{prefix}{File prefix}
 
 \item{xlab}{x-axis label}
 }
@@ -23,5 +23,5 @@ Title
 \examples{
 norm_dist <- rnorm(100)
 norm_dist_transformed <- norm_dist^2
-compare_hist(norm_dist, norm_dist_transformed, "XYZ", "xyz_hist","")
+compare_hist(norm_dist, norm_dist_transformed, "XYZ", "xyz_hist", "x")
 }

@@ -4,14 +4,14 @@
 \alias{generate_hist}
 \title{Title}
 \usage{
-generate_hist(data, feature, name.prefix, xlab)
+generate_hist(data, feature, prefix, xlab)
 }
 \arguments{
 \item{data}{Histogram data}
 
 \item{feature}{Feature name}
 
-\item{name.prefix}{File prefix}
+\item{prefix}{File prefix}
 
 \item{xlab}{x-axis label}
 }
@@ -20,5 +20,5 @@ Title
 }
 \examples{
 norm_dist <- rnorm(100)
-generate_hist(norm_dist, "XYZ", "xyz_hist","")
+generate_hist(norm_dist, "XYZ", "xyz_hist", "x")
 }
