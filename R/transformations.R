@@ -10,8 +10,18 @@ paretoscale <- function(z) {
   return(rv)
 }
 
-log_transformation <- function(shapiro, data, feature) {
-  logBases <- c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10)
+check_alpha <- function(alpha) {
+  if (alpha < 0)
+    stop("alpha must be non-negative")
+  else if (alpha > 1)
+    stop("alpha must be a numeric value between 0 and 1")
+  else if (!is.numeric(alpha))
+    stop("alpha must be a numeric value between 0 and 1")
+}
+
+log_transformation <- function(shapiro, data, feature, alpha = 0.05,
+                               bases = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10)) {
+  check_alpha(alpha = alpha)
   
   record <- data.frame(
     index = i,
@@ -22,9 +32,9 @@ log_transformation <- function(shapiro, data, feature) {
     transf.value = 0
   )
   
-  for (base in logBases) {
-    pvalue <- shapiro.test(log(data, base))[[2]]
-    if (pvalue >= 0.05) {
+  for (base in bases) {
+    pval <- shapiro.test(log(data, base))[[2]]
+    if (pval >= alpha) {
       transformed <- log(data, base)
       if (base == exp(1))
         base <- "e"
@@ -54,8 +64,8 @@ power_transformation <- function(shapiro, data, feature) {
   )
   
   for (p in powers) {
-    pvalue <- shapiro.test(data ^ p)[[2]]
-    if (pvalue >= 0.05) {
+    pval <- shapiro.test(data ^ p)[[2]]
+    if (pval >= 0.05) {
       transformed <- data ^ p
       if (p == exp(1))
         p <- "e"
@@ -85,8 +95,8 @@ root_transformation <- function(shapiro, data, feature) {
   )
   
   for (r in roots) {
-    pvalue <- shapiro.test(data ^ (1 / r))[[2]]
-    if (pvalue >= 0.05) {
+    pval <- shapiro.test(data ^ (1 / r))[[2]]
+    if (pval >= 0.05) {
       transformed <- data ^ (1 / r)
       if (r == exp(1))
         r <- "e"
@@ -111,7 +121,7 @@ transform_data <- function(shapiro,
                            plots.directory = "plots",
                            transformation.values = 
                              c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10)) {
-  #logBases <- c(2,exp(1),3,4,5,6,7,8,9,10)
+  #bases <- c(2,exp(1),3,4,5,6,7,8,9,10)
   #powers <- c(2,exp(1),3,4,5,6,7,8,9,10)
   #roots <- c(2,exp(1),3,4,5,6,7,8,9,10)
   
@@ -124,21 +134,21 @@ transform_data <- function(shapiro,
     transf.value = 0
   )
   
-  pvalues <- data.frame(matrix(vector(), 3, length(transformation.values)))
-  for (k in 1:ncol(pvalues)) {
+  pvals <- data.frame(matrix(vector(), 3, length(transformation.values)))
+  for (k in 1:ncol(pvals)) {
     suppressWarnings({
-      pvalues[1, k] <- shapiro.test(log(data, transformation.values[k]))[[2]]
-      pvalues[2, k] <- shapiro.test(data ^ transformation.values[k])[[2]]
-      pvalues[3, k] <- shapiro.test(data ^ (1 / transformation.values[k]))[[2]]
+      pvals[1, k] <- shapiro.test(log(data, transformation.values[k]))[[2]]
+      pvals[2, k] <- shapiro.test(data ^ transformation.values[k])[[2]]
+      pvals[3, k] <- shapiro.test(data ^ (1 / transformation.values[k]))[[2]]
     })
   }
-  max.pvalue <- max(pvalues, na.rm = TRUE)
-  max.pvalue.index <- which(pvalues == max.pvalue, arr.ind = TRUE)
+  max.pval <- max(pvals, na.rm = TRUE)
+  max.pval.index <- which(pvals == max.pval, arr.ind = TRUE)
   
-  transf <- max.pvalue.index[1]
-  transf.value.index <- max.pvalue.index[2]
+  transf <- max.pval.index[1]
+  transf.value.index <- max.pval.index[2]
   
-  if (max.pvalue < 0.05) # Verify if a transformation normalized the data
+  if (max.pval < 0.05) # Verify if a transformation normalized the data
     return(data.frame())
   
   if (transf == 1) { # Log transformation
