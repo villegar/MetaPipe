@@ -2,6 +2,6 @@
 
 export(compare_hist)
 export(generate_hist)
-export(savePlot)
-export(savePlotPDF)
-export(savePlotTIFF)
+export(save_plot)
+export(save_plotPDF)
+export(save_plotTIFF)
