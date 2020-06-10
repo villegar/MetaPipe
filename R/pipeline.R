@@ -478,7 +478,7 @@ x.normal.summary.mapping <- foreach(i=2:ncol(x$pheno),
                                p10 <- summary(normal.scanone.per)[[2]] # 10% percent
                                
                                
-                               lod.plot <- savePlot(plot(normal.scanone, ylab="LOD Score") + 
+                               lod.plot <- save_plot(plot(normal.scanone, ylab="LOD Score") + 
                                                       abline(h=p5, lwd=2, lty="solid", col="red") +
                                                       abline(h=p10, lwd=2, lty="solid", col="red"),
                                                     paste0(PLOTS.DIR,"/LOD-",features[i]), width = 18)
@@ -692,7 +692,7 @@ x.non.parametric.summary.mapping <- foreach(i=2:ncol(x$pheno),
                                  p10 <- summary(non.parametric.scanone.per)[[2]] # 10% percent
                                  
                                  
-                                 lod.plot <- savePlot(plot(non.parametric.scanone, ylab="LOD Score") + 
+                                 lod.plot <- save_plot(plot(non.parametric.scanone, ylab="LOD Score") + 
                                                         abline(h=p5, lwd=2, lty="solid", col="red") +
                                                         abline(h=p10, lwd=2, lty="solid", col="red"),
                                                       paste0(PLOTS.DIR,"/LOD-NP-",features[i]), width = 18)
@@ -753,12 +753,12 @@ effect.plots <- foreach(i=1:nrow(t.qtl),
                             } else {
                               ylab <- features.t.qtl[i]
                             }
-                            effect.plot <- savePlot(effectplot(x2.normal, pheno.col = features.t.qtl[i], 
+                            effect.plot <- save_plot(effectplot(x2.normal, pheno.col = features.t.qtl[i], 
                                                                mname1 = markers.t.qtl[i], main = NULL, ylab = TeX(ylab)),
                                                     paste0(PLOTS.DIR,"/EFF-",features.t.qtl[i],"-",markers.t.qtl[i]))
                           } else {
                             ylab <- features.t.qtl[i]
-                            effect.plot <- savePlot(effectplot(x2.non.parametric, pheno.col = as.character(features.t.qtl[i]), 
+                            effect.plot <- save_plot(effectplot(x2.non.parametric, pheno.col = as.character(features.t.qtl[i]), 
                                                                mname1 = markers.t.qtl[i], main = NULL, ylab = TeX(ylab)),
                                                     paste0(PLOTS.DIR,"/EFF-NP-",features.t.qtl[i],"-",markers.t.qtl[i]))
                           }
@@ -800,7 +800,7 @@ res.pca <- PCA(transformed.meansp[,-excluded.columns],  graph = FALSE, scale.uni
 ##fviz_screeplot(res.pca, addlabels = TRUE, ylim = c(0, 50))
 ##res.pca$eig
 # Biplot with top 10 features 
-savePlotTIFF(fviz_pca_biplot(res.pca, col.var="contrib",
+save_plotTIFF(fviz_pca_biplot(res.pca, col.var="contrib",
                          gradient.cols = c("green","red","blue"),#"#00AFBB" "#E7B800", "#FC4E07"),
                          select.var = list(contrib = 10),
                          label="var",addEllipses=TRUE, ellipse.level=0.95, repel = TRUE  # Avoid text overlapping
@@ -837,12 +837,12 @@ fit.top200 <- lda(FruitColor ~ ., data = colored.transformed.meansp.top200)
 
 lda.data.full <- cbind(colored.transformed.meansp.full, predict(fit.full)$x)
 lda.data.top200 <- cbind(colored.transformed.meansp.top200, predict(fit.top200)$x)
-savePlotTIFF(ggplot(lda.data.full, aes(LD1,LD2)) +
+save_plotTIFF(ggplot(lda.data.full, aes(LD1,LD2)) +
   geom_point(aes(color = FruitColor)) +
   stat_ellipse(aes(x=LD1, y=LD2, fill = FruitColor), alpha = 0.2, geom = "polygon"),
   paste0(PLOTS.DIR,"/LDA-full-dataset"))
   
-savePlotTIFF(ggplot(lda.data.top200, aes(LD1,LD2)) +
+save_plotTIFF(ggplot(lda.data.top200, aes(LD1,LD2)) +
   geom_point(aes(color = FruitColor)) +
   stat_ellipse(aes(x=LD1, y=LD2, fill = FruitColor), alpha = 0.2, geom = "polygon"),
   paste0(PLOTS.DIR,"/LDA-top200-dataset.h7"), height = 7)
@@ -870,7 +870,7 @@ for(i in 1:length(obs.by.chr)){
 #rownames(lod.scores) <- colnams.chr
 
 # Heatmap without dendrogram
-savePlot(heatmap.2(lod.scores, Rowv = FALSE, Colv = FALSE, 
+save_plot(heatmap.2(lod.scores, Rowv = FALSE, Colv = FALSE, 
                    scale = "none",
                    margins = c(6, 1),
                    trace = "none", 
@@ -888,7 +888,7 @@ savePlot(heatmap.2(lod.scores, Rowv = FALSE, Colv = FALSE,
          ,paste0(PLOTS.DIR,"/HEAT-without-dendrogram", 16, 16))
 
 # Heatmap with dendrogram and key at the top-left corner
-savePlotTIFF(heatmap.2(lod.scores, Rowv = FALSE, Colv = TRUE, 
+save_plotTIFF(heatmap.2(lod.scores, Rowv = FALSE, Colv = TRUE, 
                        scale = "none",
                        margins = c(6, 6),
                        trace = "none", 
@@ -907,7 +907,7 @@ savePlotTIFF(heatmap.2(lod.scores, Rowv = FALSE, Colv = TRUE,
              ,paste0(PLOTS.DIR,"/HEAT-with-dendrogram-all.100cov2"))
 
 # Heatmap with dendrogram and key at the bottom
-savePlotTIFF(heatmap.2(lod.scores, Rowv = FALSE, Colv = TRUE, 
+save_plotTIFF(heatmap.2(lod.scores, Rowv = FALSE, Colv = TRUE, 
                        scale = "none",
                        #margins = c(6, 6),
                        trace = "none", 

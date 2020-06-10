@@ -24,9 +24,7 @@ log_transformation <- function(shapiro, data, feature, alpha = 0.05,
   check_alpha(alpha = alpha)
   
   record <- data.frame(
-    index = i,
-    feature = features[i],
-    values = meansp[, i],
+    values = data,
     flag = "Non-normal",
     transf = "",
     transf.value = 0

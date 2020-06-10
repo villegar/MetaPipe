@@ -9,11 +9,11 @@
 #' @export
 #'
 #' @examples
-#' savePlot(hist(rnorm(100), main = "Histogram of Normal Distribution"), 
+#' save_plot(hist(rnorm(100), main = "Histogram of Normal Distribution"), 
 #' "hist")
 #' 
-#' @seealso \code{\link{savePlotPDF}} and \code{\link{savePlotTIFF}}
-savePlot <- function(myPlot, name, width = 6, height = 6) {
+#' @seealso \code{\link{save_plotPDF}} and \code{\link{save_plotTIFF}}
+save_plot <- function(myPlot, name, width = 6, height = 6) {
   grDevices::png(paste0(name, ".png"), 
                  width = width, 
                  height = height, 
@@ -35,11 +35,11 @@ savePlot <- function(myPlot, name, width = 6, height = 6) {
 #' @export
 #'
 #' @examples
-#' savePlotTIFF(hist(rnorm(100), main = "Histogram of Normal Distribution"), 
+#' save_plotTIFF(hist(rnorm(100), main = "Histogram of Normal Distribution"), 
 #' "hist")
 #' 
-#' @seealso \code{\link{savePlotPDF}} and \code{\link{savePlot}}
-savePlotTIFF <- function(myPlot, name, width = 6, height = 6) {
+#' @seealso \code{\link{save_plotPDF}} and \code{\link{save_plot}}
+save_plotTIFF <- function(myPlot, name, width = 6, height = 6) {
   grDevices::tiff(paste0(name, ".tiff"), 
                   width = width, 
                   height = height, 
@@ -61,11 +61,11 @@ savePlotTIFF <- function(myPlot, name, width = 6, height = 6) {
 #' @export
 #'
 #' @examples
-#' savePlotPDF(hist(rnorm(100), main = "Histogram of Normal Distribution"), 
+#' save_plotPDF(hist(rnorm(100), main = "Histogram of Normal Distribution"), 
 #' "hist")
 #' 
-#' @seealso \code{\link{savePlot}} and \code{\link{savePlotTIFF}}
-savePlotPDF <- function(myPlot, name, width = 6, height = 6) {
+#' @seealso \code{\link{save_plot}} and \code{\link{save_plotTIFF}}
+save_plotPDF <- function(myPlot, name, width = 6, height = 6) {
   grDevices::pdf(paste0(name, ".pdf"),
                  width = width,
                  height = height)

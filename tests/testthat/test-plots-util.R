@@ -1,5 +1,5 @@
 test_that("plot in PDF format works", {
-  savePlotPDF(hist(rnorm(100), main = "Histogram of Normal Distribution"),
+  save_plotPDF(hist(rnorm(100), main = "Histogram of Normal Distribution"),
               "hist")
   filename <- "hist.pdf"
   expect_true(file.exists(filename))
@@ -10,7 +10,7 @@ test_that("plot in PDF format works", {
 })
 
 test_that("plot in PNG format works", {
-  savePlot(hist(rnorm(100), main = "Histogram of Normal Distribution"),
+  save_plot(hist(rnorm(100), main = "Histogram of Normal Distribution"),
            "hist")
   filename <- "hist.png"
   expect_true(file.exists(filename))
@@ -21,7 +21,7 @@ test_that("plot in PNG format works", {
 })
 
 test_that("plot in TIFF format works", {
-  savePlotTIFF(hist(rnorm(100), main = "Histogram of Normal Distribution"),
+  save_plotTIFF(hist(rnorm(100), main = "Histogram of Normal Distribution"),
                "hist")
   filename <- "hist.tiff"
   expect_true(file.exists(filename))
