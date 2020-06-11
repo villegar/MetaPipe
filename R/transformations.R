@@ -83,24 +83,12 @@ log_transformation <- function(data, feature, alpha = 0.05,
   # Obtain transformation with largest p-value
   max_pval_idx <- unname(which.max(round(pvals, digits)))
   max_pval <- max(pvals, na.rm = TRUE)
-
-  # transf <- max.pval.index[1]
-  # transf.value.index <- max.pval.index[2]
   
   # Verify if a transformation normalised the data
   if (check_transformation(alpha, max_pval, "Log"))
     return(NULL) 
   else if (check_transformation(ref_pval, max_pval, "Log"))
     return(NULL) 
-  # if (max_pval < alpha) { # Verify if a transformation normalised the data
-  #   warning("Log transformation does not normalise the data.")
-  #   return(NULL) 
-  # }
-  
-  # if (max_pval < ref_pval) { # Verify if transformation has a larger p-value
-  #   warning("Log transformation does not normalise the data.")
-  #   return(NULL)
-  # }
   
   base <- transf[max_pval_idx]
   transformed <- log(data, base)
@@ -117,35 +105,69 @@ log_transformation <- function(data, feature, alpha = 0.05,
   return(record)
 }
 
-power_transformation <- function(shapiro, data, feature) {
-  powers <- c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10)
+#' Normalise data with a power transformation
+#'
+#' @param data original data
+#' @param feature feature name
+#' @param alpha significance level
+#' @param transf transformation values
+#' @param plots_prefix prefix for plots with or without path
+#' @param digits significant digits to compare p-values of transformations
+#'
+#' @return data structure containing the normalised data, NULL if no 
+#' transformation was performed
+#' @export
+#'
+#' @examples
+#' set.seed(123)
+#' data <- rnorm(100, 5)
+#' power_transformation(sqrt(data), "LOG_2")
+power_transformation <- function(data, feature, alpha = 0.05,
+                                 transf = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10),
+                                 plots_prefix = "HIST",
+                                 digits = 6) {
+  check_alpha(alpha = alpha) # Check the significance level
   
+  ref_pval <- shapiro.test(data)[[2]] # Obtain reference p-value
+  
+  # Data frame to hold the outcome of the transformation
   record <- data.frame(
-    index = i,
-    feature = features[i],
-    values = meansp[, i],
     flag = "Non-normal",
     transf = "",
     transf.value = 0
   )
   
-  for (p in powers) {
-    pval <- shapiro.test(data ^ p)[[2]]
-    if (pval >= 0.05) {
-      transformed <- data ^ p
-      if (p == exp(1))
-        p <- "e"
-      xlab <- paste0("$(", feature, ")^", p, "$")
-      transformation <- paste0("POW_", p)
-      prefix <- paste0("plots/HIST_", (i - 3), "_", transformation)
-      compare_hist(data, transformed, feature, prefix, xlab)
-      record$values <- transformed
-      record$transf <- "power"
-      record$transf.value <- p
-      return(record)
-    }
+  pvals <- data.frame(matrix(vector(), 1, length(transf)))
+  for (k in 1:ncol(pvals)) {
+    suppressWarnings({
+      pvals[1, k] <- shapiro.test(data ^ transf[k])[[2]]
+    })
   }
-  return(data.frame())
+  
+  # Obtain transformation with largest p-value
+  max_pval_idx <- unname(which.max(round(pvals, digits)))
+  max_pval <- max(pvals, na.rm = TRUE)
+  
+  # Verify if a transformation normalised the data
+  if (check_transformation(alpha, max_pval, "Power"))
+    return(NULL) 
+  else if (check_transformation(ref_pval, max_pval, "Power"))
+    return(NULL) 
+  
+  power <- transf[max_pval_idx]
+  transformed <- data ^ power
+  
+  if (power == exp(1))
+    power <- "e"
+  
+  xlab <- paste0("$(", feature, ")^", power, "$")
+  transformation <- paste0("POW_", power)
+  prefix <- paste0(plots_prefix, "_", transformation)
+  compare_hist(data, transformed, feature, prefix, xlab)
+  record$flag = "Normal"
+  record$transf <- "power"
+  record$transf.value <- power
+  return(record)
 }
 
 root_transformation <- function(shapiro, data, feature) {
