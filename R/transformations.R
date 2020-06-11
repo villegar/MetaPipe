@@ -56,8 +56,8 @@ check_transformation <- function(ref, new, transf) {
 #'
 #' @examples
 #' set.seed(123)
-#' data <- 2^rnorm(100)
-#' log_transformation(data, "POW_2")
+#' data <- rnorm(100)
+#' log_transformation(2^data, "POW_2")
 log_transformation <- function(data, feature, alpha = 0.05,
                                transf = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10),
                                plots_prefix = "HIST",
