@@ -31,6 +31,17 @@ test_that("plot in TIFF format works", {
   expect_false(file.exists(filename))
 })
 
+test_that("plot in PNG format generated with GGPLOT2 works", {
+  myplot <- ggplot2::qplot(rnorm(100))
+  ggplot_save(myplot, "hist")
+  filename <- "hist.png"
+  expect_true(file.exists(filename))
+  expect_false(dir.exists(filename))
+  expect_gt(file.size(filename), 0)
+  file.remove(filename)
+  expect_false(file.exists(filename))
+})
+
 test_that("compare histograms works", {
   norm_dist <- rnorm(100)
   norm_dist_transformed <- norm_dist^2

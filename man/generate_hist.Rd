@@ -2,7 +2,7 @@
 % Please edit documentation in R/plots-util.R
 \name{generate_hist}
 \alias{generate_hist}
-\title{Title}
+\title{This function generates a single histogram}
 \usage{
 generate_hist(data, feature, prefix, xlab)
 }
@@ -16,7 +16,7 @@ generate_hist(data, feature, prefix, xlab)
 \item{xlab}{x-axis label}
 }
 \description{
-Title
+This function generates a single histogram
 }
 \examples{
 norm_dist <- rnorm(100)

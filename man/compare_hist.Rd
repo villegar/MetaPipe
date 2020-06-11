@@ -2,7 +2,7 @@
 % Please edit documentation in R/plots-util.R
 \name{compare_hist}
 \alias{compare_hist}
-\title{Title}
+\title{This function generates a two histograms to compare two datasets}
 \usage{
 compare_hist(original, transformed, feature, prefix, xlab)
 }
@@ -18,7 +18,7 @@ compare_hist(original, transformed, feature, prefix, xlab)
 \item{xlab}{x-axis label}
 }
 \description{
-Title
+This function generates a two histograms to compare two datasets
 }
 \examples{
 norm_dist <- rnorm(100)
