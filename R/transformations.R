@@ -93,8 +93,7 @@ log_transformation <- function(data, feature, alpha = 0.05,
   base <- transf[max_pval_idx]
   transformed <- log(data, base)
   
-  if (base == exp(1))
-    base <- "e"
+  base <- ifelse(base == exp(1), "e", base)
   
   xlab <- paste0("$\\log_{", base, "}(", feature, ")$")
   transformation <- paste0("LOG_", base)
@@ -158,8 +157,7 @@ power_transformation <- function(data, feature, alpha = 0.05,
   power <- transf[max_pval_idx]
   transformed <- data ^ power
   
-  if (power == exp(1))
-    power <- "e"
+  power <- ifelse(power == exp(1), "e", power)
   
   xlab <- paste0("$(", feature, ")^", power, "$")
   transformation <- paste0("POW_", power)
@@ -224,8 +222,7 @@ root_transformation <- function(data, feature, alpha = 0.05,
   root <- transf[max_pval_idx]
   transformed <- data ^ (1 / root)
   
-  if (root == exp(1))
-    root <- "e"
+  root <- ifelse(root == exp(1), "e", root)
   
   xlab <- paste0("$\\sqrt[", root, "]{", feature, "}$")
   transformation <- paste0("ROOT_", root)
