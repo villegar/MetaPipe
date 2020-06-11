@@ -1,6 +1,14 @@
-# Log Transformation and Pareto scaling
-## Pareto scaling function
-#This function is adapted from Stephen C. Grace and Dane A. Hudson 
+#' Pareto scaling function
+#' This function is adapted from Stephen C. Grace and Dane A. Hudson 
+#' @param z original 2-dimensional data
+#'
+#' @return normalised data
+#' @export
+#'
+#' @examples
+#' set.seed(123)
+#' data <- matrix(rnorm(100, 5), ncol = 2)
+#' data_new <- paretoscale(data)
 paretoscale <- function(z) {
   colmean <- apply(z, 2, mean)
   colsd <- apply(z, 2, sd)
