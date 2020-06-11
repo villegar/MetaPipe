@@ -73,27 +73,34 @@ save_plotPDF <- function(myPlot, name, width = 6, height = 6) {
   grDevices::dev.off()
 }
 
-ggplot_save <- function(myPlot,name){
+#' Function to save a graphical object generated with GGPLOT2 to disk in 
+#' Portable Network Graphics (PNG) format.
+#'
+#' @param myPlot graphical object
+#' @param name output name with or without path
+#' @param width width in inches
+#' @param height height in inches
+#'
+#' @export
+#'
+#' @examples
+#' myplot <- ggplot2::qplot(rnorm(100))
+#' ggplot_save(myplot, "hist")
+ggplot_save <- function(myPlot, name, width = 6, height = 6){
   R.devices::suppressGraphics({
     ggplot2::ggsave(
       paste0(name, ".png"),
       plot   = myPlot,
       device = "png",
-      width  = 6,
-      height = 6,
+      width  = width,
+      height = height,
       dpi    = 300,
       type   = "cairo"
     )
   })
 }
 
-# This function generates a two histograms to compare two datasets
-## original = original data
-## transformed = transformed data
-## feature = data feature
-## prefix = prefix for the file name
-## xlab = label for x-axis
-#' Title
+#' This function generates a two histograms to compare two datasets
 #'
 #' @param original Original data
 #' @param transformed Transformed data
@@ -133,7 +140,6 @@ compare_hist <- function(original, transformed, feature, prefix, xlab){
                             bins = BINS, 
                             col = "black", 
                             fill = "#0057A7") +
-    # geom_density(ggplot2::aes(y=..density..)) + 
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 60, hjust = 1)) + 
     ggplot2::labs(x="", y="") +
     ggplot2::xlab(latex2exp::TeX(xlab))
@@ -145,12 +151,7 @@ compare_hist <- function(original, transformed, feature, prefix, xlab){
               paste0(prefix,"_",feature))
 }
 
-# This function generates a single histogram
-## data = input data
-## feature = data feature
-## prefix = prefix for the file name
-## xlab = label for x-axis
-#' Title
+#' This function generates a single histogram
 #'
 #' @param data Histogram data
 #' @param feature Feature name
@@ -173,7 +174,6 @@ generate_hist <- function(data, feature, prefix, xlab){
                             bins = BINS, 
                             col = "black", 
                             fill = "#7FCDBB") +
-    # geom_density(ggplot2::aes(y=..density..)) + 
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 60, hjust = 1)) + 
     ggplot2::labs(title=paste("Feature",feature), x="", y="") +
     ggplot2::xlab(paste0(feature))
