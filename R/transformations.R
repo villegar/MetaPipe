@@ -85,10 +85,9 @@ log_transformation <- function(data, feature, alpha = 0.05,
   max_pval <- max(pvals, na.rm = TRUE)
   
   # Verify if a transformation normalised the data
-  if (check_transformation(alpha, max_pval, "Log"))
-    return(NULL) 
-  if (check_transformation(ref_pval, max_pval, "Log"))
-    return(NULL) 
+  if (check_transformation(alpha, max_pval, "Log") ||
+      check_transformation(ref_pval, max_pval, "Log"))
+    return(NULL)
   
   base <- transf[max_pval_idx]
   transformed <- log(data, base)
@@ -149,10 +148,9 @@ power_transformation <- function(data, feature, alpha = 0.05,
   max_pval <- max(pvals, na.rm = TRUE)
   
   # Verify if a transformation normalised the data
-  if (check_transformation(alpha, max_pval, "Power"))
-    return(NULL) 
-  if (check_transformation(ref_pval, max_pval, "Power"))
-    return(NULL) 
+  if (check_transformation(alpha, max_pval, "Power") || 
+      check_transformation(ref_pval, max_pval, "Power"))
+    return(NULL)
   
   power <- transf[max_pval_idx]
   transformed <- data ^ power
@@ -214,10 +212,9 @@ root_transformation <- function(data, feature, alpha = 0.05,
   max_pval <- max(pvals, na.rm = TRUE)
   
   # Verify if a transformation normalised the data
-  if (check_transformation(alpha, max_pval, "Root"))
-    return(NULL) 
-  if (check_transformation(ref_pval, max_pval, "Root"))
-    return(NULL) 
+  if (check_transformation(alpha, max_pval, "Root") ||
+      check_transformation(ref_pval, max_pval, "Root"))
+    return(NULL)
   
   root <- transf[max_pval_idx]
   transformed <- data ^ (1 / root)
