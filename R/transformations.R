@@ -41,9 +41,10 @@ check_alpha <- function(alpha) {
     stop("alpha must be a numeric value between 0 and 1")
 }
 
-check_transformation <- function(ref, new, transf) {
+check_transformation <- function(ref, new, transf, 
+                                 msg = " transformation does not normalise the data.") {
   if (new < ref) { # Compare a new p-value with a reference (original).
-    warning(paste0(transf, " transformation does not normalise the data."))
+    warning(paste0(transf, msg))
     return(TRUE)
   }
   return(FALSE)
@@ -239,17 +240,35 @@ root_transformation <- function(data, feature, alpha = 0.05,
   return(record)
 }
 
-transform_data <- function(shapiro,
+#' Normalise data using different methods: log, power, and root, with a 
+#' different number of parameters to find out which one transforms the data
+#' into a normal-ish set. 
+#'
+#' @param ref_pval reference p-value
+#' @param data original data
+#' @param feature feature name
+#' @param index index of the current feature
+#' @param offset offset for the current feature
+#' @param alpha significance level
+#' @param transf_vals transformation values
+#' @param plots_prefix prefix for plots with or without path
+#' @param digits significant digits to compare p-values of transformations
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' set.seed(123)
+#' data <- rnorm(100, 5)
+#' transform_data(data ^ 2, "EXP_2")
+transform_data <- function(ref_pval,
                            data,
                            feature,
                            index,
                            offset = 3,
-                           plots.directory = "plots",
-                           transformation.values = 
-                             c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10)) {
-  #bases <- c(2,exp(1),3,4,5,6,7,8,9,10)
-  #powers <- c(2,exp(1),3,4,5,6,7,8,9,10)
-  #roots <- c(2,exp(1),3,4,5,6,7,8,9,10)
+                           alpha = 0.05,
+                           transf_vals = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10),
+                           plots_prefix = "HIST") {
   
   record <- data.frame(
     index = index,
@@ -260,33 +279,35 @@ transform_data <- function(shapiro,
     transf.value = 0
   )
   
-  pvals <- data.frame(matrix(vector(), 3, length(transformation.values)))
+  pvals <- data.frame(matrix(vector(), 3, length(transf_vals)))
   for (k in 1:ncol(pvals)) {
     suppressWarnings({
-      pvals[1, k] <- shapiro.test(log(data, transformation.values[k]))[[2]]
-      pvals[2, k] <- shapiro.test(data ^ transformation.values[k])[[2]]
-      pvals[3, k] <- shapiro.test(data ^ (1 / transformation.values[k]))[[2]]
+      pvals[1, k] <- shapiro.test(log(data, transf_vals[k]))[[2]]
+      pvals[2, k] <- shapiro.test(data ^ transf_vals[k])[[2]]
+      pvals[3, k] <- shapiro.test(data ^ (1 / transf_vals[k]))[[2]]
     })
   }
-  max.pval <- max(pvals, na.rm = TRUE)
-  max.pval.index <- which(pvals == max.pval, arr.ind = TRUE)
+  max_pval <- max(pvals, na.rm = TRUE)
+  max_pval_idx <- which(pvals == max_pval, arr.ind = TRUE)
   
-  transf <- max.pval.index[1]
-  transf.value.index <- max.pval.index[2]
+  transf <- max_pval_idx[1]
+  transf_val_idx <- max_pval_idx[2]
   
-  if (max.pval < 0.05) # Verify if a transformation normalized the data
-    return(data.frame())
+  # Verify if a transformation normalised the data
+  if (check_transformation(alpha, max_pval, "", "No transformation normalised the data.") || 
+      check_transformation(ref_pval, max_pval, "", "No transformation normalised the data."))
+    return(NULL)
   
   if (transf == 1) { # Log transformation
-    base <- transformation.values[transf.value.index]
+    base <- transf_vals[transf_val_idx]
     transformed <- log(data, base)
-    if (base == exp(1))
-      base <- "e"
+    base <- ifelse(base == exp(1), "e", base)
+
     xlab <- paste0("$\\log_{", base, "}(", feature, ")$")
     transformation <- paste0("LOG_", base)
     prefix <-
-      paste0(plots.directory,
-             "/HIST_",
+      paste0(plots_prefix,
+             "_",
              (index - offset),
              "_",
              transformation)
@@ -297,41 +318,41 @@ transform_data <- function(shapiro,
     return(record)
   }
   else if (transf == 2) { # Power transformation
-    p <- transformation.values[transf.value.index]
-    transformed <- data ^ p
-    if (p == exp(1))
-      p <- "e"
-    xlab <- paste0("$(", feature, ")^", p, "$")
-    transformation <- paste0("POW_", p)
+    power <- transf_vals[transf_val_idx]
+    transformed <- data ^ power
+    power <- ifelse(power == exp(1), "e", power)
+
+    xlab <- paste0("$(", feature, ")^", power, "$")
+    transformation <- paste0("POW_", power)
     prefix <-
-      paste0(plots.directory,
-             "/HIST_",
+      paste0(plots_prefix,
+             "_",
              (index - offset),
              "_",
              transformation)
     compare_hist(data, transformed, feature, prefix, xlab)
     record$values <- transformed
     record$transf <- "power"
-    record$transf.value <- p
+    record$transf.value <- power
     return(record)
   }
   else { # Root transformation
-    r <- transformation.values[transf.value.index]
-    transformed <- data ^ (1 / r)
-    if (r == exp(1))
-      r <- "e"
-    xlab <- paste0("$\\sqrt[", r, "]{", feature, "}$")
-    transformation <- paste0("ROOT_", r)
+    root <- transf_vals[transf_val_idx]
+    transformed <- data ^ (1 / root)
+    root <- ifelse(root == exp(1), "e", root)
+    
+    xlab <- paste0("$\\sqrt[", root, "]{", feature, "}$")
+    transformation <- paste0("ROOT_", root)
     prefix <-
-      paste0(plots.directory,
-             "/HIST_",
+      paste0(plots_prefix,
+             "_",
              (index - offset),
              "_",
              transformation)
     compare_hist(data, transformed, feature, prefix, xlab)
     record$values <- transformed
     record$transf <- "root"
-    record$transf.value <- r
+    record$transf.value <- root
     return(record)
   }
 }
