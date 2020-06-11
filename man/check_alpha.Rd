@@ -17,7 +17,9 @@ Check significance level (alpha) validity
 }
 \examples{
 check_alpha(0.5)
+\dontrun{
 check_alpha(-0.5)
 check_alpha(1.5)
 check_alpha("1.5")
+}
 }
