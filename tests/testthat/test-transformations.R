@@ -67,3 +67,10 @@ test_that("root transformation works", {
   file.remove(filename)
   expect_false(file.exists(filename))
 })
+
+test_that("pareto scale works", {
+  set.seed(123)
+  data <- matrix(rnorm(100, 5), ncol = 2)
+  data_new <- paretoscale(data)
+  expect_equal(mean(data_new), 0)
+})
