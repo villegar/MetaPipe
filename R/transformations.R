@@ -25,11 +25,11 @@ paretoscale <- function(z) {
 #' check_alpha("1.5")
 #' }
 check_alpha <- function(alpha) {
-  if (alpha < 0)
+  if (!is.numeric(alpha))
+    stop("alpha must be a numeric value")
+  else if (alpha < 0)
     stop("alpha must be non-negative")
   else if (alpha > 1)
-    stop("alpha must be a numeric value between 0 and 1")
-  else if (!is.numeric(alpha))
     stop("alpha must be a numeric value between 0 and 1")
 }
 
