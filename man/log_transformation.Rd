@@ -35,6 +35,6 @@ Normalise data with a log transformation
 }
 \examples{
 set.seed(123)
-data <- 2^rnorm(100)
-log_transformation(data, "POW_2")
+data <- rnorm(100)
+log_transformation(2^data, "POW_2")
 }
