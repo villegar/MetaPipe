@@ -10,6 +10,18 @@ paretoscale <- function(z) {
   return(rv)
 }
 
+#' Check significance level (alpha) validity 
+#'
+#' @param alpha significance level
+#'
+#' @return Nothing if alpha is valid, otherwise stop execution
+#' @export
+#'
+#' @examples
+#' check_alpha(0.5)
+#' check_alpha(-0.5)
+#' check_alpha(1.5)
+#' check_alpha("1.5")
 check_alpha <- function(alpha) {
   if (alpha < 0)
     stop("alpha must be non-negative")
