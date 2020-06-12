@@ -3,18 +3,19 @@ test_that("check alpha level works", {
   expect_error(check_alpha(-0.5), "alpha must be*")
   expect_error(check_alpha(1.5), "alpha must be*")
   expect_error(check_alpha("1.5"), "alpha must be*")
+  expect_error(check_alpha("One"), "alpha must be*")
 })
 
 test_that("log transformation works", {
   set.seed(123)
-  data <- rnorm(100)
+  data <- rnorm(100, 5)
   expected_df <- data.frame(
     flag = "Normal",
     transf = "log",
     transf.value = 2,
     stringsAsFactors = FALSE
   )
-  result_df <- log_transformation(2^data, "EXP_2")
+  result_df <- log_transformation(2 ^ data, "EXP_2")
   expect_identical(expected_df, result_df)
   expect_warning(result_df <- log_transformation(data, "EXP_2"))
   expect_null(result_df)
@@ -56,7 +57,7 @@ test_that("root transformation works", {
     transf.value = "e",
     stringsAsFactors = FALSE
   )
-  result_df <- root_transformation(data^2, "POW_2")
+  result_df <- root_transformation(data ^ 2, "POW_2")
   expect_identical(expected_df, result_df)
   expect_warning(result_df <- root_transformation(data, "POW_2"))
   expect_null(result_df)
@@ -73,4 +74,58 @@ test_that("pareto scale works", {
   data <- matrix(rnorm(100, 5), ncol = 2)
   data_new <- paretoscale(data)
   expect_equal(mean(data_new), 0)
+})
+
+test_that("data transform works", {
+  set.seed(123)
+  data <- rnorm(100, 5)
+  expected_df_exp_2 <- data.frame(
+    index = "",
+    feature = "EXP_2",
+    values = log(2 ^ data, 2),
+    flag = "Normal",
+    transf = "log",
+    transf.value = 2,
+    stringsAsFactors = FALSE
+  )
+  
+  expected_df_root_2 <- data.frame(
+    index = "",
+    feature = "ROOT_2",
+    values = (sqrt(data)) ^ 2,
+    flag = "Normal",
+    transf = "power",
+    transf.value = 2,
+    stringsAsFactors = FALSE
+  )
+  
+  expected_df_pow_2 <- data.frame(
+    index = "",
+    feature = "POW_2",
+    values = (data ^ 2) ^ (1 / exp(1)),
+    flag = "Normal",
+    transf = "root",
+    transf.value = "e",
+    stringsAsFactors = FALSE
+  )
+  
+  expect_warning(result_df <- transform_data(data))
+  expect_null(result_df)
+  
+  result_df_exp_2 <- transform_data(2 ^ data, "EXP_2")
+  result_df_root_2 <- transform_data(sqrt(data), "ROOT_2")
+  result_df_pow_2 <- transform_data(data ^ 2, "POW_2")
+  
+  expect_identical(expected_df_exp_2, result_df_exp_2)
+  expect_identical(expected_df_root_2, result_df_root_2)
+  expect_identical(expected_df_pow_2, result_df_pow_2)
+  
+  filenames <- c("HIST_LOG_2_EXP_2.png", "HIST_POW_2_ROOT_2.png", "HIST_ROOT_e_POW_2.png")
+  for (f in filenames) {
+    expect_true(file.exists(f))
+    expect_false(dir.exists(f))
+    expect_gt(file.size(f), 0)
+    file.remove(f)
+    expect_false(file.exists(f))
+  }
 })
