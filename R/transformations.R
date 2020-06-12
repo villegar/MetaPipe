@@ -67,7 +67,9 @@ check_transformation <- function(ref, new, transf,
 #' set.seed(123)
 #' data <- rnorm(100, 5)
 #' log_transformation(2 ^ data, "EXP_2")
-log_transformation <- function(data, feature, alpha = 0.05,
+log_transformation <- function(data, 
+                               feature = "DATA", 
+                               alpha = 0.05,
                                transf = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10),
                                plots_prefix = "HIST",
                                digits = 6) {
@@ -130,7 +132,9 @@ log_transformation <- function(data, feature, alpha = 0.05,
 #' set.seed(123)
 #' data <- rnorm(100, 5)
 #' power_transformation(sqrt(data), "ROOT_2")
-power_transformation <- function(data, feature, alpha = 0.05,
+power_transformation <- function(data, 
+                                 feature = "DATA", 
+                                 alpha = 0.05,
                                  transf = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10),
                                  plots_prefix = "HIST",
                                  digits = 6) {
@@ -193,7 +197,9 @@ power_transformation <- function(data, feature, alpha = 0.05,
 #' set.seed(123)
 #' data <- rnorm(100, 5)
 #' root_transformation(data ^ 2, "EXP_2")
-root_transformation <- function(data, feature, alpha = 0.05,
+root_transformation <- function(data, 
+                                feature = "DATA", 
+                                alpha = 0.05,
                                 transf = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10),
                                 plots_prefix = "HIST",
                                 digits = 6) {
@@ -262,7 +268,7 @@ root_transformation <- function(data, feature, alpha = 0.05,
 #' transform_data(sqrt(data), "ROOT_2")
 #' transform_data(data ^ 2, "POW_2")
 transform_data <- function(data,
-                           feature = NULL,
+                           feature = "DATA",
                            alpha = 0.05,
                            index = NULL,
                            transf_vals = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10),
