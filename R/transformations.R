@@ -244,7 +244,6 @@ root_transformation <- function(data, feature, alpha = 0.05,
 #' different number of parameters to find out which one transforms the data
 #' into a normal-ish set. 
 #'
-#' @param ref_pval reference p-value
 #' @param data original data
 #' @param feature feature name
 #' @param alpha significance level
