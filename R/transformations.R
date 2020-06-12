@@ -65,7 +65,7 @@ check_transformation <- function(ref, new, transf,
 #'
 #' @examples
 #' set.seed(123)
-#' data <- rnorm(100)
+#' data <- rnorm(100, 5)
 #' log_transformation(2 ^ data, "EXP_2")
 log_transformation <- function(data, feature, alpha = 0.05,
                                transf = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10),
@@ -247,9 +247,8 @@ root_transformation <- function(data, feature, alpha = 0.05,
 #' @param ref_pval reference p-value
 #' @param data original data
 #' @param feature feature name
-#' @param index index of the current feature
-#' @param offset offset for the current feature
 #' @param alpha significance level
+#' @param index index of the current feature
 #' @param transf_vals transformation values
 #' @param plots_prefix prefix for plots with or without path
 #' @param digits significant digits to compare p-values of transformations
@@ -260,15 +259,23 @@ root_transformation <- function(data, feature, alpha = 0.05,
 #' @examples
 #' set.seed(123)
 #' data <- rnorm(100, 5)
-#' transform_data(data ^ 2, "EXP_2")
-transform_data <- function(ref_pval,
-                           data,
-                           feature,
-                           index,
-                           offset = 3,
+#' transform_data(2 ^ data, "EXP_2")
+#' transform_data(sqrt(data), "ROOT_2")
+#' transform_data(data ^ 2, "POW_2")
+transform_data <- function(data,
+                           feature = NULL,
                            alpha = 0.05,
+                           index = NULL,
                            transf_vals = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10),
-                           plots_prefix = "HIST") {
+                           plots_prefix = "HIST",
+                           digits = 6) {
+  
+  check_alpha(alpha = alpha) # Check the significance level
+  
+  ref_pval <- shapiro.test(data)[[2]] # Obtain reference p-value
+  
+  feature <- ifelse(is.null(feature), "", feature)
+  index <- ifelse(is.null(index), "", paste0(index, "_"))
   
   record <- data.frame(
     index = index,
@@ -276,17 +283,22 @@ transform_data <- function(ref_pval,
     values = data,
     flag = "Non-normal",
     transf = "",
-    transf.value = 0
+    transf.value = 0,
+    stringsAsFactors = FALSE
   )
   
   pvals <- data.frame(matrix(vector(), 3, length(transf_vals)))
   for (k in 1:ncol(pvals)) {
     suppressWarnings({
-      pvals[1, k] <- shapiro.test(log(data, transf_vals[k]))[[2]]
-      pvals[2, k] <- shapiro.test(data ^ transf_vals[k])[[2]]
-      pvals[3, k] <- shapiro.test(data ^ (1 / transf_vals[k]))[[2]]
+      pvals[1, k] <- round(shapiro.test(log(data, transf_vals[k]))[[2]], digits)
+      pvals[2, k] <- round(shapiro.test(data ^ transf_vals[k])[[2]], digits)
+      pvals[3, k] <- round(shapiro.test(data ^ (1 / transf_vals[k]))[[2]], digits)
     })
   }
+  
+  # Obtain transformation with largest p-value
+  # max_pval_idx <- unname(which.max(round(pvals, digits)))
+  # max_pval <- max(pvals, na.rm = TRUE)
   max_pval <- max(pvals, na.rm = TRUE)
   max_pval_idx <- which(pvals == max_pval, arr.ind = TRUE)
   
@@ -298,6 +310,7 @@ transform_data <- function(ref_pval,
       check_transformation(ref_pval, max_pval, "", "No transformation normalised the data."))
     return(NULL)
   
+  record$flag <- "Normal"
   if (transf == 1) { # Log transformation
     base <- transf_vals[transf_val_idx]
     transformed <- log(data, base)
@@ -308,8 +321,7 @@ transform_data <- function(ref_pval,
     prefix <-
       paste0(plots_prefix,
              "_",
-             (index - offset),
-             "_",
+             index,
              transformation)
     compare_hist(data, transformed, feature, prefix, xlab)
     record$values <- transformed
@@ -327,8 +339,7 @@ transform_data <- function(ref_pval,
     prefix <-
       paste0(plots_prefix,
              "_",
-             (index - offset),
-             "_",
+             index,
              transformation)
     compare_hist(data, transformed, feature, prefix, xlab)
     record$values <- transformed
@@ -346,8 +357,7 @@ transform_data <- function(ref_pval,
     prefix <-
       paste0(plots_prefix,
              "_",
-             (index - offset),
-             "_",
+             index,
              transformation)
     compare_hist(data, transformed, feature, prefix, xlab)
     record$values <- transformed
@@ -356,3 +366,4 @@ transform_data <- function(ref_pval,
     return(record)
   }
 }
+
