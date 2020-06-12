@@ -30,8 +30,6 @@ transform_data(
 \item{plots_prefix}{prefix for plots with or without path}
 
 \item{digits}{significant digits to compare p-values of transformations}
-
-\item{ref_pval}{reference p-value}
 }
 \value{
 
