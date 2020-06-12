@@ -8,7 +8,7 @@ into a normal-ish set.}
 \usage{
 transform_data(
   data,
-  feature = NULL,
+  feature = "DATA",
   alpha = 0.05,
   index = NULL,
   transf_vals = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10),

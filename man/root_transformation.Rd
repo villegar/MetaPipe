@@ -6,7 +6,7 @@
 \usage{
 root_transformation(
   data,
-  feature,
+  feature = "DATA",
   alpha = 0.05,
   transf = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10),
   plots_prefix = "HIST",
