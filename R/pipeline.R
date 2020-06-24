@@ -554,25 +554,25 @@ write.csv(x_norm_sum_map, file = paste0(OUT.PREFIX,".normal.summary.mapping.csv"
 toc(log = TRUE) # Normal QTL analysis
 tic("Non-parametric QTL analysis")
 # Non-parametric QTL
-x <- read.cross("csvs",".",
+x_non_par <- read.cross("csvs",".",
                 paste0(OUT.PREFIX,".non.parametric.gen.csv"),
                 paste0(OUT.PREFIX,".non.parametric.phe.csv"))
-features <- colnames(x$pheno)
+features <- colnames(x_non_par$pheno)
 #set.seed(SEED)
-x <- jittermap(x)
-x <- calc.genoprob(x, step=1, error.prob=0.001)
-individuals.phenotyped <- summary(x)[[2]]
+x_non_par <- jittermap(x_non_par)
+x_non_par <- calc.genoprob(x_non_par, step=1, error.prob=0.001)
+individuals.phenotyped <- summary(x_non_par)[[2]]
 print("Starting with Non-Parametric QTL Analysis")
 
 # Obtain LOD scores for all features and markers
 cl <- makeCluster(ceiling(CPUS*1), outfile=paste0('./info_parallel_QTL.log'))
 registerDoParallel(cl)
-x.scanone <- foreach(i=2:ncol(x$pheno),
+x_non_par_scone <- foreach(i=2:ncol(x_non_par$pheno),
                      .combine = cbind,
                      .packages = c("ggplot2","grid","gridExtra","latex2exp","qtl","R.devices")) %dopar% {
                        
                        # Run single scan
-                       non.parametric.scanone <-  scanone(x, pheno.col = i,  model = "np")
+                       non.parametric.scanone <-  scanone(x_non_par, pheno.col = i,  model = "np")
                        if(i == 2){
                          record <- data.frame(
                            chr = non.parametric.scanone$chr,
@@ -589,11 +589,11 @@ x.scanone <- foreach(i=2:ncol(x$pheno),
                        record
                      }
 stopCluster(cl) # Stop cluster
-write.csv(x.scanone, file = paste0(OUT.PREFIX,".non.parametric.scanone.csv"))
+write.csv(x_non_par_scone, file = paste0(OUT.PREFIX,".non.parametric.scanone.csv"))
 
 cl <- makeCluster(ceiling(CPUS*0.5), outfile=paste0('./info_parallel_QTL.log'))
 registerDoParallel(cl)
-x.non.parametric.summary.mapping <- foreach(i=2:ncol(x$pheno),
+x_non_par_sum_map <- foreach(i=2:ncol(x_non_par$pheno),
                              .combine = rbind,
                              .packages = c("ggplot2","grid","gridExtra","latex2exp","qtl","R.devices")) %dopar% {
                                #transformation.info <- non.parametric.transformed.meansp$feature == features[i]
@@ -642,7 +642,7 @@ x.non.parametric.summary.mapping <- foreach(i=2:ncol(x$pheno),
                                }
                                
                                # Run single scan
-                               non.parametric.scanone <-  scanone(x, pheno.col = i,  model = "np")
+                               non.parametric.scanone <-  scanone(x_non_par, pheno.col = i,  model = "np")
                                summary.non.parametric.scanone <- summary(non.parametric.scanone, threshold = LOD.THRESHOLD)
                                lod.count <- nrow(summary.non.parametric.scanone)
                                if(lod.count){
@@ -664,7 +664,7 @@ x.non.parametric.summary.mapping <- foreach(i=2:ncol(x$pheno),
                                    new.record$pos.peak <- summary.non.parametric.scanone[k,"pos"]
                                    marker <- rownames(summary.non.parametric.scanone)[k]
                                    # Verify if current QTL has a pseudomarker
-                                   marker.info <- transform.pseudomarker(x,marker,new.record$lg,new.record$pos.peak)
+                                   marker.info <- transform.pseudomarker(x_non_par,marker,new.record$lg,new.record$pos.peak)
                                    new.record$marker <- marker.info[1]
                                    new.record$pos.peak <- as.numeric(marker.info[2])
                                    
@@ -682,7 +682,7 @@ x.non.parametric.summary.mapping <- foreach(i=2:ncol(x$pheno),
                                    # Verify if the Bayesian interval QTLs have pseudomarkers
                                    for(l in 1:nrow(p95.bayesian)){
                                      marker <- rownames(p95.bayesian)[l]
-                                     marker.info <- transform.pseudomarker(x,marker,p95.bayesian[l,"chr"],p95.bayesian[l,"pos"])
+                                     marker.info <- transform.pseudomarker(x_non_par,marker,p95.bayesian[l,"chr"],p95.bayesian[l,"pos"])
                                      p95.bayesian[l,"marker"] <- marker.info[1]
                                      p95.bayesian[l,"pos"] <- as.numeric(marker.info[2])
                                    }
@@ -699,7 +699,7 @@ x.non.parametric.summary.mapping <- foreach(i=2:ncol(x$pheno),
                                    }
                                  }
                                  
-                                 non.parametric.scanone.per <- scanone(x, pheno.col = i, model = "np", n.perm = PERMUTATIONS)
+                                 non.parametric.scanone.per <- scanone(x_non_par, pheno.col = i, model = "np", n.perm = PERMUTATIONS)
                                  p5 <- summary(non.parametric.scanone.per)[[1]]  #  5% percent
                                  p10 <- summary(non.parametric.scanone.per)[[2]] # 10% percent
                                  
@@ -721,7 +721,7 @@ x.non.parametric.summary.mapping <- foreach(i=2:ncol(x$pheno),
                              }
 stopCluster(cl) # Stop cluster
 
-write.csv(x.non.parametric.summary.mapping, file = paste0(OUT.PREFIX,".non.parametric.summary.mapping.csv"), row.names=FALSE, na="")
+write.csv(x_non_par_sum_map, file = paste0(OUT.PREFIX,".non.parametric.summary.mapping.csv"), row.names=FALSE, na="")
 toc(log = TRUE) # Non-parametric QTL analysis
 tic("QTL analysis postprocessing")
 x.normal <- read.cross("csvs",".",
