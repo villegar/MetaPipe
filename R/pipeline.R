@@ -557,7 +557,7 @@ tic("Non-parametric QTL analysis")
 x_non_par <- read.cross("csvs",".",
                 paste0(OUT.PREFIX,".non.parametric.gen.csv"),
                 paste0(OUT.PREFIX,".non.parametric.phe.csv"))
-features <- colnames(x_non_par$pheno)
+features_np <- colnames(x_non_par$pheno)
 #set.seed(SEED)
 x_non_par <- jittermap(x_non_par)
 x_non_par <- calc.genoprob(x_non_par, step=1, error.prob=0.001)
@@ -579,11 +579,11 @@ x_non_par_scone <- foreach(i=2:ncol(x_non_par$pheno),
                            lod = non.parametric.scanone$lod,
                            row.names = rownames(non.parametric.scanone)
                          )
-                         colnames(record)[3] <- features[i]
+                         colnames(record)[3] <- features_np[i]
                        }
                        else{
                          record <- data.frame(data = non.parametric.scanone$lod)
-                         colnames(record) <- features[i]
+                         colnames(record) <- features_np[i]
                        }
                        record
                      }
@@ -594,13 +594,13 @@ cl <- makeCluster(ceiling(CPUS*0.5), outfile=paste0('./info_parallel_QTL.log'))
 registerDoParallel(cl)
 x_non_par_sum_map <- foreach(i=2:ncol(x_non_par$pheno),
                              .combine = rbind) %dopar% {
-                               #transformation.info <- non.parametric.transformed.meansp$feature == features[i]
+                               #transformation.info <- non.parametric.transformed.meansp$feature == features_np[i]
                                #transformation.info <- non.parametric.transformed.meansp[transformation.info,c("transf","transf.value")][1,]
                                
                                record <- data.frame(
                                  ID = i - 1,
                                  qtl.ID = NA,
-                                 trait = features[i],
+                                 trait = features_np[i],
                                  ind = individuals.phenotyped,
                                  lg = NA,
                                  lod.peak = NA,
@@ -668,7 +668,7 @@ x_non_par_sum_map <- foreach(i=2:ncol(x_non_par$pheno),
                                    new.record$pos.peak <- as.numeric(marker.info[2])
                                    
                                    if(!is.na(new.record$lg)){
-                                     new.record$qtl.ID <- with(new.record, sprintf("%s:%s@%f",features[i],lg,pos.peak))
+                                     new.record$qtl.ID <- with(new.record, sprintf("%s:%s@%f",features_np[i],lg,pos.peak))
                                    }
                                    
                                    p95.bayesian <- qtl::bayesint(non.parametric.scanone, chr = new.record$lg, expandtomarkers = TRUE, prob = 0.95)
@@ -706,7 +706,7 @@ x_non_par_sum_map <- foreach(i=2:ncol(x_non_par$pheno),
                                  lod.plot <- save_plot(plot(non.parametric.scanone, ylab="LOD Score") + 
                                                         abline(h=p5, lwd=2, lty="solid", col="red") +
                                                         abline(h=p10, lwd=2, lty="solid", col="red"),
-                                                      paste0(PLOTS.DIR,"/LOD-NP-", features[i]), width = 18)
+                                                      paste0(PLOTS.DIR,"/LOD-NP-", features_np[i]), width = 18)
                                  
                                  record[,]$p5.lod.thr <- p5
                                  record[,]$p10.lod.thr <- p10
@@ -735,7 +735,7 @@ individuals.phenotyped <- summary(x.normal)[[2]]
 x.non.parametric <- read.cross("csvs",".",
                                paste0(OUT.PREFIX,".non.parametric.gen.csv"),
                                paste0(OUT.PREFIX,".non.parametric.phe.csv"))
-features.np <- colnames(x.non.parametric$pheno)
+features_np <- colnames(x.non.parametric$pheno)
 x.non.parametric <- jittermap(x.non.parametric)
 x.non.parametric <- calc.genoprob(x.non.parametric, step=1, error.prob=0.001)
 
