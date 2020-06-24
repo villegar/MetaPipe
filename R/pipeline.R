@@ -351,8 +351,7 @@ print("Starting with Normal QTL Analysis")
 cl <- makeCluster(ceiling(CPUS*1), outfile=paste0('./info_parallel_QTL.log'))
 registerDoParallel(cl)
 x_norm_scone <- foreach(i=2:ncol(x_norm$pheno),
-                     .combine = cbind,
-                     .packages = c("qtl","R.devices")) %dopar% {
+                     .combine = cbind) %dopar% {
                        
                        # Run single scan
                        normal.scanone <-  scanone(x_norm, pheno.col = i,  model = "normal", method = "hk")
@@ -377,8 +376,7 @@ write.csv(x_norm_scone, file = paste0(OUT.PREFIX,".normal.scanone.csv"))
 cl <- makeCluster(ceiling(CPUS*0.5), outfile=paste0('./info_parallel_QTL.log'))
 registerDoParallel(cl)
 x_norm_sum_map <- foreach(i=2:ncol(x_norm$pheno),
-                         .combine = rbind,
-                         .packages = c("ggplot2","grid","gridExtra","latex2exp","qtl","R.devices")) %dopar% {
+                         .combine = rbind) %dopar% {
                            transformation.info <- normal.transformed.meansp$feature == features[i]
                            transformation.info <- normal.transformed.meansp[transformation.info,c("transf","transf.value")][1,]
                            
@@ -417,7 +415,8 @@ x_norm_sum_map <- foreach(i=2:ncol(x_norm$pheno),
                              new.marker <- marker
                              new.pos <- pos
                              if(is.pseudo.marker(marker)){
-                               marker.info <- find.markerpos(cross, find.marker(cross, chr = chr, pos = pos))
+                               marker.info <- qtl::find.markerpos(cross, 
+                                                                  qtl::find.marker(cross, chr = chr, pos = pos))
                                new.marker <- rownames(marker.info)
                                new.pos <- marker.info$pos
                              }
@@ -425,7 +424,7 @@ x_norm_sum_map <- foreach(i=2:ncol(x_norm$pheno),
                            }
                            
                            # Run single scan
-                           normal.scanone <-  scanone(x_norm, pheno.col = i,  model = "normal", method = "hk")
+                           normal.scanone <-  qtl::scanone(x_norm, pheno.col = i,  model = "normal", method = "hk")
                            summary.normal.scanone <- summary(normal.scanone, threshold = LOD.THRESHOLD)
                            lod.count <- nrow(summary.normal.scanone)
                            if(lod.count){
@@ -455,7 +454,7 @@ x_norm_sum_map <- foreach(i=2:ncol(x_norm$pheno),
                                  new.record$qtl.ID <- with(new.record, sprintf("%s:%s@%f",features[i],lg,pos.peak))
                                }
                                
-                               p95.bayesian <- bayesint(normal.scanone, chr = new.record$lg ,expandtomarkers = TRUE, prob = 0.95)
+                               p95.bayesian <- qtl::bayesint(normal.scanone, chr = new.record$lg ,expandtomarkers = TRUE, prob = 0.95)
                                p95.bayesian <- unique(p95.bayesian)
                                #p95.bayesian <- summary(normal.scanone,  perms=normal.scanone.per, alpha=0.5, pvalues=TRUE)
                                low.bound <- 1#p95.bayesian$pos == min(p95.bayesian$pos)
@@ -486,7 +485,7 @@ x_norm_sum_map <- foreach(i=2:ncol(x_norm$pheno),
                                #summary(normal.scanone, threshold = 3)
                                #lod.plot <- plot(normal.scanone, ylab="LOD Score")
                                #cat(paste0("Scanone: ",i,"\t\tLODs: ",lod.count,"\n"))
-                               normal.scanone.per <- scanone(x_norm, pheno.col = i, model = "normal", method = "hk", n.perm = PERMUTATIONS)
+                               normal.scanone.per <- qtl::scanone(x_norm, pheno.col = i, model = "normal", method = "hk", n.perm = PERMUTATIONS)
                                p5 <- summary(normal.scanone.per)[[1]]  #  5% percent
                                p10 <- summary(normal.scanone.per)[[2]] # 10% percent
                                
@@ -507,13 +506,13 @@ x_norm_sum_map <- foreach(i=2:ncol(x_norm$pheno),
 
                                chr <- as.numeric(summary.normal.scanone$chr)
                                pos <- as.numeric(summary.normal.scanone$pos)
-                               qtl_s <- makeqtl(x_norm, chr, pos, what=c("prob"))
+                               qtl_s <- qtl::makeqtl(x_norm, chr, pos, what=c("prob"))
                                
                                for(m in 1:length(chr)){
                                  #qtl_s <- makeqtl(x_norm, chr[m], pos[m], what=c("prob"))
                                  #f <- as.formula(paste0("y~",paste0("Q",seq(1:nrow(summary.normal.scanone)), collapse = " + ")))
                                  f <- as.formula(paste0("y~",paste0("Q",m, collapse = " + ")))
-                                 fitqtl <- fitqtl(x_norm, pheno.col = i, qtl_s, formula = f , get.ests = TRUE, model = "normal", method="hk")
+                                 fitqtl <- qtl::fitqtl(x_norm, pheno.col = i, qtl_s, formula = f , get.ests = TRUE, model = "normal", method="hk")
                                  summary.fitqtl <- summary(fitqtl)
                                  
                                  if(length(summary.fitqtl)){
