@@ -174,7 +174,14 @@ transformed.meansp <- foreach(i=(length.excluded.columns + 1):ncol(meansp),
                            if(sum(is.finite(meansp[,i]), na.rm = TRUE)>2){
                              pvalue <- shapiro.test(meansp[,i])[[2]] # Assess normality of feature before transforming it
                              if(pvalue <= 0.05){ # Data must be transformed
-                               record <- transform_data(pvalue,meansp[,i],features[i],i,length.excluded.columns, PLOTS.DIR, transformation.values)
+                               record <- transform_data(data = meansp[,i], 
+                                                        feature = features[i], 
+                                                        alpha = 0.05, 
+                                                        index = i - length.excluded.columns, 
+                                                        transf_vals = transformation.values, 
+                                                        plots_prefix = paste0(PLOTS.DIR, "/HIST")
+                                                       )
+                               #record <- transform_data(pvalue,meansp[,i],features[i],i,length.excluded.columns, PLOTS.DIR, transformation.values)
                                
                                if(length(record)){
                                  record$flag <- "Normal"
@@ -194,7 +201,11 @@ transformed.meansp <- foreach(i=(length.excluded.columns + 1):ncol(meansp),
                                xlab <- features[i]
                                transformation <- "NORM"
                                prefix <- paste0(PLOTS.DIR,"/HIST_",(i - length.excluded.columns),"_",transformation)
-                               generate_hist(meansp[,i],features[i],prefix,xlab)
+                               generate_hist(data = meansp[, i], 
+                                             feature = features[i], 
+                                             prefix = name.prefix, 
+                                             xlab = xlab)
+                               #generate_hist(meansp[,i],features[i],prefix,xlab)
                                record$flag <- "Normal"
                              }
                            }
