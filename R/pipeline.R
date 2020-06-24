@@ -336,26 +336,26 @@ write.csv(non.parametric.phe, file = paste0(OUT.PREFIX,".non.parametric.phe.csv"
 toc(log = TRUE) # QTL analysis preprocessing
 tic("Normal QTL analysis")
 # QTL Analysis
-x <- read.cross("csvs",".",
+x_norm <- read.cross("csvs",".",
                 paste0(OUT.PREFIX,".normal.gen.csv"),
                 paste0(OUT.PREFIX,".normal.phe.csv"))
-features <- colnames(x$pheno)
+features <- colnames(x_norm$pheno)
 set.seed(SEED)
-x <- jittermap(x)
-x <- calc.genoprob(x, step=1, error.prob=0.001)
-individuals.phenotyped <- summary(x)[[2]]
+x_norm <- jittermap(x_norm)
+x_norm <- calc.genoprob(x_norm, step=1, error.prob=0.001)
+individuals.phenotyped <- summary(x_norm)[[2]]
 print("Starting with QTL Analysis")
 print("Starting with Normal QTL Analysis")
 
 # Obtain LOD scores for all features and markers
 cl <- makeCluster(ceiling(CPUS*1), outfile=paste0('./info_parallel_QTL.log'))
 registerDoParallel(cl)
-x.scanone <- foreach(i=2:ncol(x$pheno),
+x_norm_scone <- foreach(i=2:ncol(x_norm$pheno),
                      .combine = cbind,
-                     .packages = c("ggplot2","grid","gridExtra","latex2exp","qtl","R.devices")) %dopar% {
+                     .packages = c("qtl","R.devices")) %dopar% {
                        
                        # Run single scan
-                       normal.scanone <-  scanone(x, pheno.col = i,  model = "normal", method = "hk")
+                       normal.scanone <-  scanone(x_norm, pheno.col = i,  model = "normal", method = "hk")
                        if(i == 2){
                          record <- data.frame(
                            chr = normal.scanone$chr,
@@ -372,11 +372,11 @@ x.scanone <- foreach(i=2:ncol(x$pheno),
                        record
                      }
 stopCluster(cl) # Stop cluster
-write.csv(x.scanone, file = paste0(OUT.PREFIX,".normal.scanone.csv"))
+write.csv(x_norm_scone, file = paste0(OUT.PREFIX,".normal.scanone.csv"))
 
 cl <- makeCluster(ceiling(CPUS*0.5), outfile=paste0('./info_parallel_QTL.log'))
 registerDoParallel(cl)
-x.normal.summary.mapping <- foreach(i=2:ncol(x$pheno),
+x_norm_sum_map <- foreach(i=2:ncol(x_norm$pheno),
                          .combine = rbind,
                          .packages = c("ggplot2","grid","gridExtra","latex2exp","qtl","R.devices")) %dopar% {
                            transformation.info <- normal.transformed.meansp$feature == features[i]
@@ -425,7 +425,7 @@ x.normal.summary.mapping <- foreach(i=2:ncol(x$pheno),
                            }
                            
                            # Run single scan
-                           normal.scanone <-  scanone(x, pheno.col = i,  model = "normal", method = "hk")
+                           normal.scanone <-  scanone(x_norm, pheno.col = i,  model = "normal", method = "hk")
                            summary.normal.scanone <- summary(normal.scanone, threshold = LOD.THRESHOLD)
                            lod.count <- nrow(summary.normal.scanone)
                            if(lod.count){
@@ -447,7 +447,7 @@ x.normal.summary.mapping <- foreach(i=2:ncol(x$pheno),
                                new.record$pos.peak <- summary.normal.scanone[k,"pos"]
                                marker <- rownames(summary.normal.scanone)[k]
                                # Verify if current QTL has a pseudomarker
-                               marker.info <- transform.pseudomarker(x,marker,new.record$lg,new.record$pos.peak)
+                               marker.info <- transform.pseudomarker(x_norm,marker,new.record$lg,new.record$pos.peak)
                                new.record$marker <- marker.info[1]
                                new.record$pos.peak <- as.numeric(marker.info[2])
                                
@@ -465,7 +465,7 @@ x.normal.summary.mapping <- foreach(i=2:ncol(x$pheno),
                                # Verify if the Bayesian interval QTLs have pseudomarkers
                                for(l in 1:nrow(p95.bayesian)){
                                  marker <- rownames(p95.bayesian)[l]
-                                 marker.info <- transform.pseudomarker(x,marker,p95.bayesian[l,"chr"],p95.bayesian[l,"pos"])
+                                 marker.info <- transform.pseudomarker(x_norm,marker,p95.bayesian[l,"chr"],p95.bayesian[l,"pos"])
                                  p95.bayesian[l,"marker"] <- marker.info[1]
                                  p95.bayesian[l,"pos"] <- as.numeric(marker.info[2])
                                }
@@ -486,7 +486,7 @@ x.normal.summary.mapping <- foreach(i=2:ncol(x$pheno),
                                #summary(normal.scanone, threshold = 3)
                                #lod.plot <- plot(normal.scanone, ylab="LOD Score")
                                #cat(paste0("Scanone: ",i,"\t\tLODs: ",lod.count,"\n"))
-                               normal.scanone.per <- scanone(x, pheno.col = i, model = "normal", method = "hk", n.perm = PERMUTATIONS)
+                               normal.scanone.per <- scanone(x_norm, pheno.col = i, model = "normal", method = "hk", n.perm = PERMUTATIONS)
                                p5 <- summary(normal.scanone.per)[[1]]  #  5% percent
                                p10 <- summary(normal.scanone.per)[[2]] # 10% percent
                                
@@ -507,13 +507,13 @@ x.normal.summary.mapping <- foreach(i=2:ncol(x$pheno),
 
                                chr <- as.numeric(summary.normal.scanone$chr)
                                pos <- as.numeric(summary.normal.scanone$pos)
-                               qtl_s <- makeqtl(x, chr, pos, what=c("prob"))
+                               qtl_s <- makeqtl(x_norm, chr, pos, what=c("prob"))
                                
                                for(m in 1:length(chr)){
-                                 #qtl_s <- makeqtl(x, chr[m], pos[m], what=c("prob"))
+                                 #qtl_s <- makeqtl(x_norm, chr[m], pos[m], what=c("prob"))
                                  #f <- as.formula(paste0("y~",paste0("Q",seq(1:nrow(summary.normal.scanone)), collapse = " + ")))
                                  f <- as.formula(paste0("y~",paste0("Q",m, collapse = " + ")))
-                                 fitqtl <- fitqtl(x, pheno.col = i, qtl_s, formula = f , get.ests = TRUE, model = "normal", method="hk")
+                                 fitqtl <- fitqtl(x_norm, pheno.col = i, qtl_s, formula = f , get.ests = TRUE, model = "normal", method="hk")
                                  summary.fitqtl <- summary(fitqtl)
                                  
                                  if(length(summary.fitqtl)){
@@ -533,24 +533,24 @@ x.normal.summary.mapping <- foreach(i=2:ncol(x$pheno),
                                }
                                
                                # No needed for this data set
-                               #refinqtl <- refineqtl(x, qtl = qtl_s, pheno.col = i, formula = f, verbose = FALSE, model = "normal", method="hk")
+                               #refinqtl <- refineqtl(x_norm, qtl = qtl_s, pheno.col = i, formula = f, verbose = FALSE, model = "normal", method="hk")
                                #refinqtl
                                
-                               #fitqtl <- fitqtl(x, pheno.col = i, refinqtl, formula = f, get.ests = TRUE, model = "normal", method="hk")
+                               #fitqtl <- fitqtl(x_norm, pheno.col = i, refinqtl, formula = f, get.ests = TRUE, model = "normal", method="hk")
                                #summary(fitqtl)
                                
                                
                                ## find additional QTLs
-                               #out.aq <- addqtl(x, qtl = refinqtl, pheno.col = i, formula = f, method="hk")
+                               #out.aq <- addqtl(x_norm, qtl = refinqtl, pheno.col = i, formula = f, method="hk")
                                #max(out.aq)
                            }
                            record
                          }
 stopCluster(cl) # Stop cluster
-#tmp <- x.normal.summary.mapping
+#tmp <- x_norm_sum_map
 #tmp$qtl[!is.na(tmp$qtl)] <- 1:length(tmp$qtl[!is.na(tmp$qtl)])
-#x.normal.summary.mapping <- tmp
-write.csv(x.normal.summary.mapping, file = paste0(OUT.PREFIX,".normal.summary.mapping.csv"), row.names=FALSE, na="")
+#x_norm_sum_map <- tmp
+write.csv(x_norm_sum_map, file = paste0(OUT.PREFIX,".normal.summary.mapping.csv"), row.names=FALSE, na="")
 
 toc(log = TRUE) # Normal QTL analysis
 tic("Non-parametric QTL analysis")
