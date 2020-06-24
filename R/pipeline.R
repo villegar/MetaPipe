@@ -568,11 +568,10 @@ print("Starting with Non-Parametric QTL Analysis")
 cl <- makeCluster(ceiling(CPUS*1), outfile=paste0('./info_parallel_QTL.log'))
 registerDoParallel(cl)
 x_non_par_scone <- foreach(i=2:ncol(x_non_par$pheno),
-                     .combine = cbind,
-                     .packages = c("ggplot2","grid","gridExtra","latex2exp","qtl","R.devices")) %dopar% {
+                     .combine = cbind) %dopar% {
                        
                        # Run single scan
-                       non.parametric.scanone <-  scanone(x_non_par, pheno.col = i,  model = "np")
+                       non.parametric.scanone <- qtl::scanone(x_non_par, pheno.col = i,  model = "np")
                        if(i == 2){
                          record <- data.frame(
                            chr = non.parametric.scanone$chr,
@@ -594,8 +593,7 @@ write.csv(x_non_par_scone, file = paste0(OUT.PREFIX,".non.parametric.scanone.csv
 cl <- makeCluster(ceiling(CPUS*0.5), outfile=paste0('./info_parallel_QTL.log'))
 registerDoParallel(cl)
 x_non_par_sum_map <- foreach(i=2:ncol(x_non_par$pheno),
-                             .combine = rbind,
-                             .packages = c("ggplot2","grid","gridExtra","latex2exp","qtl","R.devices")) %dopar% {
+                             .combine = rbind) %dopar% {
                                #transformation.info <- non.parametric.transformed.meansp$feature == features[i]
                                #transformation.info <- non.parametric.transformed.meansp[transformation.info,c("transf","transf.value")][1,]
                                
@@ -634,7 +632,8 @@ x_non_par_sum_map <- foreach(i=2:ncol(x_non_par$pheno),
                                  new.marker <- marker
                                  new.pos <- pos
                                  if(is.pseudo.marker(marker)){
-                                   marker.info <- find.markerpos(cross, find.marker(cross, chr = chr, pos = pos))
+                                   marker.info <- qtl::find.markerpos(cross, 
+                                                                      qtl::find.marker(cross, chr = chr, pos = pos))
                                    new.marker <- rownames(marker.info)
                                    new.pos <- marker.info$pos
                                  }
@@ -642,7 +641,7 @@ x_non_par_sum_map <- foreach(i=2:ncol(x_non_par$pheno),
                                }
                                
                                # Run single scan
-                               non.parametric.scanone <-  scanone(x_non_par, pheno.col = i,  model = "np")
+                               non.parametric.scanone <- qtl::scanone(x_non_par, pheno.col = i,  model = "np")
                                summary.non.parametric.scanone <- summary(non.parametric.scanone, threshold = LOD.THRESHOLD)
                                lod.count <- nrow(summary.non.parametric.scanone)
                                if(lod.count){
@@ -672,7 +671,7 @@ x_non_par_sum_map <- foreach(i=2:ncol(x_non_par$pheno),
                                      new.record$qtl.ID <- with(new.record, sprintf("%s:%s@%f",features[i],lg,pos.peak))
                                    }
                                    
-                                   p95.bayesian <- bayesint(non.parametric.scanone, chr = new.record$lg ,expandtomarkers = TRUE, prob = 0.95)
+                                   p95.bayesian <- qtl::bayesint(non.parametric.scanone, chr = new.record$lg, expandtomarkers = TRUE, prob = 0.95)
                                    p95.bayesian <- unique(p95.bayesian)
                                    #p95.bayesian <- summary(non.parametric.scanone,  perms=non.parametric.scanone.per, alpha=0.5, pvalues=TRUE)
                                    low.bound <- 1#p95.bayesian$pos == min(p95.bayesian$pos)
@@ -699,7 +698,7 @@ x_non_par_sum_map <- foreach(i=2:ncol(x_non_par$pheno),
                                    }
                                  }
                                  
-                                 non.parametric.scanone.per <- scanone(x_non_par, pheno.col = i, model = "np", n.perm = PERMUTATIONS)
+                                 non.parametric.scanone.per <- qtl::scanone(x_non_par, pheno.col = i, model = "np", n.perm = PERMUTATIONS)
                                  p5 <- summary(non.parametric.scanone.per)[[1]]  #  5% percent
                                  p10 <- summary(non.parametric.scanone.per)[[2]] # 10% percent
                                  
@@ -707,7 +706,7 @@ x_non_par_sum_map <- foreach(i=2:ncol(x_non_par$pheno),
                                  lod.plot <- save_plot(plot(non.parametric.scanone, ylab="LOD Score") + 
                                                         abline(h=p5, lwd=2, lty="solid", col="red") +
                                                         abline(h=p10, lwd=2, lty="solid", col="red"),
-                                                      paste0(PLOTS.DIR,"/LOD-NP-",features[i]), width = 18)
+                                                      paste0(PLOTS.DIR,"/LOD-NP-", features[i]), width = 18)
                                  
                                  record[,]$p5.lod.thr <- p5
                                  record[,]$p10.lod.thr <- p10
