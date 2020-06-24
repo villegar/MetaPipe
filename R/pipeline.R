@@ -343,7 +343,7 @@ features <- colnames(x_norm$pheno)
 set.seed(SEED)
 x_norm <- jittermap(x_norm)
 x_norm <- calc.genoprob(x_norm, step=1, error.prob=0.001)
-individuals.phenotyped <- summary(x_norm)[[2]]
+num_indv_phend_n <- summary(x_norm)[[2]]
 print("Starting with QTL Analysis")
 print("Starting with Normal QTL Analysis")
 
@@ -384,7 +384,7 @@ x_norm_sum_map <- foreach(i=2:ncol(x_norm$pheno),
                              ID = i - 1,
                              qtl.ID = NA,
                              trait = features[i],
-                             ind = individuals.phenotyped,
+                             ind = num_indv_phend_n,
                              lg = NA,
                              lod.peak = NA,
                              pos.peak = NA,
@@ -561,7 +561,7 @@ features_np <- colnames(x_non_par$pheno)
 #set.seed(SEED)
 x_non_par <- jittermap(x_non_par)
 x_non_par <- calc.genoprob(x_non_par, step=1, error.prob=0.001)
-individuals.phenotyped <- summary(x_non_par)[[2]]
+num_indv_phend_np <- summary(x_non_par)[[2]]
 print("Starting with Non-Parametric QTL Analysis")
 
 # Obtain LOD scores for all features and markers
@@ -601,7 +601,7 @@ x_non_par_sum_map <- foreach(i=2:ncol(x_non_par$pheno),
                                  ID = i - 1,
                                  qtl.ID = NA,
                                  trait = features_np[i],
-                                 ind = individuals.phenotyped,
+                                 ind = num_indv_phend_np,
                                  lg = NA,
                                  lod.peak = NA,
                                  pos.peak = NA,
@@ -730,7 +730,7 @@ features <- colnames(x.normal$pheno)
 set.seed(SEED)
 x.normal <- jittermap(x.normal)
 x.normal <- calc.genoprob(x.normal, step=1, error.prob=0.001)
-individuals.phenotyped <- summary(x.normal)[[2]]
+num_indv_phend_n <- summary(x.normal)[[2]]
 
 x.non.parametric <- read.cross("csvs",".",
                                paste0(OUT.PREFIX,".non.parametric.gen.csv"),
