@@ -281,6 +281,7 @@ colnames(geno.map)[1] <- "ID"
 geno.map$ID <- as.character(geno.map$ID)
 
 ## Normal features
+colnames(transformed.normal.meansp)[1] <- "ID"
 transformed.normal.meansp$GenoID <- with(transformed.normal.meansp,
                                          gsub(" ","0",paste0(Generation,"_",sprintf("%3s",as.character(ID))))
 )
@@ -294,6 +295,7 @@ normal.gen <- rbind(geno.map[1:2,],inner_join(normal.phe,geno.map, by="ID")[,col
 
 
 ## Non-parametric features
+colnames(transformed.non.parametric.meansp)[1] <- "ID"
 transformed.non.parametric.meansp$GenoID <- with(transformed.non.parametric.meansp,
                                                  gsub(" ","0",paste0(Generation,"_",sprintf("%3s",as.character(ID))))
 )
