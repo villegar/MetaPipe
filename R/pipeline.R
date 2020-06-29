@@ -490,7 +490,7 @@ x_norm_sum_map <- foreach(i=2:ncol(x_norm$pheno),
                                p10 <- summary(normal.scanone.per)[[2]] # 10% percent
                                
                                
-                               lod.plot <- save_plot(plot(normal.scanone, ylab="LOD Score") + 
+                               lod.plot <- MetaPipe::save_plot(plot(normal.scanone, ylab="LOD Score") + 
                                                       abline(h=p5, lwd=2, lty="solid", col="red") +
                                                       abline(h=p10, lwd=2, lty="solid", col="red"),
                                                     paste0(PLOTS.DIR,"/LOD-",features[i]), width = 18)
@@ -703,7 +703,7 @@ x_non_par_sum_map <- foreach(i=2:ncol(x_non_par$pheno),
                                  p10 <- summary(non.parametric.scanone.per)[[2]] # 10% percent
                                  
                                  
-                                 lod.plot <- save_plot(plot(non.parametric.scanone, ylab="LOD Score") + 
+                                 lod.plot <- MetaPipe::save_plot(plot(non.parametric.scanone, ylab="LOD Score") + 
                                                         abline(h=p5, lwd=2, lty="solid", col="red") +
                                                         abline(h=p10, lwd=2, lty="solid", col="red"),
                                                       paste0(PLOTS.DIR,"/LOD-NP-", features_np[i]), width = 18)
@@ -721,6 +721,7 @@ x_non_par_sum_map <- foreach(i=2:ncol(x_non_par$pheno),
 parallel::stopCluster(cl) # Stop cluster
 
 write.csv(x_non_par_sum_map, file = paste0(OUT.PREFIX,".non.parametric.summary.mapping.csv"), row.names=FALSE, na="")
+
 tictoc::toc(log = TRUE) # Non-parametric QTL analysis
 tictoc::tic("QTL analysis postprocessing")
 x_norm <- qtl::read.cross("csvs",".",
@@ -747,15 +748,15 @@ x_non_par_sim <- qtl::sim.geno(x_non_par)
 x_norm_sim <- qtl::sim.geno(x_norm)
 
 true_qtl <- plyr::rbind.fill(x_norm_sum_map[x_norm_sum_map$p5.qtl,],
-                    x_non_par_sum_map[x_non_par_sum_map$p5.qtl,])
+                             x_non_par_sum_map[x_non_par_sum_map$p5.qtl,])
 thrsh3_qtl <- plyr::rbind.fill(x_norm_sum_map[x_norm_sum_map$lod.peak > LOD.THRESHOLD,],
-                             x_non_par_sum_map[x_non_par_sum_map$lod.peak > LOD.THRESHOLD,])
+                               x_non_par_sum_map[x_non_par_sum_map$lod.peak > LOD.THRESHOLD,])
 true_qtl_features <- as.character(true_qtl$trait)
 true_qtl_markers <- as.character(true_qtl$marker)
 
 cl <- parallel::makeCluster(ceiling(CPUS), outfile=paste0('./info_parallel_QTL.log'))
 doParallel::registerDoParallel(cl)
-effect.plots <- foreach(i=1:nrow(true_qtl),
+effect_plots <- foreach(i=1:nrow(true_qtl),
                         .packages = c("latex2exp","qtl","R.devices")) %dopar% {
                           if(true_qtl[i,]$method == "normal-scanone"){
                             if(true_qtl[i,]$transf == "log"){
@@ -767,14 +768,14 @@ effect.plots <- foreach(i=1:nrow(true_qtl),
                             } else {
                               ylab <- true_qtl_features[i]
                             }
-                            effect.plot <- save_plot(qtl::effectplot(x_norm_sim, pheno.col = true_qtl_features[i], 
-                                                               mname1 = true_qtl_markers[i], main = NULL, ylab = latex2exp::TeX(ylab)),
-                                                    paste0(PLOTS.DIR,"/EFF-",true_qtl_features[i],"-",true_qtl_markers[i]))
+                            effect_plots <- MetaPipe::save_plot(qtl::effectplot(x_norm_sim, pheno.col = true_qtl_features[i], 
+                                                                      mname1 = true_qtl_markers[i], main = NULL, ylab = latex2exp::TeX(ylab)),
+                                                      paste0(PLOTS.DIR,"/EFF-",true_qtl_features[i],"-",true_qtl_markers[i]))
                           } else {
                             ylab <- true_qtl_features[i]
-                            effect.plot <- save_plot(qtl::effectplot(x_non_par_sim, pheno.col = as.character(true_qtl_features[i]), 
-                                                               mname1 = true_qtl_markers[i], main = NULL, ylab = latex2exp::TeX(ylab)),
-                                                    paste0(PLOTS.DIR,"/EFF-NP-",true_qtl_features[i],"-",true_qtl_markers[i]))
+                            effect_plots <- MetaPipe::save_plot(qtl::effectplot(x_non_par_sim, pheno.col = as.character(true_qtl_features[i]), 
+                                                                      mname1 = true_qtl_markers[i], main = NULL, ylab = latex2exp::TeX(ylab)),
+                                                      paste0(PLOTS.DIR,"/EFF-NP-",true_qtl_features[i],"-",true_qtl_markers[i]))
                           }
                         }
 parallel::stopCluster(cl) # Stop cluster
@@ -783,10 +784,10 @@ write.csv(true_qtl, file = paste0(OUT.PREFIX,".true.qtl.csv"), row.names=FALSE, 
 write.csv(thrsh3_qtl, file = paste0(OUT.PREFIX,".threshold3.qtl.csv"), row.names=FALSE, na="")
 
 # Classify QTLs by LG and Peak Position
-classified.qtl <- true_qtl[order(true_qtl$lg,true_qtl$pos.peak),]
-classified.qtl$group <- with(classified.qtl,
-                             paste0("chr",lg,"-mrk",marker))
-write.csv(classified.qtl, file = paste0(OUT.PREFIX,".classified.qtl.csv"), row.names=FALSE, na="")
+class_qtl <- true_qtl[order(true_qtl$lg,true_qtl$pos.peak),]
+class_qtl$group <- with(class_qtl,
+                        paste0("chr",lg,"-mrk",marker))
+write.csv(class_qtl, file = paste0(OUT.PREFIX,".classified.qtl.csv"), row.names=FALSE, na="")
 print("Done with QTL Analysis")
 tictoc::toc(log = TRUE) # QTL analysis postprocessing
 tictoc::toc(log = TRUE) # QTL analysis
