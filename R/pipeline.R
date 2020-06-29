@@ -558,7 +558,7 @@ x_non_par <- qtl::read.cross("csvs",".",
                 paste0(OUT.PREFIX,".non.parametric.gen.csv"),
                 paste0(OUT.PREFIX,".non.parametric.phe.csv"))
 features_np <- colnames(x_non_par$pheno)
-#set.seed(SEED)
+set.seed(SEED)
 x_non_par <- qtl::jittermap(x_non_par)
 x_non_par <- qtl::calc.genoprob(x_non_par, step=1, error.prob=0.001)
 num_indv_phend_np <- summary(x_non_par)[[2]]
@@ -723,64 +723,67 @@ parallel::stopCluster(cl) # Stop cluster
 write.csv(x_non_par_sum_map, file = paste0(OUT.PREFIX,".non.parametric.summary.mapping.csv"), row.names=FALSE, na="")
 tictoc::toc(log = TRUE) # Non-parametric QTL analysis
 tictoc::tic("QTL analysis postprocessing")
-x.normal <- qtl::read.cross("csvs",".",
-                       paste0(OUT.PREFIX,".normal.gen.csv"),
-                       paste0(OUT.PREFIX,".normal.phe.csv"))
-features <- colnames(x.normal$pheno)
+x_norm <- qtl::read.cross("csvs",".",
+                          paste0(OUT.PREFIX,".normal.gen.csv"),
+                          paste0(OUT.PREFIX,".normal.phe.csv"))
+features <- colnames(x_norm$pheno)
 set.seed(SEED)
-x.normal <- qtl::jittermap(x.normal)
-x.normal <- qtl::calc.genoprob(x.normal, step=1, error.prob=0.001)
-num_indv_phend_n <- summary(x.normal)[[2]]
+x_norm <- qtl::jittermap(x_norm)
+x_norm <- qtl::calc.genoprob(x_norm, step=1, error.prob=0.001)
+num_indv_phend_n <- summary(x_norm)[[2]]
 
-x.non.parametric <- qtl::read.cross("csvs",".",
-                               paste0(OUT.PREFIX,".non.parametric.gen.csv"),
-                               paste0(OUT.PREFIX,".non.parametric.phe.csv"))
-features_np <- colnames(x.non.parametric$pheno)
-x.non.parametric <- qtl::jittermap(x.non.parametric)
-x.non.parametric <- qtl::calc.genoprob(x.non.parametric, step=1, error.prob=0.001)
+# Non-parametric QTL
+x_non_par <- qtl::read.cross("csvs",".",
+                             paste0(OUT.PREFIX,".non.parametric.gen.csv"),
+                             paste0(OUT.PREFIX,".non.parametric.phe.csv"))
+features_np <- colnames(x_non_par$pheno)
+set.seed(SEED)
+x_non_par <- qtl::jittermap(x_non_par)
+x_non_par <- qtl::calc.genoprob(x_non_par, step=1, error.prob=0.001)
+num_indv_phend_np <- summary(x_non_par)[[2]]
 
 # Generate effect plots
-x2.non.parametric <- qtl::sim.geno(x.non.parametric)
-x2.normal <- qtl::sim.geno(x.normal)
-#effectplot(x2, pheno.col = "M155T28", mname1 = "gbs_13_305342", main = NULL)
-t.qtl <- plyr::rbind.fill(x.normal.summary.mapping[x.normal.summary.mapping$p5.qtl,],
-                    x.non.parametric.summary.mapping[x.non.parametric.summary.mapping$p5.qtl,])
-threshold3.qtl <- plyr::rbind.fill(x.normal.summary.mapping[x.normal.summary.mapping$lod.peak > LOD.THRESHOLD,],
-                             x.non.parametric.summary.mapping[x.non.parametric.summary.mapping$lod.peak > LOD.THRESHOLD,])
-features.t.qtl <- as.character(t.qtl$trait)
-markers.t.qtl <- as.character(t.qtl$marker)
+x_non_par_sim <- qtl::sim.geno(x_non_par)
+x_norm_sim <- qtl::sim.geno(x_norm)
+
+true_qtl <- plyr::rbind.fill(x_norm_sum_map[x_norm_sum_map$p5.qtl,],
+                    x_non_par_sum_map[x_non_par_sum_map$p5.qtl,])
+thrsh3_qtl <- plyr::rbind.fill(x_norm_sum_map[x_norm_sum_map$lod.peak > LOD.THRESHOLD,],
+                             x_non_par_sum_map[x_non_par_sum_map$lod.peak > LOD.THRESHOLD,])
+true_qtl_features <- as.character(true_qtl$trait)
+true_qtl_markers <- as.character(true_qtl$marker)
 
 cl <- parallel::makeCluster(ceiling(CPUS), outfile=paste0('./info_parallel_QTL.log'))
 doParallel::registerDoParallel(cl)
-effect.plots <- foreach(i=1:nrow(t.qtl),
+effect.plots <- foreach(i=1:nrow(true_qtl),
                         .packages = c("latex2exp","qtl","R.devices")) %dopar% {
-                          if(t.qtl[i,]$method == "normal-scanone"){
-                            if(t.qtl[i,]$transf == "log"){
-                              ylab <- paste0("$\\log_{",t.qtl[i,]$transf.val,"}(",features.t.qtl[i],")$")
-                            } else if(t.qtl[i,]$transf == "root"){
-                              ylab <- paste0("$\\sqrt[",t.qtl[i,]$transf.val,"]{",features.t.qtl[i],"}$")
-                            } else if(t.qtl[i,]$transf == "power"){
-                              ylab <- paste0("$(",features.t.qtl[i],")^",t.qtl[i,]$transf.val,"$")
+                          if(true_qtl[i,]$method == "normal-scanone"){
+                            if(true_qtl[i,]$transf == "log"){
+                              ylab <- paste0("$\\log_{",true_qtl[i,]$transf.val,"}(",true_qtl_features[i],")$")
+                            } else if(true_qtl[i,]$transf == "root"){
+                              ylab <- paste0("$\\sqrt[",true_qtl[i,]$transf.val,"]{",true_qtl_features[i],"}$")
+                            } else if(true_qtl[i,]$transf == "power"){
+                              ylab <- paste0("$(",true_qtl_features[i],")^",true_qtl[i,]$transf.val,"$")
                             } else {
-                              ylab <- features.t.qtl[i]
+                              ylab <- true_qtl_features[i]
                             }
-                            effect.plot <- save_plot(qtl::effectplot(x2.normal, pheno.col = features.t.qtl[i], 
-                                                               mname1 = markers.t.qtl[i], main = NULL, ylab = latex2exp::TeX(ylab)),
-                                                    paste0(PLOTS.DIR,"/EFF-",features.t.qtl[i],"-",markers.t.qtl[i]))
+                            effect.plot <- save_plot(qtl::effectplot(x_norm_sim, pheno.col = true_qtl_features[i], 
+                                                               mname1 = true_qtl_markers[i], main = NULL, ylab = latex2exp::TeX(ylab)),
+                                                    paste0(PLOTS.DIR,"/EFF-",true_qtl_features[i],"-",true_qtl_markers[i]))
                           } else {
-                            ylab <- features.t.qtl[i]
-                            effect.plot <- save_plot(qtl::effectplot(x2.non.parametric, pheno.col = as.character(features.t.qtl[i]), 
-                                                               mname1 = markers.t.qtl[i], main = NULL, ylab = latex2exp::TeX(ylab)),
-                                                    paste0(PLOTS.DIR,"/EFF-NP-",features.t.qtl[i],"-",markers.t.qtl[i]))
+                            ylab <- true_qtl_features[i]
+                            effect.plot <- save_plot(qtl::effectplot(x_non_par_sim, pheno.col = as.character(true_qtl_features[i]), 
+                                                               mname1 = true_qtl_markers[i], main = NULL, ylab = latex2exp::TeX(ylab)),
+                                                    paste0(PLOTS.DIR,"/EFF-NP-",true_qtl_features[i],"-",true_qtl_markers[i]))
                           }
                         }
 parallel::stopCluster(cl) # Stop cluster
 
-write.csv(t.qtl, file = paste0(OUT.PREFIX,".true.qtl.csv"), row.names=FALSE, na="")
-write.csv(threshold3.qtl, file = paste0(OUT.PREFIX,".threshold3.qtl.csv"), row.names=FALSE, na="")
+write.csv(true_qtl, file = paste0(OUT.PREFIX,".true.qtl.csv"), row.names=FALSE, na="")
+write.csv(thrsh3_qtl, file = paste0(OUT.PREFIX,".threshold3.qtl.csv"), row.names=FALSE, na="")
 
 # Classify QTLs by LG and Peak Position
-classified.qtl <- t.qtl[order(t.qtl$lg,t.qtl$pos.peak),]
+classified.qtl <- true_qtl[order(true_qtl$lg,true_qtl$pos.peak),]
 classified.qtl$group <- with(classified.qtl,
                              paste0("chr",lg,"-mrk",marker))
 write.csv(classified.qtl, file = paste0(OUT.PREFIX,".classified.qtl.csv"), row.names=FALSE, na="")
@@ -861,18 +864,18 @@ tictoc::toc(log = TRUE) # LDAnalysis
 
 tictoc::tic("Heatmap for true QTLs")
 # Heatmap
-x.normal.lod.scores <- read.csv(paste0(OUT.PREFIX,".normal.scanone.csv"))
+x_norm.lod.scores <- read.csv(paste0(OUT.PREFIX,".normal.scanone.csv"))
 x.non.parametric.lod.scores <- read.csv(paste0(OUT.PREFIX,".non.parametric.scanone.csv"))
 true.qtl <- read.csv(paste0(OUT.PREFIX,".true.qtl.csv"))
 true.qtl.features <- unique(as.character(true.qtl$trait))
-x.normal.lod.scores.true.qtl <- x.normal.lod.scores[, which(names(x.normal.lod.scores) %in% true.qtl.features)]
+x_norm.lod.scores.true.qtl <- x_norm.lod.scores[, which(names(x_norm.lod.scores) %in% true.qtl.features)]
 x.non.parametric.lod.scores.true.qtl <- x.non.parametric.lod.scores[, which(names(x.non.parametric.lod.scores) %in% true.qtl.features)]
-lod.scores <- cbind(x.normal.lod.scores.true.qtl,x.non.parametric.lod.scores.true.qtl)
+lod.scores <- cbind(x_norm.lod.scores.true.qtl,x.non.parametric.lod.scores.true.qtl)
 lod.scores <- matrix(as.numeric(unlist(lod.scores)), nrow=nrow(lod.scores))
-rownames(lod.scores) <- x.normal.lod.scores$X
+rownames(lod.scores) <- x_norm.lod.scores$X
 colnames(lod.scores) <- true.qtl.features
-obs.by.chr <- table(x.normal.lod.scores$chr)
-colnams.chr <- rep(NA,length(x.normal.lod.scores$X))
+obs.by.chr <- table(x_norm.lod.scores$chr)
+colnams.chr <- rep(NA,length(x_norm.lod.scores$X))
 k <- 1
 for(i in 1:length(obs.by.chr)){
   colnams.chr[k] <- paste0("chr ",i)
