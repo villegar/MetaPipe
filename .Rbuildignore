@@ -4,3 +4,6 @@
 ^README\.Rmd$       # An Rmarkdown file used to generate README.md
 ^\.travis\.yml$     # Used for continuous integration testing with travis
 ^README\.Rmd$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
