@@ -288,7 +288,7 @@ transformed.normal.meansp$GenoID <- with(transformed.normal.meansp,
 transformed.normal.meansp$ID <- transformed.normal.meansp$GenoID
 transformed.normal.meansp$GenoID <- NULL
 
-normal.phe <- inner_join(transformed.normal.meansp,geno.map, by="ID")[,colnames(transformed.normal.meansp)]
+normal.phe <- dplyr::inner_join(transformed.normal.meansp,geno.map, by="ID")[,colnames(transformed.normal.meansp)]
 normal.phe$Group <- NULL
 normal.phe$Generation <- NULL
 normal.gen <- rbind(geno.map[1:2,],inner_join(normal.phe,geno.map, by="ID")[,colnames(geno.map)])
@@ -336,25 +336,25 @@ write.csv(non.parametric.phe, file = paste0(OUT.PREFIX,".non.parametric.phe.csv"
 tictoc::toc(log = TRUE) # QTL analysis preprocessing
 tictoc::tic("Normal QTL analysis")
 # QTL Analysis
-x_norm <- read.cross("csvs",".",
+x_norm <- qtl::read.cross("csvs",".",
                 paste0(OUT.PREFIX,".normal.gen.csv"),
                 paste0(OUT.PREFIX,".normal.phe.csv"))
 features <- colnames(x_norm$pheno)
 set.seed(SEED)
-x_norm <- jittermap(x_norm)
-x_norm <- calc.genoprob(x_norm, step=1, error.prob=0.001)
+x_norm <- qtl::jittermap(x_norm)
+x_norm <- qtl::calc.genoprob(x_norm, step=1, error.prob=0.001)
 num_indv_phend_n <- summary(x_norm)[[2]]
 print("Starting with QTL Analysis")
 print("Starting with Normal QTL Analysis")
 
 # Obtain LOD scores for all features and markers
-cl <- makeCluster(ceiling(CPUS*1), outfile=paste0('./info_parallel_QTL.log'))
-registerDoParallel(cl)
+cl <- parallel::makeCluster(ceiling(CPUS*1), outfile=paste0('./info_parallel_QTL.log'))
+doParallel::registerDoParallel(cl)
 x_norm_scone <- foreach(i=2:ncol(x_norm$pheno),
                      .combine = cbind) %dopar% {
                        
                        # Run single scan
-                       normal.scanone <-  scanone(x_norm, pheno.col = i,  model = "normal", method = "hk")
+                       normal.scanone <- qtl::scanone(x_norm, pheno.col = i,  model = "normal", method = "hk")
                        if(i == 2){
                          record <- data.frame(
                            chr = normal.scanone$chr,
@@ -370,11 +370,11 @@ x_norm_scone <- foreach(i=2:ncol(x_norm$pheno),
                        }
                        record
                      }
-stopCluster(cl) # Stop cluster
+parallel::stopCluster(cl) # Stop cluster
 write.csv(x_norm_scone, file = paste0(OUT.PREFIX,".normal.scanone.csv"))
 
-cl <- makeCluster(ceiling(CPUS*0.5), outfile=paste0('./info_parallel_QTL.log'))
-registerDoParallel(cl)
+cl <- parallel::makeCluster(ceiling(CPUS*0.5), outfile=paste0('./info_parallel_QTL.log'))
+doParallel::registerDoParallel(cl)
 x_norm_sum_map <- foreach(i=2:ncol(x_norm$pheno),
                          .combine = rbind) %dopar% {
                            transformation.info <- normal.transformed.meansp$feature == features[i]
@@ -427,7 +427,7 @@ x_norm_sum_map <- foreach(i=2:ncol(x_norm$pheno),
                            normal.scanone <-  qtl::scanone(x_norm, pheno.col = i,  model = "normal", method = "hk")
                            summary.normal.scanone <- summary(normal.scanone, threshold = LOD.THRESHOLD)
                            lod.count <- nrow(summary.normal.scanone)
-                           if(lod.count){
+                           if(!is.null(lod.count) && lod.count > 0) {
                              for(k in 1:lod.count){
                                if(k > 1){
                                  #new.record <- record[0,] # Create an empty record object
@@ -545,7 +545,7 @@ x_norm_sum_map <- foreach(i=2:ncol(x_norm$pheno),
                            }
                            record
                          }
-stopCluster(cl) # Stop cluster
+parallel::stopCluster(cl) # Stop cluster
 #tmp <- x_norm_sum_map
 #tmp$qtl[!is.na(tmp$qtl)] <- 1:length(tmp$qtl[!is.na(tmp$qtl)])
 #x_norm_sum_map <- tmp
@@ -554,19 +554,19 @@ write.csv(x_norm_sum_map, file = paste0(OUT.PREFIX,".normal.summary.mapping.csv"
 tictoc::toc(log = TRUE) # Normal QTL analysis
 tictoc::tic("Non-parametric QTL analysis")
 # Non-parametric QTL
-x_non_par <- read.cross("csvs",".",
+x_non_par <- qtl::read.cross("csvs",".",
                 paste0(OUT.PREFIX,".non.parametric.gen.csv"),
                 paste0(OUT.PREFIX,".non.parametric.phe.csv"))
 features_np <- colnames(x_non_par$pheno)
 #set.seed(SEED)
-x_non_par <- jittermap(x_non_par)
-x_non_par <- calc.genoprob(x_non_par, step=1, error.prob=0.001)
+x_non_par <- qtl::jittermap(x_non_par)
+x_non_par <- qtl::calc.genoprob(x_non_par, step=1, error.prob=0.001)
 num_indv_phend_np <- summary(x_non_par)[[2]]
 print("Starting with Non-Parametric QTL Analysis")
 
 # Obtain LOD scores for all features and markers
-cl <- makeCluster(ceiling(CPUS*1), outfile=paste0('./info_parallel_QTL.log'))
-registerDoParallel(cl)
+cl <- parallel::makeCluster(ceiling(CPUS*1), outfile=paste0('./info_parallel_QTL.log'))
+doParallel::registerDoParallel(cl)
 x_non_par_scone <- foreach(i=2:ncol(x_non_par$pheno),
                      .combine = cbind) %dopar% {
                        
@@ -587,11 +587,11 @@ x_non_par_scone <- foreach(i=2:ncol(x_non_par$pheno),
                        }
                        record
                      }
-stopCluster(cl) # Stop cluster
+parallel::stopCluster(cl) # Stop cluster
 write.csv(x_non_par_scone, file = paste0(OUT.PREFIX,".non.parametric.scanone.csv"))
 
-cl <- makeCluster(ceiling(CPUS*0.5), outfile=paste0('./info_parallel_QTL.log'))
-registerDoParallel(cl)
+cl <- parallel::makeCluster(ceiling(CPUS*0.5), outfile=paste0('./info_parallel_QTL.log'))
+doParallel::registerDoParallel(cl)
 x_non_par_sum_map <- foreach(i=2:ncol(x_non_par$pheno),
                              .combine = rbind) %dopar% {
                                #transformation.info <- non.parametric.transformed.meansp$feature == features_np[i]
@@ -644,7 +644,7 @@ x_non_par_sum_map <- foreach(i=2:ncol(x_non_par$pheno),
                                non.parametric.scanone <- qtl::scanone(x_non_par, pheno.col = i,  model = "np")
                                summary.non.parametric.scanone <- summary(non.parametric.scanone, threshold = LOD.THRESHOLD)
                                lod.count <- nrow(summary.non.parametric.scanone)
-                               if(lod.count){
+                               if(!is.null(lod.count) && lod.count > 0) {
                                  for(k in 1:lod.count){
                                    if(k > 1){
                                      #new.record <- record[0,] # Create an empty record object
@@ -718,40 +718,40 @@ x_non_par_sum_map <- foreach(i=2:ncol(x_non_par$pheno),
                                }
                                record
                              }
-stopCluster(cl) # Stop cluster
+parallel::stopCluster(cl) # Stop cluster
 
 write.csv(x_non_par_sum_map, file = paste0(OUT.PREFIX,".non.parametric.summary.mapping.csv"), row.names=FALSE, na="")
 tictoc::toc(log = TRUE) # Non-parametric QTL analysis
 tictoc::tic("QTL analysis postprocessing")
-x.normal <- read.cross("csvs",".",
+x.normal <- qtl::read.cross("csvs",".",
                        paste0(OUT.PREFIX,".normal.gen.csv"),
                        paste0(OUT.PREFIX,".normal.phe.csv"))
 features <- colnames(x.normal$pheno)
 set.seed(SEED)
-x.normal <- jittermap(x.normal)
-x.normal <- calc.genoprob(x.normal, step=1, error.prob=0.001)
+x.normal <- qtl::jittermap(x.normal)
+x.normal <- qtl::calc.genoprob(x.normal, step=1, error.prob=0.001)
 num_indv_phend_n <- summary(x.normal)[[2]]
 
-x.non.parametric <- read.cross("csvs",".",
+x.non.parametric <- qtl::read.cross("csvs",".",
                                paste0(OUT.PREFIX,".non.parametric.gen.csv"),
                                paste0(OUT.PREFIX,".non.parametric.phe.csv"))
 features_np <- colnames(x.non.parametric$pheno)
-x.non.parametric <- jittermap(x.non.parametric)
-x.non.parametric <- calc.genoprob(x.non.parametric, step=1, error.prob=0.001)
+x.non.parametric <- qtl::jittermap(x.non.parametric)
+x.non.parametric <- qtl::calc.genoprob(x.non.parametric, step=1, error.prob=0.001)
 
 # Generate effect plots
-x2.non.parametric <- sim.geno(x.non.parametric)
-x2.normal <- sim.geno(x.normal)
+x2.non.parametric <- qtl::sim.geno(x.non.parametric)
+x2.normal <- qtl::sim.geno(x.normal)
 #effectplot(x2, pheno.col = "M155T28", mname1 = "gbs_13_305342", main = NULL)
-t.qtl <- rbind.fill(x.normal.summary.mapping[x.normal.summary.mapping$p5.qtl,],
+t.qtl <- plyr::rbind.fill(x.normal.summary.mapping[x.normal.summary.mapping$p5.qtl,],
                     x.non.parametric.summary.mapping[x.non.parametric.summary.mapping$p5.qtl,])
-threshold3.qtl <- rbind.fill(x.normal.summary.mapping[x.normal.summary.mapping$lod.peak > LOD.THRESHOLD,],
+threshold3.qtl <- plyr::rbind.fill(x.normal.summary.mapping[x.normal.summary.mapping$lod.peak > LOD.THRESHOLD,],
                              x.non.parametric.summary.mapping[x.non.parametric.summary.mapping$lod.peak > LOD.THRESHOLD,])
 features.t.qtl <- as.character(t.qtl$trait)
 markers.t.qtl <- as.character(t.qtl$marker)
 
-cl <- makeCluster(ceiling(CPUS), outfile=paste0('./info_parallel_QTL.log'))
-registerDoParallel(cl)
+cl <- parallel::makeCluster(ceiling(CPUS), outfile=paste0('./info_parallel_QTL.log'))
+doParallel::registerDoParallel(cl)
 effect.plots <- foreach(i=1:nrow(t.qtl),
                         .packages = c("latex2exp","qtl","R.devices")) %dopar% {
                           if(t.qtl[i,]$method == "normal-scanone"){
@@ -764,17 +764,17 @@ effect.plots <- foreach(i=1:nrow(t.qtl),
                             } else {
                               ylab <- features.t.qtl[i]
                             }
-                            effect.plot <- save_plot(effectplot(x2.normal, pheno.col = features.t.qtl[i], 
-                                                               mname1 = markers.t.qtl[i], main = NULL, ylab = TeX(ylab)),
+                            effect.plot <- save_plot(qtl::effectplot(x2.normal, pheno.col = features.t.qtl[i], 
+                                                               mname1 = markers.t.qtl[i], main = NULL, ylab = latex2exp::TeX(ylab)),
                                                     paste0(PLOTS.DIR,"/EFF-",features.t.qtl[i],"-",markers.t.qtl[i]))
                           } else {
                             ylab <- features.t.qtl[i]
-                            effect.plot <- save_plot(effectplot(x2.non.parametric, pheno.col = as.character(features.t.qtl[i]), 
-                                                               mname1 = markers.t.qtl[i], main = NULL, ylab = TeX(ylab)),
+                            effect.plot <- save_plot(qtl::effectplot(x2.non.parametric, pheno.col = as.character(features.t.qtl[i]), 
+                                                               mname1 = markers.t.qtl[i], main = NULL, ylab = latex2exp::TeX(ylab)),
                                                     paste0(PLOTS.DIR,"/EFF-NP-",features.t.qtl[i],"-",markers.t.qtl[i]))
                           }
                         }
-stopCluster(cl) # Stop cluster
+parallel::stopCluster(cl) # Stop cluster
 
 write.csv(t.qtl, file = paste0(OUT.PREFIX,".true.qtl.csv"), row.names=FALSE, na="")
 write.csv(threshold3.qtl, file = paste0(OUT.PREFIX,".threshold3.qtl.csv"), row.names=FALSE, na="")
