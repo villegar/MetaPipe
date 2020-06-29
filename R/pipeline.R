@@ -82,7 +82,7 @@ if(length(args) < 1){
   PLOTS.DIR <- args[5]
 }
 
-tic.clearlog()
+tictoc::tic.clearlog()
 cat(paste0("CMD Parameters: (",PERMUTATIONS,",",REPLACE.NA,",",PARETO.SCALING,",",OUT.PREFIX,",",PLOTS.DIR,")"))
 
 # Global parameters
@@ -97,8 +97,8 @@ NA.COUNT.THRESHOLD <- 0.5 # Allows 50% of NAs per feature
 # Environment configuration
 dir.create(file.path(getwd(), PLOTS.DIR), showWarnings = FALSE) # Directory for plots
 
-tic("Total")
-tic("Loading and pre-processing")
+tictoc::tic("Total")
+tictoc::tic("Loading and pre-processing")
 # Load and Cleaning Data
 sp <- read.csv(input.filename)
 ncols <- ncol(sp)
@@ -129,7 +129,7 @@ if(REPLACE.NA){
 }
 
 write.csv(meansp, file = paste0(OUT.PREFIX,".all.meansp.csv"), row.names=FALSE)
-toc(log = TRUE) # Loading and pre-processing
+tictoc::toc(log = TRUE) # Loading and pre-processing
 
 # Missing values plot
 #missmap(meansp, main = "Missing values vs observed")
@@ -153,11 +153,11 @@ generate.boxplots <- function(meansp,ggplot_save){
 
 #generate.boxplots(meansp,ggplot_save)
 
-tic("Normality Assessment")
+tictoc::tic("Normality Assessment")
 features <- colnames(meansp)
 print("Starting with Normality Assessment")
-cl <- makeCluster(CPUS, outfile=paste0('./info_parallel.log'))
-registerDoParallel(cl)
+cl <- parallel::makeCluster(CPUS, outfile=paste0('./info_parallel.log'))
+doParallel::registerDoParallel(cl)
 transformed.meansp <- foreach(i=(length.excluded.columns + 1):ncol(meansp),
                          .combine =rbind,
                          .packages = c("ggplot2","grid","gridExtra","latex2exp","R.devices")) %dopar% {
@@ -212,11 +212,11 @@ transformed.meansp <- foreach(i=(length.excluded.columns + 1):ncol(meansp),
                            record
 }
 
-stopCluster(cl) # Stop cluster
+parallel::stopCluster(cl) # Stop cluster
 print("Done with Normality Assessment")
 
-toc(log = TRUE) # Normality Assessment
-tic("Transformed data post-processing")
+tictoc::toc(log = TRUE) # Normality Assessment
+tictoc::tic("Transformed data post-processing")
 normal.transformed.meansp <- transformed.meansp[transformed.meansp$flag == "Normal",]
 non.parametric.transformed.meansp <- transformed.meansp[transformed.meansp$flag == "Non-normal",]
 non.parametric.features <- unique(as.character(non.parametric.transformed.meansp$feature))
@@ -272,9 +272,9 @@ for(i in 1:nrow(transformations)){
 }
 cat("\n\n") # Clean output
 
-toc(log = TRUE) # Transformed data post-processing
-tic("QTL analysis")
-tic("QTL analysis preprocessing")
+tictoc::toc(log = TRUE) # Transformed data post-processing
+tictoc::tic("QTL analysis")
+tictoc::tic("QTL analysis preprocessing")
 # Prepocessing data for QTL Analysis
 geno.map <- read.csv("OriginalMap.csv")
 colnames(geno.map)[1] <- "ID"
@@ -333,8 +333,8 @@ write.csv(normal.phe, file = paste0(OUT.PREFIX,".normal.phe.csv"), row.names=FAL
 write.csv(non.parametric.gen, file = paste0(OUT.PREFIX,".non.parametric.gen.csv"), row.names=FALSE)
 write.csv(non.parametric.phe, file = paste0(OUT.PREFIX,".non.parametric.phe.csv"), row.names=FALSE)
 
-toc(log = TRUE) # QTL analysis preprocessing
-tic("Normal QTL analysis")
+tictoc::toc(log = TRUE) # QTL analysis preprocessing
+tictoc::tic("Normal QTL analysis")
 # QTL Analysis
 x_norm <- read.cross("csvs",".",
                 paste0(OUT.PREFIX,".normal.gen.csv"),
@@ -551,8 +551,8 @@ stopCluster(cl) # Stop cluster
 #x_norm_sum_map <- tmp
 write.csv(x_norm_sum_map, file = paste0(OUT.PREFIX,".normal.summary.mapping.csv"), row.names=FALSE, na="")
 
-toc(log = TRUE) # Normal QTL analysis
-tic("Non-parametric QTL analysis")
+tictoc::toc(log = TRUE) # Normal QTL analysis
+tictoc::tic("Non-parametric QTL analysis")
 # Non-parametric QTL
 x_non_par <- read.cross("csvs",".",
                 paste0(OUT.PREFIX,".non.parametric.gen.csv"),
@@ -721,8 +721,8 @@ x_non_par_sum_map <- foreach(i=2:ncol(x_non_par$pheno),
 stopCluster(cl) # Stop cluster
 
 write.csv(x_non_par_sum_map, file = paste0(OUT.PREFIX,".non.parametric.summary.mapping.csv"), row.names=FALSE, na="")
-toc(log = TRUE) # Non-parametric QTL analysis
-tic("QTL analysis postprocessing")
+tictoc::toc(log = TRUE) # Non-parametric QTL analysis
+tictoc::tic("QTL analysis postprocessing")
 x.normal <- read.cross("csvs",".",
                        paste0(OUT.PREFIX,".normal.gen.csv"),
                        paste0(OUT.PREFIX,".normal.phe.csv"))
@@ -785,8 +785,8 @@ classified.qtl$group <- with(classified.qtl,
                              paste0("chr",lg,"-mrk",marker))
 write.csv(classified.qtl, file = paste0(OUT.PREFIX,".classified.qtl.csv"), row.names=FALSE, na="")
 print("Done with QTL Analysis")
-toc(log = TRUE) # QTL analysis postprocessing
-toc(log = TRUE) # QTL analysis
+tictoc::toc(log = TRUE) # QTL analysis postprocessing
+tictoc::toc(log = TRUE) # QTL analysis
 
 
 # For both PCA and LDA the data must have no NAs and must be scaled
@@ -800,7 +800,7 @@ transformed.meansp <- meansp # No scaling
 #  transformed.meansp <- cbind(meansp[,excluded.columns],paretoscale(meansp[,-excluded.columns]))
 #}
 
-tic("PCAnalysis")
+tictoc::tic("PCAnalysis")
 # PCAnalysis with mean (used no missing data) 
 ##OUT.PREFIX <- "S1-metabolomics"
 ##transformed.meansp <- read.csv(paste0(OUT.PREFIX,".all.meansp.csv"))
@@ -817,8 +817,8 @@ save_plotTIFF(fviz_pca_biplot(res.pca, col.var="contrib",
                          label="var",addEllipses=TRUE, ellipse.level=0.95, repel = TRUE  # Avoid text overlapping
 ),
 paste0(PLOTS.DIR,"/PCA-biplot.top10"),12,6)
-toc(log = TRUE) # PCAnalysis
-tic("LDAnalysis")
+tictoc::toc(log = TRUE) # PCAnalysis
+tictoc::tic("LDAnalysis")
 # LDAnalysis
 ## Create an "unknown" group name for missing data
 transformed.meansp$Group <- as.character(transformed.meansp$Group)
@@ -857,9 +857,9 @@ save_plotTIFF(ggplot(lda.data.top200, aes(LD1,LD2)) +
   geom_point(aes(color = FruitColor)) +
   stat_ellipse(aes(x=LD1, y=LD2, fill = FruitColor), alpha = 0.2, geom = "polygon"),
   paste0(PLOTS.DIR,"/LDA-top200-dataset.h7"), height = 7)
-toc(log = TRUE) # LDAnalysis
+tictoc::toc(log = TRUE) # LDAnalysis
 
-tic("Heatmap for true QTLs")
+tictoc::tic("Heatmap for true QTLs")
 # Heatmap
 x.normal.lod.scores <- read.csv(paste0(OUT.PREFIX,".normal.scanone.csv"))
 x.non.parametric.lod.scores <- read.csv(paste0(OUT.PREFIX,".non.parametric.scanone.csv"))
@@ -935,9 +935,9 @@ save_plotTIFF(heatmap.2(lod.scores, Rowv = FALSE, Colv = TRUE,
                        lmat=rbind(c(0,3),c(2,1),c(0,4)), lhei=c(2,6,2), lwid=c(0.3, 7),
                        key.par=list(mar=c(3.5,1.5,2.5,5)))
              ,paste0(PLOTS.DIR,"/HEAT-with-dendrogram-all-bottom-key.100co"))
-toc(log = TRUE) # Heatmap for true QTLs
+tictoc::toc(log = TRUE) # Heatmap for true QTLs
 closeAllConnections()
-toc(log = TRUE) # Total
-log.txt <- tic.log(format = TRUE)
+tictoc::toc(log = TRUE) # Total
+log.txt <- tictoc::tic.log(format = TRUE)
 write(unlist(log.txt), paste0(OUT.PREFIX,".log.times.p",PERMUTATIONS,".txt"))
 }
