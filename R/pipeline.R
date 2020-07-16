@@ -89,7 +89,7 @@ cat(paste0("CMD Parameters: (",PERMUTATIONS,",",REPLACE.NA,",",PARETO.SCALING,",
 excluded.columns <- c(1,2,3)
 length.excluded.columns <- length(excluded.columns)
 transformation.values <- c(2,exp(1))#,3,4,5,6,7,8,9,10
-input.filename <- "sp.csv"
+raw_data <- "sp.csv"
 SEED <- 20190901 # Seed for QTL Analysis
 LOD.THRESHOLD <- 3 # LOD threhold for QTL Analysis
 NA.COUNT.THRESHOLD <- 0.5 # Allows 50% of NAs per feature
@@ -99,8 +99,10 @@ dir.create(file.path(getwd(), PLOTS.DIR), showWarnings = FALSE) # Directory for 
 
 tictoc::tic("Total")
 tictoc::tic("Loading and pre-processing")
+
+
 # Load and Cleaning Data
-sp <- read.csv(input.filename)
+sp <- read.csv(raw_data)
 ncols <- ncol(sp)
 meansp <- aggregate(sp[,(length.excluded.columns + 1):ncols],by=list(sp$ID),mean, na.action = na.omit)
 colnames(meansp)[1] <- "ID"
