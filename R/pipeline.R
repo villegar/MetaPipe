@@ -40,9 +40,9 @@ library(qtl)
 
 main <- function(){
 # Resources
-cores <- detectCores()
+cores <- parallel::detectCores()
 CPUS <- cores[1] - 1
-closeAllConnections()
+# closeAllConnections()
 
 if(length(args) < 1){
   PERMUTATIONS <- 1000 # Number of permutations for QTL Analysis
@@ -940,7 +940,7 @@ save_plotTIFF(heatmap.2(lod.scores, Rowv = FALSE, Colv = TRUE,
                        key.par=list(mar=c(3.5,1.5,2.5,5)))
              ,paste0(PLOTS.DIR,"/HEAT-with-dendrogram-all-bottom-key.100co"))
 tictoc::toc(log = TRUE) # Heatmap for true QTLs
-closeAllConnections()
+# closeAllConnections()
 tictoc::toc(log = TRUE) # Total
 log.txt <- tictoc::tic.log(format = TRUE)
 write(unlist(log.txt), paste0(OUT.PREFIX,".log.times.p",PERMUTATIONS,".txt"))

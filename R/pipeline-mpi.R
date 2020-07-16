@@ -43,7 +43,7 @@ library(doMPI)
 
 main_mpi <- function(){
 # Resources
-cores <- detectCores()
+cores <- parallel::detectCores()
 CPUS <- cores[1] - 1
 
 if(length(args) < 1){
@@ -906,7 +906,7 @@ save_plotTIFF(heatmap.2(lod.scores, Rowv = FALSE, Colv = TRUE,
                        key.par=list(mar=c(3.5,1.5,2.5,5)))
              ,paste0(PLOTS.DIR,"/HEAT-with-dendrogram-all-bottom-key.100co"))
 toc(log = TRUE) # Heatmap for true QTLs
-closeAllConnections()
+# closeAllConnections()
 
 toc(log = TRUE) # Total
 
