@@ -91,7 +91,7 @@ len_excluded_columns <- length(excluded_columns)
 transformation.values <- c(2,exp(1))#,3,4,5,6,7,8,9,10
 SEED <- 20190901 # Seed for QTL Analysis
 LOD.THRESHOLD <- 3 # LOD threhold for QTL Analysis
-NA.COUNT.THRESHOLD <- 0.5 # Allows 50% of NAs per feature
+prop_na <- 0.5 # Allows 50% of NAs per feature
 
 # Environment configuration
 dir.create(file.path(getwd(), PLOTS.DIR), showWarnings = FALSE) # Directory for plots
@@ -107,19 +107,7 @@ raw_data_rows <- nrow(raw_data)
 #missmap(sp, main = "Missing values vs observed")
 
 # Replacement of Missing Values
-# Missing values are replaced by half of the minimum non-zero value for each feature.
-if(REPLACE.NA){
-  NA2halfmin <- function(x) suppressWarnings(replace(x, is.na(x), (min(x, na.rm = TRUE)/2)))
-  raw_data[,-excluded_columns] <- lapply(raw_data[,-excluded_columns], NA2halfmin)
-} else {
-  NACount <- which(colMeans(is.na(raw_data[,-excluded_columns])) >= NA.COUNT.THRESHOLD) + len_excluded_columns
-  if(length(NACount)){
-    write.csv(raw_data[,c(excluded_columns,NACount)], file = paste0(OUT.PREFIX,".NA.raw_data.csv"), row.names=FALSE)
-    cat(paste0("The following features were dropped because they have ",(NA.COUNT.THRESHOLD*100),"% or more missing values:\n"))
-    cat(colnames(raw_data)[NACount])
-    raw_data[,NACount] <- NULL
-  }
-}
+
 
 write.csv(raw_data, file = paste0(OUT.PREFIX,".all.raw_data.csv"), row.names=FALSE)
 tictoc::toc(log = TRUE) # Loading and pre-processing
