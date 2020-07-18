@@ -103,12 +103,12 @@ tic("Loading and pre-processing")
 # Load and Cleaning Data
 sp <- read.csv(raw_data)
 ncols <- ncol(sp)
-meansp <- aggregate(sp[,(len_excluded_columns + 1):ncols],by=list(sp$ID),mean, na.action = na.omit)
-colnames(meansp)[1] <- "ID"
-meansp <- left_join(sp[,c("ID","Group","Generation")],meansp, by="ID")
-meansp <- meansp[!duplicated(meansp$ID),]
-rownames(meansp) <- 1:nrow(meansp)
-meansp.rows <- nrow(meansp)
+raw_data <- aggregate(sp[,(len_excluded_columns + 1):ncols],by=list(sp$ID),mean, na.action = na.omit)
+colnames(raw_data)[1] <- "ID"
+raw_data <- left_join(sp[,c("ID","Group","Generation")],raw_data, by="ID")
+raw_data <- raw_data[!duplicated(raw_data$ID),]
+rownames(raw_data) <- 1:nrow(raw_data)
+raw_data.rows <- nrow(raw_data)
 
 # Missing Value Plot
 #missmap(sp, main = "Missing values vs observed")
@@ -118,31 +118,31 @@ meansp.rows <- nrow(meansp)
 # Missing values are replaced by half of the minimum non-zero value for each feature.
 if(REPLACE.NA){
   NA2halfmin <- function(x) suppressWarnings(replace(x, is.na(x), (min(x, na.rm = TRUE)/2)))
-  meansp[,-excluded_columns] <- lapply(meansp[,-excluded_columns], NA2halfmin)
+  raw_data[,-excluded_columns] <- lapply(raw_data[,-excluded_columns], NA2halfmin)
 } else {
-  NACount <- which(colMeans(is.na(meansp[,-excluded_columns])) >= NA.COUNT.THRESHOLD) + len_excluded_columns
+  NACount <- which(colMeans(is.na(raw_data[,-excluded_columns])) >= NA.COUNT.THRESHOLD) + len_excluded_columns
   if(length(NACount)){
-    write.csv(meansp[,c(excluded_columns,NACount)], file = paste0(OUT.PREFIX,".NA.meansp.csv"), row.names=FALSE)
+    write.csv(raw_data[,c(excluded_columns,NACount)], file = paste0(OUT.PREFIX,".NA.raw_data.csv"), row.names=FALSE)
     cat(paste0("The following features were dropped because they have ",(NA.COUNT.THRESHOLD*100),"% or more missing values:\n"))
-    cat(colnames(meansp)[NACount])
-    meansp[,NACount] <- NULL
+    cat(colnames(raw_data)[NACount])
+    raw_data[,NACount] <- NULL
   }
 }
 
-write.csv(meansp, file = paste0(OUT.PREFIX,".all.meansp.csv"), row.names=FALSE)
+write.csv(raw_data, file = paste0(OUT.PREFIX,".all.raw_data.csv"), row.names=FALSE)
 
 toc(log = TRUE) # Loading and pre-processing
 # Missing values plot
-#missmap(meansp, main = "Missing values vs observed")
+#missmap(raw_data, main = "Missing values vs observed")
 
-generate.boxplots <- function(meansp,ggplot_save){
+generate.boxplots <- function(raw_data,ggplot_save){
   print("Generating Boxplots")
   cl <- makeCluster(CPUS, outfile=paste0('./info_parallel.log')) # Make cluster
   registerDoParallel(cl)  # Register cluster
-  features <- colnames(meansp)
-  AllPlots <- foreach(i=(len_excluded_columns + 1):ncol(meansp), 
+  features <- colnames(raw_data)
+  AllPlots <- foreach(i=(len_excluded_columns + 1):ncol(raw_data), 
                       .packages = c("ggplot2","latex2exp","R.devices")) %dopar% {
-                        myPlot <- ggplot(data=meansp,aes(x=ID,y=meansp[,i])) +
+                        myPlot <- ggplot(data=raw_data,aes(x=ID,y=raw_data[,i])) +
                           geom_boxplot(aes(fill= "")) +
                           theme(axis.text.x = element_text(angle = 60, hjust = 1))+ 
                           labs(title=paste("Feature",features[i]), x='ID', y='')
@@ -151,31 +151,31 @@ generate.boxplots <- function(meansp,ggplot_save){
   stopCluster(cl1) # Stop cluster
   print("Done with Boxplots")
 }
-#generate.boxplots(meansp,ggplot_save)
+#generate.boxplots(raw_data,ggplot_save)
 
 tic("Normality Assessment")
-features <- colnames(meansp)
+features <- colnames(raw_data)
 
 print("Starting with Normality Assessment")
 cl <- makeCluster(CPUS, outfile=paste0('./info_parallel.log'))
 registerDoParallel(cl)
-transformed.meansp <- foreach(i=(len_excluded_columns + 1):ncol(meansp),
+transformed.raw_data <- foreach(i=(len_excluded_columns + 1):ncol(raw_data),
                          .combine =rbind,
                          .packages = c("ggplot2","grid","gridExtra","latex2exp","R.devices")) %dopar% {
                            record <- data.frame( # Create and populate entry for current feature
                              index = i,
                              feature = features[i],
-                             values = meansp[,i],
+                             values = raw_data[,i],
                              flag = "Non-normal",
                              transf = "",
                              transf.value = NA
                            )
                            
                            # Verify the current feature has at least 3 non-NA rows
-                           if(sum(is.finite(meansp[,i]), na.rm = TRUE)>2){
-                             pvalue <- shapiro.test(meansp[,i])[[2]] # Assess normality of feature before transforming it
+                           if(sum(is.finite(raw_data[,i]), na.rm = TRUE)>2){
+                             pvalue <- shapiro.test(raw_data[,i])[[2]] # Assess normality of feature before transforming it
                              if(pvalue <= 0.05){ # Data must be transformed
-                               record <- transform_data(pvalue,meansp[,i],features[i],i,len_excluded_columns, PLOTS.DIR, transformation.values)
+                               record <- transform_data(pvalue,raw_data[,i],features[i],i,len_excluded_columns, PLOTS.DIR, transformation.values)
                                
                                if(length(record)){
                                  record$flag <- "Normal"
@@ -184,7 +184,7 @@ transformed.meansp <- foreach(i=(len_excluded_columns + 1):ncol(meansp),
                                  record <- data.frame(
                                    index = i,
                                    feature = features[i],
-                                   values = meansp[,i],
+                                   values = raw_data[,i],
                                    flag = "Non-normal",
                                    transf = "",
                                    transf.value = NA
@@ -195,7 +195,7 @@ transformed.meansp <- foreach(i=(len_excluded_columns + 1):ncol(meansp),
                                xlab <- features[i]
                                transformation <- "NORM"
                                prefix <- paste0(PLOTS.DIR,"/HIST_",(i - len_excluded_columns),"_",transformation)
-                               generate_hist(meansp[,i],features[i],prefix,xlab)
+                               generate_hist(raw_data[,i],features[i],prefix,xlab)
                                record$flag <- "Normal"
                              }
                            }
@@ -207,47 +207,47 @@ print("Done with Normality Assessment")
 
 toc(log = TRUE) # Normality Assessment
 tic("Transformed data post-processing")
-normal.transformed.meansp <- transformed.meansp[transformed.meansp$flag == "Normal",]
-non.parametric.transformed.meansp <- transformed.meansp[transformed.meansp$flag == "Non-normal",]
-non.parametric.features <- unique(as.character(non.parametric.transformed.meansp$feature))
-normal.features <- unique(as.character(normal.transformed.meansp$feature))
+normal.transformed.raw_data <- transformed.raw_data[transformed.raw_data$flag == "Normal",]
+non.parametric.transformed.raw_data <- transformed.raw_data[transformed.raw_data$flag == "Non-normal",]
+non.parametric.features <- unique(as.character(non.parametric.transformed.raw_data$feature))
+normal.features <- unique(as.character(normal.transformed.raw_data$feature))
 length.normal.features <- length(normal.features)
-non.parametric.meansp <- meansp[,non.parametric.features]#meansp[,-c(normal.features)]
-normal.meansp <- data.frame(matrix(vector(), nrow(normal.transformed.meansp)/length.normal.features, length.normal.features,
+non.parametric.raw_data <- raw_data[,non.parametric.features]#raw_data[,-c(normal.features)]
+normal.raw_data <- data.frame(matrix(vector(), nrow(normal.transformed.raw_data)/length.normal.features, length.normal.features,
                                    dimnames=list(c(), normal.features)),
                             stringsAsFactors = F)
 for(i in 1:length.normal.features){
-  normal.meansp[i] <- subset(normal.transformed.meansp, feature == normal.features[i])$values
+  normal.raw_data[i] <- subset(normal.transformed.raw_data, feature == normal.features[i])$values
 }
 
 # Append excluded columns for transformation 
 if(PARETO.SCALING){ # Apply Pareto Scaling
-  transformed.normal.meansp <- cbind(meansp[,excluded_columns],paretoscale(normal.meansp))
-  transformed.non.parametric.meansp <- cbind(meansp[,excluded_columns],paretoscale(non.parametric.meansp))
+  transformed.normal.raw_data <- cbind(raw_data[,excluded_columns],paretoscale(normal.raw_data))
+  transformed.non.parametric.raw_data <- cbind(raw_data[,excluded_columns],paretoscale(non.parametric.raw_data))
 } else { # No Scaling
-  transformed.normal.meansp <- cbind(meansp[,excluded_columns],normal.meansp)
-  transformed.non.parametric.meansp <- cbind(meansp[,excluded_columns],non.parametric.meansp)
+  transformed.normal.raw_data <- cbind(raw_data[,excluded_columns],normal.raw_data)
+  transformed.non.parametric.raw_data <- cbind(raw_data[,excluded_columns],non.parametric.raw_data)
 }
-normal.meansp <- cbind(meansp[,excluded_columns],normal.meansp)
-non.parametric.meansp <- cbind(meansp[,excluded_columns],non.parametric.meansp)
+normal.raw_data <- cbind(raw_data[,excluded_columns],normal.raw_data)
+non.parametric.raw_data <- cbind(raw_data[,excluded_columns],non.parametric.raw_data)
 
-#transformations <- read.csv("metabolomics.transformed.all.meansp.csv")
-transformations <- transformed.meansp[transformed.meansp$flag == "Normal",]
+#transformations <- read.csv("metabolomics.transformed.all.raw_data.csv")
+transformations <- transformed.raw_data[transformed.raw_data$flag == "Normal",]
 transformations[,c("flag","index","values")] <- NULL
 transformations <- unique(transformations)
 
 write.csv(transformations, file = paste0(OUT.PREFIX,".normal.transformations.summary.csv"), row.names=FALSE, na="")
-write.csv(transformed.meansp, file = paste0(OUT.PREFIX,".transformed.all.meansp.csv"), row.names=FALSE)
-write.csv(normal.meansp, file = paste0(OUT.PREFIX,".normal.meansp.csv"), row.names=FALSE)
-write.csv(non.parametric.meansp, file = paste0(OUT.PREFIX,".non.parametric.meansp.csv"), row.names=FALSE)
-write.csv(transformed.normal.meansp, file = paste0(OUT.PREFIX,".transformed.normal.meansp.csv"), row.names=FALSE)
-write.csv(transformed.non.parametric.meansp, file = paste0(OUT.PREFIX,".transformed.non.parametric.meansp.csv"), row.names=FALSE)
+write.csv(transformed.raw_data, file = paste0(OUT.PREFIX,".transformed.all.raw_data.csv"), row.names=FALSE)
+write.csv(normal.raw_data, file = paste0(OUT.PREFIX,".normal.raw_data.csv"), row.names=FALSE)
+write.csv(non.parametric.raw_data, file = paste0(OUT.PREFIX,".non.parametric.raw_data.csv"), row.names=FALSE)
+write.csv(transformed.normal.raw_data, file = paste0(OUT.PREFIX,".transformed.normal.raw_data.csv"), row.names=FALSE)
+write.csv(transformed.non.parametric.raw_data, file = paste0(OUT.PREFIX,".transformed.non.parametric.raw_data.csv"), row.names=FALSE)
 
 # Statistics
-normal <- nrow(normal.transformed.meansp[normal.transformed.meansp$transf == "",])/meansp.rows
-normal.transformed <- nrow(normal.transformed.meansp)/meansp.rows
-total <- nrow(transformed.meansp)/meansp.rows #1316
-transformations <- unique(transformed.meansp[c("transf","transf.value")])
+normal <- nrow(normal.transformed.raw_data[normal.transformed.raw_data$transf == "",])/raw_data.rows
+normal.transformed <- nrow(normal.transformed.raw_data)/raw_data.rows
+total <- nrow(transformed.raw_data)/raw_data.rows #1316
+transformations <- unique(transformed.raw_data[c("transf","transf.value")])
 transformations <- transformations[-1,]
 sorting <- order(transformations$transf, decreasing = T)
 
@@ -262,9 +262,9 @@ cat(paste0("\nTransformations summary:"))
 cat(paste0("\n\tf(x)\tValue \t# Features"))
 for(i in 1:nrow(transformations)){
   cat(paste0("\n\t",transformations$transf[i],"\t",transformations$transf.value[i],"\t"))
-  tmp <- subset(normal.transformed.meansp, normal.transformed.meansp$transf == transformations$transf[i])
+  tmp <- subset(normal.transformed.raw_data, normal.transformed.raw_data$transf == transformations$transf[i])
   tmp <- subset(tmp, transf.value == transformations$transf.value[i])
-  cat(nrow(tmp)/meansp.rows)
+  cat(nrow(tmp)/raw_data.rows)
 }
 cat("\n\n") # Clean output
 
@@ -277,26 +277,26 @@ colnames(geno.map)[1] <- "ID"
 geno.map$ID <- as.character(geno.map$ID)
 
 ## Normal features
-transformed.normal.meansp$GenoID <- with(transformed.normal.meansp,
+transformed.normal.raw_data$GenoID <- with(transformed.normal.raw_data,
                                          gsub(" ","0",paste0(Generation,"_",sprintf("%3s",as.character(ID))))
 )
-transformed.normal.meansp$ID <- transformed.normal.meansp$GenoID
-transformed.normal.meansp$GenoID <- NULL
+transformed.normal.raw_data$ID <- transformed.normal.raw_data$GenoID
+transformed.normal.raw_data$GenoID <- NULL
 
-normal.phe <- inner_join(transformed.normal.meansp,geno.map, by="ID")[,colnames(transformed.normal.meansp)]
+normal.phe <- inner_join(transformed.normal.raw_data,geno.map, by="ID")[,colnames(transformed.normal.raw_data)]
 normal.phe$Group <- NULL
 normal.phe$Generation <- NULL
 normal.gen <- rbind(geno.map[1:2,],inner_join(normal.phe,geno.map, by="ID")[,colnames(geno.map)])
 
 
 ## Non-parametric features
-transformed.non.parametric.meansp$GenoID <- with(transformed.non.parametric.meansp,
+transformed.non.parametric.raw_data$GenoID <- with(transformed.non.parametric.raw_data,
                                                  gsub(" ","0",paste0(Generation,"_",sprintf("%3s",as.character(ID))))
 )
-transformed.non.parametric.meansp$ID <- transformed.non.parametric.meansp$GenoID
-transformed.non.parametric.meansp$GenoID <- NULL
+transformed.non.parametric.raw_data$ID <- transformed.non.parametric.raw_data$GenoID
+transformed.non.parametric.raw_data$GenoID <- NULL
 
-non.parametric.phe <- inner_join(transformed.non.parametric.meansp,geno.map, by="ID")[,colnames(transformed.non.parametric.meansp)]
+non.parametric.phe <- inner_join(transformed.non.parametric.raw_data,geno.map, by="ID")[,colnames(transformed.non.parametric.raw_data)]
 non.parametric.phe$Group <- NULL
 non.parametric.phe$Generation <- NULL
 non.parametric.gen <- rbind(geno.map[1:2,],inner_join(non.parametric.phe,geno.map, by="ID")[,colnames(geno.map)])
@@ -424,8 +424,8 @@ registerDoMPI(cl)
 x.normal.summary.mapping <- foreach(i=2:ncol(x.normal$pheno),
                                     .combine = rbind,
                                     .packages = c("ggplot2","grid","gridExtra","latex2exp","qtl","R.devices")) %dopar% {
-                                      transformation.info <- normal.transformed.meansp$feature == features[i]
-                                      transformation.info <- normal.transformed.meansp[transformation.info,c("transf","transf.value")][1,]
+                                      transformation.info <- normal.transformed.raw_data$feature == features[i]
+                                      transformation.info <- normal.transformed.raw_data[transformation.info,c("transf","transf.value")][1,]
                                       record <- data.frame(
                                         ID = i - 1,
                                         qtl.ID = NA,
@@ -581,8 +581,8 @@ print("Starting with Non-Parametric QTL Analysis")
 x.non.parametric.summary.mapping <- foreach(i=2:ncol(x.non.parametric$pheno),
                                             .combine = rbind,
                                             .packages = c("ggplot2","grid","gridExtra","latex2exp","qtl","R.devices")) %dopar% {
-                                              #transformation.info <- non.parametric.transformed.meansp$feature == features.np[i]
-                                              #transformation.info <- non.parametric.transformed.meansp[transformation.info,c("transf","transf.value")][1,]
+                                              #transformation.info <- non.parametric.transformed.raw_data$feature == features.np[i]
+                                              #transformation.info <- non.parametric.transformed.raw_data[transformation.info,c("transf","transf.value")][1,]
                                               
                                               record <- data.frame(
                                                 ID = i - 1,
@@ -760,26 +760,26 @@ print("Done with QTL Analysis")
 toc(log = TRUE) # QTL analysis
 
 # For both PCA and LDA the data must have no NAs and must be scaled
-meansp <- read.csv(paste0(OUT.PREFIX,".all.meansp.csv"))
+raw_data <- read.csv(paste0(OUT.PREFIX,".all.raw_data.csv"))
 if(!REPLACE.NA){
   NA2halfmin <- function(x) suppressWarnings(replace(x, is.na(x), (min(x, na.rm = TRUE)/2)))
-  meansp[,-excluded_columns] <- lapply(meansp[,-excluded_columns], NA2halfmin)
+  raw_data[,-excluded_columns] <- lapply(raw_data[,-excluded_columns], NA2halfmin)
 }
 # if(!PARETO.SCALING){ # Apply Pareto Scaling
-#   transformed.normal.meansp <- cbind(meansp[,excluded_columns],paretoscale(meansp[,-excluded_columns]))
-#   transformed.normal.meansp <- paretoscale(meansp[,-excluded_columns])
-#   #transformed.non.parametric.meansp <- cbind(meansp[,excluded_columns],paretoscale(non.parametric.meansp))
+#   transformed.normal.raw_data <- cbind(raw_data[,excluded_columns],paretoscale(raw_data[,-excluded_columns]))
+#   transformed.normal.raw_data <- paretoscale(raw_data[,-excluded_columns])
+#   #transformed.non.parametric.raw_data <- cbind(raw_data[,excluded_columns],paretoscale(non.parametric.raw_data))
 # }
-transformed.meansp <- meansp # No scaling
+transformed.raw_data <- raw_data # No scaling
 
 tic("PCAnalysis")
 # PCAnalysis with mean (used no missing data) 
 #OUT.PREFIX <- "S1-metabolomics"
-#transformed.normal.meansp <- read.csv(paste0(OUT.PREFIX,".all.meansp.csv"))
-#transformed.normal.meansp$X <- NULL
-#transformed.normal.meansp <- transformed.normal.meansp[order(as.character(transformed.normal.meansp$ID)),]
-#transformed.normal.meansp$Group <- NULL
-res.pca <- PCA(transformed.meansp[,-excluded_columns],  graph = FALSE, scale.unit = TRUE)
+#transformed.normal.raw_data <- read.csv(paste0(OUT.PREFIX,".all.raw_data.csv"))
+#transformed.normal.raw_data$X <- NULL
+#transformed.normal.raw_data <- transformed.normal.raw_data[order(as.character(transformed.normal.raw_data$ID)),]
+#transformed.normal.raw_data$Group <- NULL
+res.pca <- PCA(transformed.raw_data[,-excluded_columns],  graph = FALSE, scale.unit = TRUE)
 #fviz_screeplot(res.pca, addlabels = TRUE, ylim = c(0, 50))
 #res.pca$eig
 # Biplot with top 10 features 
@@ -793,32 +793,32 @@ toc(log = TRUE) # PCAnalysis
 tic("LDAnalysis")
 # LDAnalysis
 ## Create an "unknown" group name for missing data
-transformed.meansp$Group <- as.character(transformed.meansp$Group)
-transformed.meansp$Group[is.na(transformed.meansp$Group)] <- "Unknown"
+transformed.raw_data$Group <- as.character(transformed.raw_data$Group)
+transformed.raw_data$Group[is.na(transformed.raw_data$Group)] <- "Unknown"
 
 ## Calculate mean by color
-transformed.meansp.diff.by.color <- 
-  data.frame(t(aggregate(transformed.meansp[,-excluded_columns], list(transformed.meansp$Group), mean))[-1,])
-transformed.meansp.diff.by.color$X1 <- as.numeric(as.character(transformed.meansp.diff.by.color$X1))
-transformed.meansp.diff.by.color$X2 <- as.numeric(as.character(transformed.meansp.diff.by.color$X2))
-colnames(transformed.meansp.diff.by.color) <- c("black.mean","white.mean","unknown.mean")
-transformed.meansp.diff.by.color$mean.diff <- with(transformed.meansp.diff.by.color, black.mean-white.mean)
-transformed.meansp.diff.by.color <- transformed.meansp.diff.by.color[order(transformed.meansp.diff.by.color$black.mean, decreasing = T),]
-top.100.black <- rownames(transformed.meansp.diff.by.color)[1:100]
-transformed.meansp.diff.by.color <- transformed.meansp.diff.by.color[order(transformed.meansp.diff.by.color$white.mean, decreasing = T),]
-top.100.white <- rownames(transformed.meansp.diff.by.color)[1:100]
+transformed.raw_data.diff.by.color <- 
+  data.frame(t(aggregate(transformed.raw_data[,-excluded_columns], list(transformed.raw_data$Group), mean))[-1,])
+transformed.raw_data.diff.by.color$X1 <- as.numeric(as.character(transformed.raw_data.diff.by.color$X1))
+transformed.raw_data.diff.by.color$X2 <- as.numeric(as.character(transformed.raw_data.diff.by.color$X2))
+colnames(transformed.raw_data.diff.by.color) <- c("black.mean","white.mean","unknown.mean")
+transformed.raw_data.diff.by.color$mean.diff <- with(transformed.raw_data.diff.by.color, black.mean-white.mean)
+transformed.raw_data.diff.by.color <- transformed.raw_data.diff.by.color[order(transformed.raw_data.diff.by.color$black.mean, decreasing = T),]
+top.100.black <- rownames(transformed.raw_data.diff.by.color)[1:100]
+transformed.raw_data.diff.by.color <- transformed.raw_data.diff.by.color[order(transformed.raw_data.diff.by.color$white.mean, decreasing = T),]
+top.100.white <- rownames(transformed.raw_data.diff.by.color)[1:100]
 ## Whole dataset and Top 200 features LDA
 
 top.200 <- unique(c(top.100.black,top.100.white))
-colored.transformed.meansp.full <- cbind(transformed.meansp$Group,transformed.meansp[,-excluded_columns])
-colored.transformed.meansp.top200 <- cbind(transformed.meansp$Group,transformed.meansp[,top.200])
-colnames(colored.transformed.meansp.full)[1] <- "FruitColor"
-colnames(colored.transformed.meansp.top200)[1] <- "FruitColor"
-fit.full <- lda(FruitColor ~ ., data = colored.transformed.meansp.full)
-fit.top200 <- lda(FruitColor ~ ., data = colored.transformed.meansp.top200)
+colored.transformed.raw_data.full <- cbind(transformed.raw_data$Group,transformed.raw_data[,-excluded_columns])
+colored.transformed.raw_data.top200 <- cbind(transformed.raw_data$Group,transformed.raw_data[,top.200])
+colnames(colored.transformed.raw_data.full)[1] <- "FruitColor"
+colnames(colored.transformed.raw_data.top200)[1] <- "FruitColor"
+fit.full <- lda(FruitColor ~ ., data = colored.transformed.raw_data.full)
+fit.top200 <- lda(FruitColor ~ ., data = colored.transformed.raw_data.top200)
 
-lda.data.full <- cbind(colored.transformed.meansp.full, predict(fit.full)$x)
-lda.data.top200 <- cbind(colored.transformed.meansp.top200, predict(fit.top200)$x)
+lda.data.full <- cbind(colored.transformed.raw_data.full, predict(fit.full)$x)
+lda.data.top200 <- cbind(colored.transformed.raw_data.top200, predict(fit.top200)$x)
 save_plotTIFF(ggplot(lda.data.full, aes(LD1,LD2)) +
                geom_point(aes(color = FruitColor)) +
                stat_ellipse(aes(x=LD1, y=LD2, fill = FruitColor), alpha = 0.2, geom = "polygon"),
