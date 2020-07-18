@@ -49,41 +49,41 @@ if(length(args) < 1){
   REPLACE_NA <- FALSE
   PARETO_SCALING <- FALSE
   OUT_PREFIX <- "metabolomics"
-  PLOTS.DIR <- "metabolomics"
+  PLOTS_DIR <- "metabolomics"
 } else if(length(args) < 2){
   PERMUTATIONS <- as.numeric(args[1]) # Number of permutations for QTL Analysis
   REPLACE_NA <- FALSE
   PARETO_SCALING <- FALSE
   OUT_PREFIX <- "metabolomics"
-  PLOTS.DIR <- "metabolomics"
+  PLOTS_DIR <- "metabolomics"
 } else if(length(args) < 3){
   PERMUTATIONS <- as.numeric(args[1]) # Number of permutations for QTL Analysis
   REPLACE_NA <- as.logical(args[2])
   PARETO_SCALING <- FALSE
   OUT_PREFIX <- "metabolomics"
-  PLOTS.DIR <- "metabolomics"
+  PLOTS_DIR <- "metabolomics"
 } else if(length(args) < 4){
   PERMUTATIONS <- as.numeric(args[1]) # Number of permutations for QTL Analysis
   REPLACE_NA <- as.logical(args[2])
   PARETO_SCALING <- as.logical(args[3])
   OUT_PREFIX <- "metabolomics"
-  PLOTS.DIR <- "metabolomics"
+  PLOTS_DIR <- "metabolomics"
 } else if(length(args) < 5){
   PERMUTATIONS <- as.numeric(args[1]) # Number of permutations for QTL Analysis
   REPLACE_NA <- as.logical(args[2])
   PARETO_SCALING <- as.logical(args[3])
   OUT_PREFIX <- args[4]
-  PLOTS.DIR <- "metabolomics"
+  PLOTS_DIR <- "metabolomics"
 } else {
   PERMUTATIONS <- as.numeric(args[1]) # Number of permutations for QTL Analysis
   REPLACE_NA <- as.logical(args[2])
   PARETO_SCALING <- as.logical(args[3])
   OUT_PREFIX <- args[4]
-  PLOTS.DIR <- args[5]
+  PLOTS_DIR <- args[5]
 }
 
 tictoc::tic.clearlog()
-cat(paste0("CMD Parameters: (",PERMUTATIONS,",",REPLACE_NA,",",PARETO_SCALING,",",OUT_PREFIX,",",PLOTS.DIR,")"))
+cat(paste0("CMD Parameters: (",PERMUTATIONS,",",REPLACE_NA,",",PARETO_SCALING,",",OUT_PREFIX,",",PLOTS_DIR,")"))
 
 # Global parameters
 excluded_columns <- c(1,2,3)
@@ -94,7 +94,7 @@ LOD.THRESHOLD <- 3 # LOD threhold for QTL Analysis
 prop_na <- 0.5 # Allows 50% of NAs per feature
 
 # Environment configuration
-dir.create(file.path(getwd(), PLOTS.DIR), showWarnings = FALSE) # Directory for plots
+dir.create(file.path(getwd(), PLOTS_DIR), showWarnings = FALSE) # Directory for plots
 
 tictoc::tic("Total")
 tictoc::tic("Loading and pre-processing")
@@ -157,9 +157,9 @@ transformed.raw_data <- foreach(i=(len_excluded_columns + 1):ncol(raw_data),
                                                         alpha = 0.05, 
                                                         index = i - len_excluded_columns, 
                                                         transf_vals = transformation.values, 
-                                                        plots_prefix = paste0(PLOTS.DIR, "/HIST")
+                                                        plots_prefix = paste0(PLOTS_DIR, "/HIST")
                                                        )
-                               #record <- transform_data(pvalue,raw_data[,i],features[i],i,len_excluded_columns, PLOTS.DIR, transformation.values)
+                               #record <- transform_data(pvalue,raw_data[,i],features[i],i,len_excluded_columns, PLOTS_DIR, transformation.values)
                                
                                if(length(record)){
                                  record$flag <- "Normal"
@@ -178,7 +178,7 @@ transformed.raw_data <- foreach(i=(len_excluded_columns + 1):ncol(raw_data),
                              else{ # Normal data
                                xlab <- features[i]
                                transformation <- "NORM"
-                               prefix <- paste0(PLOTS.DIR,"/HIST_",(i - len_excluded_columns),"_",transformation)
+                               prefix <- paste0(PLOTS_DIR,"/HIST_",(i - len_excluded_columns),"_",transformation)
                                generate_hist(data = raw_data[, i], 
                                              feature = features[i], 
                                              prefix = name.prefix, 
@@ -471,7 +471,7 @@ x_norm_sum_map <- foreach(i=2:ncol(x_norm$pheno),
                                lod.plot <- MetaPipe::save_plot(plot(normal.scanone, ylab="LOD Score") + 
                                                       abline(h=p5, lwd=2, lty="solid", col="red") +
                                                       abline(h=p10, lwd=2, lty="solid", col="red"),
-                                                    paste0(PLOTS.DIR,"/LOD-",features[i]), width = 18)
+                                                    paste0(PLOTS_DIR,"/LOD-",features[i]), width = 18)
                                
                                record[,]$p5.lod.thr <- p5
                                record[,]$p10.lod.thr <- p10
@@ -684,7 +684,7 @@ x_non_par_sum_map <- foreach(i=2:ncol(x_non_par$pheno),
                                  lod.plot <- MetaPipe::save_plot(plot(non.parametric.scanone, ylab="LOD Score") + 
                                                         abline(h=p5, lwd=2, lty="solid", col="red") +
                                                         abline(h=p10, lwd=2, lty="solid", col="red"),
-                                                      paste0(PLOTS.DIR,"/LOD-NP-", features_np[i]), width = 18)
+                                                      paste0(PLOTS_DIR,"/LOD-NP-", features_np[i]), width = 18)
                                  
                                  record[,]$p5.lod.thr <- p5
                                  record[,]$p10.lod.thr <- p10
@@ -748,12 +748,12 @@ effect_plots <- foreach(i=1:nrow(true_qtl),
                             }
                             effect_plots <- MetaPipe::save_plot(qtl::effectplot(x_norm_sim, pheno.col = true_qtl_features[i], 
                                                                       mname1 = true_qtl_markers[i], main = NULL, ylab = latex2exp::TeX(ylab)),
-                                                      paste0(PLOTS.DIR,"/EFF-",true_qtl_features[i],"-",true_qtl_markers[i]))
+                                                      paste0(PLOTS_DIR,"/EFF-",true_qtl_features[i],"-",true_qtl_markers[i]))
                           } else {
                             ylab <- true_qtl_features[i]
                             effect_plots <- MetaPipe::save_plot(qtl::effectplot(x_non_par_sim, pheno.col = as.character(true_qtl_features[i]), 
                                                                       mname1 = true_qtl_markers[i], main = NULL, ylab = latex2exp::TeX(ylab)),
-                                                      paste0(PLOTS.DIR,"/EFF-NP-",true_qtl_features[i],"-",true_qtl_markers[i]))
+                                                      paste0(PLOTS_DIR,"/EFF-NP-",true_qtl_features[i],"-",true_qtl_markers[i]))
                           }
                         }
 parallel::stopCluster(cl) # Stop cluster
@@ -798,7 +798,7 @@ save_plotTIFF(fviz_pca_biplot(res.pca, col.var="contrib",
                          select.var = list(contrib = 10),
                          label="var",addEllipses=TRUE, ellipse.level=0.95, repel = TRUE  # Avoid text overlapping
 ),
-paste0(PLOTS.DIR,"/PCA-biplot.top10"),12,6)
+paste0(PLOTS_DIR,"/PCA-biplot.top10"),12,6)
 tictoc::toc(log = TRUE) # PCAnalysis
 tictoc::tic("LDAnalysis")
 # LDAnalysis
@@ -833,12 +833,12 @@ lda.data.top200 <- cbind(colored.transformed.raw_data.top200, predict(fit.top200
 save_plotTIFF(ggplot(lda.data.full, aes(LD1,LD2)) +
   geom_point(aes(color = FruitColor)) +
   stat_ellipse(aes(x=LD1, y=LD2, fill = FruitColor), alpha = 0.2, geom = "polygon"),
-  paste0(PLOTS.DIR,"/LDA-full-dataset"))
+  paste0(PLOTS_DIR,"/LDA-full-dataset"))
   
 save_plotTIFF(ggplot(lda.data.top200, aes(LD1,LD2)) +
   geom_point(aes(color = FruitColor)) +
   stat_ellipse(aes(x=LD1, y=LD2, fill = FruitColor), alpha = 0.2, geom = "polygon"),
-  paste0(PLOTS.DIR,"/LDA-top200-dataset.h7"), height = 7)
+  paste0(PLOTS_DIR,"/LDA-top200-dataset.h7"), height = 7)
 tictoc::toc(log = TRUE) # LDAnalysis
 
 tictoc::tic("Heatmap for true QTLs")
@@ -878,7 +878,7 @@ save_plot(heatmap.2(lod.scores, Rowv = FALSE, Colv = FALSE,
                    cexRow = 0.8,
                    labRow = colnams.chr,
                    lmat=rbind(c(5, 4, 2), c(6, 1, 3)), lhei=c(2.5, 5), lwid=c(1, 10, 1))
-         ,paste0(PLOTS.DIR,"/HEAT-without-dendrogram", 16, 16))
+         ,paste0(PLOTS_DIR,"/HEAT-without-dendrogram", 16, 16))
 
 # Heatmap with dendrogram and key at the top-left corner
 save_plotTIFF(heatmap.2(lod.scores, Rowv = FALSE, Colv = TRUE, 
@@ -897,7 +897,7 @@ save_plotTIFF(heatmap.2(lod.scores, Rowv = FALSE, Colv = TRUE,
                        labRow = colnams.chr,
                        lmat=rbind(c(5, 4, 2), c(6, 1, 3)), lhei=c(2.5, 5), lwid=c(1, 10, 1),
                        key.par=list(mar=c(3.5,3,3,0)))
-             ,paste0(PLOTS.DIR,"/HEAT-with-dendrogram-all.100cov2"))
+             ,paste0(PLOTS_DIR,"/HEAT-with-dendrogram-all.100cov2"))
 
 # Heatmap with dendrogram and key at the bottom
 save_plotTIFF(heatmap.2(lod.scores, Rowv = FALSE, Colv = TRUE, 
@@ -916,7 +916,7 @@ save_plotTIFF(heatmap.2(lod.scores, Rowv = FALSE, Colv = TRUE,
                        labRow = colnams.chr,
                        lmat=rbind(c(0,3),c(2,1),c(0,4)), lhei=c(2,6,2), lwid=c(0.3, 7),
                        key.par=list(mar=c(3.5,1.5,2.5,5)))
-             ,paste0(PLOTS.DIR,"/HEAT-with-dendrogram-all-bottom-key.100co"))
+             ,paste0(PLOTS_DIR,"/HEAT-with-dendrogram-all-bottom-key.100co"))
 tictoc::toc(log = TRUE) # Heatmap for true QTLs
 # closeAllConnections()
 tictoc::toc(log = TRUE) # Total
