@@ -38,3 +38,20 @@ load_raw <- function(raw_data_filename, excluded_columns) {
   rownames(mean_raw_data) <- 1:nrow(mean_raw_data)
   return(mean_raw_data)
 }
+
+replace_missing <- function(raw_data, excluded_columns, out_prefix = getwd(), prop_na = 0.5, replace_na = FALSE) {
+  # Missing values are replaced by half of the minimum non-zero value for each feature.
+  if(replace_na) {
+    NA2halfmin <- function(x) suppressWarnings(replace(x, is.na(x), (min(x, na.rm = TRUE)/2)))
+    raw_data[,-excluded_columns] <- lapply(raw_data[,-excluded_columns], NA2halfmin)
+  } else {
+    NACount <- which(colMeans(is.na(raw_data[,-excluded_columns])) >= prop_na) + length(excluded_columns)
+    if(length(NACount)) {
+      write.csv(raw_data[, c(excluded_columns, NACount)], file = paste0(out_prefix,"_NA_raw_data.csv"), row.names = FALSE)
+      cat(paste0("The following features were dropped because they have ", (prop_na*100), "% or more missing values:\n"))
+      cat(colnames(raw_data)[NACount])
+      raw_data[, NACount] <- NULL
+    }
+  }
+  return(raw_data)
+}
