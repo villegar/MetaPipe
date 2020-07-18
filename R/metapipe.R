@@ -12,7 +12,9 @@
 #'                            F1 = rnorm(5), 
 #'                            F2 = rnorm(5))
 #' write.csv(example_data, "example_data.csv", row.names = FALSE)
+#' write.csv(example_data[c(1:5, 1, 2), ], "example_data_dup.csv", row.names = FALSE)
 #' load_raw("example_data.csv", c(2))
+#' load_raw("example_data_dup.csv", c(2))
 load_raw <- function(raw_data_filename, excluded_columns) {
   # Load and clean raw data
   raw_data <- read.csv(raw_data_filename)
@@ -35,5 +37,4 @@ load_raw <- function(raw_data_filename, excluded_columns) {
   mean_raw_data <- mean_raw_data[!duplicated(mean_raw_data[, 1]), ]
   rownames(mean_raw_data) <- 1:nrow(mean_raw_data)
   return(mean_raw_data)
-  # mean_raw_data_rows <- nrow(mean_raw_data)
 }
