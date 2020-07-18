@@ -30,7 +30,7 @@ data frame containing the raw data without missing values
 Replace missing values (NAs)
 }
 \examples{
-#' example_data <- data.frame(ID = c(1,2,3,4,5), 
+example_data <- data.frame(ID = c(1,2,3,4,5), 
                            P1 = c("one", "two", "three", "four", "five"), 
                            F1 = rnorm(5), 
                            F2 = rnorm(5))
