@@ -89,7 +89,6 @@ cat(paste0("CMD Parameters: (",PERMUTATIONS,",",REPLACE.NA,",",PARETO.SCALING,",
 excluded_columns <- c(1,2,3)
 len_excluded_columns <- length(excluded_columns)
 transformation.values <- c(2,exp(1))#,3,4,5,6,7,8,9,10
-raw_data <- "sp.csv"
 SEED <- 20190901 # Seed for QTL Analysis
 LOD.THRESHOLD <- 3 # LOD threhold for QTL Analysis
 NA.COUNT.THRESHOLD <- 0.5 # Allows 50% of NAs per feature
@@ -100,22 +99,12 @@ dir.create(file.path(getwd(), PLOTS.DIR), showWarnings = FALSE) # Directory for 
 tictoc::tic("Total")
 tictoc::tic("Loading and pre-processing")
 
-
 # Load and Cleaning Data
-sp <- read.csv(raw_data)
-ncols <- ncol(sp)
-raw_data <- aggregate(sp[,(len_excluded_columns + 1):ncols],by=list(sp$ID),mean, na.action = na.omit)
-colnames(raw_data)[1] <- "ID"
-raw_data <- left_join(sp[,c("ID","Group","Generation")],raw_data, by="ID")
-raw_data <- raw_data[!duplicated(raw_data$ID),]
-rownames(raw_data) <- 1:nrow(raw_data)
-
 raw_data <- MetaPipe::load_raw("sp.csv", excluded_columns)
-raw_data.rows <- nrow(raw_data)
+raw_data_rows <- nrow(raw_data)
 
 # Missing Value Plot
 #missmap(sp, main = "Missing values vs observed")
-
 
 # Replacement of Missing Values
 # Missing values are replaced by half of the minimum non-zero value for each feature.
@@ -252,9 +241,9 @@ write.csv(transformed.normal.raw_data, file = paste0(OUT.PREFIX,".transformed.no
 write.csv(transformed.non.parametric.raw_data, file = paste0(OUT.PREFIX,".transformed.non.parametric.raw_data.csv"), row.names=FALSE)
 
 # Statistics
-normal <- nrow(normal.transformed.raw_data[normal.transformed.raw_data$transf == "",])/raw_data.rows
-normal.transformed <- nrow(normal.transformed.raw_data)/raw_data.rows
-total <- nrow(transformed.raw_data)/raw_data.rows #1316
+normal <- nrow(normal.transformed.raw_data[normal.transformed.raw_data$transf == "",])/raw_data_rows
+normal.transformed <- nrow(normal.transformed.raw_data)/raw_data_rows
+total <- nrow(transformed.raw_data)/raw_data_rows #1316
 transformations <- unique(transformed.raw_data[c("transf","transf.value")])
 transformations <- transformations[-1,]
 sorting <- order(transformations$transf, decreasing = T)
@@ -272,7 +261,7 @@ for(i in 1:nrow(transformations)){
   cat(paste0("\n\t",transformations$transf[i],"\t",transformations$transf.value[i],"\t"))
   tmp <- subset(normal.transformed.raw_data, normal.transformed.raw_data$transf == transformations$transf[i])
   tmp <- subset(tmp, transf.value == transformations$transf.value[i])
-  cat(nrow(tmp)/raw_data.rows)
+  cat(nrow(tmp)/raw_data_rows)
 }
 cat("\n\n") # Clean output
 
