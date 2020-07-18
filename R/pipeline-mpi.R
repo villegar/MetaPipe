@@ -48,44 +48,44 @@ CPUS <- cores[1] - 1
 
 if(length(args) < 1){
   PERMUTATIONS <- 1000 # Number of permutations for QTL Analysis
-  REPLACE.NA <- FALSE
+  REPLACE_NA <- FALSE
   PARETO.SCALING <- FALSE
   OUT_PREFIX <- "metabolomics"
   PLOTS.DIR <- "metabolomics"
 } else if(length(args) < 2){
   PERMUTATIONS <- as.numeric(args[1]) # Number of permutations for QTL Analysis
-  REPLACE.NA <- FALSE
+  REPLACE_NA <- FALSE
   PARETO.SCALING <- FALSE
   OUT_PREFIX <- "metabolomics"
   PLOTS.DIR <- "metabolomics"
 } else if(length(args) < 3){
   PERMUTATIONS <- as.numeric(args[1]) # Number of permutations for QTL Analysis
-  REPLACE.NA <- as.logical(args[2])
+  REPLACE_NA <- as.logical(args[2])
   PARETO.SCALING <- FALSE
   OUT_PREFIX <- "metabolomics"
   PLOTS.DIR <- "metabolomics"
 } else if(length(args) < 4){
   PERMUTATIONS <- as.numeric(args[1]) # Number of permutations for QTL Analysis
-  REPLACE.NA <- as.logical(args[2])
+  REPLACE_NA <- as.logical(args[2])
   PARETO.SCALING <- as.logical(args[3])
   OUT_PREFIX <- "metabolomics"
   PLOTS.DIR <- "metabolomics"
 } else if(length(args) < 5){
   PERMUTATIONS <- as.numeric(args[1]) # Number of permutations for QTL Analysis
-  REPLACE.NA <- as.logical(args[2])
+  REPLACE_NA <- as.logical(args[2])
   PARETO.SCALING <- as.logical(args[3])
   OUT_PREFIX <- args[4]
   PLOTS.DIR <- "metabolomics"
 } else {
   PERMUTATIONS <- as.numeric(args[1]) # Number of permutations for QTL Analysis
-  REPLACE.NA <- as.logical(args[2])
+  REPLACE_NA <- as.logical(args[2])
   PARETO.SCALING <- as.logical(args[3])
   OUT_PREFIX <- args[4]
   PLOTS.DIR <- args[5]
 }
 
 tic.clearlog()
-cat(paste0("CMD Parameters: (",PERMUTATIONS,",",REPLACE.NA,",",PARETO.SCALING,",",OUT_PREFIX,",",PLOTS.DIR,")"))
+cat(paste0("CMD Parameters: (",PERMUTATIONS,",",REPLACE_NA,",",PARETO.SCALING,",",OUT_PREFIX,",",PLOTS.DIR,")"))
 # Global parameters
 excluded_columns <- c(1,2,3)
 len_excluded_columns <- length(excluded_columns)
@@ -108,21 +108,8 @@ raw_data_rows <- nrow(raw_data)
 # Missing Value Plot
 #missmap(sp, main = "Missing values vs observed")
 
-
 # Replacement of Missing Values
-# Missing values are replaced by half of the minimum non-zero value for each feature.
-if(REPLACE.NA){
-  NA2halfmin <- function(x) suppressWarnings(replace(x, is.na(x), (min(x, na.rm = TRUE)/2)))
-  raw_data[,-excluded_columns] <- lapply(raw_data[,-excluded_columns], NA2halfmin)
-} else {
-  NACount <- which(colMeans(is.na(raw_data[,-excluded_columns])) >= prop_na) + len_excluded_columns
-  if(length(NACount)){
-    write.csv(raw_data[,c(excluded_columns,NACount)], file = paste0(OUT_PREFIX,".NA.raw_data.csv"), row.names=FALSE)
-    cat(paste0("The following features were dropped because they have ",(prop_na*100),"% or more missing values:\n"))
-    cat(colnames(raw_data)[NACount])
-    raw_data[,NACount] <- NULL
-  }
-}
+raw_data <- MetaPipe::replace_missing(raw_data, excluded_columns, out_prefix, prop_na, REPLACE_NA)
 
 write.csv(raw_data, file = paste0(OUT_PREFIX,".all.raw_data.csv"), row.names=FALSE)
 
@@ -756,7 +743,7 @@ toc(log = TRUE) # QTL analysis
 
 # For both PCA and LDA the data must have no NAs and must be scaled
 raw_data <- read.csv(paste0(OUT_PREFIX,".all.raw_data.csv"))
-if(!REPLACE.NA){
+if(!REPLACE_NA){
   NA2halfmin <- function(x) suppressWarnings(replace(x, is.na(x), (min(x, na.rm = TRUE)/2)))
   raw_data[,-excluded_columns] <- lapply(raw_data[,-excluded_columns], NA2halfmin)
 }
