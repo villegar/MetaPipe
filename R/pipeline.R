@@ -87,7 +87,7 @@ cat(paste0("CMD Parameters: (",PERMUTATIONS,",",REPLACE.NA,",",PARETO.SCALING,",
 
 # Global parameters
 excluded_columns <- c(1,2,3)
-length.excluded_columns <- length(excluded_columns)
+len_excluded_columns <- length(excluded_columns)
 transformation.values <- c(2,exp(1))#,3,4,5,6,7,8,9,10
 raw_data <- "sp.csv"
 SEED <- 20190901 # Seed for QTL Analysis
@@ -104,7 +104,7 @@ tictoc::tic("Loading and pre-processing")
 # Load and Cleaning Data
 sp <- read.csv(raw_data)
 ncols <- ncol(sp)
-meansp <- aggregate(sp[,(length.excluded_columns + 1):ncols],by=list(sp$ID),mean, na.action = na.omit)
+meansp <- aggregate(sp[,(len_excluded_columns + 1):ncols],by=list(sp$ID),mean, na.action = na.omit)
 colnames(meansp)[1] <- "ID"
 meansp <- left_join(sp[,c("ID","Group","Generation")],meansp, by="ID")
 meansp <- meansp[!duplicated(meansp$ID),]
@@ -123,7 +123,7 @@ if(REPLACE.NA){
   NA2halfmin <- function(x) suppressWarnings(replace(x, is.na(x), (min(x, na.rm = TRUE)/2)))
   meansp[,-excluded_columns] <- lapply(meansp[,-excluded_columns], NA2halfmin)
 } else {
-  NACount <- which(colMeans(is.na(meansp[,-excluded_columns])) >= NA.COUNT.THRESHOLD) + length.excluded_columns
+  NACount <- which(colMeans(is.na(meansp[,-excluded_columns])) >= NA.COUNT.THRESHOLD) + len_excluded_columns
   if(length(NACount)){
     write.csv(meansp[,c(excluded_columns,NACount)], file = paste0(OUT.PREFIX,".NA.meansp.csv"), row.names=FALSE)
     cat(paste0("The following features were dropped because they have ",(NA.COUNT.THRESHOLD*100),"% or more missing values:\n"))
@@ -143,13 +143,13 @@ generate.boxplots <- function(meansp,ggplot_save){
   cl <- makeCluster(CPUS, outfile=paste0('./info_parallel.log')) # Make cluster
   registerDoParallel(cl)  # Register cluster
   features <- colnames(meansp)
-  AllPlots <- foreach(i=(length.excluded_columns + 1):ncol(meansp), 
+  AllPlots <- foreach(i=(len_excluded_columns + 1):ncol(meansp), 
                       .packages = c("ggplot2","latex2exp","R.devices")) %dopar% {
                         myPlot <- ggplot(data=meansp,aes(x=ID,y=meansp[,i])) +
                           geom_boxplot(aes(fill= "")) +
                           theme(axis.text.x = element_text(angle = 60, hjust = 1))+ 
                           labs(title=paste("Feature",features[i]), x='ID', y='')
-                        ggplot_save(myPlot,paste0("BOX_",(i - length.excluded_columns),"_",features[i]))
+                        ggplot_save(myPlot,paste0("BOX_",(i - len_excluded_columns),"_",features[i]))
                       }
   stopCluster(cl1) # Stop cluster
   print("Done with Boxplots")
@@ -162,7 +162,7 @@ features <- colnames(meansp)
 print("Starting with Normality Assessment")
 cl <- parallel::makeCluster(CPUS, outfile=paste0('./info_parallel.log'))
 doParallel::registerDoParallel(cl)
-transformed.meansp <- foreach(i=(length.excluded_columns + 1):ncol(meansp),
+transformed.meansp <- foreach(i=(len_excluded_columns + 1):ncol(meansp),
                          .combine =rbind,
                          .packages = c("ggplot2","grid","gridExtra","latex2exp","R.devices")) %dopar% {
                            record <- data.frame( # Create and populate entry for current feature
@@ -181,11 +181,11 @@ transformed.meansp <- foreach(i=(length.excluded_columns + 1):ncol(meansp),
                                record <- transform_data(data = meansp[,i], 
                                                         feature = features[i], 
                                                         alpha = 0.05, 
-                                                        index = i - length.excluded_columns, 
+                                                        index = i - len_excluded_columns, 
                                                         transf_vals = transformation.values, 
                                                         plots_prefix = paste0(PLOTS.DIR, "/HIST")
                                                        )
-                               #record <- transform_data(pvalue,meansp[,i],features[i],i,length.excluded_columns, PLOTS.DIR, transformation.values)
+                               #record <- transform_data(pvalue,meansp[,i],features[i],i,len_excluded_columns, PLOTS.DIR, transformation.values)
                                
                                if(length(record)){
                                  record$flag <- "Normal"
@@ -204,7 +204,7 @@ transformed.meansp <- foreach(i=(length.excluded_columns + 1):ncol(meansp),
                              else{ # Normal data
                                xlab <- features[i]
                                transformation <- "NORM"
-                               prefix <- paste0(PLOTS.DIR,"/HIST_",(i - length.excluded_columns),"_",transformation)
+                               prefix <- paste0(PLOTS.DIR,"/HIST_",(i - len_excluded_columns),"_",transformation)
                                generate_hist(data = meansp[, i], 
                                              feature = features[i], 
                                              prefix = name.prefix, 
