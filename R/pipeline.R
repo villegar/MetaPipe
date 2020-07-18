@@ -112,23 +112,22 @@ tictoc::toc(log = TRUE) # Loading and pre-processing
 # Missing values plot
 #missmap(raw_data, main = "Missing values vs observed")
 
-generate.boxplots <- function(raw_data,ggplot_save){
-  print("Generating Boxplots")
-  cl <- makeCluster(CPUS, outfile=paste0('./info_parallel.log')) # Make cluster
-  registerDoParallel(cl)  # Register cluster
-  features <- colnames(raw_data)
-  AllPlots <- foreach(i=(len_excluded_columns + 1):ncol(raw_data), 
-                      .packages = c("ggplot2","latex2exp","R.devices")) %dopar% {
-                        myPlot <- ggplot(data=raw_data,aes(x=ID,y=raw_data[,i])) +
-                          geom_boxplot(aes(fill= "")) +
-                          theme(axis.text.x = element_text(angle = 60, hjust = 1))+ 
-                          labs(title=paste("Feature",features[i]), x='ID', y='')
-                        ggplot_save(myPlot,paste0("BOX_",(i - len_excluded_columns),"_",features[i]))
-                      }
-  stopCluster(cl1) # Stop cluster
-  print("Done with Boxplots")
-}
-
+# generate.boxplots <- function(raw_data,ggplot_save){
+#   print("Generating Boxplots")
+#   cl <- makeCluster(CPUS, outfile=paste0('./info_parallel.log')) # Make cluster
+#   registerDoParallel(cl)  # Register cluster
+#   features <- colnames(raw_data)
+#   AllPlots <- foreach(i=(len_excluded_columns + 1):ncol(raw_data), 
+#                       .packages = c("ggplot2","latex2exp","R.devices")) %dopar% {
+#                         myPlot <- ggplot(data=raw_data,aes(x=ID,y=raw_data[,i])) +
+#                           geom_boxplot(aes(fill= "")) +
+#                           theme(axis.text.x = element_text(angle = 60, hjust = 1))+ 
+#                           labs(title=paste("Feature",features[i]), x='ID', y='')
+#                         ggplot_save(myPlot,paste0("BOX_",(i - len_excluded_columns),"_",features[i]))
+#                       }
+#   stopCluster(cl1) # Stop cluster
+#   print("Done with Boxplots")
+# }
 #generate.boxplots(raw_data,ggplot_save)
 
 tictoc::tic("Normality Assessment")
