@@ -50,42 +50,42 @@ if(length(args) < 1){
   PERMUTATIONS <- 1000 # Number of permutations for QTL Analysis
   REPLACE.NA <- FALSE
   PARETO.SCALING <- FALSE
-  OUT.PREFIX <- "metabolomics"
+  OUT_PREFIX <- "metabolomics"
   PLOTS.DIR <- "metabolomics"
 } else if(length(args) < 2){
   PERMUTATIONS <- as.numeric(args[1]) # Number of permutations for QTL Analysis
   REPLACE.NA <- FALSE
   PARETO.SCALING <- FALSE
-  OUT.PREFIX <- "metabolomics"
+  OUT_PREFIX <- "metabolomics"
   PLOTS.DIR <- "metabolomics"
 } else if(length(args) < 3){
   PERMUTATIONS <- as.numeric(args[1]) # Number of permutations for QTL Analysis
   REPLACE.NA <- as.logical(args[2])
   PARETO.SCALING <- FALSE
-  OUT.PREFIX <- "metabolomics"
+  OUT_PREFIX <- "metabolomics"
   PLOTS.DIR <- "metabolomics"
 } else if(length(args) < 4){
   PERMUTATIONS <- as.numeric(args[1]) # Number of permutations for QTL Analysis
   REPLACE.NA <- as.logical(args[2])
   PARETO.SCALING <- as.logical(args[3])
-  OUT.PREFIX <- "metabolomics"
+  OUT_PREFIX <- "metabolomics"
   PLOTS.DIR <- "metabolomics"
 } else if(length(args) < 5){
   PERMUTATIONS <- as.numeric(args[1]) # Number of permutations for QTL Analysis
   REPLACE.NA <- as.logical(args[2])
   PARETO.SCALING <- as.logical(args[3])
-  OUT.PREFIX <- args[4]
+  OUT_PREFIX <- args[4]
   PLOTS.DIR <- "metabolomics"
 } else {
   PERMUTATIONS <- as.numeric(args[1]) # Number of permutations for QTL Analysis
   REPLACE.NA <- as.logical(args[2])
   PARETO.SCALING <- as.logical(args[3])
-  OUT.PREFIX <- args[4]
+  OUT_PREFIX <- args[4]
   PLOTS.DIR <- args[5]
 }
 
 tic.clearlog()
-cat(paste0("CMD Parameters: (",PERMUTATIONS,",",REPLACE.NA,",",PARETO.SCALING,",",OUT.PREFIX,",",PLOTS.DIR,")"))
+cat(paste0("CMD Parameters: (",PERMUTATIONS,",",REPLACE.NA,",",PARETO.SCALING,",",OUT_PREFIX,",",PLOTS.DIR,")"))
 # Global parameters
 excluded_columns <- c(1,2,3)
 len_excluded_columns <- length(excluded_columns)
@@ -117,14 +117,14 @@ if(REPLACE.NA){
 } else {
   NACount <- which(colMeans(is.na(raw_data[,-excluded_columns])) >= prop_na) + len_excluded_columns
   if(length(NACount)){
-    write.csv(raw_data[,c(excluded_columns,NACount)], file = paste0(OUT.PREFIX,".NA.raw_data.csv"), row.names=FALSE)
+    write.csv(raw_data[,c(excluded_columns,NACount)], file = paste0(OUT_PREFIX,".NA.raw_data.csv"), row.names=FALSE)
     cat(paste0("The following features were dropped because they have ",(prop_na*100),"% or more missing values:\n"))
     cat(colnames(raw_data)[NACount])
     raw_data[,NACount] <- NULL
   }
 }
 
-write.csv(raw_data, file = paste0(OUT.PREFIX,".all.raw_data.csv"), row.names=FALSE)
+write.csv(raw_data, file = paste0(OUT_PREFIX,".all.raw_data.csv"), row.names=FALSE)
 
 toc(log = TRUE) # Loading and pre-processing
 # Missing values plot
@@ -231,12 +231,12 @@ transformations <- transformed.raw_data[transformed.raw_data$flag == "Normal",]
 transformations[,c("flag","index","values")] <- NULL
 transformations <- unique(transformations)
 
-write.csv(transformations, file = paste0(OUT.PREFIX,".normal.transformations.summary.csv"), row.names=FALSE, na="")
-write.csv(transformed.raw_data, file = paste0(OUT.PREFIX,".transformed.all.raw_data.csv"), row.names=FALSE)
-write.csv(normal.raw_data, file = paste0(OUT.PREFIX,".normal.raw_data.csv"), row.names=FALSE)
-write.csv(non.parametric.raw_data, file = paste0(OUT.PREFIX,".non.parametric.raw_data.csv"), row.names=FALSE)
-write.csv(transformed.normal.raw_data, file = paste0(OUT.PREFIX,".transformed.normal.raw_data.csv"), row.names=FALSE)
-write.csv(transformed.non.parametric.raw_data, file = paste0(OUT.PREFIX,".transformed.non.parametric.raw_data.csv"), row.names=FALSE)
+write.csv(transformations, file = paste0(OUT_PREFIX,".normal.transformations.summary.csv"), row.names=FALSE, na="")
+write.csv(transformed.raw_data, file = paste0(OUT_PREFIX,".transformed.all.raw_data.csv"), row.names=FALSE)
+write.csv(normal.raw_data, file = paste0(OUT_PREFIX,".normal.raw_data.csv"), row.names=FALSE)
+write.csv(non.parametric.raw_data, file = paste0(OUT_PREFIX,".non.parametric.raw_data.csv"), row.names=FALSE)
+write.csv(transformed.normal.raw_data, file = paste0(OUT_PREFIX,".transformed.normal.raw_data.csv"), row.names=FALSE)
+write.csv(transformed.non.parametric.raw_data, file = paste0(OUT_PREFIX,".transformed.non.parametric.raw_data.csv"), row.names=FALSE)
 
 # Statistics
 normal <- nrow(normal.transformed.raw_data[normal.transformed.raw_data$transf == "",])/raw_data_rows
@@ -316,18 +316,18 @@ if(any(normal.empty.features)){
 
 # Write genotypic and phenotypic dataset
 ## Normal features
-write.csv(normal.gen, file = paste0(OUT.PREFIX,".normal.gen.csv"), row.names=FALSE)
-write.csv(normal.phe, file = paste0(OUT.PREFIX,".normal.phe.csv"), row.names=FALSE)
+write.csv(normal.gen, file = paste0(OUT_PREFIX,".normal.gen.csv"), row.names=FALSE)
+write.csv(normal.phe, file = paste0(OUT_PREFIX,".normal.phe.csv"), row.names=FALSE)
 ## Non-parametric features
-write.csv(non.parametric.gen, file = paste0(OUT.PREFIX,".non.parametric.gen.csv"), row.names=FALSE)
-write.csv(non.parametric.phe, file = paste0(OUT.PREFIX,".non.parametric.phe.csv"), row.names=FALSE)
+write.csv(non.parametric.gen, file = paste0(OUT_PREFIX,".non.parametric.gen.csv"), row.names=FALSE)
+write.csv(non.parametric.phe, file = paste0(OUT_PREFIX,".non.parametric.phe.csv"), row.names=FALSE)
 
 toc(log = TRUE) # QTL analysis preprocessing
 tic("Normal QTL Analysis: Single scanone")
 # QTL Analysis
 x.normal <- read.cross("csvs",".",
-                paste0(OUT.PREFIX,".normal.gen.csv"),
-                paste0(OUT.PREFIX,".normal.phe.csv"))
+                paste0(OUT_PREFIX,".normal.gen.csv"),
+                paste0(OUT_PREFIX,".normal.phe.csv"))
 features <- colnames(x.normal$pheno)
 set.seed(SEED)
 x.normal <- jittermap(x.normal)
@@ -335,8 +335,8 @@ x.normal <- calc.genoprob(x.normal, step=1, error.prob=0.001)
 individuals.phenotyped <- summary(x.normal)[[2]]
 
 x.non.parametric <- read.cross("csvs",".",
-                               paste0(OUT.PREFIX,".non.parametric.gen.csv"),
-                               paste0(OUT.PREFIX,".non.parametric.phe.csv"))
+                               paste0(OUT_PREFIX,".non.parametric.gen.csv"),
+                               paste0(OUT_PREFIX,".non.parametric.phe.csv"))
 features.np <- colnames(x.non.parametric$pheno)
 x.non.parametric <- jittermap(x.non.parametric)
 x.non.parametric <- calc.genoprob(x.non.parametric, step=1, error.prob=0.001)
@@ -738,24 +738,24 @@ effect.plots <- foreach(i=1:nrow(t.qtl),
 closeCluster(cl) # Stop cluster
 #stopCluster.MPIcluster(c1)
 
-write.csv(x.normal.scanone, file = paste0(OUT.PREFIX,".normal.scanone.csv"))
-write.csv(x.normal.summary.mapping, file = paste0(OUT.PREFIX,".normal.summary.mapping.csv"), row.names=FALSE, na="")
-write.csv(x.non.parametric.scanone, file = paste0(OUT.PREFIX,".non.parametric.scanone.csv"))
-write.csv(x.non.parametric.summary.mapping, file = paste0(OUT.PREFIX,".non.parametric.summary.mapping.csv"), row.names=FALSE, na="")
-write.csv(t.qtl, file = paste0(OUT.PREFIX,".true.qtl.csv"), row.names=FALSE, na="")
-write.csv(threshold3.qtl, file = paste0(OUT.PREFIX,".threshold3.qtl.csv"), row.names=FALSE, na="")
+write.csv(x.normal.scanone, file = paste0(OUT_PREFIX,".normal.scanone.csv"))
+write.csv(x.normal.summary.mapping, file = paste0(OUT_PREFIX,".normal.summary.mapping.csv"), row.names=FALSE, na="")
+write.csv(x.non.parametric.scanone, file = paste0(OUT_PREFIX,".non.parametric.scanone.csv"))
+write.csv(x.non.parametric.summary.mapping, file = paste0(OUT_PREFIX,".non.parametric.summary.mapping.csv"), row.names=FALSE, na="")
+write.csv(t.qtl, file = paste0(OUT_PREFIX,".true.qtl.csv"), row.names=FALSE, na="")
+write.csv(threshold3.qtl, file = paste0(OUT_PREFIX,".threshold3.qtl.csv"), row.names=FALSE, na="")
 
 # Classify QTLs by LG and Peak Position
 classified.qtl <- t.qtl[order(t.qtl$lg,t.qtl$pos.peak),]
 classified.qtl$group <- with(classified.qtl,
                              paste0("chr",lg,"-mrk",marker))
-write.csv(classified.qtl, file = paste0(OUT.PREFIX,".classified.qtl.csv"), row.names=FALSE, na="")
+write.csv(classified.qtl, file = paste0(OUT_PREFIX,".classified.qtl.csv"), row.names=FALSE, na="")
 toc(log = TRUE) # Effect plots and QTL analysis postprocessing
 print("Done with QTL Analysis")
 toc(log = TRUE) # QTL analysis
 
 # For both PCA and LDA the data must have no NAs and must be scaled
-raw_data <- read.csv(paste0(OUT.PREFIX,".all.raw_data.csv"))
+raw_data <- read.csv(paste0(OUT_PREFIX,".all.raw_data.csv"))
 if(!REPLACE.NA){
   NA2halfmin <- function(x) suppressWarnings(replace(x, is.na(x), (min(x, na.rm = TRUE)/2)))
   raw_data[,-excluded_columns] <- lapply(raw_data[,-excluded_columns], NA2halfmin)
@@ -769,8 +769,8 @@ transformed.raw_data <- raw_data # No scaling
 
 tic("PCAnalysis")
 # PCAnalysis with mean (used no missing data) 
-#OUT.PREFIX <- "S1-metabolomics"
-#transformed.normal.raw_data <- read.csv(paste0(OUT.PREFIX,".all.raw_data.csv"))
+#OUT_PREFIX <- "S1-metabolomics"
+#transformed.normal.raw_data <- read.csv(paste0(OUT_PREFIX,".all.raw_data.csv"))
 #transformed.normal.raw_data$X <- NULL
 #transformed.normal.raw_data <- transformed.normal.raw_data[order(as.character(transformed.normal.raw_data$ID)),]
 #transformed.normal.raw_data$Group <- NULL
@@ -827,9 +827,9 @@ toc(log = TRUE) # LDAnalysis
 
 tic("Heatmap for true QTLs")
 # Heatmap
-x.normal.lod.scores <- read.csv(paste0(OUT.PREFIX,".normal.scanone.csv"))
-x.non.parametric.lod.scores <- read.csv(paste0(OUT.PREFIX,".non.parametric.scanone.csv"))
-true.qtl <- read.csv(paste0(OUT.PREFIX,".true.qtl.csv"))
+x.normal.lod.scores <- read.csv(paste0(OUT_PREFIX,".normal.scanone.csv"))
+x.non.parametric.lod.scores <- read.csv(paste0(OUT_PREFIX,".non.parametric.scanone.csv"))
+true.qtl <- read.csv(paste0(OUT_PREFIX,".true.qtl.csv"))
 true.qtl.features <- unique(as.character(true.qtl$trait))
 x.normal.lod.scores.true.qtl <- x.normal.lod.scores[, which(names(x.normal.lod.scores) %in% true.qtl.features)]
 x.non.parametric.lod.scores.true.qtl <- x.non.parametric.lod.scores[, which(names(x.non.parametric.lod.scores) %in% true.qtl.features)]
@@ -906,6 +906,6 @@ toc(log = TRUE) # Heatmap for true QTLs
 toc(log = TRUE) # Total
 
 log.txt <- tic.log(format = TRUE)
-write(unlist(log.txt), paste0(OUT.PREFIX,".log.times.p",PERMUTATIONS,".txt"))
+write(unlist(log.txt), paste0(OUT_PREFIX,".log.times.p",PERMUTATIONS,".txt"))
 mpi.quit()
 }

@@ -48,42 +48,42 @@ if(length(args) < 1){
   PERMUTATIONS <- 1000 # Number of permutations for QTL Analysis
   REPLACE.NA <- FALSE
   PARETO.SCALING <- FALSE
-  OUT.PREFIX <- "metabolomics"
+  OUT_PREFIX <- "metabolomics"
   PLOTS.DIR <- "metabolomics"
 } else if(length(args) < 2){
   PERMUTATIONS <- as.numeric(args[1]) # Number of permutations for QTL Analysis
   REPLACE.NA <- FALSE
   PARETO.SCALING <- FALSE
-  OUT.PREFIX <- "metabolomics"
+  OUT_PREFIX <- "metabolomics"
   PLOTS.DIR <- "metabolomics"
 } else if(length(args) < 3){
   PERMUTATIONS <- as.numeric(args[1]) # Number of permutations for QTL Analysis
   REPLACE.NA <- as.logical(args[2])
   PARETO.SCALING <- FALSE
-  OUT.PREFIX <- "metabolomics"
+  OUT_PREFIX <- "metabolomics"
   PLOTS.DIR <- "metabolomics"
 } else if(length(args) < 4){
   PERMUTATIONS <- as.numeric(args[1]) # Number of permutations for QTL Analysis
   REPLACE.NA <- as.logical(args[2])
   PARETO.SCALING <- as.logical(args[3])
-  OUT.PREFIX <- "metabolomics"
+  OUT_PREFIX <- "metabolomics"
   PLOTS.DIR <- "metabolomics"
 } else if(length(args) < 5){
   PERMUTATIONS <- as.numeric(args[1]) # Number of permutations for QTL Analysis
   REPLACE.NA <- as.logical(args[2])
   PARETO.SCALING <- as.logical(args[3])
-  OUT.PREFIX <- args[4]
+  OUT_PREFIX <- args[4]
   PLOTS.DIR <- "metabolomics"
 } else {
   PERMUTATIONS <- as.numeric(args[1]) # Number of permutations for QTL Analysis
   REPLACE.NA <- as.logical(args[2])
   PARETO.SCALING <- as.logical(args[3])
-  OUT.PREFIX <- args[4]
+  OUT_PREFIX <- args[4]
   PLOTS.DIR <- args[5]
 }
 
 tictoc::tic.clearlog()
-cat(paste0("CMD Parameters: (",PERMUTATIONS,",",REPLACE.NA,",",PARETO.SCALING,",",OUT.PREFIX,",",PLOTS.DIR,")"))
+cat(paste0("CMD Parameters: (",PERMUTATIONS,",",REPLACE.NA,",",PARETO.SCALING,",",OUT_PREFIX,",",PLOTS.DIR,")"))
 
 # Global parameters
 excluded_columns <- c(1,2,3)
@@ -109,7 +109,7 @@ raw_data_rows <- nrow(raw_data)
 # Replacement of Missing Values
 
 
-write.csv(raw_data, file = paste0(OUT.PREFIX,".all.raw_data.csv"), row.names=FALSE)
+write.csv(raw_data, file = paste0(OUT_PREFIX,".all.raw_data.csv"), row.names=FALSE)
 tictoc::toc(log = TRUE) # Loading and pre-processing
 
 # Missing values plot
@@ -222,11 +222,11 @@ if(PARETO.SCALING){ # Apply Pareto Scaling
 normal.raw_data <- cbind(raw_data[,excluded_columns],normal.raw_data)
 non.parametric.raw_data <- cbind(raw_data[,excluded_columns],non.parametric.raw_data)
 
-write.csv(transformed.raw_data, file = paste0(OUT.PREFIX,".transformed.all.raw_data.csv"), row.names=FALSE)
-write.csv(normal.raw_data, file = paste0(OUT.PREFIX,".normal.raw_data.csv"), row.names=FALSE)
-write.csv(non.parametric.raw_data, file = paste0(OUT.PREFIX,".non.parametric.raw_data.csv"), row.names=FALSE)
-write.csv(transformed.normal.raw_data, file = paste0(OUT.PREFIX,".transformed.normal.raw_data.csv"), row.names=FALSE)
-write.csv(transformed.non.parametric.raw_data, file = paste0(OUT.PREFIX,".transformed.non.parametric.raw_data.csv"), row.names=FALSE)
+write.csv(transformed.raw_data, file = paste0(OUT_PREFIX,".transformed.all.raw_data.csv"), row.names=FALSE)
+write.csv(normal.raw_data, file = paste0(OUT_PREFIX,".normal.raw_data.csv"), row.names=FALSE)
+write.csv(non.parametric.raw_data, file = paste0(OUT_PREFIX,".non.parametric.raw_data.csv"), row.names=FALSE)
+write.csv(transformed.normal.raw_data, file = paste0(OUT_PREFIX,".transformed.normal.raw_data.csv"), row.names=FALSE)
+write.csv(transformed.non.parametric.raw_data, file = paste0(OUT_PREFIX,".transformed.non.parametric.raw_data.csv"), row.names=FALSE)
 
 # Statistics
 normal <- nrow(normal.transformed.raw_data[normal.transformed.raw_data$transf == "",])/raw_data_rows
@@ -308,18 +308,18 @@ if(any(normal.empty.features)){
 
 # Write genotypic and phenotypic dataset
 ## Normal features
-write.csv(normal.gen, file = paste0(OUT.PREFIX,".normal.gen.csv"), row.names=FALSE)
-write.csv(normal.phe, file = paste0(OUT.PREFIX,".normal.phe.csv"), row.names=FALSE)
+write.csv(normal.gen, file = paste0(OUT_PREFIX,".normal.gen.csv"), row.names=FALSE)
+write.csv(normal.phe, file = paste0(OUT_PREFIX,".normal.phe.csv"), row.names=FALSE)
 ## Non-parametric features
-write.csv(non.parametric.gen, file = paste0(OUT.PREFIX,".non.parametric.gen.csv"), row.names=FALSE)
-write.csv(non.parametric.phe, file = paste0(OUT.PREFIX,".non.parametric.phe.csv"), row.names=FALSE)
+write.csv(non.parametric.gen, file = paste0(OUT_PREFIX,".non.parametric.gen.csv"), row.names=FALSE)
+write.csv(non.parametric.phe, file = paste0(OUT_PREFIX,".non.parametric.phe.csv"), row.names=FALSE)
 
 tictoc::toc(log = TRUE) # QTL analysis preprocessing
 tictoc::tic("Normal QTL analysis")
 # QTL Analysis
 x_norm <- qtl::read.cross("csvs",".",
-                paste0(OUT.PREFIX,".normal.gen.csv"),
-                paste0(OUT.PREFIX,".normal.phe.csv"))
+                paste0(OUT_PREFIX,".normal.gen.csv"),
+                paste0(OUT_PREFIX,".normal.phe.csv"))
 features <- colnames(x_norm$pheno)
 set.seed(SEED)
 x_norm <- qtl::jittermap(x_norm)
@@ -352,7 +352,7 @@ x_norm_scone <- foreach(i=2:ncol(x_norm$pheno),
                        record
                      }
 parallel::stopCluster(cl) # Stop cluster
-write.csv(x_norm_scone, file = paste0(OUT.PREFIX,".normal.scanone.csv"))
+write.csv(x_norm_scone, file = paste0(OUT_PREFIX,".normal.scanone.csv"))
 
 cl <- parallel::makeCluster(ceiling(CPUS*0.5), outfile=paste0('./info_parallel_QTL.log'))
 doParallel::registerDoParallel(cl)
@@ -530,14 +530,14 @@ parallel::stopCluster(cl) # Stop cluster
 #tmp <- x_norm_sum_map
 #tmp$qtl[!is.na(tmp$qtl)] <- 1:length(tmp$qtl[!is.na(tmp$qtl)])
 #x_norm_sum_map <- tmp
-write.csv(x_norm_sum_map, file = paste0(OUT.PREFIX,".normal.summary.mapping.csv"), row.names=FALSE, na="")
+write.csv(x_norm_sum_map, file = paste0(OUT_PREFIX,".normal.summary.mapping.csv"), row.names=FALSE, na="")
 
 tictoc::toc(log = TRUE) # Normal QTL analysis
 tictoc::tic("Non-parametric QTL analysis")
 # Non-parametric QTL
 x_non_par <- qtl::read.cross("csvs",".",
-                paste0(OUT.PREFIX,".non.parametric.gen.csv"),
-                paste0(OUT.PREFIX,".non.parametric.phe.csv"))
+                paste0(OUT_PREFIX,".non.parametric.gen.csv"),
+                paste0(OUT_PREFIX,".non.parametric.phe.csv"))
 features_np <- colnames(x_non_par$pheno)
 set.seed(SEED)
 x_non_par <- qtl::jittermap(x_non_par)
@@ -569,7 +569,7 @@ x_non_par_scone <- foreach(i=2:ncol(x_non_par$pheno),
                        record
                      }
 parallel::stopCluster(cl) # Stop cluster
-write.csv(x_non_par_scone, file = paste0(OUT.PREFIX,".non.parametric.scanone.csv"))
+write.csv(x_non_par_scone, file = paste0(OUT_PREFIX,".non.parametric.scanone.csv"))
 
 cl <- parallel::makeCluster(ceiling(CPUS*0.5), outfile=paste0('./info_parallel_QTL.log'))
 doParallel::registerDoParallel(cl)
@@ -701,13 +701,13 @@ x_non_par_sum_map <- foreach(i=2:ncol(x_non_par$pheno),
                              }
 parallel::stopCluster(cl) # Stop cluster
 
-write.csv(x_non_par_sum_map, file = paste0(OUT.PREFIX,".non.parametric.summary.mapping.csv"), row.names=FALSE, na="")
+write.csv(x_non_par_sum_map, file = paste0(OUT_PREFIX,".non.parametric.summary.mapping.csv"), row.names=FALSE, na="")
 
 tictoc::toc(log = TRUE) # Non-parametric QTL analysis
 tictoc::tic("QTL analysis postprocessing")
 x_norm <- qtl::read.cross("csvs",".",
-                          paste0(OUT.PREFIX,".normal.gen.csv"),
-                          paste0(OUT.PREFIX,".normal.phe.csv"))
+                          paste0(OUT_PREFIX,".normal.gen.csv"),
+                          paste0(OUT_PREFIX,".normal.phe.csv"))
 features <- colnames(x_norm$pheno)
 set.seed(SEED)
 x_norm <- qtl::jittermap(x_norm)
@@ -716,8 +716,8 @@ num_indv_phend_n <- summary(x_norm)[[2]]
 
 # Non-parametric QTL
 x_non_par <- qtl::read.cross("csvs",".",
-                             paste0(OUT.PREFIX,".non.parametric.gen.csv"),
-                             paste0(OUT.PREFIX,".non.parametric.phe.csv"))
+                             paste0(OUT_PREFIX,".non.parametric.gen.csv"),
+                             paste0(OUT_PREFIX,".non.parametric.phe.csv"))
 features_np <- colnames(x_non_par$pheno)
 set.seed(SEED)
 x_non_par <- qtl::jittermap(x_non_par)
@@ -761,21 +761,21 @@ effect_plots <- foreach(i=1:nrow(true_qtl),
                         }
 parallel::stopCluster(cl) # Stop cluster
 
-write.csv(true_qtl, file = paste0(OUT.PREFIX,".true.qtl.csv"), row.names=FALSE, na="")
-write.csv(thrsh3_qtl, file = paste0(OUT.PREFIX,".threshold3.qtl.csv"), row.names=FALSE, na="")
+write.csv(true_qtl, file = paste0(OUT_PREFIX,".true.qtl.csv"), row.names=FALSE, na="")
+write.csv(thrsh3_qtl, file = paste0(OUT_PREFIX,".threshold3.qtl.csv"), row.names=FALSE, na="")
 
 # Classify QTLs by LG and Peak Position
 class_qtl <- true_qtl[order(true_qtl$lg,true_qtl$pos.peak),]
 class_qtl$group <- with(class_qtl,
                         paste0("chr",lg,"-mrk",marker))
-write.csv(class_qtl, file = paste0(OUT.PREFIX,".classified.qtl.csv"), row.names=FALSE, na="")
+write.csv(class_qtl, file = paste0(OUT_PREFIX,".classified.qtl.csv"), row.names=FALSE, na="")
 print("Done with QTL Analysis")
 tictoc::toc(log = TRUE) # QTL analysis postprocessing
 tictoc::toc(log = TRUE) # QTL analysis
 
 
 # For both PCA and LDA the data must have no NAs and must be scaled
-raw_data <- read.csv(paste0(OUT.PREFIX,".all.raw_data.csv"))
+raw_data <- read.csv(paste0(OUT_PREFIX,".all.raw_data.csv"))
 if(!REPLACE.NA){
   NA2halfmin <- function(x) suppressWarnings(replace(x, is.na(x), (min(x, na.rm = TRUE)/2)))
   raw_data[,-excluded_columns] <- lapply(raw_data[,-excluded_columns], NA2halfmin)
@@ -787,8 +787,8 @@ transformed.raw_data <- raw_data # No scaling
 
 tictoc::tic("PCAnalysis")
 # PCAnalysis with mean (used no missing data) 
-##OUT.PREFIX <- "S1-metabolomics"
-##transformed.raw_data <- read.csv(paste0(OUT.PREFIX,".all.raw_data.csv"))
+##OUT_PREFIX <- "S1-metabolomics"
+##transformed.raw_data <- read.csv(paste0(OUT_PREFIX,".all.raw_data.csv"))
 ##transformed.raw_data$X <- NULL
 ##transformed.raw_data <- transformed.raw_data[order(as.character(transformed.raw_data$ID)),]
 ##transformed.raw_data$Group <- NULL
@@ -846,9 +846,9 @@ tictoc::toc(log = TRUE) # LDAnalysis
 
 tictoc::tic("Heatmap for true QTLs")
 # Heatmap
-x_norm.lod.scores <- read.csv(paste0(OUT.PREFIX,".normal.scanone.csv"))
-x.non.parametric.lod.scores <- read.csv(paste0(OUT.PREFIX,".non.parametric.scanone.csv"))
-true.qtl <- read.csv(paste0(OUT.PREFIX,".true.qtl.csv"))
+x_norm.lod.scores <- read.csv(paste0(OUT_PREFIX,".normal.scanone.csv"))
+x.non.parametric.lod.scores <- read.csv(paste0(OUT_PREFIX,".non.parametric.scanone.csv"))
+true.qtl <- read.csv(paste0(OUT_PREFIX,".true.qtl.csv"))
 true.qtl.features <- unique(as.character(true.qtl$trait))
 x_norm.lod.scores.true.qtl <- x_norm.lod.scores[, which(names(x_norm.lod.scores) %in% true.qtl.features)]
 x.non.parametric.lod.scores.true.qtl <- x.non.parametric.lod.scores[, which(names(x.non.parametric.lod.scores) %in% true.qtl.features)]
@@ -924,5 +924,5 @@ tictoc::toc(log = TRUE) # Heatmap for true QTLs
 # closeAllConnections()
 tictoc::toc(log = TRUE) # Total
 log.txt <- tictoc::tic.log(format = TRUE)
-write(unlist(log.txt), paste0(OUT.PREFIX,".log.times.p",PERMUTATIONS,".txt"))
+write(unlist(log.txt), paste0(OUT_PREFIX,".log.times.p",PERMUTATIONS,".txt"))
 }
