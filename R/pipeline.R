@@ -47,43 +47,43 @@ CPUS <- cores[1] - 1
 if(length(args) < 1){
   PERMUTATIONS <- 1000 # Number of permutations for QTL Analysis
   REPLACE_NA <- FALSE
-  PARETO.SCALING <- FALSE
+  PARETO_SCALING <- FALSE
   OUT_PREFIX <- "metabolomics"
   PLOTS.DIR <- "metabolomics"
 } else if(length(args) < 2){
   PERMUTATIONS <- as.numeric(args[1]) # Number of permutations for QTL Analysis
   REPLACE_NA <- FALSE
-  PARETO.SCALING <- FALSE
+  PARETO_SCALING <- FALSE
   OUT_PREFIX <- "metabolomics"
   PLOTS.DIR <- "metabolomics"
 } else if(length(args) < 3){
   PERMUTATIONS <- as.numeric(args[1]) # Number of permutations for QTL Analysis
   REPLACE_NA <- as.logical(args[2])
-  PARETO.SCALING <- FALSE
+  PARETO_SCALING <- FALSE
   OUT_PREFIX <- "metabolomics"
   PLOTS.DIR <- "metabolomics"
 } else if(length(args) < 4){
   PERMUTATIONS <- as.numeric(args[1]) # Number of permutations for QTL Analysis
   REPLACE_NA <- as.logical(args[2])
-  PARETO.SCALING <- as.logical(args[3])
+  PARETO_SCALING <- as.logical(args[3])
   OUT_PREFIX <- "metabolomics"
   PLOTS.DIR <- "metabolomics"
 } else if(length(args) < 5){
   PERMUTATIONS <- as.numeric(args[1]) # Number of permutations for QTL Analysis
   REPLACE_NA <- as.logical(args[2])
-  PARETO.SCALING <- as.logical(args[3])
+  PARETO_SCALING <- as.logical(args[3])
   OUT_PREFIX <- args[4]
   PLOTS.DIR <- "metabolomics"
 } else {
   PERMUTATIONS <- as.numeric(args[1]) # Number of permutations for QTL Analysis
   REPLACE_NA <- as.logical(args[2])
-  PARETO.SCALING <- as.logical(args[3])
+  PARETO_SCALING <- as.logical(args[3])
   OUT_PREFIX <- args[4]
   PLOTS.DIR <- args[5]
 }
 
 tictoc::tic.clearlog()
-cat(paste0("CMD Parameters: (",PERMUTATIONS,",",REPLACE_NA,",",PARETO.SCALING,",",OUT_PREFIX,",",PLOTS.DIR,")"))
+cat(paste0("CMD Parameters: (",PERMUTATIONS,",",REPLACE_NA,",",PARETO_SCALING,",",OUT_PREFIX,",",PLOTS.DIR,")"))
 
 # Global parameters
 excluded_columns <- c(1,2,3)
@@ -103,11 +103,8 @@ tictoc::tic("Loading and pre-processing")
 raw_data <- MetaPipe::load_raw("sp.csv", excluded_columns)
 raw_data_rows <- nrow(raw_data)
 
-# Missing Value Plot
-#missmap(sp, main = "Missing values vs observed")
-
 # Replacement of Missing Values
-raw_data <- MetaPipe::replace_missing(raw_data, excluded_columns, out_prefix, prop_na, REPLACE_NA)
+raw_data <- MetaPipe::replace_missing(raw_data, excluded_columns, OUT_PREFIX, prop_na, REPLACE_NA)
 
 write.csv(raw_data, file = paste0(OUT_PREFIX,".all.raw_data.csv"), row.names=FALSE)
 tictoc::toc(log = TRUE) # Loading and pre-processing
@@ -212,7 +209,7 @@ for(i in 1:length.normal.features){
 }
 
 # Append excluded columns for transformation 
-if(PARETO.SCALING){ # Apply Pareto Scaling
+if(PARETO_SCALING){ # Apply Pareto Scaling
   transformed.normal.raw_data <- cbind(raw_data[,excluded_columns],paretoscale(normal.raw_data))
   transformed.non.parametric.raw_data <- cbind(raw_data[,excluded_columns],paretoscale(non.parametric.raw_data))
 } else { # No Scaling
@@ -781,7 +778,7 @@ if(!REPLACE_NA){
   raw_data[,-excluded_columns] <- lapply(raw_data[,-excluded_columns], NA2halfmin)
 }
 transformed.raw_data <- raw_data # No scaling
-#if(!PARETO.SCALING){ # Apply Pareto Scaling
+#if(!PARETO_SCALING){ # Apply Pareto Scaling
 #  transformed.raw_data <- cbind(raw_data[,excluded_columns],paretoscale(raw_data[,-excluded_columns]))
 #}
 
