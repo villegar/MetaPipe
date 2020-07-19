@@ -38,4 +38,8 @@ example_data <- data.frame(ID = c(1,2,3,4,5),
                            F1 = rnorm(5), 
                            F2 = rnorm(5))
 assess_normality(example_data, c(1, 2))
+
+}
+\seealso{
+\code{\link{assess_normality_postprocessing}}
 }
