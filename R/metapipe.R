@@ -297,11 +297,13 @@ assess_normality_stats <- function(out_prefix = "metapipe") {
   msg <- paste0(msg, "\nTotal Normal features: \t\t\t\t", norm_features_count)
   msg <- paste0(msg, "\nNon-parametric features: \t\t\t", (total_features - norm_features_count),"\n")
   
-  msg <- paste0(msg, "\nTransformations summary:")
-  msg <- paste0(msg, "\n\tf(x)\tValue \t# Features")
-  for (i in 1:nrow(transformations)) {
-    tmp <- strsplit(as.character(transformations[i, 1]), '\t')[[1]]
-    msg <- paste0(msg, "\n\t", tmp[1], "\t", tmp[2],"\t", transformations[i, 2])
+  if (nrow(transformations) > 0) {
+    msg <- paste0(msg, "\nTransformations summary:")
+    msg <- paste0(msg, "\n\tf(x)\tValue \t# Features")
+    for (i in 1:nrow(transformations)) {
+      tmp <- strsplit(as.character(transformations[i, 1]), '\t')[[1]]
+      msg <- paste0(msg, "\n\t", tmp[1], "\t", tmp[2],"\t", transformations[i, 2])
+    }
   }
   msg <- paste0(msg, "\n\n") # Clean output
   message(msg)
