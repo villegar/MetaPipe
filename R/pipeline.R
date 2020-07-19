@@ -140,10 +140,10 @@ tictoc::toc(log = TRUE) # Normality Assessment
 tictoc::tic("Transformed data post-processing")
 raw_data_transformed_norm <- raw_data_transformed[raw_data_transformed$flag == "Normal",]
 raw_data_transformed_non_par <- raw_data_transformed[raw_data_transformed$flag == "Non-normal",]
-non.parametric.features <- unique(as.character(raw_data_transformed_non_par$feature))
+features_non_par <- unique(as.character(raw_data_transformed_non_par$feature))
 normal.features <- unique(as.character(raw_data_transformed_norm$feature))
 length.normal.features <- length(normal.features)
-non.parametric.raw_data <- raw_data[,non.parametric.features]#raw_data[,-c(normal.features)]
+non.parametric.raw_data <- raw_data[,features_non_par]#raw_data[,-c(normal.features)]
 normal.raw_data <- data.frame(matrix(vector(), nrow(raw_data_transformed_norm)/length.normal.features, length.normal.features,
                                    dimnames=list(c(), normal.features)),
                             stringsAsFactors = F)
