@@ -110,6 +110,9 @@ assess_normality <- function(raw_data,
   cl <- parallel::makeCluster(cpus)
   doParallel::registerDoParallel(cl)
   
+  # Load binary operator for backend
+  `%dopar%` <- foreach::`%dopar%`
+  
   # Exclude column 1, ID
   excluded_columns <- unique(c(1, excluded_columns))
   
@@ -167,6 +170,7 @@ assess_normality <- function(raw_data,
                                   }
   
   parallel::stopCluster(cl) # Stop cluster
+  raw_data_transformed$flag <- as.factor(raw_data_transformed$flag)
   return(raw_data_transformed)
 }
 
