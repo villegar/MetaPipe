@@ -139,17 +139,17 @@ print("Done with Normality Assessment")
 
 toc(log = TRUE) # Normality Assessment
 tic("Transformed data post-processing")
-normal.raw_data_transformed <- raw_data_transformed[raw_data_transformed$flag == "Normal",]
+raw_data_transformed_norm <- raw_data_transformed[raw_data_transformed$flag == "Normal",]
 non.parametric.raw_data_transformed <- raw_data_transformed[raw_data_transformed$flag == "Non-normal",]
 non.parametric.features <- unique(as.character(non.parametric.raw_data_transformed$feature))
-normal.features <- unique(as.character(normal.raw_data_transformed$feature))
+normal.features <- unique(as.character(raw_data_transformed_norm$feature))
 length.normal.features <- length(normal.features)
 non.parametric.raw_data <- raw_data[,non.parametric.features]#raw_data[,-c(normal.features)]
-normal.raw_data <- data.frame(matrix(vector(), nrow(normal.raw_data_transformed)/length.normal.features, length.normal.features,
+normal.raw_data <- data.frame(matrix(vector(), nrow(raw_data_transformed_norm)/length.normal.features, length.normal.features,
                                    dimnames=list(c(), normal.features)),
                             stringsAsFactors = F)
 for(i in 1:length.normal.features){
-  normal.raw_data[i] <- subset(normal.raw_data_transformed, feature == normal.features[i])$values
+  normal.raw_data[i] <- subset(raw_data_transformed_norm, feature == normal.features[i])$values
 }
 
 # Append excluded columns for transformation 
@@ -176,8 +176,8 @@ write.csv(transformed.normal.raw_data, file = paste0(OUT_PREFIX,".transformed.no
 write.csv(transformed.non.parametric.raw_data, file = paste0(OUT_PREFIX,".transformed.non.parametric.raw_data.csv"), row.names=FALSE)
 
 # Statistics
-normal <- nrow(normal.raw_data_transformed[normal.raw_data_transformed$transf == "",])/raw_data_rows
-normal.transformed <- nrow(normal.raw_data_transformed)/raw_data_rows
+normal <- nrow(raw_data_transformed_norm[raw_data_transformed_norm$transf == "",])/raw_data_rows
+normal.transformed <- nrow(raw_data_transformed_norm)/raw_data_rows
 total <- nrow(raw_data_transformed)/raw_data_rows #1316
 transformations <- unique(raw_data_transformed[c("transf","transf.value")])
 transformations <- transformations[-1,]
@@ -194,7 +194,7 @@ cat(paste0("\nTransformations summary:"))
 cat(paste0("\n\tf(x)\tValue \t# Features"))
 for(i in 1:nrow(transformations)){
   cat(paste0("\n\t",transformations$transf[i],"\t",transformations$transf.value[i],"\t"))
-  tmp <- subset(normal.raw_data_transformed, normal.raw_data_transformed$transf == transformations$transf[i])
+  tmp <- subset(raw_data_transformed_norm, raw_data_transformed_norm$transf == transformations$transf[i])
   tmp <- subset(tmp, transf.value == transformations$transf.value[i])
   cat(nrow(tmp)/raw_data_rows)
 }
@@ -356,8 +356,8 @@ registerDoMPI(cl)
 x.normal.summary.mapping <- foreach(i=2:ncol(x.normal$pheno),
                                     .combine = rbind,
                                     .packages = c("ggplot2","grid","gridExtra","latex2exp","qtl","R.devices")) %dopar% {
-                                      transformation.info <- normal.raw_data_transformed$feature == features[i]
-                                      transformation.info <- normal.raw_data_transformed[transformation.info,c("transf","transf.value")][1,]
+                                      transformation.info <- raw_data_transformed_norm$feature == features[i]
+                                      transformation.info <- raw_data_transformed_norm[transformation.info,c("transf","transf.value")][1,]
                                       record <- data.frame(
                                         ID = i - 1,
                                         qtl.ID = NA,
