@@ -142,14 +142,14 @@ tic("Transformed data post-processing")
 raw_data_transformed_norm <- raw_data_transformed[raw_data_transformed$flag == "Normal",]
 raw_data_transformed_non_par <- raw_data_transformed[raw_data_transformed$flag == "Non-normal",]
 features_non_par <- unique(as.character(raw_data_transformed_non_par$feature))
-normal.features <- unique(as.character(raw_data_transformed_norm$feature))
-length.normal.features <- length(normal.features)
-non.parametric.raw_data <- raw_data[,features_non_par]#raw_data[,-c(normal.features)]
-normal.raw_data <- data.frame(matrix(vector(), nrow(raw_data_transformed_norm)/length.normal.features, length.normal.features,
-                                   dimnames=list(c(), normal.features)),
+features_norm <- unique(as.character(raw_data_transformed_norm$feature))
+length.features_norm <- length(features_norm)
+non.parametric.raw_data <- raw_data[,features_non_par]#raw_data[,-c(features_norm)]
+normal.raw_data <- data.frame(matrix(vector(), nrow(raw_data_transformed_norm)/length.features_norm, length.features_norm,
+                                   dimnames=list(c(), features_norm)),
                             stringsAsFactors = F)
-for(i in 1:length.normal.features){
-  normal.raw_data[i] <- subset(raw_data_transformed_norm, feature == normal.features[i])$values
+for(i in 1:length.features_norm){
+  normal.raw_data[i] <- subset(raw_data_transformed_norm, feature == features_norm[i])$values
 }
 
 # Append excluded columns for transformation 
