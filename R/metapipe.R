@@ -13,8 +13,8 @@
 #'                            F2 = rnorm(5))
 #' write.csv(example_data, "example_data.csv", row.names = FALSE)
 #' write.csv(example_data[c(1:5, 1, 2), ], "example_data_dup.csv", row.names = FALSE)
-#' load_raw("example_data.csv", c(2))
-#' load_raw("example_data_dup.csv", c(2))
+#' load_raw("example_data.csv", c(1, 2))
+#' load_raw("example_data_dup.csv", c(1, 2))
 load_raw <- function(raw_data_filename, excluded_columns) {
   # Load and clean raw data
   raw_data <- read.csv(raw_data_filename)
@@ -57,9 +57,9 @@ load_raw <- function(raw_data_filename, excluded_columns) {
 #'                            F2 = rnorm(5))
 #' example_data$F1[2:3] <- NA 
 #' example_data$F2[4] <- NA 
-#' replace_missing(example_data, c(2))
-#' replace_missing(example_data, c(2), prop_na =  0.25)
-#' replace_missing(example_data, c(2), replace_na =  TRUE)
+#' replace_missing(example_data, c(1, 2))
+#' replace_missing(example_data, c(1, 2), prop_na =  0.25)
+#' replace_missing(example_data, c(1, 2), replace_na =  TRUE)
 replace_missing <- function(raw_data, excluded_columns, out_prefix = "metapipe", prop_na = 0.5, replace_na = FALSE) {
   # Exclude column 1, ID
   excluded_columns <- unique(c(1, excluded_columns))
@@ -81,3 +81,101 @@ replace_missing <- function(raw_data, excluded_columns, out_prefix = "metapipe",
   }
   return(raw_data)
 }
+
+#' Assess normality of features
+#'
+#' @param raw_data data frame containing the raw data
+#' @param excluded_columns vector containing the indices of the data set properties, excluded columns
+#' @param cpus number of CPUS to be used
+#' @param out_prefix prefix for output files, plots, etc.
+#' @param plots_dir path to the directory where plots should be stored
+#' @param transf_vals transformation values
+#'
+#' @return Structure containing the normalised data, if a suitable transformation was found
+#' @export
+#'
+#' @examples
+#' example_data <- data.frame(ID = c(1,2,3,4,5), 
+#'                            P1 = c("one", "two", "three", "four", "five"), 
+#'                            F1 = rnorm(5), 
+#'                            F2 = rnorm(5))
+#' assess_normality(example_data, c(1, 2))
+assess_normality <- function(raw_data, 
+                             excluded_columns, 
+                             cpus = 1, 
+                             out_prefix = "metapipe", 
+                             plots_dir = getwd(), 
+                             transf_vals = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10)) {
+  # Start parallel backend
+  cl <- parallel::makeCluster(cpus)
+  doParallel::registerDoParallel(cl)
+  
+  # Exclude column 1, ID
+  excluded_columns <- unique(c(1, excluded_columns))
+  
+  # Ignore ID and properties
+  raw_data <- raw_data[, -excluded_columns]
+  #len_excluded_columns <- length(excluded_columns)
+  # Compute feature indices, accounting for the offset of ID and properties
+  #feature_indices <- 1:(ncol(raw_data) - len_excluded_columns)
+  feature_indices <- 1:ncol(raw_data) 
+  # Extract features (column names)
+  #features <- colnames(raw_data)[len_excluded_columns + feature_indices]
+  features <- colnames(raw_data)
+  raw_data_transformed <- foreach::foreach(i = feature_indices,
+                                  .combine = rbind) %dopar% {
+                                    # Create and populate entry for current feature
+                                    record <- data.frame( 
+                                      index = i,
+                                      feature = features[i],
+                                      values = raw_data[, i],
+                                      flag = "Non-normal",
+                                      transf = "",
+                                      transf.value = NA
+                                    )
+                                    
+                                    # Verify the current feature has at least 3 non-NA rows
+                                    if(sum(is.finite(raw_data[, i]), na.rm = TRUE) > 2) {
+                                      # Assess normality of feature before transforming it
+                                      pvalue <- shapiro.test(raw_data[, i])[[2]]
+                                      if(pvalue <= 0.05) { # Data must be transformed
+                                        record <- transform_data(data = raw_data[, i], 
+                                                                 feature = features[i], 
+                                                                 alpha = 0.05, 
+                                                                 index = i, 
+                                                                 transf_vals = transf_vals, 
+                                                                 plots_prefix = paste0(plots_dir, "/HIST")
+                                        )
+                                        
+                                        if(length(record)) {
+                                          record$flag <- "Normal"
+                                        }
+                                        else {
+                                          record <- data.frame(
+                                            index = i,
+                                            feature = features[i],
+                                            values = raw_data[, i],
+                                            flag = "Non-normal",
+                                            transf = "",
+                                            transf.value = NA
+                                          )
+                                        }
+                                      }
+                                      else { # Normal data
+                                        xlab <- features[i]
+                                        transformation <- "NORM"
+                                        prefix <- paste0(plots_dir,"/HIST_", i, "_", transformation)
+                                        MetaPipe::generate_hist(data = raw_data[, i], 
+                                                                feature = features[i], 
+                                                                prefix = prefix, 
+                                                                xlab = xlab)
+                                        record$flag <- "Normal"
+                                      }
+                                    }
+                                    record
+                                  }
+  
+  parallel::stopCluster(cl) # Stop cluster
+  return(raw_data_transformed)
+}
+
