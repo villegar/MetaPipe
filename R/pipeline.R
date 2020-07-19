@@ -142,12 +142,12 @@ raw_data_transformed_norm <- raw_data_transformed[raw_data_transformed$flag == "
 raw_data_transformed_non_par <- raw_data_transformed[raw_data_transformed$flag == "Non-normal",]
 features_non_par <- unique(as.character(raw_data_transformed_non_par$feature))
 features_norm <- unique(as.character(raw_data_transformed_norm$feature))
-length.features_norm <- length(features_norm)
+features_norm_len <- length(features_norm)
 non.parametric.raw_data <- raw_data[,features_non_par]#raw_data[,-c(features_norm)]
-normal.raw_data <- data.frame(matrix(vector(), nrow(raw_data_transformed_norm)/length.features_norm, length.features_norm,
+normal.raw_data <- data.frame(matrix(vector(), nrow(raw_data_transformed_norm)/features_norm_len, features_norm_len,
                                    dimnames=list(c(), features_norm)),
                             stringsAsFactors = F)
-for(i in 1:length.features_norm){
+for(i in 1:features_norm_len){
   normal.raw_data[i] <- subset(raw_data_transformed_norm, feature == features_norm[i])$values
 }
 
