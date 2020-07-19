@@ -39,9 +39,11 @@ library(qtl)
 # source("transformations.R")
 
 main <- function(){
-# Resources
+
+# Obtain the number of available cores
 cores <- parallel::detectCores()
 CPUS <- cores[1] - 1
+
 # closeAllConnections()
 
 if(length(args) < 1){
@@ -88,7 +90,7 @@ cat(paste0("CMD Parameters: (",PERMUTATIONS,",",REPLACE_NA,",",PARETO_SCALING,",
 # Global parameters
 excluded_columns <- c(1,2,3)
 len_excluded_columns <- length(excluded_columns)
-transformation.values <- c(2,exp(1))#,3,4,5,6,7,8,9,10
+transf_vals <- c(2,exp(1))#,3,4,5,6,7,8,9,10
 SEED <- 20190901 # Seed for QTL Analysis
 LOD.THRESHOLD <- 3 # LOD threhold for QTL Analysis
 prop_na <- 0.5 # Allows 50% of NAs per feature
@@ -108,9 +110,6 @@ raw_data <- MetaPipe::replace_missing(raw_data, excluded_columns, OUT_PREFIX, pr
 
 write.csv(raw_data, file = paste0(OUT_PREFIX,".all.raw_data.csv"), row.names=FALSE)
 tictoc::toc(log = TRUE) # Loading and pre-processing
-
-# Missing values plot
-#missmap(raw_data, main = "Missing values vs observed")
 
 # generate.boxplots <- function(raw_data,ggplot_save){
 #   print("Generating Boxplots")
@@ -133,78 +132,23 @@ tictoc::toc(log = TRUE) # Loading and pre-processing
 tictoc::tic("Normality Assessment")
 features <- colnames(raw_data)
 print("Starting with Normality Assessment")
-cl <- parallel::makeCluster(CPUS, outfile=paste0('./info_parallel.log'))
-doParallel::registerDoParallel(cl)
-transformed.raw_data <- foreach(i=(len_excluded_columns + 1):ncol(raw_data),
-                         .combine =rbind,
-                         .packages = c("ggplot2","grid","gridExtra","latex2exp","R.devices")) %dopar% {
-                           record <- data.frame( # Create and populate entry for current feature
-                             index = i,
-                             feature = features[i],
-                             values = raw_data[,i],
-                             flag = "Non-normal",
-                             transf = "",
-                             transf.value = NA
-                           )
-                           
-                           # Verify the current feature has at least 3 non-NA rows
-                           if(sum(is.finite(raw_data[,i]), na.rm = TRUE)>2){
-                             pvalue <- shapiro.test(raw_data[,i])[[2]] # Assess normality of feature before transforming it
-                             if(pvalue <= 0.05){ # Data must be transformed
-                               record <- transform_data(data = raw_data[,i], 
-                                                        feature = features[i], 
-                                                        alpha = 0.05, 
-                                                        index = i - len_excluded_columns, 
-                                                        transf_vals = transformation.values, 
-                                                        plots_prefix = paste0(PLOTS_DIR, "/HIST")
-                                                       )
-                               #record <- transform_data(pvalue,raw_data[,i],features[i],i,len_excluded_columns, PLOTS_DIR, transformation.values)
-                               
-                               if(length(record)){
-                                 record$flag <- "Normal"
-                               }
-                               else {
-                                 record <- data.frame(
-                                   index = i,
-                                   feature = features[i],
-                                   values = raw_data[,i],
-                                   flag = "Non-normal",
-                                   transf = "",
-                                   transf.value = NA
-                                 )
-                               }
-                             }
-                             else{ # Normal data
-                               xlab <- features[i]
-                               transformation <- "NORM"
-                               prefix <- paste0(PLOTS_DIR,"/HIST_",(i - len_excluded_columns),"_",transformation)
-                               generate_hist(data = raw_data[, i], 
-                                             feature = features[i], 
-                                             prefix = name.prefix, 
-                                             xlab = xlab)
-                               #generate_hist(raw_data[,i],features[i],prefix,xlab)
-                               record$flag <- "Normal"
-                             }
-                           }
-                           record
-}
-
-parallel::stopCluster(cl) # Stop cluster
+raw_data_transfomed <- MetaPipe::assess_normality(raw_data, excluded_columns, CPUS, OUT_PREFIX, PLOTS_DIR, transf_vals)
+# MetaPipe::assess_normality(raw_data, excluded_columns, cpus = 1, out_prefix = "metapipe", plots_dir = here::here("../testbed/"), transf_vals = c(2, exp(1)))
 print("Done with Normality Assessment")
 
 tictoc::toc(log = TRUE) # Normality Assessment
 tictoc::tic("Transformed data post-processing")
-normal.transformed.raw_data <- transformed.raw_data[transformed.raw_data$flag == "Normal",]
-non.parametric.transformed.raw_data <- transformed.raw_data[transformed.raw_data$flag == "Non-normal",]
-non.parametric.features <- unique(as.character(non.parametric.transformed.raw_data$feature))
-normal.features <- unique(as.character(normal.transformed.raw_data$feature))
+normal.raw_data_transformed <- raw_data_transformed[raw_data_transformed$flag == "Normal",]
+non.parametric.raw_data_transformed <- raw_data_transformed[raw_data_transformed$flag == "Non-normal",]
+non.parametric.features <- unique(as.character(non.parametric.raw_data_transformed$feature))
+normal.features <- unique(as.character(normal.raw_data_transformed$feature))
 length.normal.features <- length(normal.features)
 non.parametric.raw_data <- raw_data[,non.parametric.features]#raw_data[,-c(normal.features)]
-normal.raw_data <- data.frame(matrix(vector(), nrow(normal.transformed.raw_data)/length.normal.features, length.normal.features,
+normal.raw_data <- data.frame(matrix(vector(), nrow(normal.raw_data_transformed)/length.normal.features, length.normal.features,
                                    dimnames=list(c(), normal.features)),
                             stringsAsFactors = F)
 for(i in 1:length.normal.features){
-  normal.raw_data[i] <- subset(normal.transformed.raw_data, feature == normal.features[i])$values
+  normal.raw_data[i] <- subset(normal.raw_data_transformed, feature == normal.features[i])$values
 }
 
 # Append excluded columns for transformation 
@@ -218,17 +162,17 @@ if(PARETO_SCALING){ # Apply Pareto Scaling
 normal.raw_data <- cbind(raw_data[,excluded_columns],normal.raw_data)
 non.parametric.raw_data <- cbind(raw_data[,excluded_columns],non.parametric.raw_data)
 
-write.csv(transformed.raw_data, file = paste0(OUT_PREFIX,".transformed.all.raw_data.csv"), row.names=FALSE)
+write.csv(raw_data_transformed, file = paste0(OUT_PREFIX,".transformed.all.raw_data.csv"), row.names=FALSE)
 write.csv(normal.raw_data, file = paste0(OUT_PREFIX,".normal.raw_data.csv"), row.names=FALSE)
 write.csv(non.parametric.raw_data, file = paste0(OUT_PREFIX,".non.parametric.raw_data.csv"), row.names=FALSE)
 write.csv(transformed.normal.raw_data, file = paste0(OUT_PREFIX,".transformed.normal.raw_data.csv"), row.names=FALSE)
 write.csv(transformed.non.parametric.raw_data, file = paste0(OUT_PREFIX,".transformed.non.parametric.raw_data.csv"), row.names=FALSE)
 
 # Statistics
-normal <- nrow(normal.transformed.raw_data[normal.transformed.raw_data$transf == "",])/raw_data_rows
-normal.transformed <- nrow(normal.transformed.raw_data)/raw_data_rows
-total <- nrow(transformed.raw_data)/raw_data_rows #1316
-transformations <- unique(transformed.raw_data[c("transf","transf.value")])
+normal <- nrow(normal.raw_data_transformed[normal.raw_data_transformed$transf == "",])/raw_data_rows
+normal.transformed <- nrow(normal.raw_data_transformed)/raw_data_rows
+total <- nrow(raw_data_transformed)/raw_data_rows #1316
+transformations <- unique(raw_data_transformed[c("transf","transf.value")])
 transformations <- transformations[-1,]
 sorting <- order(transformations$transf, decreasing = T)
 
@@ -243,7 +187,7 @@ cat(paste0("\nTransformations summary:"))
 cat(paste0("\n\tf(x)\tValue \t# Features"))
 for(i in 1:nrow(transformations)){
   cat(paste0("\n\t",transformations$transf[i],"\t",transformations$transf.value[i],"\t"))
-  tmp <- subset(normal.transformed.raw_data, normal.transformed.raw_data$transf == transformations$transf[i])
+  tmp <- subset(normal.raw_data_transformed, normal.raw_data_transformed$transf == transformations$transf[i])
   tmp <- subset(tmp, transf.value == transformations$transf.value[i])
   cat(nrow(tmp)/raw_data_rows)
 }
@@ -354,8 +298,8 @@ cl <- parallel::makeCluster(ceiling(CPUS*0.5), outfile=paste0('./info_parallel_Q
 doParallel::registerDoParallel(cl)
 x_norm_sum_map <- foreach(i=2:ncol(x_norm$pheno),
                          .combine = rbind) %dopar% {
-                           transformation.info <- normal.transformed.raw_data$feature == features[i]
-                           transformation.info <- normal.transformed.raw_data[transformation.info,c("transf","transf.value")][1,]
+                           transformation.info <- normal.raw_data_transformed$feature == features[i]
+                           transformation.info <- normal.raw_data_transformed[transformation.info,c("transf","transf.value")][1,]
                            
                            record <- data.frame(
                              ID = i - 1,
@@ -571,8 +515,8 @@ cl <- parallel::makeCluster(ceiling(CPUS*0.5), outfile=paste0('./info_parallel_Q
 doParallel::registerDoParallel(cl)
 x_non_par_sum_map <- foreach(i=2:ncol(x_non_par$pheno),
                              .combine = rbind) %dopar% {
-                               #transformation.info <- non.parametric.transformed.raw_data$feature == features_np[i]
-                               #transformation.info <- non.parametric.transformed.raw_data[transformation.info,c("transf","transf.value")][1,]
+                               #transformation.info <- non.parametric.raw_data_transformed$feature == features_np[i]
+                               #transformation.info <- non.parametric.raw_data_transformed[transformation.info,c("transf","transf.value")][1,]
                                
                                record <- data.frame(
                                  ID = i - 1,
@@ -776,19 +720,19 @@ if(!REPLACE_NA){
   NA2halfmin <- function(x) suppressWarnings(replace(x, is.na(x), (min(x, na.rm = TRUE)/2)))
   raw_data[,-excluded_columns] <- lapply(raw_data[,-excluded_columns], NA2halfmin)
 }
-transformed.raw_data <- raw_data # No scaling
+raw_data_transformed <- raw_data # No scaling
 #if(!PARETO_SCALING){ # Apply Pareto Scaling
-#  transformed.raw_data <- cbind(raw_data[,excluded_columns],paretoscale(raw_data[,-excluded_columns]))
+#  raw_data_transformed <- cbind(raw_data[,excluded_columns],paretoscale(raw_data[,-excluded_columns]))
 #}
 
 tictoc::tic("PCAnalysis")
 # PCAnalysis with mean (used no missing data) 
 ##OUT_PREFIX <- "S1-metabolomics"
-##transformed.raw_data <- read.csv(paste0(OUT_PREFIX,".all.raw_data.csv"))
-##transformed.raw_data$X <- NULL
-##transformed.raw_data <- transformed.raw_data[order(as.character(transformed.raw_data$ID)),]
-##transformed.raw_data$Group <- NULL
-res.pca <- PCA(transformed.raw_data[,-excluded_columns],  graph = FALSE, scale.unit = TRUE)
+##raw_data_transformed <- read.csv(paste0(OUT_PREFIX,".all.raw_data.csv"))
+##raw_data_transformed$X <- NULL
+##raw_data_transformed <- raw_data_transformed[order(as.character(raw_data_transformed$ID)),]
+##raw_data_transformed$Group <- NULL
+res.pca <- PCA(raw_data_transformed[,-excluded_columns],  graph = FALSE, scale.unit = TRUE)
 ##fviz_screeplot(res.pca, addlabels = TRUE, ylim = c(0, 50))
 ##res.pca$eig
 # Biplot with top 10 features 
@@ -802,33 +746,33 @@ tictoc::toc(log = TRUE) # PCAnalysis
 tictoc::tic("LDAnalysis")
 # LDAnalysis
 ## Create an "unknown" group name for missing data
-transformed.raw_data$Group <- as.character(transformed.raw_data$Group)
-transformed.raw_data$Group[is.na(transformed.raw_data$Group)] <- "Unknown"
+raw_data_transformed$Group <- as.character(raw_data_transformed$Group)
+raw_data_transformed$Group[is.na(raw_data_transformed$Group)] <- "Unknown"
 
 ## Calculate mean by color
-transformed.raw_data.diff.by.color <- 
-  data.frame(t(aggregate(transformed.raw_data[,-excluded_columns], list(transformed.raw_data$Group), mean))[-1,])
-transformed.raw_data.diff.by.color$X1 <- as.numeric(as.character(transformed.raw_data.diff.by.color$X1))
-transformed.raw_data.diff.by.color$X2 <- as.numeric(as.character(transformed.raw_data.diff.by.color$X2))
-colnames(transformed.raw_data.diff.by.color) <- c("black.mean","white.mean","unknown.mean")
-transformed.raw_data.diff.by.color$mean.diff <- with(transformed.raw_data.diff.by.color, black.mean-white.mean)
-transformed.raw_data.diff.by.color <- transformed.raw_data.diff.by.color[order(transformed.raw_data.diff.by.color$black.mean, decreasing = T),]
-top.100.black <- rownames(transformed.raw_data.diff.by.color)[1:100]
-transformed.raw_data.diff.by.color <- transformed.raw_data.diff.by.color[order(transformed.raw_data.diff.by.color$white.mean, decreasing = T),]
-top.100.white <- rownames(transformed.raw_data.diff.by.color)[1:100]
+raw_data_transformed.diff.by.color <- 
+  data.frame(t(aggregate(raw_data_transformed[,-excluded_columns], list(raw_data_transformed$Group), mean))[-1,])
+raw_data_transformed.diff.by.color$X1 <- as.numeric(as.character(raw_data_transformed.diff.by.color$X1))
+raw_data_transformed.diff.by.color$X2 <- as.numeric(as.character(raw_data_transformed.diff.by.color$X2))
+colnames(raw_data_transformed.diff.by.color) <- c("black.mean","white.mean","unknown.mean")
+raw_data_transformed.diff.by.color$mean.diff <- with(raw_data_transformed.diff.by.color, black.mean-white.mean)
+raw_data_transformed.diff.by.color <- raw_data_transformed.diff.by.color[order(raw_data_transformed.diff.by.color$black.mean, decreasing = T),]
+top.100.black <- rownames(raw_data_transformed.diff.by.color)[1:100]
+raw_data_transformed.diff.by.color <- raw_data_transformed.diff.by.color[order(raw_data_transformed.diff.by.color$white.mean, decreasing = T),]
+top.100.white <- rownames(raw_data_transformed.diff.by.color)[1:100]
 ## Whole dataset and Top 200 features LDA
 
 top.200 <- unique(c(top.100.black,top.100.white))
-#top.200 <- rownames(transformed.raw_data.diff.by.color)[1:200] # There's something funny after 75
-colored.transformed.raw_data.full <- cbind(transformed.raw_data$Group,transformed.raw_data[,-excluded_columns])
-colored.transformed.raw_data.top200 <- cbind(transformed.raw_data$Group,transformed.raw_data[,top.200])
-colnames(colored.transformed.raw_data.full)[1] <- "FruitColor"
-colnames(colored.transformed.raw_data.top200)[1] <- "FruitColor"
-fit.full <- lda(FruitColor ~ ., data = colored.transformed.raw_data.full)
-fit.top200 <- lda(FruitColor ~ ., data = colored.transformed.raw_data.top200)
+#top.200 <- rownames(raw_data_transformed.diff.by.color)[1:200] # There's something funny after 75
+colored.raw_data_transformed.full <- cbind(raw_data_transformed$Group,raw_data_transformed[,-excluded_columns])
+colored.raw_data_transformed.top200 <- cbind(raw_data_transformed$Group,raw_data_transformed[,top.200])
+colnames(colored.raw_data_transformed.full)[1] <- "FruitColor"
+colnames(colored.raw_data_transformed.top200)[1] <- "FruitColor"
+fit.full <- lda(FruitColor ~ ., data = colored.raw_data_transformed.full)
+fit.top200 <- lda(FruitColor ~ ., data = colored.raw_data_transformed.top200)
 
-lda.data.full <- cbind(colored.transformed.raw_data.full, predict(fit.full)$x)
-lda.data.top200 <- cbind(colored.transformed.raw_data.top200, predict(fit.top200)$x)
+lda.data.full <- cbind(colored.raw_data_transformed.full, predict(fit.full)$x)
+lda.data.top200 <- cbind(colored.raw_data_transformed.top200, predict(fit.top200)$x)
 save_plotTIFF(ggplot(lda.data.full, aes(LD1,LD2)) +
   geom_point(aes(color = FruitColor)) +
   stat_ellipse(aes(x=LD1, y=LD2, fill = FruitColor), alpha = 0.2, geom = "polygon"),

@@ -136,7 +136,7 @@ features <- colnames(raw_data)
 print("Starting with Normality Assessment")
 cl <- makeCluster(CPUS, outfile=paste0('./info_parallel.log'))
 registerDoParallel(cl)
-transformed.raw_data <- foreach(i=(len_excluded_columns + 1):ncol(raw_data),
+raw_data_transformed <- foreach(i=(len_excluded_columns + 1):ncol(raw_data),
                          .combine =rbind,
                          .packages = c("ggplot2","grid","gridExtra","latex2exp","R.devices")) %dopar% {
                            record <- data.frame( # Create and populate entry for current feature
@@ -184,17 +184,17 @@ print("Done with Normality Assessment")
 
 toc(log = TRUE) # Normality Assessment
 tic("Transformed data post-processing")
-normal.transformed.raw_data <- transformed.raw_data[transformed.raw_data$flag == "Normal",]
-non.parametric.transformed.raw_data <- transformed.raw_data[transformed.raw_data$flag == "Non-normal",]
-non.parametric.features <- unique(as.character(non.parametric.transformed.raw_data$feature))
-normal.features <- unique(as.character(normal.transformed.raw_data$feature))
+normal.raw_data_transformed <- raw_data_transformed[raw_data_transformed$flag == "Normal",]
+non.parametric.raw_data_transformed <- raw_data_transformed[raw_data_transformed$flag == "Non-normal",]
+non.parametric.features <- unique(as.character(non.parametric.raw_data_transformed$feature))
+normal.features <- unique(as.character(normal.raw_data_transformed$feature))
 length.normal.features <- length(normal.features)
 non.parametric.raw_data <- raw_data[,non.parametric.features]#raw_data[,-c(normal.features)]
-normal.raw_data <- data.frame(matrix(vector(), nrow(normal.transformed.raw_data)/length.normal.features, length.normal.features,
+normal.raw_data <- data.frame(matrix(vector(), nrow(normal.raw_data_transformed)/length.normal.features, length.normal.features,
                                    dimnames=list(c(), normal.features)),
                             stringsAsFactors = F)
 for(i in 1:length.normal.features){
-  normal.raw_data[i] <- subset(normal.transformed.raw_data, feature == normal.features[i])$values
+  normal.raw_data[i] <- subset(normal.raw_data_transformed, feature == normal.features[i])$values
 }
 
 # Append excluded columns for transformation 
@@ -209,22 +209,22 @@ normal.raw_data <- cbind(raw_data[,excluded_columns],normal.raw_data)
 non.parametric.raw_data <- cbind(raw_data[,excluded_columns],non.parametric.raw_data)
 
 #transformations <- read.csv("metabolomics.transformed.all.raw_data.csv")
-transformations <- transformed.raw_data[transformed.raw_data$flag == "Normal",]
+transformations <- raw_data_transformed[raw_data_transformed$flag == "Normal",]
 transformations[,c("flag","index","values")] <- NULL
 transformations <- unique(transformations)
 
 write.csv(transformations, file = paste0(OUT_PREFIX,".normal.transformations.summary.csv"), row.names=FALSE, na="")
-write.csv(transformed.raw_data, file = paste0(OUT_PREFIX,".transformed.all.raw_data.csv"), row.names=FALSE)
+write.csv(raw_data_transformed, file = paste0(OUT_PREFIX,".transformed.all.raw_data.csv"), row.names=FALSE)
 write.csv(normal.raw_data, file = paste0(OUT_PREFIX,".normal.raw_data.csv"), row.names=FALSE)
 write.csv(non.parametric.raw_data, file = paste0(OUT_PREFIX,".non.parametric.raw_data.csv"), row.names=FALSE)
 write.csv(transformed.normal.raw_data, file = paste0(OUT_PREFIX,".transformed.normal.raw_data.csv"), row.names=FALSE)
 write.csv(transformed.non.parametric.raw_data, file = paste0(OUT_PREFIX,".transformed.non.parametric.raw_data.csv"), row.names=FALSE)
 
 # Statistics
-normal <- nrow(normal.transformed.raw_data[normal.transformed.raw_data$transf == "",])/raw_data_rows
-normal.transformed <- nrow(normal.transformed.raw_data)/raw_data_rows
-total <- nrow(transformed.raw_data)/raw_data_rows #1316
-transformations <- unique(transformed.raw_data[c("transf","transf.value")])
+normal <- nrow(normal.raw_data_transformed[normal.raw_data_transformed$transf == "",])/raw_data_rows
+normal.transformed <- nrow(normal.raw_data_transformed)/raw_data_rows
+total <- nrow(raw_data_transformed)/raw_data_rows #1316
+transformations <- unique(raw_data_transformed[c("transf","transf.value")])
 transformations <- transformations[-1,]
 sorting <- order(transformations$transf, decreasing = T)
 
@@ -239,7 +239,7 @@ cat(paste0("\nTransformations summary:"))
 cat(paste0("\n\tf(x)\tValue \t# Features"))
 for(i in 1:nrow(transformations)){
   cat(paste0("\n\t",transformations$transf[i],"\t",transformations$transf.value[i],"\t"))
-  tmp <- subset(normal.transformed.raw_data, normal.transformed.raw_data$transf == transformations$transf[i])
+  tmp <- subset(normal.raw_data_transformed, normal.raw_data_transformed$transf == transformations$transf[i])
   tmp <- subset(tmp, transf.value == transformations$transf.value[i])
   cat(nrow(tmp)/raw_data_rows)
 }
@@ -401,8 +401,8 @@ registerDoMPI(cl)
 x.normal.summary.mapping <- foreach(i=2:ncol(x.normal$pheno),
                                     .combine = rbind,
                                     .packages = c("ggplot2","grid","gridExtra","latex2exp","qtl","R.devices")) %dopar% {
-                                      transformation.info <- normal.transformed.raw_data$feature == features[i]
-                                      transformation.info <- normal.transformed.raw_data[transformation.info,c("transf","transf.value")][1,]
+                                      transformation.info <- normal.raw_data_transformed$feature == features[i]
+                                      transformation.info <- normal.raw_data_transformed[transformation.info,c("transf","transf.value")][1,]
                                       record <- data.frame(
                                         ID = i - 1,
                                         qtl.ID = NA,
@@ -558,8 +558,8 @@ print("Starting with Non-Parametric QTL Analysis")
 x.non.parametric.summary.mapping <- foreach(i=2:ncol(x.non.parametric$pheno),
                                             .combine = rbind,
                                             .packages = c("ggplot2","grid","gridExtra","latex2exp","qtl","R.devices")) %dopar% {
-                                              #transformation.info <- non.parametric.transformed.raw_data$feature == features.np[i]
-                                              #transformation.info <- non.parametric.transformed.raw_data[transformation.info,c("transf","transf.value")][1,]
+                                              #transformation.info <- non.parametric.raw_data_transformed$feature == features.np[i]
+                                              #transformation.info <- non.parametric.raw_data_transformed[transformation.info,c("transf","transf.value")][1,]
                                               
                                               record <- data.frame(
                                                 ID = i - 1,
@@ -747,7 +747,7 @@ if(!REPLACE_NA){
 #   transformed.normal.raw_data <- paretoscale(raw_data[,-excluded_columns])
 #   #transformed.non.parametric.raw_data <- cbind(raw_data[,excluded_columns],paretoscale(non.parametric.raw_data))
 # }
-transformed.raw_data <- raw_data # No scaling
+raw_data_transformed <- raw_data # No scaling
 
 tic("PCAnalysis")
 # PCAnalysis with mean (used no missing data) 
@@ -756,7 +756,7 @@ tic("PCAnalysis")
 #transformed.normal.raw_data$X <- NULL
 #transformed.normal.raw_data <- transformed.normal.raw_data[order(as.character(transformed.normal.raw_data$ID)),]
 #transformed.normal.raw_data$Group <- NULL
-res.pca <- PCA(transformed.raw_data[,-excluded_columns],  graph = FALSE, scale.unit = TRUE)
+res.pca <- PCA(raw_data_transformed[,-excluded_columns],  graph = FALSE, scale.unit = TRUE)
 #fviz_screeplot(res.pca, addlabels = TRUE, ylim = c(0, 50))
 #res.pca$eig
 # Biplot with top 10 features 
@@ -770,32 +770,32 @@ toc(log = TRUE) # PCAnalysis
 tic("LDAnalysis")
 # LDAnalysis
 ## Create an "unknown" group name for missing data
-transformed.raw_data$Group <- as.character(transformed.raw_data$Group)
-transformed.raw_data$Group[is.na(transformed.raw_data$Group)] <- "Unknown"
+raw_data_transformed$Group <- as.character(raw_data_transformed$Group)
+raw_data_transformed$Group[is.na(raw_data_transformed$Group)] <- "Unknown"
 
 ## Calculate mean by color
-transformed.raw_data.diff.by.color <- 
-  data.frame(t(aggregate(transformed.raw_data[,-excluded_columns], list(transformed.raw_data$Group), mean))[-1,])
-transformed.raw_data.diff.by.color$X1 <- as.numeric(as.character(transformed.raw_data.diff.by.color$X1))
-transformed.raw_data.diff.by.color$X2 <- as.numeric(as.character(transformed.raw_data.diff.by.color$X2))
-colnames(transformed.raw_data.diff.by.color) <- c("black.mean","white.mean","unknown.mean")
-transformed.raw_data.diff.by.color$mean.diff <- with(transformed.raw_data.diff.by.color, black.mean-white.mean)
-transformed.raw_data.diff.by.color <- transformed.raw_data.diff.by.color[order(transformed.raw_data.diff.by.color$black.mean, decreasing = T),]
-top.100.black <- rownames(transformed.raw_data.diff.by.color)[1:100]
-transformed.raw_data.diff.by.color <- transformed.raw_data.diff.by.color[order(transformed.raw_data.diff.by.color$white.mean, decreasing = T),]
-top.100.white <- rownames(transformed.raw_data.diff.by.color)[1:100]
+raw_data_transformed.diff.by.color <- 
+  data.frame(t(aggregate(raw_data_transformed[,-excluded_columns], list(raw_data_transformed$Group), mean))[-1,])
+raw_data_transformed.diff.by.color$X1 <- as.numeric(as.character(raw_data_transformed.diff.by.color$X1))
+raw_data_transformed.diff.by.color$X2 <- as.numeric(as.character(raw_data_transformed.diff.by.color$X2))
+colnames(raw_data_transformed.diff.by.color) <- c("black.mean","white.mean","unknown.mean")
+raw_data_transformed.diff.by.color$mean.diff <- with(raw_data_transformed.diff.by.color, black.mean-white.mean)
+raw_data_transformed.diff.by.color <- raw_data_transformed.diff.by.color[order(raw_data_transformed.diff.by.color$black.mean, decreasing = T),]
+top.100.black <- rownames(raw_data_transformed.diff.by.color)[1:100]
+raw_data_transformed.diff.by.color <- raw_data_transformed.diff.by.color[order(raw_data_transformed.diff.by.color$white.mean, decreasing = T),]
+top.100.white <- rownames(raw_data_transformed.diff.by.color)[1:100]
 ## Whole dataset and Top 200 features LDA
 
 top.200 <- unique(c(top.100.black,top.100.white))
-colored.transformed.raw_data.full <- cbind(transformed.raw_data$Group,transformed.raw_data[,-excluded_columns])
-colored.transformed.raw_data.top200 <- cbind(transformed.raw_data$Group,transformed.raw_data[,top.200])
-colnames(colored.transformed.raw_data.full)[1] <- "FruitColor"
-colnames(colored.transformed.raw_data.top200)[1] <- "FruitColor"
-fit.full <- lda(FruitColor ~ ., data = colored.transformed.raw_data.full)
-fit.top200 <- lda(FruitColor ~ ., data = colored.transformed.raw_data.top200)
+colored.raw_data_transformed.full <- cbind(raw_data_transformed$Group,raw_data_transformed[,-excluded_columns])
+colored.raw_data_transformed.top200 <- cbind(raw_data_transformed$Group,raw_data_transformed[,top.200])
+colnames(colored.raw_data_transformed.full)[1] <- "FruitColor"
+colnames(colored.raw_data_transformed.top200)[1] <- "FruitColor"
+fit.full <- lda(FruitColor ~ ., data = colored.raw_data_transformed.full)
+fit.top200 <- lda(FruitColor ~ ., data = colored.raw_data_transformed.top200)
 
-lda.data.full <- cbind(colored.transformed.raw_data.full, predict(fit.full)$x)
-lda.data.top200 <- cbind(colored.transformed.raw_data.top200, predict(fit.top200)$x)
+lda.data.full <- cbind(colored.raw_data_transformed.full, predict(fit.full)$x)
+lda.data.top200 <- cbind(colored.raw_data_transformed.top200, predict(fit.top200)$x)
 save_plotTIFF(ggplot(lda.data.full, aes(LD1,LD2)) +
                geom_point(aes(color = FruitColor)) +
                stat_ellipse(aes(x=LD1, y=LD2, fill = FruitColor), alpha = 0.2, geom = "polygon"),
