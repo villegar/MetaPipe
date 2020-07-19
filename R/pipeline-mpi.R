@@ -134,52 +134,7 @@ tic("Normality Assessment")
 features <- colnames(raw_data)
 
 print("Starting with Normality Assessment")
-cl <- makeCluster(CPUS, outfile=paste0('./info_parallel.log'))
-registerDoParallel(cl)
-raw_data_transformed <- foreach(i=(len_excluded_columns + 1):ncol(raw_data),
-                         .combine =rbind,
-                         .packages = c("ggplot2","grid","gridExtra","latex2exp","R.devices")) %dopar% {
-                           record <- data.frame( # Create and populate entry for current feature
-                             index = i,
-                             feature = features[i],
-                             values = raw_data[,i],
-                             flag = "Non-normal",
-                             transf = "",
-                             transf.value = NA
-                           )
-                           
-                           # Verify the current feature has at least 3 non-NA rows
-                           if(sum(is.finite(raw_data[,i]), na.rm = TRUE)>2){
-                             pvalue <- shapiro.test(raw_data[,i])[[2]] # Assess normality of feature before transforming it
-                             if(pvalue <= 0.05){ # Data must be transformed
-                               record <- transform_data(pvalue,raw_data[,i],features[i],i,len_excluded_columns, PLOTS_DIR, transformation.values)
-                               
-                               if(length(record)){
-                                 record$flag <- "Normal"
-                               }
-                               else {
-                                 record <- data.frame(
-                                   index = i,
-                                   feature = features[i],
-                                   values = raw_data[,i],
-                                   flag = "Non-normal",
-                                   transf = "",
-                                   transf.value = NA
-                                 )
-                               }
-                             }
-                             else{ # Normal data
-                               xlab <- features[i]
-                               transformation <- "NORM"
-                               prefix <- paste0(PLOTS_DIR,"/HIST_",(i - len_excluded_columns),"_",transformation)
-                               generate_hist(raw_data[,i],features[i],prefix,xlab)
-                               record$flag <- "Normal"
-                             }
-                           }
-                           record
-}
-
-stopCluster(cl) # Stop cluster
+raw_data_transfomed <- MetaPipe::assess_normality(raw_data, excluded_columns, CPUS, OUT_PREFIX, PLOTS_DIR, transf_vals)
 print("Done with Normality Assessment")
 
 toc(log = TRUE) # Normality Assessment
