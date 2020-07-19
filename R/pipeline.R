@@ -139,8 +139,8 @@ print("Done with Normality Assessment")
 tictoc::toc(log = TRUE) # Normality Assessment
 tictoc::tic("Transformed data post-processing")
 raw_data_transformed_norm <- raw_data_transformed[raw_data_transformed$flag == "Normal",]
-non.parametric.raw_data_transformed <- raw_data_transformed[raw_data_transformed$flag == "Non-normal",]
-non.parametric.features <- unique(as.character(non.parametric.raw_data_transformed$feature))
+raw_data_transformed_non_par <- raw_data_transformed[raw_data_transformed$flag == "Non-normal",]
+non.parametric.features <- unique(as.character(raw_data_transformed_non_par$feature))
 normal.features <- unique(as.character(raw_data_transformed_norm$feature))
 length.normal.features <- length(normal.features)
 non.parametric.raw_data <- raw_data[,non.parametric.features]#raw_data[,-c(normal.features)]
@@ -515,8 +515,8 @@ cl <- parallel::makeCluster(ceiling(CPUS*0.5), outfile=paste0('./info_parallel_Q
 doParallel::registerDoParallel(cl)
 x_non_par_sum_map <- foreach(i=2:ncol(x_non_par$pheno),
                              .combine = rbind) %dopar% {
-                               #transformation.info <- non.parametric.raw_data_transformed$feature == features_np[i]
-                               #transformation.info <- non.parametric.raw_data_transformed[transformation.info,c("transf","transf.value")][1,]
+                               #transformation.info <- raw_data_transformed_non_par$feature == features_np[i]
+                               #transformation.info <- raw_data_transformed_non_par[transformation.info,c("transf","transf.value")][1,]
                                
                                record <- data.frame(
                                  ID = i - 1,

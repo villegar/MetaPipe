@@ -140,8 +140,8 @@ print("Done with Normality Assessment")
 toc(log = TRUE) # Normality Assessment
 tic("Transformed data post-processing")
 raw_data_transformed_norm <- raw_data_transformed[raw_data_transformed$flag == "Normal",]
-non.parametric.raw_data_transformed <- raw_data_transformed[raw_data_transformed$flag == "Non-normal",]
-non.parametric.features <- unique(as.character(non.parametric.raw_data_transformed$feature))
+raw_data_transformed_non_par <- raw_data_transformed[raw_data_transformed$flag == "Non-normal",]
+non.parametric.features <- unique(as.character(raw_data_transformed_non_par$feature))
 normal.features <- unique(as.character(raw_data_transformed_norm$feature))
 length.normal.features <- length(normal.features)
 non.parametric.raw_data <- raw_data[,non.parametric.features]#raw_data[,-c(normal.features)]
@@ -513,8 +513,8 @@ print("Starting with Non-Parametric QTL Analysis")
 x.non.parametric.summary.mapping <- foreach(i=2:ncol(x.non.parametric$pheno),
                                             .combine = rbind,
                                             .packages = c("ggplot2","grid","gridExtra","latex2exp","qtl","R.devices")) %dopar% {
-                                              #transformation.info <- non.parametric.raw_data_transformed$feature == features.np[i]
-                                              #transformation.info <- non.parametric.raw_data_transformed[transformation.info,c("transf","transf.value")][1,]
+                                              #transformation.info <- raw_data_transformed_non_par$feature == features.np[i]
+                                              #transformation.info <- raw_data_transformed_non_par[transformation.info,c("transf","transf.value")][1,]
                                               
                                               record <- data.frame(
                                                 ID = i - 1,
