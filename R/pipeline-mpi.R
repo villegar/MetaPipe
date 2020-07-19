@@ -132,11 +132,7 @@ toc(log = TRUE) # Loading and pre-processing
 
 tic("Normality Assessment")
 features <- colnames(raw_data)
-
-print("Starting with Normality Assessment")
 raw_data_normalised <- MetaPipe::assess_normality(raw_data, excluded_columns, CPUS, OUT_PREFIX, PLOTS_DIR, transf_vals)
-print("Done with Normality Assessment")
-
 toc(log = TRUE) # Normality Assessment
 tic("Transformed data post-processing")
 #MetaPipe::assess_normality_postprocessing(raw_data, excluded_columns, raw_data_normalised, OUT_PREFIX, PARETO_SCALING)
