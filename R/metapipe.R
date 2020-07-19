@@ -261,12 +261,14 @@ assess_normality_postprocessing <- function(raw_data,
   normalisation_stats <- data.frame(key = c("total", "norm_features", "norm_features_normalised"),
                                     values = c(total_features, norm_features_count, norm_features_normalised_count),
                                     stringsAsFactors = FALSE)
-  for(i in 1:nrow(transformations)){
-    key <- paste0(transformations$transf[i],"\t",transformations$transf.value[i])
-    tmp <- subset(raw_data_normalised_norm, raw_data_normalised_norm$transf == transformations$transf[i])
-    tmp <- subset(tmp, transf.value == transformations$transf.value[i])
-    value <- nrow(tmp) / raw_data_rows
-    normalisation_stats <- rbind(normalisation_stats, c(key, value))
+  if (nrow(transformations) > 0){
+    for(i in 1:nrow(transformations)){
+      key <- paste0(transformations$transf[i],"\t",transformations$transf.value[i])
+      tmp <- subset(raw_data_normalised_norm, raw_data_normalised_norm$transf == transformations$transf[i])
+      tmp <- subset(tmp, transf.value == transformations$transf.value[i])
+      value <- nrow(tmp) / raw_data_rows
+      normalisation_stats <- rbind(normalisation_stats, c(key, value))
+    }
   }
   
   # Write to disk new data structures
