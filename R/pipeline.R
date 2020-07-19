@@ -144,28 +144,28 @@ features_non_par <- unique(as.character(raw_data_transformed_non_par$feature))
 features_norm <- unique(as.character(raw_data_transformed_norm$feature))
 features_norm_len <- length(features_norm)
 raw_data_non_par <- raw_data[,features_non_par]#raw_data[,-c(features_norm)]
-normal.raw_data <- data.frame(matrix(vector(), nrow(raw_data_transformed_norm)/features_norm_len, features_norm_len,
+raw_data_norm <- data.frame(matrix(vector(), nrow(raw_data_transformed_norm)/features_norm_len, features_norm_len,
                                    dimnames=list(c(), features_norm)),
                             stringsAsFactors = F)
 for(i in 1:features_norm_len){
-  normal.raw_data[i] <- subset(raw_data_transformed_norm, feature == features_norm[i])$values
+  raw_data_norm[i] <- subset(raw_data_transformed_norm, feature == features_norm[i])$values
 }
 
 # Append excluded columns for transformation 
 if(PARETO_SCALING){ # Apply Pareto Scaling
-  transformed.normal.raw_data <- cbind(raw_data[,excluded_columns],paretoscale(normal.raw_data))
+  transformed.raw_data_norm <- cbind(raw_data[,excluded_columns],paretoscale(raw_data_norm))
   transformed.raw_data_non_par <- cbind(raw_data[,excluded_columns],paretoscale(raw_data_non_par))
 } else { # No Scaling
-  transformed.normal.raw_data <- cbind(raw_data[,excluded_columns],normal.raw_data)
+  transformed.raw_data_norm <- cbind(raw_data[,excluded_columns],raw_data_norm)
   transformed.raw_data_non_par <- cbind(raw_data[,excluded_columns],raw_data_non_par)
 }
-normal.raw_data <- cbind(raw_data[,excluded_columns],normal.raw_data)
+raw_data_norm <- cbind(raw_data[,excluded_columns],raw_data_norm)
 raw_data_non_par <- cbind(raw_data[,excluded_columns],raw_data_non_par)
 
 write.csv(raw_data_transformed, file = paste0(OUT_PREFIX,".transformed.all.raw_data.csv"), row.names=FALSE)
-write.csv(normal.raw_data, file = paste0(OUT_PREFIX,".normal.raw_data.csv"), row.names=FALSE)
+write.csv(raw_data_norm, file = paste0(OUT_PREFIX,".raw_data_norm.csv"), row.names=FALSE)
 write.csv(raw_data_non_par, file = paste0(OUT_PREFIX,".raw_data_non_par.csv"), row.names=FALSE)
-write.csv(transformed.normal.raw_data, file = paste0(OUT_PREFIX,".transformed.normal.raw_data.csv"), row.names=FALSE)
+write.csv(transformed.raw_data_norm, file = paste0(OUT_PREFIX,".transformed.raw_data_norm.csv"), row.names=FALSE)
 write.csv(transformed.raw_data_non_par, file = paste0(OUT_PREFIX,".transformed.raw_data_non_par.csv"), row.names=FALSE)
 
 # Statistics
@@ -202,14 +202,14 @@ colnames(geno.map)[1] <- "ID"
 geno.map$ID <- as.character(geno.map$ID)
 
 ## Normal features
-colnames(transformed.normal.raw_data)[1] <- "ID"
-transformed.normal.raw_data$GenoID <- with(transformed.normal.raw_data,
+colnames(transformed.raw_data_norm)[1] <- "ID"
+transformed.raw_data_norm$GenoID <- with(transformed.raw_data_norm,
                                          gsub(" ","0",paste0(Generation,"_",sprintf("%3s",as.character(ID))))
 )
-transformed.normal.raw_data$ID <- transformed.normal.raw_data$GenoID
-transformed.normal.raw_data$GenoID <- NULL
+transformed.raw_data_norm$ID <- transformed.raw_data_norm$GenoID
+transformed.raw_data_norm$GenoID <- NULL
 
-normal.phe <- dplyr::inner_join(transformed.normal.raw_data,geno.map, by="ID")[,colnames(transformed.normal.raw_data)]
+normal.phe <- dplyr::inner_join(transformed.raw_data_norm,geno.map, by="ID")[,colnames(transformed.raw_data_norm)]
 normal.phe$Group <- NULL
 normal.phe$Generation <- NULL
 normal.gen <- rbind(geno.map[1:2,],inner_join(normal.phe,geno.map, by="ID")[,colnames(geno.map)])

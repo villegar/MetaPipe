@@ -145,22 +145,22 @@ features_non_par <- unique(as.character(raw_data_transformed_non_par$feature))
 features_norm <- unique(as.character(raw_data_transformed_norm$feature))
 features_norm_len <- length(features_norm)
 raw_data_non_par <- raw_data[,features_non_par]#raw_data[,-c(features_norm)]
-normal.raw_data <- data.frame(matrix(vector(), nrow(raw_data_transformed_norm)/features_norm_len, features_norm_len,
+raw_data_norm <- data.frame(matrix(vector(), nrow(raw_data_transformed_norm)/features_norm_len, features_norm_len,
                                    dimnames=list(c(), features_norm)),
                             stringsAsFactors = F)
 for(i in 1:features_norm_len){
-  normal.raw_data[i] <- subset(raw_data_transformed_norm, feature == features_norm[i])$values
+  raw_data_norm[i] <- subset(raw_data_transformed_norm, feature == features_norm[i])$values
 }
 
 # Append excluded columns for transformation 
 if(PARETO_SCALING){ # Apply Pareto Scaling
-  transformed.normal.raw_data <- cbind(raw_data[,excluded_columns],paretoscale(normal.raw_data))
+  transformed.raw_data_norm <- cbind(raw_data[,excluded_columns],paretoscale(raw_data_norm))
   transformed.raw_data_non_par <- cbind(raw_data[,excluded_columns],paretoscale(raw_data_non_par))
 } else { # No Scaling
-  transformed.normal.raw_data <- cbind(raw_data[,excluded_columns],normal.raw_data)
+  transformed.raw_data_norm <- cbind(raw_data[,excluded_columns],raw_data_norm)
   transformed.raw_data_non_par <- cbind(raw_data[,excluded_columns],raw_data_non_par)
 }
-normal.raw_data <- cbind(raw_data[,excluded_columns],normal.raw_data)
+raw_data_norm <- cbind(raw_data[,excluded_columns],raw_data_norm)
 raw_data_non_par <- cbind(raw_data[,excluded_columns],raw_data_non_par)
 
 #transformations <- read.csv("metabolomics.transformed.all.raw_data.csv")
@@ -170,9 +170,9 @@ transformations <- unique(transformations)
 
 write.csv(transformations, file = paste0(OUT_PREFIX,".normal.transformations.summary.csv"), row.names=FALSE, na="")
 write.csv(raw_data_transformed, file = paste0(OUT_PREFIX,".transformed.all.raw_data.csv"), row.names=FALSE)
-write.csv(normal.raw_data, file = paste0(OUT_PREFIX,".normal.raw_data.csv"), row.names=FALSE)
+write.csv(raw_data_norm, file = paste0(OUT_PREFIX,".raw_data_norm.csv"), row.names=FALSE)
 write.csv(raw_data_non_par, file = paste0(OUT_PREFIX,".raw_data_non_par.csv"), row.names=FALSE)
-write.csv(transformed.normal.raw_data, file = paste0(OUT_PREFIX,".transformed.normal.raw_data.csv"), row.names=FALSE)
+write.csv(transformed.raw_data_norm, file = paste0(OUT_PREFIX,".transformed.raw_data_norm.csv"), row.names=FALSE)
 write.csv(transformed.raw_data_non_par, file = paste0(OUT_PREFIX,".transformed.raw_data_non_par.csv"), row.names=FALSE)
 
 # Statistics
@@ -209,13 +209,13 @@ colnames(geno.map)[1] <- "ID"
 geno.map$ID <- as.character(geno.map$ID)
 
 ## Normal features
-transformed.normal.raw_data$GenoID <- with(transformed.normal.raw_data,
+transformed.raw_data_norm$GenoID <- with(transformed.raw_data_norm,
                                          gsub(" ","0",paste0(Generation,"_",sprintf("%3s",as.character(ID))))
 )
-transformed.normal.raw_data$ID <- transformed.normal.raw_data$GenoID
-transformed.normal.raw_data$GenoID <- NULL
+transformed.raw_data_norm$ID <- transformed.raw_data_norm$GenoID
+transformed.raw_data_norm$GenoID <- NULL
 
-normal.phe <- inner_join(transformed.normal.raw_data,geno.map, by="ID")[,colnames(transformed.normal.raw_data)]
+normal.phe <- inner_join(transformed.raw_data_norm,geno.map, by="ID")[,colnames(transformed.raw_data_norm)]
 normal.phe$Group <- NULL
 normal.phe$Generation <- NULL
 normal.gen <- rbind(geno.map[1:2,],inner_join(normal.phe,geno.map, by="ID")[,colnames(geno.map)])
@@ -698,8 +698,8 @@ if(!REPLACE_NA){
   raw_data[,-excluded_columns] <- lapply(raw_data[,-excluded_columns], NA2halfmin)
 }
 # if(!PARETO_SCALING){ # Apply Pareto Scaling
-#   transformed.normal.raw_data <- cbind(raw_data[,excluded_columns],paretoscale(raw_data[,-excluded_columns]))
-#   transformed.normal.raw_data <- paretoscale(raw_data[,-excluded_columns])
+#   transformed.raw_data_norm <- cbind(raw_data[,excluded_columns],paretoscale(raw_data[,-excluded_columns]))
+#   transformed.raw_data_norm <- paretoscale(raw_data[,-excluded_columns])
 #   #transformed.raw_data_non_par <- cbind(raw_data[,excluded_columns],paretoscale(raw_data_non_par))
 # }
 raw_data_transformed <- raw_data # No scaling
@@ -707,10 +707,10 @@ raw_data_transformed <- raw_data # No scaling
 tic("PCAnalysis")
 # PCAnalysis with mean (used no missing data) 
 #OUT_PREFIX <- "S1-metabolomics"
-#transformed.normal.raw_data <- read.csv(paste0(OUT_PREFIX,".all.raw_data.csv"))
-#transformed.normal.raw_data$X <- NULL
-#transformed.normal.raw_data <- transformed.normal.raw_data[order(as.character(transformed.normal.raw_data$ID)),]
-#transformed.normal.raw_data$Group <- NULL
+#transformed.raw_data_norm <- read.csv(paste0(OUT_PREFIX,".all.raw_data.csv"))
+#transformed.raw_data_norm$X <- NULL
+#transformed.raw_data_norm <- transformed.raw_data_norm[order(as.character(transformed.raw_data_norm$ID)),]
+#transformed.raw_data_norm$Group <- NULL
 res.pca <- PCA(raw_data_transformed[,-excluded_columns],  graph = FALSE, scale.unit = TRUE)
 #fviz_screeplot(res.pca, addlabels = TRUE, ylim = c(0, 50))
 #res.pca$eig
