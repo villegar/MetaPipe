@@ -120,12 +120,9 @@ assess_normality <- function(raw_data,
   
   # Ignore ID and properties
   raw_data <- raw_data[, -excluded_columns]
-  #len_excluded_columns <- length(excluded_columns)
   # Compute feature indices, accounting for the offset of ID and properties
-  #feature_indices <- 1:(ncol(raw_data) - len_excluded_columns)
   feature_indices <- 1:ncol(raw_data) 
   # Extract features (column names)
-  #features <- colnames(raw_data)[len_excluded_columns + feature_indices]
   features <- colnames(raw_data)
   raw_data_normalised <- foreach::foreach(i = feature_indices,
                                   .combine = rbind) %dopar% {
@@ -250,6 +247,7 @@ assess_normality_postprocessing <- function(raw_data,
     )
   }
   
+  # Generate basic stats from the normalisation process
   raw_data_rows <- nrow(raw_data)
   norm_features_normalised_count <- nrow(raw_data_normalised_norm[raw_data_normalised_norm$transf == "", ]) / raw_data_rows
   norm_features_count <- nrow(raw_data_normalised_norm) / raw_data_rows
@@ -259,6 +257,7 @@ assess_normality_postprocessing <- function(raw_data,
   sorting <- order(transformations$transf, decreasing = TRUE)
   transformations <- transformations[sorting, ]
   
+  # Create data frame containing the stats
   normalisation_stats <- data.frame(key = c("total", "norm_features", "norm_features_normalised"),
                                     values = c(total_features, norm_features_count, norm_features_normalised_count),
                                     stringsAsFactors = FALSE)
