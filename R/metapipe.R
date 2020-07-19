@@ -139,26 +139,17 @@ assess_normality <- function(raw_data,
                                       # Assess normality of feature before transforming it
                                       pvalue <- shapiro.test(raw_data[, i])[[2]]
                                       if(pvalue <= 0.05) { # Data must be transformed
-                                        record <- transform_data(data = raw_data[, i], 
-                                                                 feature = features[i], 
-                                                                 alpha = 0.05, 
-                                                                 index = i, 
-                                                                 transf_vals = transf_vals, 
-                                                                 plots_prefix = paste0(plots_dir, "/HIST")
+                                        tmp <- transform_data(data = raw_data[, i], 
+                                                              feature = features[i], 
+                                                              alpha = 0.05, 
+                                                              index = i, 
+                                                              transf_vals = transf_vals, 
+                                                              plots_prefix = paste0(plots_dir, "/HIST")
                                         )
                                         
-                                        if(length(record)) {
-                                          record$flag <- "Normal"
-                                        }
-                                        else {
-                                          record <- data.frame(
-                                            index = i,
-                                            feature = features[i],
-                                            values = raw_data[, i],
-                                            flag = "Non-normal",
-                                            transf = "",
-                                            transf.value = NA
-                                          )
+                                        if(length(tmp)) {
+                                          tmp$flag <- "Normal"
+                                          record <- tmp
                                         }
                                       }
                                       else { # Normal data
