@@ -130,6 +130,9 @@ test_that("normality assessment postprocessing works", {
   expected_output_exp2$transf <- rep(c("log", ""), each = 5)
   expected_output_exp2$transf.value <- rep(c(2, NA), each = 5)
   
+  # Test format of normalised data
+  expect_error(assess_normality_postprocessing(example_data, c(1, 2), expected_output[, -1]), "raw_data_normalised must be the output*")
+  
   # Testing for both data sets
   assess_normality_postprocessing(example_data, c(1, 2), expected_output)
   filenames <- c("metapipe_normalisation_stats.csv", "metapipe_raw_data_non_par.csv", "metapipe_raw_data_norm.csv", "metapipe_raw_data_normalised_all.csv")
