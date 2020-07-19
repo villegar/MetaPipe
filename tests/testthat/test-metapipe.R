@@ -82,19 +82,27 @@ test_that("normality assessment works", {
                                 transf = "",
                                 transf.value = NA,
                                 stringsAsFactors = FALSE)
+  
+  # Transforming data for log_2 normalisation
+  example_data_exp2 <- example_data[,]
+  example_data_exp2$F1 <- 2 ^ example_data$F1
+
+  # Expected output for log_2 normalisation
+  expected_output_exp2 <- expected_output[,]
+  expected_output_exp2$transf <- rep(c("log", ""), each = 5)
+  expected_output_exp2$transf.value <- rep(c(2, NA), each = 5)
+  
+  # Testing for both data sets
   expect_equal(expected_output, assess_normality(example_data, c(1, 2)))
+  expect_equal(expected_output_exp2, assess_normality(example_data_exp2, c(1, 2)))
   
   # Check for generated histograms
-  filename <- "HIST_1_NORM_F1.png"
-  expect_true(file.exists(filename))
-  expect_false(dir.exists(filename))
-  expect_gt(file.size(filename), 0)
-  file.remove(filename)
-  expect_false(file.exists(filename))
-  filename <- "HIST_2_NORM_F2.png"
-  expect_true(file.exists(filename))
-  expect_false(dir.exists(filename))
-  expect_gt(file.size(filename), 0)
-  file.remove(filename)
-  expect_false(file.exists(filename))
+  filenames <- c("HIST_1_LOG_2_F1.png", "HIST_1_NORM_F1.png", "HIST_2_NORM_F2.png")
+  for (f in filenames) {
+    expect_true(file.exists(f))
+    expect_false(dir.exists(f))
+    expect_gt(file.size(f), 0)
+    file.remove(f)
+    expect_false(file.exists(f))
+  }
 })
