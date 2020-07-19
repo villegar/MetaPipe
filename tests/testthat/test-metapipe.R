@@ -1,7 +1,7 @@
 test_that("load raw data works", {
   set.seed(123)
   # Data frame with the raw data: 1 property and 2 features
-  example_data <- data.frame(ID = c(1,2,3,4,5), 
+  example_data <- data.frame(ID = c(1, 2, 3, 4, 5), 
                              P1 = c("one", "two", "three", "four", "five"), 
                              F1 = rnorm(5), 
                              F2 = rnorm(5))
@@ -36,7 +36,7 @@ test_that("load raw data works", {
 test_that("replace missing data works", {
   set.seed(123)
   # Data frame with the raw data: 1 property and 2 features
-  example_data <- data.frame(ID = c(1,2,3,4,5), 
+  example_data <- data.frame(ID = c(1, 2, 3, 4, 5), 
                              P1 = c("one", "two", "three", "four", "five"), 
                              F1 = rnorm(5), 
                              F2 = rnorm(5))
@@ -62,6 +62,35 @@ test_that("replace missing data works", {
   
   # Checking for file generated in the test where prop_na =  0.25
   filename <- "metapipe_NA_raw_data.csv"
+  expect_true(file.exists(filename))
+  expect_false(dir.exists(filename))
+  expect_gt(file.size(filename), 0)
+  file.remove(filename)
+  expect_false(file.exists(filename))
+})
+
+test_that("normality assessment works", {
+  set.seed(123)
+  example_data <- data.frame(ID = c(1, 2, 3, 4, 5), 
+                             P1 = c("one", "two", "three", "four", "five"), 
+                             F1 = rnorm(5), 
+                             F2 = rnorm(5))
+  expected_output <- data.frame(index = rep(c(1, 2), each = 5),
+                                feature = rep(c("F1", "F2"), each = 5),
+                                values = c(example_data$F1, example_data$F2),
+                                flag = "Normal",
+                                transf = "",
+                                transf.value = NA)
+  expect_equal(expected_output, assess_normality(example_data, c(1, 2)))
+  
+  # Check for generated histograms
+  filename <- "HIST_1_NORM_F1.png"
+  expect_true(file.exists(filename))
+  expect_false(dir.exists(filename))
+  expect_gt(file.size(filename), 0)
+  file.remove(filename)
+  expect_false(file.exists(filename))
+  filename <- "HIST_2_NORM_F2.png"
   expect_true(file.exists(filename))
   expect_false(dir.exists(filename))
   expect_gt(file.size(filename), 0)
