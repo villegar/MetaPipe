@@ -175,3 +175,54 @@ test_that("normality assessment postprocessing works", {
     expect_false(file.exists(f))
   }
 })
+
+test_that("normality assessment statistics work", {
+  set.seed(123)
+  example_data <- data.frame(ID = c(1, 2, 3, 4, 5), 
+                             P1 = c("one", "two", "three", "four", "five"), 
+                             F1 = rnorm(5), 
+                             F2 = rnorm(5))
+  expected_output <- data.frame(index = rep(c(1, 2), each = 5),
+                                feature = rep(c("F1", "F2"), each = 5),
+                                values = c(example_data$F1, example_data$F2),
+                                flag = "Normal",
+                                transf = "",
+                                transf.value = NA,
+                                stringsAsFactors = FALSE)
+  
+  # Transforming data for log_2 normalisation
+  example_data_exp2 <- example_data[,]
+  example_data_exp2$F1 <- 2 ^ example_data$F1
+  
+  # Expected output for log_2 normalisation
+  expected_output_exp2 <- expected_output[,]
+  expected_output_exp2$transf <- rep(c("log", ""), each = 5)
+  expected_output_exp2$transf.value <- rep(c(2, NA), each = 5)
+  
+  # Testing for all data sets
+  assess_normality_postprocessing(example_data, c(1, 2), expected_output)
+  filenames <- c("metapipe_normalisation_stats.csv", "metapipe_raw_data_non_par.csv", "metapipe_raw_data_norm.csv", "metapipe_raw_data_normalised_all.csv")
+  for (f in filenames) {
+    if (f == "metapipe_normalisation_stats.csv")
+      expect_message(assess_normality_stats())
+    expect_true(file.exists(f))
+    expect_false(dir.exists(f))
+    if (f != "metapipe_raw_data_non_par.csv")
+      expect_gt(file.size(f), 0)
+    file.remove(f)
+    expect_false(file.exists(f))
+  }
+  
+  assess_normality_postprocessing(example_data_exp2, c(1, 2), expected_output_exp2)
+  filenames <- c("metapipe_normalisation_stats.csv", "metapipe_raw_data_non_par.csv", "metapipe_raw_data_norm.csv", "metapipe_raw_data_normalised_all.csv")
+  for (f in filenames) {
+    if (f == "metapipe_normalisation_stats.csv")
+      expect_message(assess_normality_stats())
+    expect_true(file.exists(f))
+    expect_false(dir.exists(f))
+    if (f != "metapipe_raw_data_non_par.csv")
+      expect_gt(file.size(f), 0)
+    file.remove(f)
+    expect_false(file.exists(f))
+  }
+})
