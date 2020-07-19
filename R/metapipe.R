@@ -72,8 +72,10 @@ replace_missing <- function(raw_data, excluded_columns, out_prefix = "metapipe",
     NACount <- which(colMeans(is.na(raw_data[,-excluded_columns])) >= prop_na) + length(excluded_columns)
     if(length(NACount)) {
       write.csv(raw_data[, c(excluded_columns, NACount)], file = paste0(out_prefix,"_NA_raw_data.csv"), row.names = FALSE)
-      cat(paste0("The following features were dropped because they have ", (prop_na*100), "% or more missing values: "))
-      cat(paste0(paste(colnames(raw_data)[NACount], collapse = ", "), "\n"))
+      msg <- "The following features were dropped because they have "
+      msg <- paste0(msg, (prop_na*100), "% or more missing values: ")
+      msg <- paste0(msg, paste(colnames(raw_data)[NACount], collapse = ", "), "\n")
+      message(msg)
       raw_data[, NACount] <- NULL
     }
   }
