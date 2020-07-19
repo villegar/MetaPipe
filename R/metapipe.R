@@ -60,7 +60,7 @@ load_raw <- function(raw_data_filename, excluded_columns) {
 #' replace_missing(example_data, c(2))
 #' replace_missing(example_data, c(2), prop_na =  0.25)
 #' replace_missing(example_data, c(2), replace_na =  TRUE)
-replace_missing <- function(raw_data, excluded_columns, out_prefix = getwd(), prop_na = 0.5, replace_na = FALSE) {
+replace_missing <- function(raw_data, excluded_columns, out_prefix = "metapipe", prop_na = 0.5, replace_na = FALSE) {
   # Exclude column 1, ID
   excluded_columns <- unique(c(1, excluded_columns))
   
