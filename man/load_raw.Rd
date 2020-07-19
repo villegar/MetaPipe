@@ -24,6 +24,6 @@ example_data <- data.frame(ID = c(1,2,3,4,5),
                            F2 = rnorm(5))
 write.csv(example_data, "example_data.csv", row.names = FALSE)
 write.csv(example_data[c(1:5, 1, 2), ], "example_data_dup.csv", row.names = FALSE)
-load_raw("example_data.csv", c(2))
-load_raw("example_data_dup.csv", c(2))
+load_raw("example_data.csv", c(1, 2))
+load_raw("example_data_dup.csv", c(1, 2))
 }

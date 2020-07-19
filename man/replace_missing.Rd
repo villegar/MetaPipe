@@ -36,7 +36,7 @@ example_data <- data.frame(ID = c(1,2,3,4,5),
                            F2 = rnorm(5))
 example_data$F1[2:3] <- NA 
 example_data$F2[4] <- NA 
-replace_missing(example_data, c(2))
-replace_missing(example_data, c(2), prop_na =  0.25)
-replace_missing(example_data, c(2), replace_na =  TRUE)
+replace_missing(example_data, c(1, 2))
+replace_missing(example_data, c(1, 2), prop_na =  0.25)
+replace_missing(example_data, c(1, 2), replace_na =  TRUE)
 }
