@@ -80,7 +80,8 @@ test_that("normality assessment works", {
                                 values = c(example_data$F1, example_data$F2),
                                 flag = "Normal",
                                 transf = "",
-                                transf.value = NA)
+                                transf.value = NA,
+                                stringsAsFactors = FALSE)
   expect_equal(expected_output, assess_normality(example_data, c(1, 2)))
   
   # Check for generated histograms

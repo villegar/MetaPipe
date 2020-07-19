@@ -134,7 +134,8 @@ assess_normality <- function(raw_data,
                                       values = raw_data[, i],
                                       flag = "Non-normal",
                                       transf = "",
-                                      transf.value = NA
+                                      transf.value = NA,
+                                      stringsAsFactors = FALSE
                                     )
                                     
                                     # Verify the current feature has at least 3 non-NA rows
@@ -170,7 +171,7 @@ assess_normality <- function(raw_data,
                                   }
   
   parallel::stopCluster(cl) # Stop cluster
-  raw_data_transformed$flag <- as.factor(raw_data_transformed$flag)
+  #raw_data_transformed$flag <- as.factor(raw_data_transformed$flag)
   return(raw_data_transformed)
 }
 
