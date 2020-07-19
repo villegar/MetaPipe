@@ -132,68 +132,16 @@ tictoc::toc(log = TRUE) # Loading and pre-processing
 tictoc::tic("Normality Assessment")
 features <- colnames(raw_data)
 print("Starting with Normality Assessment")
-raw_data_transfomed <- MetaPipe::assess_normality(raw_data, excluded_columns, CPUS, OUT_PREFIX, PLOTS_DIR, transf_vals)
+raw_data_normalised <- MetaPipe::assess_normality(raw_data, excluded_columns, CPUS, OUT_PREFIX, PLOTS_DIR, transf_vals)
 # MetaPipe::assess_normality(raw_data, excluded_columns, cpus = 1, out_prefix = "metapipe", plots_dir = here::here("../testbed/"), transf_vals = c(2, exp(1)))
 print("Done with Normality Assessment")
 
 tictoc::toc(log = TRUE) # Normality Assessment
 tictoc::tic("Transformed data post-processing")
-raw_data_transformed_norm <- raw_data_transformed[raw_data_transformed$flag == "Normal",]
-raw_data_transformed_non_par <- raw_data_transformed[raw_data_transformed$flag == "Non-normal",]
-features_non_par <- unique(as.character(raw_data_transformed_non_par$feature))
-features_norm <- unique(as.character(raw_data_transformed_norm$feature))
-features_norm_len <- length(features_norm)
-raw_data_non_par <- raw_data[,features_non_par]#raw_data[,-c(features_norm)]
-raw_data_norm <- data.frame(matrix(vector(), nrow(raw_data_transformed_norm)/features_norm_len, features_norm_len,
-                                   dimnames=list(c(), features_norm)),
-                            stringsAsFactors = F)
-for(i in 1:features_norm_len){
-  raw_data_norm[i] <- subset(raw_data_transformed_norm, feature == features_norm[i])$values
-}
-
-# Append excluded columns for transformation 
-if(PARETO_SCALING){ # Apply Pareto Scaling
-  transformed.raw_data_norm <- cbind(raw_data[,excluded_columns],paretoscale(raw_data_norm))
-  transformed.raw_data_non_par <- cbind(raw_data[,excluded_columns],paretoscale(raw_data_non_par))
-} else { # No Scaling
-  transformed.raw_data_norm <- cbind(raw_data[,excluded_columns],raw_data_norm)
-  transformed.raw_data_non_par <- cbind(raw_data[,excluded_columns],raw_data_non_par)
-}
-raw_data_norm <- cbind(raw_data[,excluded_columns],raw_data_norm)
-raw_data_non_par <- cbind(raw_data[,excluded_columns],raw_data_non_par)
-
-write.csv(raw_data_transformed, file = paste0(OUT_PREFIX,".transformed.all.raw_data.csv"), row.names=FALSE)
-write.csv(raw_data_norm, file = paste0(OUT_PREFIX,".raw_data_norm.csv"), row.names=FALSE)
-write.csv(raw_data_non_par, file = paste0(OUT_PREFIX,".raw_data_non_par.csv"), row.names=FALSE)
-write.csv(transformed.raw_data_norm, file = paste0(OUT_PREFIX,".transformed.raw_data_norm.csv"), row.names=FALSE)
-write.csv(transformed.raw_data_non_par, file = paste0(OUT_PREFIX,".transformed.raw_data_non_par.csv"), row.names=FALSE)
-
-# Statistics
-normal <- nrow(raw_data_transformed_norm[raw_data_transformed_norm$transf == "",])/raw_data_rows
-normal.transformed <- nrow(raw_data_transformed_norm)/raw_data_rows
-total <- nrow(raw_data_transformed)/raw_data_rows #1316
-transformations <- unique(raw_data_transformed[c("transf","transf.value")])
-transformations <- transformations[-1,]
-sorting <- order(transformations$transf, decreasing = T)
-
-transformations <- transformations[sorting,]
-cat(paste0("Total features (excluding all NAs features): \t", total))
-cat(paste0("\nNormal features (without transformation): \t", normal))
-cat(paste0("\nNormal features (transformed): \t\t\t", (normal.transformed - normal)))
-cat(paste0("\nTotal Normal features: \t\t\t\t", normal.transformed))
-cat(paste0("\nNon-parametric features: \t\t\t", (total - normal.transformed),"\n"))
-
-cat(paste0("\nTransformations summary:"))
-cat(paste0("\n\tf(x)\tValue \t# Features"))
-for(i in 1:nrow(transformations)){
-  cat(paste0("\n\t",transformations$transf[i],"\t",transformations$transf.value[i],"\t"))
-  tmp <- subset(raw_data_transformed_norm, raw_data_transformed_norm$transf == transformations$transf[i])
-  tmp <- subset(tmp, transf.value == transformations$transf.value[i])
-  cat(nrow(tmp)/raw_data_rows)
-}
-cat("\n\n") # Clean output
-
+#MetaPipe::assess_normality_postprocessing(raw_data, excluded_columns, raw_data_normalised, OUT_PREFIX, PARETO_SCALING)
+#MetaPipe::assess_normality_stats(raw_data, excluded_columns, raw_data_normalised, OUT_PREFIX)
 tictoc::toc(log = TRUE) # Transformed data post-processing
+
 tictoc::tic("QTL analysis")
 tictoc::tic("QTL analysis preprocessing")
 # Prepocessing data for QTL Analysis
