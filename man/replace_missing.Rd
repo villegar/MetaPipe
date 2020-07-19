@@ -7,7 +7,7 @@
 replace_missing(
   raw_data,
   excluded_columns,
-  out_prefix = getwd(),
+  out_prefix = "metapipe",
   prop_na = 0.5,
   replace_na = FALSE
 )
