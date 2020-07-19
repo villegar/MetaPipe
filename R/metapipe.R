@@ -83,7 +83,7 @@ replace_missing <- function(raw_data, excluded_columns, out_prefix = "metapipe",
 }
 
 #' Assess normality of features
-#'
+#' @importFrom foreach %dopar%
 #' @param raw_data data frame containing the raw data
 #' @param excluded_columns vector containing the indices of the data set properties, excluded columns
 #' @param cpus number of CPUS to be used
@@ -111,7 +111,7 @@ assess_normality <- function(raw_data,
   doParallel::registerDoParallel(cl)
   
   # Load binary operator for backend
-  `%dopar%` <- foreach::`%dopar%`
+  #`%dopar%` <- foreach::`%dopar%`
   
   # Exclude column 1, ID
   excluded_columns <- unique(c(1, excluded_columns))
