@@ -111,7 +111,7 @@ assess_normality <- function(raw_data,
   doParallel::registerDoParallel(cl)
   
   # Load binary operator for backend
-  #`%dopar%` <- foreach::`%dopar%`
+  `%dopar%` <- foreach::`%dopar%`
   
   # Exclude column 1, ID
   excluded_columns <- unique(c(1, excluded_columns))
@@ -143,7 +143,7 @@ assess_normality <- function(raw_data,
                                       # Assess normality of feature before transforming it
                                       pvalue <- shapiro.test(raw_data[, i])[[2]]
                                       if(pvalue <= 0.05) { # Data must be transformed
-                                        tmp <- transform_data(data = raw_data[, i], 
+                                        tmp <- MetaPipe::transform_data(data = raw_data[, i], 
                                                               feature = features[i], 
                                                               alpha = 0.05, 
                                                               index = i, 
@@ -152,6 +152,7 @@ assess_normality <- function(raw_data,
                                         )
                                         
                                         if(length(tmp)) {
+                                          tmp$index <- i
                                           tmp$flag <- "Normal"
                                           record <- tmp
                                         }
