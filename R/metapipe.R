@@ -100,6 +100,8 @@ replace_missing <- function(raw_data, excluded_columns, out_prefix = "metapipe",
 #'                            F1 = rnorm(5), 
 #'                            F2 = rnorm(5))
 #' assess_normality(example_data, c(1, 2))
+#' 
+#' @seealso \code{\link{assess_normality_postprocessing}}
 assess_normality <- function(raw_data, 
                              excluded_columns, 
                              cpus = 1, 
@@ -125,7 +127,7 @@ assess_normality <- function(raw_data,
   # Extract features (column names)
   #features <- colnames(raw_data)[len_excluded_columns + feature_indices]
   features <- colnames(raw_data)
-  raw_data_transformed <- foreach::foreach(i = feature_indices,
+  raw_data_normalised <- foreach::foreach(i = feature_indices,
                                   .combine = rbind) %dopar% {
                                     # Create and populate entry for current feature
                                     record <- data.frame( 
@@ -172,7 +174,134 @@ assess_normality <- function(raw_data,
                                   }
   
   parallel::stopCluster(cl) # Stop cluster
-  #raw_data_transformed$flag <- as.factor(raw_data_transformed$flag)
-  return(raw_data_transformed)
+  return(raw_data_normalised)
 }
 
+#' Postprocessing for the assessmment of the features' normality
+#' @param raw_data data frame containing the raw data
+#' @param excluded_columns vector containing the indices of the data set properties, excluded columns
+#' @param raw_data_normalised data frame containing the normalised raw data, created with \code{\link{assess_normality}}
+#' @param out_prefix prefix for output files, plots, etc.
+#' @param pareto_scaling booolean flag to indicate whether or not perform a pareto scaling on the normalised data
+#'
+#' @return Files containing the normal and non-paramatric normalised data are stored on disk
+#' @export
+#'
+#' @examples
+#' example_data <- data.frame(ID = c(1,2,3,4,5), 
+#'                            P1 = c("one", "two", "three", "four", "five"), 
+#'                            F1 = rnorm(5), 
+#'                            F2 = rnorm(5))
+#' example_data_normalised <- assess_normality(example_data, c(1, 2))
+#' assess_normality_postprocessing(example_data, c(1, 2), example_data_normalised)
+#' 
+#' @seealso \code{\link{assess_normality}}
+assess_normality_postprocessing <- function(raw_data, 
+                                            excluded_columns,
+                                            raw_data_normalised,
+                                            out_prefix = "metapipe", 
+                                            pareto_scaling = FALSE) {
+  # Verify the raw_data_normalised object has the right structure
+  if (!all(colnames(raw_data_normalised) == c("index", "feature", "values", "flag", "transf", "transf.value")))
+    stop("raw_data_normalised must be the output of the function assess_normality")
+  
+  # Separate normal and non-parametric entries from the normalised data
+  raw_data_normalised_norm <- raw_data_normalised[raw_data_normalised$flag == "Normal", ]
+  raw_data_normalised_non_par <- raw_data_normalised[raw_data_normalised$flag == "Non-normal", ]
+  
+  # Extract feature names for both normal and non-parametric data
+  features_non_par <- unique(as.character(raw_data_normalised_non_par$feature))
+  features_norm <- unique(as.character(raw_data_normalised_norm$feature))
+  features_non_par_len <- length(features_non_par)
+  features_norm_len <- length(features_norm)
+  
+  # Create new objects with the normalised data for normal features and original
+  # raw data for non-parametric features
+  raw_data_non_par <- NULL
+  raw_data_norm <- NULL
+  if (features_non_par_len > 0)
+    raw_data_non_par <- raw_data[, features_non_par]
+  if (features_norm_len > 0 ) {
+    raw_data_norm <- data.frame(matrix(vector(), 
+                                       nrow(raw_data_normalised_norm) / features_norm_len, 
+                                       features_norm_len,
+                                       dimnames = list(c(), features_norm)),
+                                stringsAsFactors = FALSE)
+    
+    for (i in 1:features_norm_len) {
+      raw_data_norm[i] <- subset(raw_data_normalised_norm, feature == features_norm[i])$values
+    }
+  }
+  
+  # Append excluded columns for scaling, if pareto_scaling == TRUE
+  if (!is.null(raw_data_norm)) {
+    raw_data_norm <- cbind(raw_data[, excluded_columns], 
+                           ifelse(pareto_scaling, 
+                                  MetaPipe::paretoscale(raw_data_norm), 
+                                  raw_data_norm)
+    )
+  }
+  
+  if (!is.null(raw_data_non_par)) {
+    raw_data_non_par <- cbind(raw_data[, excluded_columns], 
+                              ifelse(pareto_scaling, 
+                                     MetaPipe::paretoscale(raw_data_non_par), 
+                                     raw_data_non_par)
+    )
+  }
+  
+  raw_data_rows <- nrow(raw_data)
+  norm_features_normalised_count <- nrow(raw_data_normalised_norm[raw_data_normalised_norm$transf == "", ]) / raw_data_rows
+  norm_features_count <- nrow(raw_data_normalised_norm) / raw_data_rows
+  total_features <- nrow(raw_data_normalised)/raw_data_rows
+  transformations <- unique(raw_data_normalised[c("transf", "transf.value")])
+  transformations <- transformations[-nrow(transformations), ] # Drop blank transformation, NULL transformation
+  sorting <- order(transformations$transf, decreasing = TRUE)
+  transformations <- transformations[sorting, ]
+  
+  normalisation_stats <- data.frame(key = c("total", "norm_features", "norm_features_normalised"),
+                                    values = c(total_features, norm_features_count, norm_features_normalised_count),
+                                    stringsAsFactors = FALSE)
+  for(i in 1:nrow(transformations)){
+    key <- paste0(transformations$transf[i],"\t",transformations$transf.value[i])
+    tmp <- subset(raw_data_normalised_norm, raw_data_normalised_norm$transf == transformations$transf[i])
+    tmp <- subset(tmp, transf.value == transformations$transf.value[i])
+    value <- nrow(tmp) / raw_data_rows
+    normalisation_stats <- rbind(normalisation_stats, c(key, value))
+  }
+  
+  # Write to disk new data structures
+  write.csv(raw_data_normalised, file = paste0(out_prefix,"_raw_data_normalised_all.csv"), row.names = FALSE)
+  write.csv(raw_data_norm, file = paste0(out_prefix,"_raw_data_norm.csv"), row.names = FALSE)
+  write.csv(raw_data_non_par, file = paste0(out_prefix,"_raw_data_non_par.csv"), row.names = FALSE)
+  write.csv(normalisation_stats, file = paste0(out_prefix,"_normalisation_stats.csv"), row.names = FALSE)
+}
+
+assess_normality_stats <- function(out_prefix = "metapipe") {
+  stats_filename <- paste0(out_prefix,"_normalisation_stats.csv")
+  if (!file.exists(stats_filename))
+    stop(paste0("The file ", stats_filename, " was not found"))
+  
+  # Loading stats for the normality assessment process
+  normalisation_stats <- read.csv(stats_filename)
+  total_features <- normalisation_stats[1, 2]
+  norm_features_count <- normalisation_stats[2, 2]
+  norm_features_normalised_count <- normalisation_stats[3, 2]
+  transformations <- normalisation_stats[-c(1:3), ]
+  
+  # Create message for user with the summary
+  msg <- paste0("Total features (excluding all NAs features): \t", total_features)
+  msg <- paste0(msg, "\nNormal features (without transformation): \t", (norm_features_count - norm_features_normalised_count))
+  msg <- paste0(msg, "\nNormal features (transformed): \t\t\t", norm_features_normalised_count)
+  msg <- paste0(msg, "\nTotal Normal features: \t\t\t\t", norm_features_count)
+  msg <- paste0(msg, "\nNon-parametric features: \t\t\t", (total_features - norm_features_count),"\n")
+  
+  msg <- paste0(msg, "\nTransformations summary:")
+  msg <- paste0(msg, "\n\tf(x)\tValue \t# Features")
+  for (i in 1:nrow(transformations)) {
+    tmp <- strsplit(as.character(transformations[i, 1]), '\t')[[1]]
+    msg <- paste0(msg, "\n\t", tmp[1], "\t", tmp[2],"\t", transformations[i, 2])
+  }
+  msg <- paste0(msg, "\n\n") # Clean output
+  message(msg)
+}
