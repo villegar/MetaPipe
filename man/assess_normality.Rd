@@ -41,5 +41,5 @@ assess_normality(example_data, c(1, 2))
 
 }
 \seealso{
-\code{\link{assess_normality_postprocessing}}
+\code{\link{assess_normality_postprocessing}} and \code{\link{assess_normality_stats}}
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/metapipe.R
 \name{assess_normality_postprocessing}
 \alias{assess_normality_postprocessing}
-\title{Postprocessing for the assessmment of the features' normality}
+\title{Postprocessing for the normality assessmment of the features}
 \usage{
 assess_normality_postprocessing(
   raw_data,
@@ -27,7 +27,7 @@ assess_normality_postprocessing(
 Files containing the normal and non-paramatric normalised data are stored on disk
 }
 \description{
-Postprocessing for the assessmment of the features' normality
+Postprocessing for the normality assessmment of the features
 }
 \examples{
 example_data <- data.frame(ID = c(1,2,3,4,5), 
@@ -39,5 +39,5 @@ assess_normality_postprocessing(example_data, c(1, 2), example_data_normalised)
 
 }
 \seealso{
-\code{\link{assess_normality}}
+\code{\link{assess_normality}} and \code{\link{assess_normality_stats}}
 }
