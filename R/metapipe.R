@@ -199,7 +199,8 @@ assess_normality_postprocessing <- function(raw_data,
                                             out_prefix = "metapipe", 
                                             pareto_scaling = FALSE) {
   # Verify the raw_data_normalised object has the right structure
-  if (!all(colnames(raw_data_normalised) == c("index", "feature", "values", "flag", "transf", "transf.value")))
+  expected_columns <- c("index", "feature", "values", "flag", "transf", "transf.value")
+  if (!all(expected_columns %in% colnames(raw_data_normalised)))
     stop("raw_data_normalised must be the output of the function assess_normality")
   
   # Separate normal and non-parametric entries from the normalised data
