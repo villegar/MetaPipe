@@ -130,10 +130,18 @@ test_that("normality assessment postprocessing works", {
   expected_output_exp2$transf <- rep(c("log", ""), each = 5)
   expected_output_exp2$transf.value <- rep(c(2, NA), each = 5)
   
+  # Adding noise to feature to make it non-parametric
+  example_data_non_par <- example_data[,]
+  example_data_non_par$F1 <- c(0, 15000, 0, 17, 0)
+  
+  # Expected output for log_2 normalisation
+  expected_output_non_par <- expected_output[,]
+  expected_output_non_par$flag <- rep(c("Non-normal", "Normal"), each = 5)
+  
   # Test format of normalised data
   expect_error(assess_normality_postprocessing(example_data, c(1, 2), expected_output[, -1]), "raw_data_normalised must be the output*")
   
-  # Testing for both data sets
+  # Testing for all data sets
   assess_normality_postprocessing(example_data, c(1, 2), expected_output)
   filenames <- c("metapipe_normalisation_stats.csv", "metapipe_raw_data_non_par.csv", "metapipe_raw_data_norm.csv", "metapipe_raw_data_normalised_all.csv")
   for (f in filenames) {
@@ -146,6 +154,17 @@ test_that("normality assessment postprocessing works", {
   }
   
   assess_normality_postprocessing(example_data_exp2, c(1, 2), expected_output_exp2)
+  filenames <- c("metapipe_normalisation_stats.csv", "metapipe_raw_data_non_par.csv", "metapipe_raw_data_norm.csv", "metapipe_raw_data_normalised_all.csv")
+  for (f in filenames) {
+    expect_true(file.exists(f))
+    expect_false(dir.exists(f))
+    if (f != "metapipe_raw_data_non_par.csv")
+      expect_gt(file.size(f), 0)
+    file.remove(f)
+    expect_false(file.exists(f))
+  }
+  
+  assess_normality_postprocessing(example_data_non_par, c(1, 2), expected_output_non_par)
   filenames <- c("metapipe_normalisation_stats.csv", "metapipe_raw_data_non_par.csv", "metapipe_raw_data_norm.csv", "metapipe_raw_data_normalised_all.csv")
   for (f in filenames) {
     expect_true(file.exists(f))
