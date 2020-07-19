@@ -21,8 +21,8 @@ test_that("load raw data works", {
   expect_gt(file.size(filename_dup), 0)
   
   # Testing the function for both files
-  expect_equal(example_data, load_raw("example_data.csv", c(2)))
-  expect_equal(example_data, load_raw("example_data_dup.csv", c(2)))
+  expect_equal(example_data, load_raw("example_data.csv", c(1, 2)))
+  expect_equal(example_data, load_raw("example_data_dup.csv", c(1, 2)))
   
   # Deleting raw data files
   file.remove(filename)
@@ -52,8 +52,8 @@ test_that("replace missing data works", {
   
   # Testing the function with different parameters
   results_1 <- replace_missing(example_data, c(2))
-  expect_message(results_2 <- replace_missing(example_data, c(2), prop_na =  0.25))
-  results_3 <- replace_missing(example_data, c(2), replace_na =  TRUE)
+  expect_message(results_2 <- replace_missing(example_data, c(1, 2), prop_na =  0.25))
+  results_3 <- replace_missing(example_data, c(1, 2), replace_na =  TRUE)
   
   # Comparing results
   expect_equal(example_data, results_1)
