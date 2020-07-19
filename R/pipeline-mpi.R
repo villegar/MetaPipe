@@ -134,7 +134,7 @@ tic("Normality Assessment")
 features <- colnames(raw_data)
 
 print("Starting with Normality Assessment")
-raw_data_transfomed <- MetaPipe::assess_normality(raw_data, excluded_columns, CPUS, OUT_PREFIX, PLOTS_DIR, transf_vals)
+raw_data_normalised <- MetaPipe::assess_normality(raw_data, excluded_columns, CPUS, OUT_PREFIX, PLOTS_DIR, transf_vals)
 print("Done with Normality Assessment")
 
 toc(log = TRUE) # Normality Assessment
