@@ -147,14 +147,14 @@ colnames(geno.map)[1] <- "ID"
 geno.map$ID <- as.character(geno.map$ID)
 
 ## Normal features
-colnames(transformed.raw_data_norm)[1] <- "ID"
-transformed.raw_data_norm$GenoID <- with(transformed.raw_data_norm,
+colnames(raw_data_norm)[1] <- "ID"
+raw_data_norm$GenoID <- with(raw_data_norm,
                                          gsub(" ","0",paste0(Generation,"_",sprintf("%3s",as.character(ID))))
 )
-transformed.raw_data_norm$ID <- transformed.raw_data_norm$GenoID
-transformed.raw_data_norm$GenoID <- NULL
+raw_data_norm$ID <- raw_data_norm$GenoID
+raw_data_norm$GenoID <- NULL
 
-normal.phe <- dplyr::inner_join(transformed.raw_data_norm,geno.map, by="ID")[,colnames(transformed.raw_data_norm)]
+normal.phe <- dplyr::inner_join(raw_data_norm,geno.map, by="ID")[,colnames(raw_data_norm)]
 normal.phe$Group <- NULL
 normal.phe$Generation <- NULL
 normal.gen <- rbind(geno.map[1:2,],inner_join(normal.phe,geno.map, by="ID")[,colnames(geno.map)])

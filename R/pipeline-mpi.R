@@ -147,13 +147,13 @@ colnames(geno.map)[1] <- "ID"
 geno.map$ID <- as.character(geno.map$ID)
 
 ## Normal features
-transformed.raw_data_norm$GenoID <- with(transformed.raw_data_norm,
+raw_data_norm$GenoID <- with(raw_data_norm,
                                          gsub(" ","0",paste0(Generation,"_",sprintf("%3s",as.character(ID))))
 )
-transformed.raw_data_norm$ID <- transformed.raw_data_norm$GenoID
-transformed.raw_data_norm$GenoID <- NULL
+raw_data_norm$ID <- raw_data_norm$GenoID
+raw_data_norm$GenoID <- NULL
 
-normal.phe <- inner_join(transformed.raw_data_norm,geno.map, by="ID")[,colnames(transformed.raw_data_norm)]
+normal.phe <- inner_join(raw_data_norm,geno.map, by="ID")[,colnames(raw_data_norm)]
 normal.phe$Group <- NULL
 normal.phe$Generation <- NULL
 normal.gen <- rbind(geno.map[1:2,],inner_join(normal.phe,geno.map, by="ID")[,colnames(geno.map)])
@@ -636,8 +636,8 @@ if(!REPLACE_NA){
   raw_data[,-excluded_columns] <- lapply(raw_data[,-excluded_columns], NA2halfmin)
 }
 # if(!PARETO_SCALING){ # Apply Pareto Scaling
-#   transformed.raw_data_norm <- cbind(raw_data[,excluded_columns],paretoscale(raw_data[,-excluded_columns]))
-#   transformed.raw_data_norm <- paretoscale(raw_data[,-excluded_columns])
+#   raw_data_norm <- cbind(raw_data[,excluded_columns],paretoscale(raw_data[,-excluded_columns]))
+#   raw_data_norm <- paretoscale(raw_data[,-excluded_columns])
 #   #transformed.raw_data_non_par <- cbind(raw_data[,excluded_columns],paretoscale(raw_data_non_par))
 # }
 raw_data_transformed <- raw_data # No scaling
@@ -645,10 +645,10 @@ raw_data_transformed <- raw_data # No scaling
 tic("PCAnalysis")
 # PCAnalysis with mean (used no missing data) 
 #OUT_PREFIX <- "S1-metabolomics"
-#transformed.raw_data_norm <- read.csv(paste0(OUT_PREFIX,".all.raw_data.csv"))
-#transformed.raw_data_norm$X <- NULL
-#transformed.raw_data_norm <- transformed.raw_data_norm[order(as.character(transformed.raw_data_norm$ID)),]
-#transformed.raw_data_norm$Group <- NULL
+#raw_data_norm <- read.csv(paste0(OUT_PREFIX,".all.raw_data.csv"))
+#raw_data_norm$X <- NULL
+#raw_data_norm <- raw_data_norm[order(as.character(raw_data_norm$ID)),]
+#raw_data_norm$Group <- NULL
 res.pca <- PCA(raw_data_transformed[,-excluded_columns],  graph = FALSE, scale.unit = TRUE)
 #fviz_screeplot(res.pca, addlabels = TRUE, ylim = c(0, 50))
 #res.pca$eig
