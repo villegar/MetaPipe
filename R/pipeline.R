@@ -161,14 +161,14 @@ normal.gen <- rbind(geno.map[1:2,],inner_join(pheno_norm,geno.map, by="ID")[,col
 
 
 ## Non-parametric features
-colnames(transformed.raw_data_non_par)[1] <- "ID"
-transformed.raw_data_non_par$GenoID <- with(transformed.raw_data_non_par,
+colnames(raw_data_non_par)[1] <- "ID"
+raw_data_non_par$GenoID <- with(raw_data_non_par,
                                                  gsub(" ","0",paste0(Generation,"_",sprintf("%3s",as.character(ID))))
 )
-transformed.raw_data_non_par$ID <- transformed.raw_data_non_par$GenoID
-transformed.raw_data_non_par$GenoID <- NULL
+raw_data_non_par$ID <- raw_data_non_par$GenoID
+raw_data_non_par$GenoID <- NULL
 
-non.parametric.phe <- inner_join(transformed.raw_data_non_par,geno.map, by="ID")[,colnames(transformed.raw_data_non_par)]
+non.parametric.phe <- inner_join(raw_data_non_par,geno.map, by="ID")[,colnames(raw_data_non_par)]
 non.parametric.phe$Group <- NULL
 non.parametric.phe$Generation <- NULL
 non.parametric.gen <- rbind(geno.map[1:2,],inner_join(non.parametric.phe,geno.map, by="ID")[,colnames(geno.map)])

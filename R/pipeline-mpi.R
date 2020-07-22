@@ -160,13 +160,13 @@ normal.gen <- rbind(geno.map[1:2,],inner_join(pheno_norm,geno.map, by="ID")[,col
 
 
 ## Non-parametric features
-transformed.raw_data_non_par$GenoID <- with(transformed.raw_data_non_par,
+raw_data_non_par$GenoID <- with(raw_data_non_par,
                                                  gsub(" ","0",paste0(Generation,"_",sprintf("%3s",as.character(ID))))
 )
-transformed.raw_data_non_par$ID <- transformed.raw_data_non_par$GenoID
-transformed.raw_data_non_par$GenoID <- NULL
+raw_data_non_par$ID <- raw_data_non_par$GenoID
+raw_data_non_par$GenoID <- NULL
 
-non.parametric.phe <- inner_join(transformed.raw_data_non_par,geno.map, by="ID")[,colnames(transformed.raw_data_non_par)]
+non.parametric.phe <- inner_join(raw_data_non_par,geno.map, by="ID")[,colnames(raw_data_non_par)]
 non.parametric.phe$Group <- NULL
 non.parametric.phe$Generation <- NULL
 non.parametric.gen <- rbind(geno.map[1:2,],inner_join(non.parametric.phe,geno.map, by="ID")[,colnames(geno.map)])
@@ -638,7 +638,7 @@ if(!REPLACE_NA){
 # if(!PARETO_SCALING){ # Apply Pareto Scaling
 #   raw_data_norm <- cbind(raw_data[,excluded_columns],paretoscale(raw_data[,-excluded_columns]))
 #   raw_data_norm <- paretoscale(raw_data[,-excluded_columns])
-#   #transformed.raw_data_non_par <- cbind(raw_data[,excluded_columns],paretoscale(raw_data_non_par))
+#   #raw_data_non_par <- cbind(raw_data[,excluded_columns],paretoscale(raw_data_non_par))
 # }
 raw_data_transformed <- raw_data # No scaling
 
