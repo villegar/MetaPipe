@@ -148,28 +148,32 @@ genetic_map$ID <- as.character(genetic_map$ID)
 
 ## Normal features
 raw_data_norm$GenoID <- with(raw_data_norm,
-                             gsub(" ","0",paste0(Generation,"_",sprintf("%3s",as.character(ID))))
-)
+                             gsub(" ", "0", paste0(Generation, "_", sprintf("%3s", as.character(ID))))
+                            )
 raw_data_norm$ID <- raw_data_norm$GenoID
 raw_data_norm$GenoID <- NULL
 
-pheno_norm <- inner_join(raw_data_norm,genetic_map, by="ID")[,colnames(raw_data_norm)]
+pheno_norm <- dplyr::inner_join(raw_data_norm,genetic_map, by="ID")[, colnames(raw_data_norm)]
 pheno_norm$Group <- NULL
 pheno_norm$Generation <- NULL
-geno_norm <- rbind(genetic_map[1:2,],inner_join(pheno_norm,genetic_map, by="ID")[,colnames(genetic_map)])
+geno_norm <- rbind(genetic_map[1:2, ],
+                   dplyr::inner_join(pheno_norm, genetic_map, by="ID")[, colnames(genetic_map)]
+                  )
 
 
 ## Non-parametric features
 raw_data_non_par$GenoID <- with(raw_data_non_par,
-                                                 gsub(" ","0",paste0(Generation,"_",sprintf("%3s",as.character(ID))))
-)
+                                gsub(" ", "0", paste0(Generation, "_", sprintf("%3s", as.character(ID))))
+                               )
 raw_data_non_par$ID <- raw_data_non_par$GenoID
 raw_data_non_par$GenoID <- NULL
 
-pheno_non_par <- inner_join(raw_data_non_par,genetic_map, by="ID")[,colnames(raw_data_non_par)]
+pheno_non_par <- dplyr::inner_join(raw_data_non_par, genetic_map, by="ID")[, colnames(raw_data_non_par)]
 pheno_non_par$Group <- NULL
 pheno_non_par$Generation <- NULL
-geno_non_par <- rbind(genetic_map[1:2,],inner_join(pheno_non_par,genetic_map, by="ID")[,colnames(genetic_map)])
+geno_non_par <- rbind(genetic_map[1:2, ],
+                      dplyr::inner_join(pheno_non_par, genetic_map, by="ID")[, colnames(genetic_map)]
+                     )
 
 # Clean phenotypic data
 non.parametric.empty.features <- sapply(pheno_non_par, function(x) all(is.na(x)) || all(is.infinite(x)))
@@ -179,12 +183,12 @@ normal.empty.features <- sapply(pheno_norm, function(x) all(is.na(x)) || all(is.
 pheno_non_par[non.parametric.empty.features] <- NULL
 pheno_norm[normal.empty.features] <- NULL
 
-if(any(non.parametric.empty.features)){
+if(any(non.parametric.empty.features)) {
   print(paste0("The following non-parametric features were removed (NAs):"))
   print(names(non.parametric.empty.features)[non.parametric.empty.features])
 }
 
-if(any(normal.empty.features)){
+if(any(normal.empty.features)) {
   print(paste0("The following normal features were removed (NAs):"))
   print(names(normal.empty.features)[normal.empty.features])
 }
