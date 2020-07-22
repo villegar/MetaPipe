@@ -171,7 +171,7 @@ raw_data_non_par$GenoID <- NULL
 pheno_non_par <- inner_join(raw_data_non_par,geno.map, by="ID")[,colnames(raw_data_non_par)]
 pheno_non_par$Group <- NULL
 pheno_non_par$Generation <- NULL
-non.parametric.gen <- rbind(geno.map[1:2,],inner_join(pheno_non_par,geno.map, by="ID")[,colnames(geno.map)])
+geno_non_par <- rbind(geno.map[1:2,],inner_join(pheno_non_par,geno.map, by="ID")[,colnames(geno.map)])
 
 # Clean phenotypic data
 non.parametric.empty.features <- sapply(pheno_non_par, function(x) all(is.na(x)) || all(is.infinite(x)))
@@ -196,7 +196,7 @@ if(any(normal.empty.features)){
 write.csv(geno_norm, file = paste0(OUT_PREFIX,".geno_norm.csv"), row.names=FALSE)
 write.csv(pheno_norm, file = paste0(OUT_PREFIX,".pheno_norm.csv"), row.names=FALSE)
 ## Non-parametric features
-write.csv(non.parametric.gen, file = paste0(OUT_PREFIX,".non.parametric.gen.csv"), row.names=FALSE)
+write.csv(geno_non_par, file = paste0(OUT_PREFIX,".geno_non_par.csv"), row.names=FALSE)
 write.csv(pheno_non_par, file = paste0(OUT_PREFIX,".pheno_non_par.csv"), row.names=FALSE)
 
 tictoc::toc(log = TRUE) # QTL analysis preprocessing
@@ -421,7 +421,7 @@ tictoc::toc(log = TRUE) # Normal QTL analysis
 tictoc::tic("Non-parametric QTL analysis")
 # Non-parametric QTL
 x_non_par <- qtl::read.cross("csvs",".",
-                paste0(OUT_PREFIX,".non.parametric.gen.csv"),
+                paste0(OUT_PREFIX,".geno_non_par.csv"),
                 paste0(OUT_PREFIX,".pheno_non_par.csv"))
 features_np <- colnames(x_non_par$pheno)
 set.seed(SEED)
@@ -601,7 +601,7 @@ num_indv_phend_n <- summary(x_norm)[[2]]
 
 # Non-parametric QTL
 x_non_par <- qtl::read.cross("csvs",".",
-                             paste0(OUT_PREFIX,".non.parametric.gen.csv"),
+                             paste0(OUT_PREFIX,".geno_non_par.csv"),
                              paste0(OUT_PREFIX,".pheno_non_par.csv"))
 features_np <- colnames(x_non_par$pheno)
 set.seed(SEED)
