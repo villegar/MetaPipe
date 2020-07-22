@@ -166,17 +166,17 @@ raw_data_non_par$GenoID <- with(raw_data_non_par,
 raw_data_non_par$ID <- raw_data_non_par$GenoID
 raw_data_non_par$GenoID <- NULL
 
-non.parametric.phe <- inner_join(raw_data_non_par,geno.map, by="ID")[,colnames(raw_data_non_par)]
-non.parametric.phe$Group <- NULL
-non.parametric.phe$Generation <- NULL
-non.parametric.gen <- rbind(geno.map[1:2,],inner_join(non.parametric.phe,geno.map, by="ID")[,colnames(geno.map)])
+pheno_non_par <- inner_join(raw_data_non_par,geno.map, by="ID")[,colnames(raw_data_non_par)]
+pheno_non_par$Group <- NULL
+pheno_non_par$Generation <- NULL
+non.parametric.gen <- rbind(geno.map[1:2,],inner_join(pheno_non_par,geno.map, by="ID")[,colnames(geno.map)])
 
 # Clean phenotypic data
-non.parametric.empty.features <- sapply(non.parametric.phe, function(x) all(is.na(x)) || all(is.infinite(x)))
+non.parametric.empty.features <- sapply(pheno_non_par, function(x) all(is.na(x)) || all(is.infinite(x)))
 normal.empty.features <- sapply(pheno_norm, function(x) all(is.na(x)) || all(is.infinite(x)))
-#non.parametric.phe.ncols <- ncol(non.parametric.phe)
+#pheno_non_par.ncols <- ncol(pheno_non_par)
 #pheno_norm.ncols <- ncol(pheno_norm)
-non.parametric.phe[non.parametric.empty.features] <- NULL
+pheno_non_par[non.parametric.empty.features] <- NULL
 pheno_norm[normal.empty.features] <- NULL
 
 if(any(non.parametric.empty.features)){
@@ -195,7 +195,7 @@ write.csv(geno_norm, file = paste0(OUT_PREFIX,".geno_norm.csv"), row.names=FALSE
 write.csv(pheno_norm, file = paste0(OUT_PREFIX,".pheno_norm.csv"), row.names=FALSE)
 ## Non-parametric features
 write.csv(non.parametric.gen, file = paste0(OUT_PREFIX,".non.parametric.gen.csv"), row.names=FALSE)
-write.csv(non.parametric.phe, file = paste0(OUT_PREFIX,".non.parametric.phe.csv"), row.names=FALSE)
+write.csv(pheno_non_par, file = paste0(OUT_PREFIX,".pheno_non_par.csv"), row.names=FALSE)
 
 toc(log = TRUE) # QTL analysis preprocessing
 tic("Normal QTL Analysis: Single scanone")
@@ -211,7 +211,7 @@ individuals.phenotyped <- summary(x.normal)[[2]]
 
 x.non.parametric <- read.cross("csvs",".",
                                paste0(OUT_PREFIX,".non.parametric.gen.csv"),
-                               paste0(OUT_PREFIX,".non.parametric.phe.csv"))
+                               paste0(OUT_PREFIX,".pheno_non_par.csv"))
 features.np <- colnames(x.non.parametric$pheno)
 x.non.parametric <- jittermap(x.non.parametric)
 x.non.parametric <- calc.genoprob(x.non.parametric, step=1, error.prob=0.001)
