@@ -153,10 +153,10 @@ raw_data_norm$GenoID <- with(raw_data_norm,
 raw_data_norm$ID <- raw_data_norm$GenoID
 raw_data_norm$GenoID <- NULL
 
-normal.phe <- inner_join(raw_data_norm,geno.map, by="ID")[,colnames(raw_data_norm)]
-normal.phe$Group <- NULL
-normal.phe$Generation <- NULL
-normal.gen <- rbind(geno.map[1:2,],inner_join(normal.phe,geno.map, by="ID")[,colnames(geno.map)])
+pheno_norm <- inner_join(raw_data_norm,geno.map, by="ID")[,colnames(raw_data_norm)]
+pheno_norm$Group <- NULL
+pheno_norm$Generation <- NULL
+normal.gen <- rbind(geno.map[1:2,],inner_join(pheno_norm,geno.map, by="ID")[,colnames(geno.map)])
 
 
 ## Non-parametric features
@@ -173,11 +173,11 @@ non.parametric.gen <- rbind(geno.map[1:2,],inner_join(non.parametric.phe,geno.ma
 
 # Clean phenotypic data
 non.parametric.empty.features <- sapply(non.parametric.phe, function(x) all(is.na(x)) || all(is.infinite(x)))
-normal.empty.features <- sapply(normal.phe, function(x) all(is.na(x)) || all(is.infinite(x)))
+normal.empty.features <- sapply(pheno_norm, function(x) all(is.na(x)) || all(is.infinite(x)))
 #non.parametric.phe.ncols <- ncol(non.parametric.phe)
-#normal.phe.ncols <- ncol(normal.phe)
+#pheno_norm.ncols <- ncol(pheno_norm)
 non.parametric.phe[non.parametric.empty.features] <- NULL
-normal.phe[normal.empty.features] <- NULL
+pheno_norm[normal.empty.features] <- NULL
 
 if(any(non.parametric.empty.features)){
   print(paste0("The following non-parametric features were removed (NAs):"))
@@ -192,7 +192,7 @@ if(any(normal.empty.features)){
 # Write genotypic and phenotypic dataset
 ## Normal features
 write.csv(normal.gen, file = paste0(OUT_PREFIX,".normal.gen.csv"), row.names=FALSE)
-write.csv(normal.phe, file = paste0(OUT_PREFIX,".normal.phe.csv"), row.names=FALSE)
+write.csv(pheno_norm, file = paste0(OUT_PREFIX,".pheno_norm.csv"), row.names=FALSE)
 ## Non-parametric features
 write.csv(non.parametric.gen, file = paste0(OUT_PREFIX,".non.parametric.gen.csv"), row.names=FALSE)
 write.csv(non.parametric.phe, file = paste0(OUT_PREFIX,".non.parametric.phe.csv"), row.names=FALSE)
@@ -202,7 +202,7 @@ tic("Normal QTL Analysis: Single scanone")
 # QTL Analysis
 x.normal <- read.cross("csvs",".",
                 paste0(OUT_PREFIX,".normal.gen.csv"),
-                paste0(OUT_PREFIX,".normal.phe.csv"))
+                paste0(OUT_PREFIX,".pheno_norm.csv"))
 features <- colnames(x.normal$pheno)
 set.seed(SEED)
 x.normal <- jittermap(x.normal)
