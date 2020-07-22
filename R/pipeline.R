@@ -149,7 +149,7 @@ geno.map$ID <- as.character(geno.map$ID)
 ## Normal features
 colnames(raw_data_norm)[1] <- "ID"
 raw_data_norm$GenoID <- with(raw_data_norm,
-                                         gsub(" ","0",paste0(Generation,"_",sprintf("%3s",as.character(ID))))
+                             gsub(" ","0",paste0(Generation,"_",sprintf("%3s",as.character(ID))))
 )
 raw_data_norm$ID <- raw_data_norm$GenoID
 raw_data_norm$GenoID <- NULL
