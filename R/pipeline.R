@@ -177,16 +177,16 @@ geno_non_par <- rbind(genetic_map[1:2, ],
                      )
 
 # Clean phenotypic data
-non.parametric.empty.features <- sapply(pheno_non_par, function(x) all(is.na(x)) || all(is.infinite(x)))
+empty_features_non_par <- sapply(pheno_non_par, function(x) all(is.na(x)) || all(is.infinite(x)))
 normal.empty.features <- sapply(pheno_norm, function(x) all(is.na(x)) || all(is.infinite(x)))
 #pheno_non_par.ncols <- ncol(pheno_non_par)
 #pheno_norm.ncols <- ncol(pheno_norm)
-pheno_non_par[non.parametric.empty.features] <- NULL
+pheno_non_par[empty_features_non_par] <- NULL
 pheno_norm[normal.empty.features] <- NULL
 
-if(any(non.parametric.empty.features)) {
+if(any(empty_features_non_par)) {
   print(paste0("The following non-parametric features were removed (NAs):"))
-  print(names(non.parametric.empty.features)[non.parametric.empty.features])
+  print(names(empty_features_non_par)[empty_features_non_par])
 }
 
 if(any(normal.empty.features)) {
