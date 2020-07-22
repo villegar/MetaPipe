@@ -142,9 +142,9 @@ tictoc::toc(log = TRUE) # Transformed data post-processing
 tictoc::tic("QTL analysis")
 tictoc::tic("QTL analysis preprocessing")
 # Prepocessing data for QTL Analysis
-geno.map <- read.csv("OriginalMap.csv")
-colnames(geno.map)[1] <- "ID"
-geno.map$ID <- as.character(geno.map$ID)
+genetic_map <- read.csv("OriginalMap.csv")
+colnames(genetic_map)[1] <- "ID"
+genetic_map$ID <- as.character(genetic_map$ID)
 
 ## Normal features
 colnames(raw_data_norm)[1] <- "ID"
@@ -154,10 +154,10 @@ raw_data_norm$GenoID <- with(raw_data_norm,
 raw_data_norm$ID <- raw_data_norm$GenoID
 raw_data_norm$GenoID <- NULL
 
-pheno_norm <- dplyr::inner_join(raw_data_norm,geno.map, by="ID")[,colnames(raw_data_norm)]
+pheno_norm <- dplyr::inner_join(raw_data_norm,genetic_map, by="ID")[,colnames(raw_data_norm)]
 pheno_norm$Group <- NULL
 pheno_norm$Generation <- NULL
-geno_norm <- rbind(geno.map[1:2,],inner_join(pheno_norm,geno.map, by="ID")[,colnames(geno.map)])
+geno_norm <- rbind(genetic_map[1:2,],inner_join(pheno_norm,genetic_map, by="ID")[,colnames(genetic_map)])
 
 
 ## Non-parametric features
@@ -168,10 +168,10 @@ raw_data_non_par$GenoID <- with(raw_data_non_par,
 raw_data_non_par$ID <- raw_data_non_par$GenoID
 raw_data_non_par$GenoID <- NULL
 
-pheno_non_par <- inner_join(raw_data_non_par,geno.map, by="ID")[,colnames(raw_data_non_par)]
+pheno_non_par <- inner_join(raw_data_non_par,genetic_map, by="ID")[,colnames(raw_data_non_par)]
 pheno_non_par$Group <- NULL
 pheno_non_par$Generation <- NULL
-geno_non_par <- rbind(geno.map[1:2,],inner_join(pheno_non_par,geno.map, by="ID")[,colnames(geno.map)])
+geno_non_par <- rbind(genetic_map[1:2,],inner_join(pheno_non_par,genetic_map, by="ID")[,colnames(genetic_map)])
 
 # Clean phenotypic data
 non.parametric.empty.features <- sapply(pheno_non_par, function(x) all(is.na(x)) || all(is.infinite(x)))
