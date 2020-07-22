@@ -153,11 +153,11 @@ raw_data_norm$GenoID <- with(raw_data_norm,
 raw_data_norm$ID <- raw_data_norm$GenoID
 raw_data_norm$GenoID <- NULL
 
-pheno_norm <- dplyr::inner_join(raw_data_norm,genetic_map, by="ID")[, colnames(raw_data_norm)]
+pheno_norm <- dplyr::inner_join(raw_data_norm,genetic_map, by = "ID")[, colnames(raw_data_norm)]
 pheno_norm$Group <- NULL
 pheno_norm$Generation <- NULL
 geno_norm <- rbind(genetic_map[1:2, ],
-                   dplyr::inner_join(pheno_norm, genetic_map, by="ID")[, colnames(genetic_map)]
+                   dplyr::inner_join(pheno_norm, genetic_map, by = "ID")[, colnames(genetic_map)]
                   )
 
 
@@ -168,11 +168,11 @@ raw_data_non_par$GenoID <- with(raw_data_non_par,
 raw_data_non_par$ID <- raw_data_non_par$GenoID
 raw_data_non_par$GenoID <- NULL
 
-pheno_non_par <- dplyr::inner_join(raw_data_non_par, genetic_map, by="ID")[, colnames(raw_data_non_par)]
+pheno_non_par <- dplyr::inner_join(raw_data_non_par, genetic_map, by = "ID")[, colnames(raw_data_non_par)]
 pheno_non_par$Group <- NULL
 pheno_non_par$Generation <- NULL
 geno_non_par <- rbind(genetic_map[1:2, ],
-                      dplyr::inner_join(pheno_non_par, genetic_map, by="ID")[, colnames(genetic_map)]
+                      dplyr::inner_join(pheno_non_par, genetic_map, by = "ID")[, colnames(genetic_map)]
                      )
 
 # Clean phenotypic data
