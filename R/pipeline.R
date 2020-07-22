@@ -196,22 +196,22 @@ if(any(empty_features_norm)) {
 
 # Write genotypic and phenotypic dataset
 ## Normal features
-write.csv(geno_norm, file = paste0(OUT_PREFIX,".geno_norm.csv"), row.names=FALSE)
-write.csv(pheno_norm, file = paste0(OUT_PREFIX,".pheno_norm.csv"), row.names=FALSE)
+write.csv(geno_norm, file = paste0(OUT_PREFIX,"_geno_norm.csv"), row.names=FALSE)
+write.csv(pheno_norm, file = paste0(OUT_PREFIX, "_pheno_norm.csv"), row.names=FALSE)
 ## Non-parametric features
-write.csv(geno_non_par, file = paste0(OUT_PREFIX,".geno_non_par.csv"), row.names=FALSE)
-write.csv(pheno_non_par, file = paste0(OUT_PREFIX,".pheno_non_par.csv"), row.names=FALSE)
+write.csv(geno_non_par, file = paste0(OUT_PREFIX, "_geno_non_par.csv"), row.names=FALSE)
+write.csv(pheno_non_par, file = paste0(OUT_PREFIX, "_pheno_non_par.csv"), row.names=FALSE)
 
 tictoc::toc(log = TRUE) # QTL analysis preprocessing
 tictoc::tic("Normal QTL analysis")
 # QTL Analysis
-x_norm <- qtl::read.cross("csvs",".",
-                paste0(OUT_PREFIX,".geno_norm.csv"),
-                paste0(OUT_PREFIX,".pheno_norm.csv"))
+x_norm <- qtl::read.cross("csvs", ".",
+                          paste0(OUT_PREFIX, "_geno_norm.csv"),
+                          paste0(OUT_PREFIX, "_pheno_norm.csv"))
 features <- colnames(x_norm$pheno)
 set.seed(SEED)
 x_norm <- qtl::jittermap(x_norm)
-x_norm <- qtl::calc.genoprob(x_norm, step=1, error.prob=0.001)
+x_norm <- qtl::calc.genoprob(x_norm, step = 1, error.prob = 0.001)
 num_indv_phend_n <- summary(x_norm)[[2]]
 print("Starting with QTL Analysis")
 print("Starting with Normal QTL Analysis")
@@ -418,18 +418,18 @@ parallel::stopCluster(cl) # Stop cluster
 #tmp <- x_norm_sum_map
 #tmp$qtl[!is.na(tmp$qtl)] <- 1:length(tmp$qtl[!is.na(tmp$qtl)])
 #x_norm_sum_map <- tmp
-write.csv(x_norm_sum_map, file = paste0(OUT_PREFIX,".normal.summary.mapping.csv"), row.names=FALSE, na="")
+write.csv(x_norm_sum_map, file = paste0(OUT_PREFIX, ".normal.summary.mapping.csv"), row.names = FALSE, na = "")
 
 tictoc::toc(log = TRUE) # Normal QTL analysis
 tictoc::tic("Non-parametric QTL analysis")
 # Non-parametric QTL
-x_non_par <- qtl::read.cross("csvs",".",
-                paste0(OUT_PREFIX,".geno_non_par.csv"),
-                paste0(OUT_PREFIX,".pheno_non_par.csv"))
+x_non_par <- qtl::read.cross("csvs", ".",
+                             paste0(OUT_PREFIX, "_geno_non_par.csv"),
+                             paste0(OUT_PREFIX, "_pheno_non_par.csv"))
 features_np <- colnames(x_non_par$pheno)
 set.seed(SEED)
 x_non_par <- qtl::jittermap(x_non_par)
-x_non_par <- qtl::calc.genoprob(x_non_par, step=1, error.prob=0.001)
+x_non_par <- qtl::calc.genoprob(x_non_par, step = 1, error.prob = 0.001)
 num_indv_phend_np <- summary(x_non_par)[[2]]
 print("Starting with Non-Parametric QTL Analysis")
 

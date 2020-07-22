@@ -195,30 +195,30 @@ if(any(empty_features_norm)) {
 
 # Write genotypic and phenotypic dataset
 ## Normal features
-write.csv(geno_norm, file = paste0(OUT_PREFIX,".geno_norm.csv"), row.names=FALSE)
-write.csv(pheno_norm, file = paste0(OUT_PREFIX,".pheno_norm.csv"), row.names=FALSE)
+write.csv(geno_norm, file = paste0(OUT_PREFIX, "_geno_norm.csv"), row.names=FALSE)
+write.csv(pheno_norm, file = paste0(OUT_PREFIX, "_pheno_norm.csv"), row.names=FALSE)
 ## Non-parametric features
-write.csv(geno_non_par, file = paste0(OUT_PREFIX,".geno_non_par.csv"), row.names=FALSE)
-write.csv(pheno_non_par, file = paste0(OUT_PREFIX,".pheno_non_par.csv"), row.names=FALSE)
+write.csv(geno_non_par, file = paste0(OUT_PREFIX, "_geno_non_par.csv"), row.names=FALSE)
+write.csv(pheno_non_par, file = paste0(OUT_PREFIX, "_pheno_non_par.csv"), row.names=FALSE)
 
 toc(log = TRUE) # QTL analysis preprocessing
 tic("Normal QTL Analysis: Single scanone")
 # QTL Analysis
-x.normal <- read.cross("csvs",".",
-                paste0(OUT_PREFIX,".geno_norm.csv"),
-                paste0(OUT_PREFIX,".pheno_norm.csv"))
+x.normal <- read.cross("csvs", ".",
+                       paste0(OUT_PREFIX, "_geno_norm.csv"),
+                       paste0(OUT_PREFIX, "_pheno_norm.csv"))
 features <- colnames(x.normal$pheno)
 set.seed(SEED)
 x.normal <- jittermap(x.normal)
-x.normal <- calc.genoprob(x.normal, step=1, error.prob=0.001)
+x.normal <- calc.genoprob(x.normal, step = 1, error.prob = 0.001)
 individuals.phenotyped <- summary(x.normal)[[2]]
 
-x.non.parametric <- read.cross("csvs",".",
-                               paste0(OUT_PREFIX,".geno_non_par.csv"),
-                               paste0(OUT_PREFIX,".pheno_non_par.csv"))
+x.non.parametric <- read.cross("csvs", ".",
+                               paste0(OUT_PREFIX, "_geno_non_par.csv"),
+                               paste0(OUT_PREFIX, "_pheno_non_par.csv"))
 features.np <- colnames(x.non.parametric$pheno)
 x.non.parametric <- jittermap(x.non.parametric)
-x.non.parametric <- calc.genoprob(x.non.parametric, step=1, error.prob=0.001)
+x.non.parametric <- calc.genoprob(x.non.parametric, step = 1, error.prob = 0.001)
 
 print("Starting with QTL Analysis")
 print("Starting with Normal QTL Analysis")
