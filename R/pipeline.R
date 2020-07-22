@@ -157,7 +157,7 @@ raw_data_norm$GenoID <- NULL
 pheno_norm <- dplyr::inner_join(raw_data_norm,geno.map, by="ID")[,colnames(raw_data_norm)]
 pheno_norm$Group <- NULL
 pheno_norm$Generation <- NULL
-normal.gen <- rbind(geno.map[1:2,],inner_join(pheno_norm,geno.map, by="ID")[,colnames(geno.map)])
+geno_norm <- rbind(geno.map[1:2,],inner_join(pheno_norm,geno.map, by="ID")[,colnames(geno.map)])
 
 
 ## Non-parametric features
@@ -193,7 +193,7 @@ if(any(normal.empty.features)){
 
 # Write genotypic and phenotypic dataset
 ## Normal features
-write.csv(normal.gen, file = paste0(OUT_PREFIX,".normal.gen.csv"), row.names=FALSE)
+write.csv(geno_norm, file = paste0(OUT_PREFIX,".geno_norm.csv"), row.names=FALSE)
 write.csv(pheno_norm, file = paste0(OUT_PREFIX,".pheno_norm.csv"), row.names=FALSE)
 ## Non-parametric features
 write.csv(non.parametric.gen, file = paste0(OUT_PREFIX,".non.parametric.gen.csv"), row.names=FALSE)
@@ -203,7 +203,7 @@ tictoc::toc(log = TRUE) # QTL analysis preprocessing
 tictoc::tic("Normal QTL analysis")
 # QTL Analysis
 x_norm <- qtl::read.cross("csvs",".",
-                paste0(OUT_PREFIX,".normal.gen.csv"),
+                paste0(OUT_PREFIX,".geno_norm.csv"),
                 paste0(OUT_PREFIX,".pheno_norm.csv"))
 features <- colnames(x_norm$pheno)
 set.seed(SEED)
@@ -591,7 +591,7 @@ write.csv(x_non_par_sum_map, file = paste0(OUT_PREFIX,".non.parametric.summary.m
 tictoc::toc(log = TRUE) # Non-parametric QTL analysis
 tictoc::tic("QTL analysis postprocessing")
 x_norm <- qtl::read.cross("csvs",".",
-                          paste0(OUT_PREFIX,".normal.gen.csv"),
+                          paste0(OUT_PREFIX,".geno_norm.csv"),
                           paste0(OUT_PREFIX,".pheno_norm.csv"))
 features <- colnames(x_norm$pheno)
 set.seed(SEED)
