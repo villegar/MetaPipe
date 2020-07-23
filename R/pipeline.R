@@ -217,29 +217,30 @@ print("Starting with QTL Analysis")
 print("Starting with Normal QTL Analysis")
 
 # Obtain LOD scores for all features and markers
-cl <- parallel::makeCluster(ceiling(CPUS*1), outfile=paste0('./info_parallel_QTL.log'))
-doParallel::registerDoParallel(cl)
-x_norm_scone <- foreach(i=2:ncol(x_norm$pheno),
-                     .combine = cbind) %dopar% {
-                       
-                       # Run single scan
-                       normal.scanone <- qtl::scanone(x_norm, pheno.col = i,  model = "normal", method = "hk")
-                       if(i == 2){
-                         record <- data.frame(
-                           chr = normal.scanone$chr,
-                           pos = normal.scanone$pos,
-                           lod = normal.scanone$lod,
-                           row.names = rownames(normal.scanone)
-                         )
-                         colnames(record)[3] <- features[i]
-                       }
-                       else{
-                         record <- data.frame(data = normal.scanone$lod)
-                         colnames(record) <- features[i]
-                       }
-                       record
-                     }
-parallel::stopCluster(cl) # Stop cluster
+# cl <- parallel::makeCluster(ceiling(CPUS*1), outfile=paste0('./info_parallel_QTL.log'))
+# doParallel::registerDoParallel(cl)
+# x_norm_scone <- foreach(i=2:ncol(x_norm$pheno),
+#                      .combine = cbind) %dopar% {
+#                        
+#                        # Run single scan
+#                        normal.scanone <- qtl::scanone(x_norm, pheno.col = i,  model = "normal", method = "hk")
+#                        if(i == 2){
+#                          record <- data.frame(
+#                            chr = normal.scanone$chr,
+#                            pos = normal.scanone$pos,
+#                            lod = normal.scanone$lod,
+#                            row.names = rownames(normal.scanone)
+#                          )
+#                          colnames(record)[3] <- features[i]
+#                        }
+#                        else{
+#                          record <- data.frame(data = normal.scanone$lod)
+#                          colnames(record) <- features[i]
+#                        }
+#                        record
+#                      }
+# parallel::stopCluster(cl) # Stop cluster
+x_norm_scone <- MetaPipe::qtl_scone(x_norm, CPUS)
 write.csv(x_norm_scone, file = paste0(OUT_PREFIX,".normal.scanone.csv"))
 
 cl <- parallel::makeCluster(ceiling(CPUS*0.5), outfile=paste0('./info_parallel_QTL.log'))
