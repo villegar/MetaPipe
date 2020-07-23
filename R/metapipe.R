@@ -250,11 +250,11 @@ assess_normality_postprocessing <- function(raw_data,
   
   # Generate basic stats from the normalisation process
   raw_data_rows <- nrow(raw_data)
-  norm_features_normalised_count <- nrow(raw_data_normalised_norm[raw_data_normalised_norm$transf == "", ]) / raw_data_rows
+  norm_features_normalised_count <- nrow(raw_data_normalised_norm[raw_data_normalised_norm$transf != "", ]) / raw_data_rows
   norm_features_count <- nrow(raw_data_normalised_norm) / raw_data_rows
   total_features <- nrow(raw_data_normalised)/raw_data_rows
   transformations <- unique(raw_data_normalised[c("transf", "transf.value")])
-  transformations <- transformations[-nrow(transformations), ] # Drop blank transformation, NULL transformation
+  transformations <- transformations[nrow(transformations), ] # Drop blank transformation, NULL transformation
   sorting <- order(transformations$transf, decreasing = TRUE)
   transformations <- transformations[sorting, ]
   
