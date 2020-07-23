@@ -328,61 +328,67 @@ assess_normality_stats <- function(out_prefix = "metapipe") {
   message(msg)
 }
 
-# qtl_preprocessing <- function(genetic_map, ) {
-#   geno.map <- read.csv("OriginalMap.csv")
-#   colnames(geno.map)[1] <- "ID"
-#   geno.map$ID <- as.character(geno.map$ID)
+qtl_preprocessing <- function(genetic_map, out_prefix = "metapipe") {
+#   genetic_map <- read.csv("OriginalMap.csv")
+#   colnames(genetic_map)[1] <- "ID"
+#   genetic_map$ID <- as.character(genetic_map$ID)
 #   
-#   ## Normal features
-#   colnames(transformed.raw_data_norm)[1] <- "ID"
-#   transformed.raw_data_norm$GenoID <- with(transformed.raw_data_norm,
-#                                            gsub(" ","0",paste0(Generation,"_",sprintf("%3s",as.character(ID))))
-#   )
-#   transformed.raw_data_norm$ID <- transformed.raw_data_norm$GenoID
-#   transformed.raw_data_norm$GenoID <- NULL
+  ## Normal features
+  raw_data_norm <- read.csv(paste0(out_prefix,"_raw_data_norm.csv"), stringsAsFactors = FALSE)
+#   colnames(raw_data_norm)[1] <- "ID"
+#   raw_data_norm$GenoID <- with(raw_data_norm,
+#                                gsub(" ", "0", paste0(Generation, "_", sprintf("%3s", as.character(ID))))
+#                               )
+#   raw_data_norm$ID <- raw_data_norm$GenoID
+#   raw_data_norm$GenoID <- NULL
 #   
-#   normal.phe <- dplyr::inner_join(transformed.raw_data_norm,geno.map, by="ID")[,colnames(transformed.raw_data_norm)]
-#   normal.phe$Group <- NULL
-#   normal.phe$Generation <- NULL
-#   normal.gen <- rbind(geno.map[1:2,],inner_join(normal.phe,geno.map, by="ID")[,colnames(geno.map)])
+  pheno_norm <- dplyr::inner_join(raw_data_norm, genetic_map, by = "ID")[, colnames(raw_data_norm)]
+  pheno_norm$Group <- NULL
+  pheno_norm$Generation <- NULL
+  geno_norm <- rbind(genetic_map[1:2, ],
+                     dplyr::inner_join(pheno_norm, genetic_map, by = "ID")[, colnames(genetic_map)]
+                    )
 #   
 #   
-#   ## Non-parametric features
-#   colnames(transformed.raw_data_non_par)[1] <- "ID"
-#   transformed.raw_data_non_par$GenoID <- with(transformed.raw_data_non_par,
-#                                               gsub(" ","0",paste0(Generation,"_",sprintf("%3s",as.character(ID))))
-#   )
-#   transformed.raw_data_non_par$ID <- transformed.raw_data_non_par$GenoID
-#   transformed.raw_data_non_par$GenoID <- NULL
+  ## Non-parametric features
+  raw_data_non_par <- read.csv(paste0(out_prefix, "_raw_data_non_par.csv"), stringsAsFactors = FALSE)
+#   colnames(raw_data_non_par)[1] <- "ID"
+#   raw_data_non_par$GenoID <- with(raw_data_non_par,
+#                                   gsub(" ", "0", paste0(Generation, "_", sprintf("%3s", as.character(ID))))
+                                 # )
+#   raw_data_non_par$ID <- raw_data_non_par$GenoID
+#   raw_data_non_par$GenoID <- NULL
 #   
-#   non.parametric.phe <- inner_join(transformed.raw_data_non_par,geno.map, by="ID")[,colnames(transformed.raw_data_non_par)]
-#   non.parametric.phe$Group <- NULL
-#   non.parametric.phe$Generation <- NULL
-#   non.parametric.gen <- rbind(geno.map[1:2,],inner_join(non.parametric.phe,geno.map, by="ID")[,colnames(geno.map)])
+#   pheno_non_par <- dplyr::inner_join(raw_data_non_par, genetic_map, by = "ID")[, colnames(raw_data_non_par)]
+#   pheno_non_par$Group <- NULL
+#   pheno_non_par$Generation <- NULL
+#   non.parametric.gen <- rbind(genetic_map[1:2, ],
+#                               dplyr::inner_join(pheno_non_par, genetic_map, by = "ID")[, colnames(genetic_map)]
+#                              )
 #   
 #   # Clean phenotypic data
-#   non.parametric.empty.features <- sapply(non.parametric.phe, function(x) all(is.na(x)) || all(is.infinite(x)))
-#   normal.empty.features <- sapply(normal.phe, function(x) all(is.na(x)) || all(is.infinite(x)))
-#   #non.parametric.phe.ncols <- ncol(non.parametric.phe)
-#   #normal.phe.ncols <- ncol(normal.phe)
-#   non.parametric.phe[non.parametric.empty.features] <- NULL
-#   normal.phe[normal.empty.features] <- NULL
+#   empty_features_non_par <- sapply(pheno_non_par, function(x) all(is.na(x)) || all(is.infinite(x)))
+#   empty_features_norm <- sapply(pheno_norm, function(x) all(is.na(x)) || all(is.infinite(x)))
+#   #pheno_non_par.ncols <- ncol(pheno_non_par)
+#   #pheno_norm.ncols <- ncol(pheno_norm)
+#   pheno_non_par[empty_features_non_par] <- NULL
+#   pheno_norm[empty_features_norm] <- NULL
 #   
-#   if(any(non.parametric.empty.features)){
+#   if(any(empty_features_non_par)) {
 #     print(paste0("The following non-parametric features were removed (NAs):"))
-#     print(names(non.parametric.empty.features)[non.parametric.empty.features])
+#     print(names(empty_features_non_par)[empty_features_non_par])
 #   }
 #   
-#   if(any(normal.empty.features)){
+#   if(any(empty_features_norm)) {
 #     print(paste0("The following normal features were removed (NAs):"))
-#     print(names(normal.empty.features)[normal.empty.features])
+#     print(names(empty_features_norm)[empty_features_norm])
 #   }
 #   
 #   # Write genotypic and phenotypic dataset
 #   ## Normal features
-#   write.csv(normal.gen, file = paste0(OUT_PREFIX,".normal.gen.csv"), row.names=FALSE)
-#   write.csv(normal.phe, file = paste0(OUT_PREFIX,".normal.phe.csv"), row.names=FALSE)
+#   write.csv(geno_norm, file = paste0(OUT_PREFIX,".geno_norm.csv"), row.names=FALSE)
+#   write.csv(pheno_norm, file = paste0(OUT_PREFIX,".pheno_norm.csv"), row.names=FALSE)
 #   ## Non-parametric features
 #   write.csv(non.parametric.gen, file = paste0(OUT_PREFIX,".non.parametric.gen.csv"), row.names=FALSE)
-#   write.csv(non.parametric.phe, file = paste0(OUT_PREFIX,".non.parametric.phe.csv"), row.names=FALSE)
-# }
+#   write.csv(pheno_non_par, file = paste0(OUT_PREFIX,".pheno_non_par.csv"), row.names=FALSE)
+}
