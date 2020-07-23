@@ -328,6 +328,32 @@ assess_normality_stats <- function(out_prefix = "metapipe") {
   message(msg)
 }
 
+qtl_scone <- function(x_data, features, CPUS = 1,  ...) {
+  cl <- parallel::makeCluster(ceiling(CPUS))
+  doParallel::registerDoParallel(cl)
+  x_scone <- foreach(i = 2:ncol(x_norm$pheno),
+                     .combine = cbind) %dopar% {
+                       # Run single scan
+                       scone <- qtl::scanone(x_norm, pheno.col = i,  ...) #model = "normal", method = "hk")
+                       if(i == 2) {
+                         record <- data.frame(
+                           chr = scone$chr,
+                           pos = scone$pos,
+                           lod = scone$lod,
+                           row.names = rownames(scone)
+                         )
+                         colnames(record)[3] <- features[i]
+                       }
+                       else {
+                         record <- data.frame(data = scone$lod)
+                         colnames(record) <- features[i]
+                       }
+                       record
+                     }
+  parallel::stopCluster(cl) # Stop cluster
+  return(x_scone)
+}
+
 qtl_preprocessing <- function(genetic_map, out_prefix = "metapipe") {
 #   genetic_map <- read.csv("OriginalMap.csv")
 #   colnames(genetic_map)[1] <- "ID"
