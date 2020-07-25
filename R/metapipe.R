@@ -340,8 +340,13 @@ assess_normality_stats <- function(out_prefix = "metapipe") {
 #'
 # @examples
 qtl_scone <- function(x_data, features, cpus = 1,  ...) {
-  cl <- parallel::makeCluster(ceiling(CPUS))
+  # Start parallel backend
+  cl <- parallel::makeCluster(cpus)
   doParallel::registerDoParallel(cl)
+  
+  # Load binary operator for backend
+  `%dopar%` <- foreach::`%dopar%`
+  
   x_scone <- foreach(i = 2:ncol(x_norm$pheno),
                      .combine = cbind) %dopar% {
                        # Run single scan
