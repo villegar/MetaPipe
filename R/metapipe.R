@@ -364,6 +364,21 @@ random_genotypes <- function(genotypes = c("A", "H", "B"), size = 100, seed = NU
   return(genotypes[sample(1:length(genotypes), size, replace = TRUE)])
 }
 
+#' Generate a pseudo-random genetic map. Particularly useful for testing.
+#'
+#' @param genotypes vector containing the base genotypes
+#' @param lg vector containing the linkage groups
+#' @param markers number of markers per linkage group
+#' @param population population size (rows)
+#' @param seed seed for reproducibility
+#'
+#' @return data frame containing the pseudo-random genetic map.
+#' @export
+#'
+#' @examples
+#' random_map()
+#' random_map(genotypes = c("nn", "np"))
+#' random_map(population = 3)
 random_map <- function(genotypes = c("A", "H", "B"), lg = 1:10, markers = 10, population = 100, seed = NULL) {
   marker_names <- paste0(rep(paste0("S", lg, "_"), each = markers), 1:markers)
   # Temporal vector for LG and positions
