@@ -364,6 +364,26 @@ random_genotypes <- function(genotypes = c("A", "H", "B"), size = 100, seed = NU
   return(genotypes[sample(1:length(genotypes), size, replace = TRUE)])
 }
 
+random_map <- function(genotypes = c("A", "H", "B"), lg = 1:10, markers = 10, population = 100, seed = NULL) {
+  marker_names <- paste0(rep(paste0("S", lg, "_"), each = markers), 1:markers)
+  # Temporal vector for LG and positions
+  tmp <- data.frame(lg = rep(lg, each = markers), pos = rep(1:markers))
+  
+  # Empty map
+  map <- data.frame(ID = c("", "", 1:population), stringsAsFactors = FALSE)
+  for (k in 1:length(marker_names)) {
+    if (!is.null(seed)) 
+      seed <- seed + k
+    new_genotypes <- c(tmp[k, 1], tmp[k, 2], random_genotypes(genotypes, population, seed))
+    map <- cbind(map, new_genotypes)
+  }
+  
+  # Add marker names (columns)
+  colnames(map) <- c("ID", marker_names)
+  
+  return(map)
+}
+
 #' Perform QTL mapping scanone to obtain LOD scores for all features and markers
 #'
 #' @param x_data cross-file containing genetic map data and features
