@@ -232,5 +232,14 @@ test_that("normality assessment statistics work", {
 })
 
 test_that("random genotypes works", {
-  expect_equal(c("A","B","A"), random_genotypes(size = 3))
+  expect_equal(c("A","B","A"), random_genotypes(size = 3, seed = 1))
+})
+
+test_that("random map works", {
+  expected_map <- data.frame(ID = c("", "", 1, 2),
+                             S1_1 = c(1, 1, "A", "B"),
+                             S1_2 = c(1, 2, "H", "H"),
+                             S2_1 = c(2, 1, "A", "H"),
+                             S2_2 = c(2, 2, "A", "H"))
+  expect_equal(expected_map, random_map(lg = 1:2, markers = 2, population = 2, seed = 123))
 })
