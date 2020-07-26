@@ -366,6 +366,9 @@ qtl_scone <- function(x_data, features, cpus = 1,  ...) {
   # Compute feature indices, accounting for the offset of ID and properties
   feature_indices <- 2:ncol(x_data$pheno)
   
+  # Extract feature names
+  features <- colnames(x_data$pheno)
+  
   x_scone <- foreach::foreach(i = feature_indices,
                      .combine = cbind) %dopar% {
                        # Run single scan
