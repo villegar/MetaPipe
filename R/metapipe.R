@@ -358,8 +358,9 @@ assess_normality_stats <- function(out_prefix = "metapipe") {
 #' random_genotypes()
 #' random_genotypes(genotypes = c("nn", "np"))
 #' random_genotypes(size = 3)
-random_genotypes <- function(genotypes = c("A", "H", "B"), size = 100, seed = 1) {
-  set.seed(seed)
+random_genotypes <- function(genotypes = c("A", "H", "B"), size = 100, seed = NULL) {
+  if (!is.null(seed))
+    set.seed(seed)
   return(genotypes[sample(1:length(genotypes), size, replace = TRUE)])
 }
 
