@@ -347,7 +347,6 @@ assess_normality_stats <- function(out_prefix = "metapipe") {
 #' Perform QTL mapping scanone to obtain LOD scores for all features and markers
 #'
 #' @param x_data cross-file containing genetic map data and features
-#' @param features feature names
 #' @param cpus number of CPUS to be used
 #' @param ... S4 parameters for R/qtl library
 #'
@@ -355,7 +354,7 @@ assess_normality_stats <- function(out_prefix = "metapipe") {
 #' @export
 #'
 # @examples
-qtl_scone <- function(x_data, features, cpus = 1,  ...) {
+qtl_scone <- function(x_data, cpus = 1,  ...) {
   # Start parallel backend
   cl <- parallel::makeCluster(cpus)
   doParallel::registerDoParallel(cl)
