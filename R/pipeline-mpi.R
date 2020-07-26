@@ -204,7 +204,7 @@ write.csv(pheno_non_par, file = paste0(OUT_PREFIX, "_pheno_non_par.csv"), row.na
 toc(log = TRUE) # QTL analysis preprocessing
 tic("Normal QTL Analysis: Single scanone")
 # QTL Analysis
-x.normal <- read.cross("csvs", ".",
+x.normal <- read.cross("csvs", here::here(),
                        paste0(OUT_PREFIX, "_geno_norm.csv"),
                        paste0(OUT_PREFIX, "_pheno_norm.csv"))
 features <- colnames(x.normal$pheno)
@@ -213,7 +213,7 @@ x.normal <- jittermap(x.normal)
 x.normal <- calc.genoprob(x.normal, step = 1, error.prob = 0.001)
 individuals.phenotyped <- summary(x.normal)[[2]]
 
-x.non.parametric <- read.cross("csvs", ".",
+x.non.parametric <- read.cross("csvs", here::here(),
                                paste0(OUT_PREFIX, "_geno_non_par.csv"),
                                paste0(OUT_PREFIX, "_pheno_non_par.csv"))
 features.np <- colnames(x.non.parametric$pheno)
@@ -617,10 +617,10 @@ effect.plots <- foreach(i=1:nrow(t.qtl),
 closeCluster(cl) # Stop cluster
 #stopCluster.MPIcluster(c1)
 
-write.csv(x.normal.scanone, file = paste0(OUT_PREFIX,".normal.scanone.csv"))
-write.csv(x.normal.summary.mapping, file = paste0(OUT_PREFIX,".normal.summary.mapping.csv"), row.names=FALSE, na="")
-write.csv(x.non.parametric.scanone, file = paste0(OUT_PREFIX,".non.parametric.scanone.csv"))
-write.csv(x.non.parametric.summary.mapping, file = paste0(OUT_PREFIX,".non.parametric.summary.mapping.csv"), row.names=FALSE, na="")
+write.csv(x.normal.scanone, file = paste0(OUT_PREFIX,"_norm_scanone.csv"))
+write.csv(x.normal.summary.mapping, file = paste0(OUT_PREFIX,"_norm_summ_map.csv"), row.names=FALSE, na="")
+write.csv(x.non.parametric.scanone, file = paste0(OUT_PREFIX,"_non_par_scanone.csv"))
+write.csv(x.non.parametric.summary.mapping, file = paste0(OUT_PREFIX,"_non_par_summ_map.csv"), row.names=FALSE, na="")
 write.csv(t.qtl, file = paste0(OUT_PREFIX,".true.qtl.csv"), row.names=FALSE, na="")
 write.csv(threshold3.qtl, file = paste0(OUT_PREFIX,".threshold3.qtl.csv"), row.names=FALSE, na="")
 

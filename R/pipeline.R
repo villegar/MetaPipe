@@ -205,7 +205,7 @@ write.csv(pheno_non_par, file = paste0(OUT_PREFIX, "_pheno_non_par.csv"), row.na
 tictoc::toc(log = TRUE) # QTL analysis preprocessing
 tictoc::tic("Normal QTL analysis")
 # QTL Analysis
-x_norm <- qtl::read.cross("csvs", ".",
+x_norm <- qtl::read.cross("csvs", here::here(),
                           paste0(OUT_PREFIX, "_geno_norm.csv"),
                           paste0(OUT_PREFIX, "_pheno_norm.csv"))
 features <- colnames(x_norm$pheno)
@@ -241,7 +241,7 @@ print("Starting with Normal QTL Analysis")
 #                      }
 # parallel::stopCluster(cl) # Stop cluster
 x_norm_scone <- MetaPipe::qtl_scone(x_norm, CPUS)
-write.csv(x_norm_scone, file = paste0(OUT_PREFIX,".normal.scanone.csv"))
+write.csv(x_norm_scone, file = paste0(OUT_PREFIX, "_normal_scanone.csv"))
 
 cl <- parallel::makeCluster(ceiling(CPUS*0.5), outfile=paste0('./info_parallel_QTL.log'))
 doParallel::registerDoParallel(cl)
@@ -419,12 +419,12 @@ parallel::stopCluster(cl) # Stop cluster
 #tmp <- x_norm_sum_map
 #tmp$qtl[!is.na(tmp$qtl)] <- 1:length(tmp$qtl[!is.na(tmp$qtl)])
 #x_norm_sum_map <- tmp
-write.csv(x_norm_sum_map, file = paste0(OUT_PREFIX, ".normal.summary.mapping.csv"), row.names = FALSE, na = "")
+write.csv(x_norm_sum_map, file = paste0(OUT_PREFIX, "_norm_summ_map.csv"), row.names = FALSE, na = "")
 
 tictoc::toc(log = TRUE) # Normal QTL analysis
 tictoc::tic("Non-parametric QTL analysis")
 # Non-parametric QTL
-x_non_par <- qtl::read.cross("csvs", ".",
+x_non_par <- qtl::read.cross("csvs", here::here(),
                              paste0(OUT_PREFIX, "_geno_non_par.csv"),
                              paste0(OUT_PREFIX, "_pheno_non_par.csv"))
 features_np <- colnames(x_non_par$pheno)
@@ -458,7 +458,7 @@ x_non_par_scone <- foreach(i=2:ncol(x_non_par$pheno),
                        record
                      }
 parallel::stopCluster(cl) # Stop cluster
-write.csv(x_non_par_scone, file = paste0(OUT_PREFIX,".non.parametric.scanone.csv"))
+write.csv(x_non_par_scone, file = paste0(OUT_PREFIX,"_non_par_scanone.csv"))
 
 cl <- parallel::makeCluster(ceiling(CPUS*0.5), outfile=paste0('./info_parallel_QTL.log'))
 doParallel::registerDoParallel(cl)
@@ -590,13 +590,13 @@ x_non_par_sum_map <- foreach(i=2:ncol(x_non_par$pheno),
                              }
 parallel::stopCluster(cl) # Stop cluster
 
-write.csv(x_non_par_sum_map, file = paste0(OUT_PREFIX,".non.parametric.summary.mapping.csv"), row.names=FALSE, na="")
+write.csv(x_non_par_sum_map, file = paste0(OUT_PREFIX, "_non_par_summ_map.csv"), row.names=FALSE, na="")
 
 tictoc::toc(log = TRUE) # Non-parametric QTL analysis
 tictoc::tic("QTL analysis postprocessing")
-x_norm <- qtl::read.cross("csvs",".",
-                          paste0(OUT_PREFIX,".geno_norm.csv"),
-                          paste0(OUT_PREFIX,".pheno_norm.csv"))
+x_norm <- qtl::read.cross("csvs", here::here(),
+                          paste0(OUT_PREFIX, "_geno_norm.csv"),
+                          paste0(OUT_PREFIX, "_pheno_norm.csv"))
 features <- colnames(x_norm$pheno)
 set.seed(SEED)
 x_norm <- qtl::jittermap(x_norm)
@@ -604,9 +604,9 @@ x_norm <- qtl::calc.genoprob(x_norm, step=1, error.prob=0.001)
 num_indv_phend_n <- summary(x_norm)[[2]]
 
 # Non-parametric QTL
-x_non_par <- qtl::read.cross("csvs",".",
-                             paste0(OUT_PREFIX,".geno_non_par.csv"),
-                             paste0(OUT_PREFIX,".pheno_non_par.csv"))
+x_non_par <- qtl::read.cross("csvs", here::here(),
+                             paste0(OUT_PREFIX, "_geno_non_par.csv"),
+                             paste0(OUT_PREFIX, "_pheno_non_par.csv"))
 features_np <- colnames(x_non_par$pheno)
 set.seed(SEED)
 x_non_par <- qtl::jittermap(x_non_par)
