@@ -1,5 +1,7 @@
 #' Pareto scaling function
 #' This function is adapted from Stephen C. Grace and Dane A. Hudson 
+#' 
+#' @importFrom stats sd
 #' @param z original 2-dimensional data
 #'
 #' @return normalised data

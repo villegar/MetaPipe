@@ -1,5 +1,9 @@
 #' Load raw data
 #' 
+#' @importFrom stats aggregate
+#' @importFrom stats na.omit
+#' @importFrom utils read.csv
+#' @importFrom utils write.csv
 #' @param raw_data_filename filename containing the raw data, with or without full path
 #' @param excluded_columns vector containing the indices of the data set properties, excluded columns
 #'
@@ -88,6 +92,7 @@ replace_missing <- function(raw_data, excluded_columns, out_prefix = "metapipe",
 
 #' Assess normality of features
 #' @importFrom foreach %dopar%
+#' @importFrom stats shapiro.test
 #' @param raw_data data frame containing the raw data
 #' @param excluded_columns vector containing the indices of the data set properties, excluded columns
 #' @param cpus number of CPUS to be used
