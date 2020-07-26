@@ -4,7 +4,7 @@
 \alias{random_genotypes}
 \title{Generate a pseudo-random list of genotypes. Particularly useful for testing.}
 \usage{
-random_genotypes(genotypes = c("A", "H", "B"), size = 100, seed = 1)
+random_genotypes(genotypes = c("A", "H", "B"), size = 100, seed = NULL)
 }
 \arguments{
 \item{genotypes}{vector containing the base genotypes}
