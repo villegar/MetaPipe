@@ -234,18 +234,16 @@ assess_normality_postprocessing <- function(raw_data,
   # Append excluded columns for scaling, if pareto_scaling == TRUE
   if (!is.null(raw_data_norm)) {
     raw_data_norm <- cbind(raw_data[, excluded_columns, drop = FALSE], 
-                           ifelse(pareto_scaling, 
-                                  MetaPipe::paretoscale(raw_data_norm), 
-                                  raw_data_norm)
-                          )
+                           if (pareto_scaling) MetaPipe::paretoscale(raw_data_norm)
+                           else raw_data_norm
+    )
   }
   
   if (!is.null(raw_data_non_par)) {
-    raw_data_non_par <- cbind(raw_data[, excluded_columns, drop = FALSE], 
-                              ifelse(pareto_scaling, 
-                                     MetaPipe::paretoscale(raw_data_non_par), 
-                                     raw_data_non_par)
-                             )
+    raw_data_non_par <- cbind(raw_data[, excluded_columns, drop = FALSE],
+                              if (pareto_scaling) MetaPipe::paretoscale(raw_data_non_par)
+                              else raw_data_non_par
+    )
   }
   
   # Generate basic stats from the normalisation process
