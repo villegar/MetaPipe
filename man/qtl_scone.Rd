@@ -4,12 +4,10 @@
 \alias{qtl_scone}
 \title{Perform QTL mapping scanone to obtain LOD scores for all features and markers}
 \usage{
-qtl_scone(x_data, features, cpus = 1, ...)
+qtl_scone(x_data, cpus = 1, ...)
 }
 \arguments{
 \item{x_data}{cross-file containing genetic map data and features}
-
-\item{features}{feature names}
 
 \item{cpus}{number of CPUS to be used}
 
