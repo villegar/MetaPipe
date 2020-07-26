@@ -344,6 +344,25 @@ assess_normality_stats <- function(out_prefix = "metapipe") {
   message(msg)
 }
 
+
+#' Generate a pseudo-random list of genotypes. Particularly useful for testing.
+#'
+#' @param genotypes vector containing the base genotypes
+#' @param size output length
+#' @param seed seed for reproducibility
+#'
+#' @return vector containing the pseudo-random genotypes
+#' @export
+#'
+#' @examples
+#' random_genotypes()
+#' random_genotypes(genotypes = c("nn", "np"))
+#' random_genotypes(size = 3)
+random_genotypes <- function(genotypes = c("A", "H", "B"), size = 100, seed = 1) {
+  set.seed(seed)
+  return(genotypes[sample(1:length(genotypes), size, replace = TRUE)])
+}
+
 #' Perform QTL mapping scanone to obtain LOD scores for all features and markers
 #'
 #' @param x_data cross-file containing genetic map data and features
