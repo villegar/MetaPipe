@@ -230,3 +230,7 @@ test_that("normality assessment statistics work", {
     expect_false(file.exists(f))
   }
 })
+
+test_that("random genotypes works", {
+  expect_equal(c("A","B","A"), random_genotypes(size = 3))
+})
