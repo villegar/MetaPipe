@@ -385,7 +385,7 @@ random_map <- function(genotypes = c("A", "H", "B"), lg = 1:10, markers = 10, po
   tmp <- data.frame(lg = rep(lg, each = markers), pos = rep(1:markers))
   
   # Empty map
-  map <- data.frame(ID = c("", "", 1:population), stringsAsFactors = FALSE)
+  map <- data.frame(ID = c("", "", 1:population))
   for (k in 1:length(marker_names)) {
     if (!is.null(seed)) 
       seed <- seed + k
