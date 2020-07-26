@@ -18,8 +18,12 @@
 load_raw <- function(raw_data_filename, excluded_columns) {
   # Load and clean raw data
   raw_data <- read.csv(raw_data_filename, stringsAsFactors = FALSE)
-  # Exclude column 1, ID
+  
+  # Exclude first column, ID
   excluded_columns <- unique(c(1, excluded_columns))
+  
+  # Enforce first column name, ID
+  colnames(raw_data)[1] <- "ID"
   
   # Aggregate data by row, computing the mean
   mean_raw_data <- aggregate(raw_data[, -excluded_columns],
