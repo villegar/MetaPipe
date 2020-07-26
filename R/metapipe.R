@@ -129,8 +129,10 @@ assess_normality <- function(raw_data,
   
   # Ignore ID and properties
   raw_data <- raw_data[, -excluded_columns]
+  
   # Compute feature indices, accounting for the offset of ID and properties
   feature_indices <- 1:ncol(raw_data) 
+  
   # Extract features (column names)
   features <- colnames(raw_data)
   raw_data_normalised <- foreach::foreach(i = feature_indices,
@@ -361,10 +363,13 @@ qtl_scone <- function(x_data, features, cpus = 1,  ...) {
   # Load binary operator for backend
   `%dopar%` <- foreach::`%dopar%`
   
-  x_scone <- foreach(i = 2:ncol(x_norm$pheno),
+  # Compute feature indices, accounting for the offset of ID and properties
+  feature_indices <- 2:ncol(x_data$pheno)
+  
+  x_scone <- foreach::foreach(i = feature_indices,
                      .combine = cbind) %dopar% {
                        # Run single scan
-                       scone <- qtl::scanone(x_norm, pheno.col = i,  ...) #model = "normal", method = "hk")
+                       scone <- qtl::scanone(x_data, pheno.col = i,  ...) #model = "normal", method = "hk")
                        if(i == 2) {
                          record <- data.frame(
                            chr = scone$chr,
