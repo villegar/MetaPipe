@@ -18,7 +18,7 @@ LazyData: true
 RoxygenNote: 7.1.0
 Imports: 
     Amelia, doMPI, doParallel, dplyr, factoextra, FactoMineR, foreach, ggplot2, gplots, grDevices, grid, 
-    gridExtra, latex2exp, MASS, plyr, psych, qtl, Rmpi, R.devices, tictoc, 
+    gridExtra, here, latex2exp, MASS, plyr, psych, qtl, Rmpi, R.devices, tictoc, 
     tidyverse, VIM
 Suggests:
     testthat
