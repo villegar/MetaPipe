@@ -3,12 +3,16 @@ Type: Package
 Title: MetaPipe: A High-Performance Computing pipeline for QTL mapping of large
         ionomic and metabolomic datasets
 Version: 0.0.1
-Authors@R: 
+Authors@R: c(
     person(given = "Roberto",
            family = "Villegas-Diaz",
            role = c("aut", "cre"),
            email = "villegas.roberto@hotmail.com",
-           comment = c(ORCID = "0000-0001-5036-8661"))
+           comment = c(ORCID = "0000-0001-5036-8661")),
+    person(given = "Dilmini",
+           family = "Alahakoon",
+           role = c("aut"),
+           email = "dilmini.alahakoon@sdstate.edu"))
 Description: This package provides a pipeline for QTL mapping of large ionomic
               and metabolomic data sets. It uses a a HPC approach to speed up 
               the computations performed.
