@@ -344,7 +344,6 @@ assess_normality_stats <- function(out_prefix = "metapipe") {
   message(msg)
 }
 
-
 #' Generate a pseudo-random list of genotypes. Particularly useful for testing.
 #'
 #' @param genotypes vector containing the base genotypes
