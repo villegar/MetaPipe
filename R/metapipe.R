@@ -412,7 +412,31 @@ random_map <- function(genotypes = c("A", "H", "B"), lg = 1:10, markers = 10, po
 #' @return data frame containing the LOD scores
 #' @export
 #'
-# @examples
+#' @examples
+#' # Create toy dataset
+#' excluded_columns <- c(2)
+#' population <- 5
+#' seed <- 1
+#' example_data <- data.frame(ID = 1:population,
+#'                            P1 = c("one", "two", "three", "four", "five"),
+#'                            F1 = rnorm(population),
+#'                            F2 = rnorm(population))
+#' example_data_normalised <- assess_normality(example_data, excluded_columns)
+#' assess_normality_postprocessing(example_data, excluded_columns, example_data_normalised)
+#' 
+#' # Create and store random genetic map [for testing only]
+#' genetic_map <- random_map(population = population, seed = seed)
+#' write.csv(genetic_map, "metapipe_genetic_map.csv", row.names = FALSE)
+#' 
+#' # Load cross file with genetic map and raw data for normal features
+#' x <- qtl::read.cross(format = "csvs", 
+#'                      dir = here::here(),
+#'                      genfile = "metapipe_genetic_map.csv",
+#'                      phefile = "metapipe_raw_data_norm.csv")
+#' set.seed(seed)
+#' x <- qtl::jittermap(x)
+#' x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
+#' MetaPipe::qtl_scone(x, 1)
 qtl_scone <- function(x_data, cpus = 1,  ...) {
   # Start parallel backend
   cl <- parallel::makeCluster(cpus)
