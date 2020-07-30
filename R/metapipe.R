@@ -151,6 +151,8 @@ assess_normality <- function(raw_data,
                                     # Verify the current feature has at least 3 non-NA rows
                                     if(sum(is.finite(raw_data[, i]), na.rm = TRUE) > 2) {
                                       # Assess normality of feature before transforming it
+                                      # if (is.na(i) || is.na(raw_data) || length(raw_data) < 3 || length(raw_data) > 5000)
+                                      #  warning(paste0("Could not processed the feature ", i))
                                       pvalue <- shapiro.test(raw_data[, i])[[2]]
                                       if(pvalue <= 0.05) { # Data must be transformed
                                         tmp <- MetaPipe::transform_data(data = raw_data[, i], 
