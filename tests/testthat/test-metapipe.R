@@ -140,11 +140,17 @@ test_that("normality assessment postprocessing works", {
   expected_output_non_par$flag <- rep(c("Non-normal", "Normal"), each = 5)
   
   # Test format of normalised data
-  expect_error(assess_normality_postprocessing(example_data, c(1, 2), expected_output[, -1]), "raw_data_normalised must be the output*")
+  expect_error(assess_normality_postprocessing(example_data, 
+                                               c(1, 2), 
+                                               expected_output[, -1]), 
+               "raw_data_normalised must be the output*")
   
   # Testing for all data sets
   assess_normality_postprocessing(example_data, c(1, 2), expected_output)
-  filenames <- c("metapipe_normalisation_stats.csv", "metapipe_raw_data_non_par.csv", "metapipe_raw_data_norm.csv", "metapipe_raw_data_normalised_all.csv")
+  filenames <- c("metapipe_normalisation_stats.csv", 
+                 "metapipe_raw_data_non_par.csv", 
+                 "metapipe_raw_data_norm.csv", 
+                 "metapipe_raw_data_normalised_all.csv")
   for (f in filenames) {
     expect_true(file.exists(f))
     expect_false(dir.exists(f))
@@ -155,7 +161,10 @@ test_that("normality assessment postprocessing works", {
   }
   
   assess_normality_postprocessing(example_data_exp2, c(1, 2), expected_output_exp2)
-  filenames <- c("metapipe_normalisation_stats.csv", "metapipe_raw_data_non_par.csv", "metapipe_raw_data_norm.csv", "metapipe_raw_data_normalised_all.csv")
+  filenames <- c("metapipe_normalisation_stats.csv", 
+                 "metapipe_raw_data_non_par.csv", 
+                 "metapipe_raw_data_norm.csv", 
+                 "metapipe_raw_data_normalised_all.csv")
   for (f in filenames) {
     expect_true(file.exists(f))
     expect_false(dir.exists(f))
@@ -166,7 +175,10 @@ test_that("normality assessment postprocessing works", {
   }
   
   assess_normality_postprocessing(example_data_non_par, c(1, 2), expected_output_non_par)
-  filenames <- c("metapipe_normalisation_stats.csv", "metapipe_raw_data_non_par.csv", "metapipe_raw_data_norm.csv", "metapipe_raw_data_normalised_all.csv")
+  filenames <- c("metapipe_normalisation_stats.csv", 
+                 "metapipe_raw_data_non_par.csv", 
+                 "metapipe_raw_data_norm.csv", 
+                 "metapipe_raw_data_normalised_all.csv")
   for (f in filenames) {
     expect_true(file.exists(f))
     expect_false(dir.exists(f))
@@ -205,7 +217,10 @@ test_that("normality assessment statistics work", {
   
   # Testing for all data sets
   assess_normality_postprocessing(example_data, c(1, 2), expected_output)
-  filenames <- c("metapipe_normalisation_stats.csv", "metapipe_raw_data_non_par.csv", "metapipe_raw_data_norm.csv", "metapipe_raw_data_normalised_all.csv")
+  filenames <- c("metapipe_normalisation_stats.csv", 
+                 "metapipe_raw_data_non_par.csv", 
+                 "metapipe_raw_data_norm.csv", 
+                 "metapipe_raw_data_normalised_all.csv")
   for (f in filenames) {
     if (f == "metapipe_normalisation_stats.csv")
       expect_message(assess_normality_stats())
@@ -218,7 +233,10 @@ test_that("normality assessment statistics work", {
   }
   
   assess_normality_postprocessing(example_data_exp2, c(1, 2), expected_output_exp2)
-  filenames <- c("metapipe_normalisation_stats.csv", "metapipe_raw_data_non_par.csv", "metapipe_raw_data_norm.csv", "metapipe_raw_data_normalised_all.csv")
+  filenames <- c("metapipe_normalisation_stats.csv", 
+                 "metapipe_raw_data_non_par.csv", 
+                 "metapipe_raw_data_norm.csv", 
+                 "metapipe_raw_data_normalised_all.csv")
   for (f in filenames) {
     if (f == "metapipe_normalisation_stats.csv")
       expect_message(assess_normality_stats())
@@ -244,7 +262,7 @@ test_that("random map works", {
   expect_equal(expected_map, random_map(lg = 1:2, markers = 2, population = 2, seed = 123))
 })
 
-test_that("qtl mapping scanone works" {
+test_that("qtl mapping scanone works", {
   # Create toy dataset
   excluded_columns <- c(2)
   population <- 5
@@ -260,7 +278,7 @@ test_that("qtl mapping scanone works" {
   genetic_map <- random_map(population = population, seed = seed)
   write.csv(genetic_map, "metapipe_genetic_map.csv", row.names = FALSE)
   
-  x <- qtl::read.cross("csvs", here::here(),
+  x <- qtl::read.cross("csvs", getwd(),
                        genfile = "metapipe_genetic_map.csv",
                        phefile = "metapipe_raw_data_norm.csv")
   features <- colnames(x$pheno)
