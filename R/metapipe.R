@@ -249,7 +249,7 @@ assess_normality_postprocessing <- function(raw_data,
   ## Normal features
   if (!is.null(raw_data_norm)) {
     raw_data_norm <-
-      cbind(raw_data[, excluded_columns, drop = FALSE],
+      cbind(raw_data[, 1, drop = FALSE],
             if (pareto_scaling)
               MetaPipe::paretoscale(raw_data_norm)
             else
@@ -259,7 +259,7 @@ assess_normality_postprocessing <- function(raw_data,
   ## Skewed features
   if (!is.null(raw_data_non_par)) {
     raw_data_non_par <-
-      cbind(raw_data[, excluded_columns, drop = FALSE],
+      cbind(raw_data[, 1, drop = FALSE],
             if (pareto_scaling)
               MetaPipe::paretoscale(raw_data_non_par)
             else
