@@ -214,6 +214,9 @@ assess_normality_postprocessing <- function(raw_data,
   if (!all(expected_columns %in% colnames(raw_data_normalised)))
     stop("raw_data_normalised must be the output of the function assess_normality")
   
+  # Exclude column 1, ID
+  excluded_columns <- unique(c(1, excluded_columns))
+  
   # Separate normal and non-parametric entries from the normalised data
   raw_data_normalised_norm <- raw_data_normalised[raw_data_normalised$flag == "Normal", ]
   raw_data_normalised_non_par <- raw_data_normalised[raw_data_normalised$flag == "Non-normal", ]
@@ -465,8 +468,7 @@ qtl_preprocessing <- function(genetic_map, out_prefix = "metapipe") {
   geno_norm <- rbind(genetic_map[1:2, ],
                      dplyr::inner_join(pheno_norm, genetic_map, by = "ID")[, colnames(genetic_map)]
                     )
-#   
-#   
+  
   ## Non-parametric features
   raw_data_non_par <- read.csv(paste0(out_prefix, "_raw_data_non_par.csv"), stringsAsFactors = FALSE)
 #   colnames(raw_data_non_par)[1] <- "ID"
