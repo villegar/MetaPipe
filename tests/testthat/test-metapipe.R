@@ -268,6 +268,7 @@ test_that("qtl mapping scanone works", {
   population <- 5
   seed <- 123
   set.seed(seed)
+  setwd(here::here())
   example_data <- data.frame(ID = 1:population,
                              P1 = c("one", "two", "three", "four", "five"),
                              F1 = rnorm(population),
@@ -285,7 +286,7 @@ test_that("qtl mapping scanone works", {
   genetic_map <- random_map(population = population, seed = seed)
   write.csv(genetic_map, "metapipe_genetic_map.csv", row.names = FALSE)
   
-  x <- qtl::read.cross("csvs", getwd(),
+  x <- qtl::read.cross("csvs", here::here(),
                        genfile = "metapipe_genetic_map.csv",
                        phefile = "metapipe_raw_data_norm.csv")
   features <- colnames(x$pheno)
