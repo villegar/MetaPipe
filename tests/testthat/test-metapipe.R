@@ -243,3 +243,41 @@ test_that("random map works", {
                              S2_2 = c(2, 2, "A", "H"))
   expect_equal(expected_map, random_map(lg = 1:2, markers = 2, population = 2, seed = 123))
 })
+
+test_that("qtl mapping scanone works" {
+  # Create toy dataset
+  excluded_columns <- c(2)
+  population <- 5
+  seed <- 1
+  example_data <- data.frame(ID = 1:population,
+                             P1 = c("one", "two", "three", "four", "five"),
+                             F1 = rnorm(population),
+                             F2 = rnorm(population))
+  example_data_normalised <- assess_normality(example_data, excluded_columns)
+  assess_normality_postprocessing(example_data, excluded_columns, example_data_normalised)
+  
+  # Create and store random genetic map [for testing only]
+  genetic_map <- random_map(population = population, seed = seed)
+  write.csv(genetic_map, "metapipe_genetic_map.csv", row.names = FALSE)
+  
+  x <- qtl::read.cross("csvs", here::here(),
+                       genfile = "metapipe_genetic_map.csv",
+                       phefile = "metapipe_raw_data_norm.csv")
+  features <- colnames(x$pheno)
+  set.seed(seed)
+  x <- qtl::jittermap(x)
+  x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
+  x_norm_scone <- MetaPipe::qtl_scone(x, 1)
+  expect_equal(c(190, 4), dim(x_norm_scone))
+  
+  # Delete temporary files
+  filenames <- c("metapipe_normalisation_stats.csv", 
+                 "metapipe_raw_data_non_par.csv", 
+                 "metapipe_raw_data_norm.csv", 
+                 "metapipe_raw_data_normalised_all.csv", 
+                 "metapipe_genetic_map.csv")
+  for (f in filenames) {
+    file.remove(f)
+    expect_false(file.exists(f))
+  }
+})
