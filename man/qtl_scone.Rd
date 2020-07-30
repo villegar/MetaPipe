@@ -28,7 +28,13 @@ example_data <- data.frame(ID = 1:population,
                            P1 = c("one", "two", "three", "four", "five"),
                            F1 = rnorm(population),
                            F2 = rnorm(population))
-example_data_normalised <- assess_normality(example_data, excluded_columns)
+example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
+                                      feature = rep(c("F1", "F2"), each = 5),
+                                      values = c(example_data$F1, example_data$F2),
+                                      flag = "Normal",
+                                      transf = "",
+                                      transf.value = NA,
+                                      stringsAsFactors = FALSE)
 assess_normality_postprocessing(example_data, excluded_columns, example_data_normalised)
 
 # Create and store random genetic map [for testing only]
