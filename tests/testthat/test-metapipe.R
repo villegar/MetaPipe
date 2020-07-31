@@ -285,6 +285,7 @@ test_that("qtl mapping scanone works", {
   # Create and store random genetic map [for testing only]
   genetic_map <- random_map(population = population, seed = seed)
   write.csv(genetic_map, "metapipe_genetic_map.csv", row.names = FALSE)
+  expect_true(file.exists("metapipe_genetic_map.csv"))
   
   x <- qtl::read.cross("csvs", here::here(),
                        genfile = "metapipe_genetic_map.csv",
