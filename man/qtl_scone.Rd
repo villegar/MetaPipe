@@ -24,6 +24,7 @@ Perform QTL mapping scanone to obtain LOD scores for all features and markers
 excluded_columns <- c(2)
 population <- 5
 seed <- 1
+setwd(here::here())
 example_data <- data.frame(ID = 1:population,
                            P1 = c("one", "two", "three", "four", "five"),
                            F1 = rnorm(population),

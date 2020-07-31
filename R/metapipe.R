@@ -417,6 +417,7 @@ random_map <- function(genotypes = c("A", "H", "B"), lg = 1:10, markers = 10, po
 #' excluded_columns <- c(2)
 #' population <- 5
 #' seed <- 1
+#' setwd(here::here())
 #' example_data <- data.frame(ID = 1:population,
 #'                            P1 = c("one", "two", "three", "four", "five"),
 #'                            F1 = rnorm(population),
