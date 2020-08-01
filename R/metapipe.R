@@ -380,9 +380,9 @@ random_genotypes <- function(genotypes = c("A", "H", "B"), size = 100, seed = NU
 #' @export
 #'
 #' @examples
-#' random_map()
-#' random_map(genotypes = c("nn", "np"))
-#' random_map(population = 3)
+#' gmap_1 <- random_map()
+#' gmap_2 <- random_map(genotypes = c("nn", "np"))
+#' gmap_3 <- random_map(population = 3)
 random_map <- function(genotypes = c("A", "H", "B"), lg = 1:10, markers = 10, population = 100, seed = NULL) {
   marker_names <- paste0(rep(paste0("S", lg, "_"), each = markers), 1:markers)
   # Temporal vector for LG and positions
@@ -417,7 +417,6 @@ random_map <- function(genotypes = c("A", "H", "B"), lg = 1:10, markers = 10, po
 #' excluded_columns <- c(2)
 #' population <- 5
 #' seed <- 1
-#' setwd(here::here())
 #' example_data <- data.frame(ID = 1:population,
 #'                            P1 = c("one", "two", "three", "four", "five"),
 #'                            F1 = rnorm(population),
@@ -433,7 +432,7 @@ random_map <- function(genotypes = c("A", "H", "B"), lg = 1:10, markers = 10, po
 #' 
 #' # Create and store random genetic map [for testing only]
 #' genetic_map <- random_map(population = population, seed = seed)
-#' write.csv(genetic_map, "metapipe_genetic_map.csv", row.names = FALSE)
+#' write.csv(genetic_map, here::here("metapipe_genetic_map.csv"), row.names = FALSE)
 #' 
 #' # Load cross file with genetic map and raw data for normal features
 #' x <- qtl::read.cross(format = "csvs", 
@@ -443,7 +442,7 @@ random_map <- function(genotypes = c("A", "H", "B"), lg = 1:10, markers = 10, po
 #' set.seed(seed)
 #' x <- qtl::jittermap(x)
 #' x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
-#' MetaPipe::qtl_scone(x, 1)
+#' x_scone <- MetaPipe::qtl_scone(x, 1)
 qtl_scone <- function(x_data, cpus = 1,  ...) {
   # Start parallel backend
   cl <- parallel::makeCluster(cpus)

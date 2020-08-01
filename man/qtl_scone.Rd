@@ -24,7 +24,6 @@ Perform QTL mapping scanone to obtain LOD scores for all features and markers
 excluded_columns <- c(2)
 population <- 5
 seed <- 1
-setwd(here::here())
 example_data <- data.frame(ID = 1:population,
                            P1 = c("one", "two", "three", "four", "five"),
                            F1 = rnorm(population),
@@ -40,7 +39,7 @@ assess_normality_postprocessing(example_data, excluded_columns, example_data_nor
 
 # Create and store random genetic map [for testing only]
 genetic_map <- random_map(population = population, seed = seed)
-write.csv(genetic_map, "metapipe_genetic_map.csv", row.names = FALSE)
+write.csv(genetic_map, here::here("metapipe_genetic_map.csv"), row.names = FALSE)
 
 # Load cross file with genetic map and raw data for normal features
 x <- qtl::read.cross(format = "csvs", 
@@ -50,5 +49,5 @@ x <- qtl::read.cross(format = "csvs",
 set.seed(seed)
 x <- qtl::jittermap(x)
 x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
-MetaPipe::qtl_scone(x, 1)
+x_scone <- MetaPipe::qtl_scone(x, 1)
 }

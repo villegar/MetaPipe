@@ -30,7 +30,7 @@ data frame containing the pseudo-random genetic map.
 Generate a pseudo-random genetic map. Particularly useful for testing.
 }
 \examples{
-random_map()
-random_map(genotypes = c("nn", "np"))
-random_map(population = 3)
+gmap_1 <- random_map()
+gmap_2 <- random_map(genotypes = c("nn", "np"))
+gmap_3 <- random_map(population = 3)
 }
