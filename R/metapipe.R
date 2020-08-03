@@ -433,7 +433,7 @@ random_map <- function(genotypes = c("A", "H", "B"), lg = 1:10, markers = 10, po
 #' # Create and store random genetic map [for testing only]
 #' genetic_map <- random_map(population = population, seed = seed)
 #' write.csv(genetic_map, here::here("metapipe_genetic_map.csv"), row.names = FALSE)
-#' 
+#' print(list.files(here::here()))
 #' # Load cross file with genetic map and raw data for normal features
 #' x <- qtl::read.cross(format = "csvs", 
 #'                      dir = here::here(),
