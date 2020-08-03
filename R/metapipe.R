@@ -428,7 +428,7 @@ random_map <- function(genotypes = c("A", "H", "B"), lg = 1:10, markers = 10, po
 #'                                       transf = "",
 #'                                       transf.value = NA,
 #'                                       stringsAsFactors = FALSE)
-#' assess_normality_postprocessing(example_data, excluded_columns, example_data_normalised)
+#' assess_normality_postprocessing(example_data, excluded_columns, example_data_normalised, out_prefix = here::here("metapipe"))
 #' 
 #' # Create and store random genetic map [for testing only]
 #' genetic_map <- random_map(population = population, seed = seed)

@@ -35,7 +35,7 @@ example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
                                       transf = "",
                                       transf.value = NA,
                                       stringsAsFactors = FALSE)
-assess_normality_postprocessing(example_data, excluded_columns, example_data_normalised)
+assess_normality_postprocessing(example_data, excluded_columns, example_data_normalised, out_prefix = here::here("metapipe"))
 
 # Create and store random genetic map [for testing only]
 genetic_map <- random_map(population = population, seed = seed)
