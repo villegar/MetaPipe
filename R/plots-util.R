@@ -179,3 +179,13 @@ generate_hist <- function(data, feature, prefix, xlab){
     ggplot2::xlab(paste0(feature))
   ggplot_save(myPlot,paste0(prefix,"_",feature))
 }
+
+generate_logo <- function() {
+  hexSticker::sticker("inst/figures/metapipe-400.png", package="MetaPipe", 
+                      h_color = "black",  h_fill = "white",
+                      dpi = 1600,
+                      l_x = 1.0, l_y = 1.0, spotlight = FALSE, 
+                      s_x = 1.0, s_y = .85, s_width = .55,
+                      p_x = 1.0, p_y = 1.6, p_size = 6, p_color = "black",
+                      filename="inst/figures/logo-400.png")
+}
