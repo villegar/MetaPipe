@@ -14,7 +14,7 @@ test_that("log transformation works", {
   expected_df <- data.frame(
     flag = "Normal",
     transf = "log",
-    transf.value = 2,
+    transf_val = 2,
     stringsAsFactors = FALSE
   )
   
@@ -38,7 +38,7 @@ test_that("power transformation works", {
   expected_df <- data.frame(
     flag = "Normal",
     transf = "power",
-    transf.value = 2,
+    transf_val = 2,
     stringsAsFactors = FALSE
   )
   
@@ -62,7 +62,7 @@ test_that("root transformation works", {
   expected_df <- data.frame(
     flag = "Normal",
     transf = "root",
-    transf.value = "e",
+    transf_val = "e",
     stringsAsFactors = FALSE
   )
   
@@ -97,7 +97,7 @@ test_that("data transform works", {
     values = log(2 ^ data, 2),
     flag = "Normal",
     transf = "log",
-    transf.value = 2,
+    transf_val = 2,
     stringsAsFactors = FALSE
   )
   
@@ -108,7 +108,7 @@ test_that("data transform works", {
     values = (sqrt(data)) ^ 2,
     flag = "Normal",
     transf = "power",
-    transf.value = 2,
+    transf_val = 2,
     stringsAsFactors = FALSE
   )
   
@@ -119,7 +119,7 @@ test_that("data transform works", {
     values = (data ^ 2) ^ (1 / exp(1)),
     flag = "Normal",
     transf = "root",
-    transf.value = "e",
+    transf_val = "e",
     stringsAsFactors = FALSE
   )
   

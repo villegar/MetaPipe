@@ -81,7 +81,7 @@ test_that("normality assessment works", {
                                 values = c(example_data$F1, example_data$F2),
                                 flag = "Normal",
                                 transf = "",
-                                transf.value = NA,
+                                transf_val = NA,
                                 stringsAsFactors = FALSE)
   
   # Transforming data for log_2 normalisation
@@ -91,7 +91,7 @@ test_that("normality assessment works", {
   # Expected output for log_2 normalisation
   expected_output_exp2 <- expected_output[,]
   expected_output_exp2$transf <- rep(c("log", ""), each = 5)
-  expected_output_exp2$transf.value <- rep(c(2, NA), each = 5)
+  expected_output_exp2$transf_val <- rep(c(2, NA), each = 5)
   
   # Testing for both data sets
   expect_equal(expected_output, assess_normality(example_data, c(1, 2)))
@@ -119,7 +119,7 @@ test_that("normality assessment postprocessing works", {
                                 values = c(example_data$F1, example_data$F2),
                                 flag = "Normal",
                                 transf = "",
-                                transf.value = NA,
+                                transf_val = NA,
                                 stringsAsFactors = FALSE)
   
   # Transforming data for log_2 normalisation
@@ -129,7 +129,7 @@ test_that("normality assessment postprocessing works", {
   # Expected output for log_2 normalisation
   expected_output_exp2 <- expected_output[,]
   expected_output_exp2$transf <- rep(c("log", ""), each = 5)
-  expected_output_exp2$transf.value <- rep(c(2, NA), each = 5)
+  expected_output_exp2$transf_val <- rep(c(2, NA), each = 5)
   
   # Adding noise to feature to make it non-parametric
   example_data_non_par <- example_data[,]
@@ -200,7 +200,7 @@ test_that("normality assessment statistics work", {
                                 values = c(example_data$F1, example_data$F2),
                                 flag = "Normal",
                                 transf = "",
-                                transf.value = NA,
+                                transf_val = NA,
                                 stringsAsFactors = FALSE)
   
   # Transforming data for log_2 normalisation
@@ -210,7 +210,7 @@ test_that("normality assessment statistics work", {
   # Expected output for log_2 normalisation
   expected_output_exp2 <- expected_output[,]
   expected_output_exp2$transf <- rep(c("log", ""), each = 5)
-  expected_output_exp2$transf.value <- rep(c(2, NA), each = 5)
+  expected_output_exp2$transf_val <- rep(c(2, NA), each = 5)
   
   # Testing for non-existing input file
   expect_error(assess_normality_stats(), "The file *")
@@ -278,7 +278,7 @@ test_that("qtl mapping scanone works", {
                                         values = c(example_data$F1, example_data$F2),
                                         flag = "Normal",
                                         transf = "",
-                                        transf.value = NA,
+                                        transf_val = NA,
                                         stringsAsFactors = FALSE)
   assess_normality_postprocessing(example_data, excluded_columns, example_data_normalised)
   
