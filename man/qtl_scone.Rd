@@ -33,7 +33,7 @@ example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
                                       values = c(example_data$F1, example_data$F2),
                                       flag = "Normal",
                                       transf = "",
-                                      transf.value = NA,
+                                      transf_val = NA,
                                       stringsAsFactors = FALSE)
 assess_normality_postprocessing(example_data, excluded_columns, example_data_normalised, out_prefix = here::here("metapipe"))
 
