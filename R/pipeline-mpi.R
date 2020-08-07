@@ -299,7 +299,7 @@ x.normal.summary.mapping <- foreach(i=2:ncol(x.normal$pheno),
                                     .combine = rbind,
                                     .packages = c("ggplot2","grid","gridExtra","latex2exp","qtl","R.devices")) %dopar% {
                                       transformation.info <- raw_data_transformed_norm$feature == features[i]
-                                      transformation.info <- raw_data_transformed_norm[transformation.info,c("transf","transf.value")][1,]
+                                      transformation.info <- raw_data_transformed_norm[transformation.info,c("transf", "transf_val")][1,]
                                       record <- data.frame(
                                         ID = i - 1,
                                         qtl.ID = NA,
@@ -318,7 +318,7 @@ x.normal.summary.mapping <- foreach(i=2:ncol(x.normal$pheno),
                                         p10.lod.thr = NA,
                                         p.val = NA,
                                         transf = transformation.info$transf,
-                                        transf.val = transformation.info$transf.value,
+                                        transf.val = transformation.info$transf_val,
                                         method = "normal-scanone",
                                         p5.qtl = FALSE,
                                         p10.qtl = FALSE
@@ -456,7 +456,7 @@ x.non.parametric.summary.mapping <- foreach(i=2:ncol(x.non.parametric$pheno),
                                             .combine = rbind,
                                             .packages = c("ggplot2","grid","gridExtra","latex2exp","qtl","R.devices")) %dopar% {
                                               #transformation.info <- raw_data_transformed_non_par$feature == features.np[i]
-                                              #transformation.info <- raw_data_transformed_non_par[transformation.info,c("transf","transf.value")][1,]
+                                              #transformation.info <- raw_data_transformed_non_par[transformation.info,c("transf", "transf_val")][1,]
                                               
                                               record <- data.frame(
                                                 ID = i - 1,
@@ -476,7 +476,7 @@ x.non.parametric.summary.mapping <- foreach(i=2:ncol(x.non.parametric$pheno),
                                                 p10.lod.thr = NA,
                                                 #p.val = NA,
                                                 #transf = transformation.info$transf,
-                                                #transf.val = transformation.info$transf.value,
+                                                #transf.val = transformation.info$transf_val,
                                                 method = "non.parametric-scanone",
                                                 p5.qtl = FALSE,
                                                 p10.qtl = FALSE

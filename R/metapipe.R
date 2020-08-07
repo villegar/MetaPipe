@@ -144,7 +144,7 @@ assess_normality <- function(raw_data,
                                       values = raw_data[, i],
                                       flag = "Non-normal",
                                       transf = "",
-                                      transf.value = NA,
+                                      transf_val = NA,
                                       stringsAsFactors = FALSE
                                     )
                                     
@@ -212,7 +212,7 @@ assess_normality_postprocessing <- function(raw_data,
                                             out_prefix = "metapipe", 
                                             pareto_scaling = FALSE) {
   # Verify the raw_data_normalised object has the right structure
-  expected_columns <- c("index", "feature", "values", "flag", "transf", "transf.value")
+  expected_columns <- c("index", "feature", "values", "flag", "transf", "transf_val")
   if (!all(expected_columns %in% colnames(raw_data_normalised)))
     stop("raw_data_normalised must be the output of the function assess_normality")
   
@@ -274,7 +274,7 @@ assess_normality_postprocessing <- function(raw_data,
   norm_features_normalised_count <- nrow(raw_data_normalised_norm[raw_data_normalised_norm$transf != "", ]) / raw_data_rows
   norm_features_count <- nrow(raw_data_normalised_norm) / raw_data_rows
   total_features <- nrow(raw_data_normalised)/raw_data_rows
-  transformations <- unique(raw_data_normalised[c("transf", "transf.value")])
+  transformations <- unique(raw_data_normalised[c("transf", "transf_val")])
   transformations <- transformations[nrow(transformations), ] # Drop blank transformation, NULL transformation
   sorting <- order(transformations$transf, decreasing = TRUE)
   transformations <- transformations[sorting, ]
@@ -285,9 +285,9 @@ assess_normality_postprocessing <- function(raw_data,
                                     stringsAsFactors = FALSE)
   if (nrow(transformations) > 0){
     for(i in 1:nrow(transformations)){
-      key <- paste0(transformations$transf[i],"\t",transformations$transf.value[i])
+      key <- paste0(transformations$transf[i],"\t",transformations$transf_val[i])
       tmp <- subset(raw_data_normalised_norm, raw_data_normalised_norm$transf == transformations$transf[i])
-      tmp <- subset(tmp, transf.value == transformations$transf.value[i])
+      tmp <- subset(tmp, transf_val == transformations$transf_val[i])
       value <- nrow(tmp) / raw_data_rows
       normalisation_stats <- rbind(normalisation_stats, c(key, value))
     }
@@ -426,7 +426,7 @@ random_map <- function(genotypes = c("A", "H", "B"), lg = 1:10, markers = 10, po
 #'                                       values = c(example_data$F1, example_data$F2),
 #'                                       flag = "Normal",
 #'                                       transf = "",
-#'                                       transf.value = NA,
+#'                                       transf_val = NA,
 #'                                       stringsAsFactors = FALSE)
 #' assess_normality_postprocessing(example_data, excluded_columns, example_data_normalised, out_prefix = here::here("metapipe"))
 #' 
@@ -498,10 +498,10 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                             .combine = rbind) %dopar% {
                               if (!is.null(raw_data_normalised)) {
                                 transf_info <- raw_data_normalised$feature == features[i]
-                                transf_info <- raw_data_normalised[transf_info, c("transf", "transf.value")][1, ]
+                                transf_info <- raw_data_normalised[transf_info, c("transf", "transf_val")][1, ]
                               }
                               else {
-                                transf_info <- data.frame(transf = NA, transf.value = NA)
+                                transf_info <- data.frame(transf = NA, transf_val = NA)
                               }
                               
                               # Structure for QTL
@@ -523,7 +523,7 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                                 p10_lod_thr = NA,
                                 pval = NA,
                                 transf = transf_info$transf,
-                                transf.val = transf_info$transf.value,
+                                transf.val = transf_info$transf_val,
                                 method = qtl_method,
                                 p5_qtl = FALSE,
                                 p10_qtl = FALSE

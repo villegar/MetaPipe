@@ -215,207 +215,182 @@ x_norm <- qtl::calc.genoprob(x_norm, step = 1, error.prob = 0.001)
 num_indv_phend_n <- summary(x_norm)[[2]]
 print("Starting with QTL Analysis")
 print("Starting with Normal QTL Analysis")
-
-# Obtain LOD scores for all features and markers
-# cl <- parallel::makeCluster(ceiling(CPUS*1), outfile=paste0('./info_parallel_QTL.log'))
-# doParallel::registerDoParallel(cl)
-# x_norm_scone <- foreach(i=2:ncol(x_norm$pheno),
-#                      .combine = cbind) %dopar% {
-#                        
-#                        # Run single scan
-#                        normal.scanone <- qtl::scanone(x_norm, pheno.col = i,  model = "normal", method = "hk")
-#                        if(i == 2){
-#                          record <- data.frame(
-#                            chr = normal.scanone$chr,
-#                            pos = normal.scanone$pos,
-#                            lod = normal.scanone$lod,
-#                            row.names = rownames(normal.scanone)
-#                          )
-#                          colnames(record)[3] <- features[i]
-#                        }
-#                        else{
-#                          record <- data.frame(data = normal.scanone$lod)
-#                          colnames(record) <- features[i]
-#                        }
-#                        record
-#                      }
-# parallel::stopCluster(cl) # Stop cluster
 x_norm_scone <- MetaPipe::qtl_scone(x_norm, CPUS)
 write.csv(x_norm_scone, file = paste0(OUT_PREFIX, "_normal_scanone.csv"))
 
-cl <- parallel::makeCluster(ceiling(CPUS*0.5), outfile=paste0('./info_parallel_QTL.log'))
-doParallel::registerDoParallel(cl)
-x_norm_sum_map <- foreach(i=2:ncol(x_norm$pheno),
-                         .combine = rbind) %dopar% {
-                           transformation.info <- raw_data_transformed_norm$feature == features[i]
-                           transformation.info <- raw_data_transformed_norm[transformation.info,c("transf","transf.value")][1,]
-                           
-                           record <- data.frame(
-                             ID = i - 1,
-                             qtl.ID = NA,
-                             trait = features[i],
-                             ind = num_indv_phend_n,
-                             lg = NA,
-                             lod.peak = NA,
-                             pos.peak = NA,
-                             marker = NA,
-                             pos.p95.bay.int = NA,
-                             marker.p95.bay.int = NA,
-                             pvar = NA,
-                             est.add = NA,
-                             est.dom = NA,
-                             p5.lod.thr = NA,
-                             p10.lod.thr = NA,
-                             p.val = NA,
-                             transf = transformation.info$transf,
-                             transf.val = transformation.info$transf.value,
-                             method = "normal-scanone",
-                             p5.qtl = FALSE,
-                             p10.qtl = FALSE
-                           )
-                           
-                           is.pseudo.marker <- function(marker){
-                             if(grepl("loc",marker)){
-                               return(TRUE)
-                             }
-                             return(FALSE)
-                           }
-                           
-                           transform.pseudomarker <- function(cross, marker, chr, pos){
-                             new.marker <- marker
-                             new.pos <- pos
-                             if(is.pseudo.marker(marker)){
-                               marker.info <- qtl::find.markerpos(cross, 
-                                                                  qtl::find.marker(cross, chr = chr, pos = pos))
-                               new.marker <- rownames(marker.info)
-                               new.pos <- marker.info$pos
-                             }
-                             return(c(new.marker,as.character(new.pos)))
-                           }
-                           
-                           # Run single scan
-                           normal.scanone <-  qtl::scanone(x_norm, pheno.col = i,  model = "normal", method = "hk")
-                           summary.normal.scanone <- summary(normal.scanone, threshold = LOD.THRESHOLD)
-                           lod.count <- nrow(summary.normal.scanone)
-                           if(!is.null(lod.count) && lod.count > 0) {
-                             for(k in 1:lod.count){
-                               if(k > 1){
-                                 #new.record <- record[0,] # Create an empty record object
-                                 #new.record[1,] <- NA
-                                 new.record <- record[1,] # Create copy of record object
-                                 #new.record$ID <- NA # Drop the feature ID
-                               }else{
-                                 new.record <- record # Copy record structured and data
-                               }
-                               #lod.count <- sum(normal.scanone$lod >= LOD.THRESHOLD)
-                               
-                               #peak.lod <- normal.scanone$lod == max(normal.scanone$lod)
-                               # Extract Peak QTL information
-                               new.record$lg <- summary.normal.scanone[k,"chr"]       
-                               new.record$lod.peak <- summary.normal.scanone[k,"lod"]
-                               new.record$pos.peak <- summary.normal.scanone[k,"pos"]
-                               marker <- rownames(summary.normal.scanone)[k]
-                               # Verify if current QTL has a pseudomarker
-                               marker.info <- transform.pseudomarker(x_norm,marker,new.record$lg,new.record$pos.peak)
-                               new.record$marker <- marker.info[1]
-                               new.record$pos.peak <- as.numeric(marker.info[2])
-                               
-                               if(!is.na(new.record$lg)){
-                                 new.record$qtl.ID <- with(new.record, sprintf("%s:%s@%f",features[i],lg,pos.peak))
-                               }
-                               
-                               p95.bayesian <- qtl::bayesint(normal.scanone, chr = new.record$lg ,expandtomarkers = TRUE, prob = 0.95)
-                               p95.bayesian <- unique(p95.bayesian)
-                               #p95.bayesian <- summary(normal.scanone,  perms=normal.scanone.per, alpha=0.5, pvalues=TRUE)
-                               low.bound <- 1#p95.bayesian$pos == min(p95.bayesian$pos)
-                               upper.bound <- p95.bayesian$pos == max(p95.bayesian$pos)
-                               
-                               p95.bayesian$marker <- NA # Add new column for markers, prevent duplicated row names
-                               # Verify if the Bayesian interval QTLs have pseudomarkers
-                               for(l in 1:nrow(p95.bayesian)){
-                                 marker <- rownames(p95.bayesian)[l]
-                                 marker.info <- transform.pseudomarker(x_norm,marker,p95.bayesian[l,"chr"],p95.bayesian[l,"pos"])
-                                 p95.bayesian[l,"marker"] <- marker.info[1]
-                                 p95.bayesian[l,"pos"] <- as.numeric(marker.info[2])
-                               }
-                               new.record$pos.p95.bay.int <- paste0(p95.bayesian[low.bound,"pos"],"-",
-                                                                    p95.bayesian[upper.bound,"pos"])
-                               new.record$marker.p95.bay.int <- paste0(p95.bayesian[low.bound,"marker"],"-",
-                                                                       p95.bayesian[upper.bound,"marker"])
-                               #new.record$marker.p95.bay.int <- paste0(rownames(p95.bayesian)[low.bound],"-",
-                              #                                         rownames(p95.bayesian)[upper.bound])
-                               if(k > 1){
-                                 record <- rbind(record,new.record)
-                               }else{
-                                 record <- new.record
-                               }
-                             }
-                             
-                             #if(lod.count > 0){
-                               #summary(normal.scanone, threshold = 3)
-                               #lod.plot <- plot(normal.scanone, ylab="LOD Score")
-                               #cat(paste0("Scanone: ",i,"\t\tLODs: ",lod.count,"\n"))
-                               normal.scanone.per <- qtl::scanone(x_norm, pheno.col = i, model = "normal", method = "hk", n.perm = PERMUTATIONS)
-                               p5 <- summary(normal.scanone.per)[[1]]  #  5% percent
-                               p10 <- summary(normal.scanone.per)[[2]] # 10% percent
-                               
-                               
-                               lod.plot <- MetaPipe::save_plot(plot(normal.scanone, ylab="LOD Score") + 
-                                                      abline(h=p5, lwd=2, lty="solid", col="red") +
-                                                      abline(h=p10, lwd=2, lty="solid", col="red"),
-                                                    paste0(PLOTS_DIR,"/LOD-",features[i]), width = 18)
-                               
-                               record[,]$p5.lod.thr <- p5
-                               record[,]$p10.lod.thr <- p10
-                               
-                               p5.index <- record$lod.peak >= p5
-                               p10.index <- record$lod.peak >= p10
-                               if(!is.na(p5.index) && any(p5.index)){ record[p5.index,]$p5.qtl <- TRUE }
-                               if(!is.na(p10.index)&& any(p10.index)){ record[p10.index,]$p10.qtl <- TRUE }
-                               
-
-                               chr <- as.numeric(summary.normal.scanone$chr)
-                               pos <- as.numeric(summary.normal.scanone$pos)
-                               qtl_s <- qtl::makeqtl(x_norm, chr, pos, what=c("prob"))
-                               
-                               for(m in 1:length(chr)){
-                                 #qtl_s <- makeqtl(x_norm, chr[m], pos[m], what=c("prob"))
-                                 #f <- as.formula(paste0("y~",paste0("Q",seq(1:nrow(summary.normal.scanone)), collapse = " + ")))
-                                 f <- as.formula(paste0("y~",paste0("Q",m, collapse = " + ")))
-                                 fitqtl <- qtl::fitqtl(x_norm, pheno.col = i, qtl_s, formula = f , get.ests = TRUE, model = "normal", method="hk")
-                                 summary.fitqtl <- summary(fitqtl)
-                                 
-                                 if(length(summary.fitqtl)){
-                                   p.var <- as.numeric(summary.fitqtl[[1]][1,"%var"])
-                                   p.value.f <- as.numeric(summary.fitqtl[[1]][,"Pvalue(F)"])[1]
-                                   estimates <- as.numeric(summary.fitqtl$ests[,"est"])[-1]
-                                   record[m,]$pvar <- p.var
-                                   record[m,]$p.val <- p.value.f
-                                   record[m,]$est.add <- estimates[1]
-                                   record[m,]$est.dom <- estimates[2]
-                                   #for(l in 1:length(estimates)){
-                                   #  offset <- 2*(l-1)
-                                   #  record[l,]$est.add <- estimates[offset + 1]
-                                   #  record[l,]$est.dom <- estimates[offset + 2]
-                                   #}
-                                 }
-                               }
-                               
-                               # No needed for this data set
-                               #refinqtl <- refineqtl(x_norm, qtl = qtl_s, pheno.col = i, formula = f, verbose = FALSE, model = "normal", method="hk")
-                               #refinqtl
-                               
-                               #fitqtl <- fitqtl(x_norm, pheno.col = i, refinqtl, formula = f, get.ests = TRUE, model = "normal", method="hk")
-                               #summary(fitqtl)
-                               
-                               
-                               ## find additional QTLs
-                               #out.aq <- addqtl(x_norm, qtl = refinqtl, pheno.col = i, formula = f, method="hk")
-                               #max(out.aq)
-                           }
-                           record
-                         }
-parallel::stopCluster(cl) # Stop cluster
+# cl <- parallel::makeCluster(ceiling(CPUS*0.5), outfile=paste0('./info_parallel_QTL.log'))
+# doParallel::registerDoParallel(cl)
+# x_norm_sum_map <- foreach(i=2:ncol(x_norm$pheno),
+#                          .combine = rbind) %dopar% {
+#                            transformation.info <- raw_data_transformed_norm$feature == features[i]
+#                            transformation.info <- raw_data_transformed_norm[transformation.info,c("transf", "transf_val")][1,]
+#                            
+#                            record <- data.frame(
+#                              ID = i - 1,
+#                              qtl.ID = NA,
+#                              trait = features[i],
+#                              ind = num_indv_phend_n,
+#                              lg = NA,
+#                              lod.peak = NA,
+#                              pos.peak = NA,
+#                              marker = NA,
+#                              pos.p95.bay.int = NA,
+#                              marker.p95.bay.int = NA,
+#                              pvar = NA,
+#                              est.add = NA,
+#                              est.dom = NA,
+#                              p5.lod.thr = NA,
+#                              p10.lod.thr = NA,
+#                              p.val = NA,
+#                              transf = transformation.info$transf,
+#                              transf.val = transformation.info$transf_val,
+#                              method = "normal-scanone",
+#                              p5.qtl = FALSE,
+#                              p10.qtl = FALSE
+#                            )
+#                            
+#                            is.pseudo.marker <- function(marker){
+#                              if(grepl("loc",marker)){
+#                                return(TRUE)
+#                              }
+#                              return(FALSE)
+#                            }
+#                            
+#                            transform.pseudomarker <- function(cross, marker, chr, pos){
+#                              new.marker <- marker
+#                              new.pos <- pos
+#                              if(is.pseudo.marker(marker)){
+#                                marker.info <- qtl::find.markerpos(cross, 
+#                                                                   qtl::find.marker(cross, chr = chr, pos = pos))
+#                                new.marker <- rownames(marker.info)
+#                                new.pos <- marker.info$pos
+#                              }
+#                              return(c(new.marker,as.character(new.pos)))
+#                            }
+#                            
+#                            # Run single scan
+#                            normal.scanone <-  qtl::scanone(x_norm, pheno.col = i,  model = "normal", method = "hk")
+#                            summary.normal.scanone <- summary(normal.scanone, threshold = LOD.THRESHOLD)
+#                            lod.count <- nrow(summary.normal.scanone)
+#                            if(!is.null(lod.count) && lod.count > 0) {
+#                              for(k in 1:lod.count){
+#                                if(k > 1){
+#                                  #new.record <- record[0,] # Create an empty record object
+#                                  #new.record[1,] <- NA
+#                                  new.record <- record[1,] # Create copy of record object
+#                                  #new.record$ID <- NA # Drop the feature ID
+#                                }else{
+#                                  new.record <- record # Copy record structured and data
+#                                }
+#                                #lod.count <- sum(normal.scanone$lod >= LOD.THRESHOLD)
+#                                
+#                                #peak.lod <- normal.scanone$lod == max(normal.scanone$lod)
+#                                # Extract Peak QTL information
+#                                new.record$lg <- summary.normal.scanone[k,"chr"]       
+#                                new.record$lod.peak <- summary.normal.scanone[k,"lod"]
+#                                new.record$pos.peak <- summary.normal.scanone[k,"pos"]
+#                                marker <- rownames(summary.normal.scanone)[k]
+#                                # Verify if current QTL has a pseudomarker
+#                                marker.info <- transform.pseudomarker(x_norm,marker,new.record$lg,new.record$pos.peak)
+#                                new.record$marker <- marker.info[1]
+#                                new.record$pos.peak <- as.numeric(marker.info[2])
+#                                
+#                                if(!is.na(new.record$lg)){
+#                                  new.record$qtl.ID <- with(new.record, sprintf("%s:%s@%f",features[i],lg,pos.peak))
+#                                }
+#                                
+#                                p95.bayesian <- qtl::bayesint(normal.scanone, chr = new.record$lg ,expandtomarkers = TRUE, prob = 0.95)
+#                                p95.bayesian <- unique(p95.bayesian)
+#                                #p95.bayesian <- summary(normal.scanone,  perms=normal.scanone.per, alpha=0.5, pvalues=TRUE)
+#                                low.bound <- 1#p95.bayesian$pos == min(p95.bayesian$pos)
+#                                upper.bound <- p95.bayesian$pos == max(p95.bayesian$pos)
+#                                
+#                                p95.bayesian$marker <- NA # Add new column for markers, prevent duplicated row names
+#                                # Verify if the Bayesian interval QTLs have pseudomarkers
+#                                for(l in 1:nrow(p95.bayesian)){
+#                                  marker <- rownames(p95.bayesian)[l]
+#                                  marker.info <- transform.pseudomarker(x_norm,marker,p95.bayesian[l,"chr"],p95.bayesian[l,"pos"])
+#                                  p95.bayesian[l,"marker"] <- marker.info[1]
+#                                  p95.bayesian[l,"pos"] <- as.numeric(marker.info[2])
+#                                }
+#                                new.record$pos.p95.bay.int <- paste0(p95.bayesian[low.bound,"pos"],"-",
+#                                                                     p95.bayesian[upper.bound,"pos"])
+#                                new.record$marker.p95.bay.int <- paste0(p95.bayesian[low.bound,"marker"],"-",
+#                                                                        p95.bayesian[upper.bound,"marker"])
+#                                #new.record$marker.p95.bay.int <- paste0(rownames(p95.bayesian)[low.bound],"-",
+#                               #                                         rownames(p95.bayesian)[upper.bound])
+#                                if(k > 1){
+#                                  record <- rbind(record,new.record)
+#                                }else{
+#                                  record <- new.record
+#                                }
+#                              }
+#                              
+#                              #if(lod.count > 0){
+#                                #summary(normal.scanone, threshold = 3)
+#                                #lod.plot <- plot(normal.scanone, ylab="LOD Score")
+#                                #cat(paste0("Scanone: ",i,"\t\tLODs: ",lod.count,"\n"))
+#                                normal.scanone.per <- qtl::scanone(x_norm, pheno.col = i, model = "normal", method = "hk", n.perm = PERMUTATIONS)
+#                                p5 <- summary(normal.scanone.per)[[1]]  #  5% percent
+#                                p10 <- summary(normal.scanone.per)[[2]] # 10% percent
+#                                
+#                                
+#                                lod.plot <- MetaPipe::save_plot(plot(normal.scanone, ylab="LOD Score") + 
+#                                                       abline(h=p5, lwd=2, lty="solid", col="red") +
+#                                                       abline(h=p10, lwd=2, lty="solid", col="red"),
+#                                                     paste0(PLOTS_DIR,"/LOD-",features[i]), width = 18)
+#                                
+#                                record[,]$p5.lod.thr <- p5
+#                                record[,]$p10.lod.thr <- p10
+#                                
+#                                p5.index <- record$lod.peak >= p5
+#                                p10.index <- record$lod.peak >= p10
+#                                if(!is.na(p5.index) && any(p5.index)){ record[p5.index,]$p5.qtl <- TRUE }
+#                                if(!is.na(p10.index)&& any(p10.index)){ record[p10.index,]$p10.qtl <- TRUE }
+#                                
+# 
+#                                chr <- as.numeric(summary.normal.scanone$chr)
+#                                pos <- as.numeric(summary.normal.scanone$pos)
+#                                qtl_s <- qtl::makeqtl(x_norm, chr, pos, what=c("prob"))
+#                                
+#                                for(m in 1:length(chr)){
+#                                  #qtl_s <- makeqtl(x_norm, chr[m], pos[m], what=c("prob"))
+#                                  #f <- as.formula(paste0("y~",paste0("Q",seq(1:nrow(summary.normal.scanone)), collapse = " + ")))
+#                                  f <- as.formula(paste0("y~",paste0("Q",m, collapse = " + ")))
+#                                  fitqtl <- qtl::fitqtl(x_norm, pheno.col = i, qtl_s, formula = f , get.ests = TRUE, model = "normal", method="hk")
+#                                  summary.fitqtl <- summary(fitqtl)
+#                                  
+#                                  if(length(summary.fitqtl)){
+#                                    p.var <- as.numeric(summary.fitqtl[[1]][1,"%var"])
+#                                    p.value.f <- as.numeric(summary.fitqtl[[1]][,"Pvalue(F)"])[1]
+#                                    estimates <- as.numeric(summary.fitqtl$ests[,"est"])[-1]
+#                                    record[m,]$pvar <- p.var
+#                                    record[m,]$p.val <- p.value.f
+#                                    record[m,]$est.add <- estimates[1]
+#                                    record[m,]$est.dom <- estimates[2]
+#                                    #for(l in 1:length(estimates)){
+#                                    #  offset <- 2*(l-1)
+#                                    #  record[l,]$est.add <- estimates[offset + 1]
+#                                    #  record[l,]$est.dom <- estimates[offset + 2]
+#                                    #}
+#                                  }
+#                                }
+#                                
+#                                # No needed for this data set
+#                                #refinqtl <- refineqtl(x_norm, qtl = qtl_s, pheno.col = i, formula = f, verbose = FALSE, model = "normal", method="hk")
+#                                #refinqtl
+#                                
+#                                #fitqtl <- fitqtl(x_norm, pheno.col = i, refinqtl, formula = f, get.ests = TRUE, model = "normal", method="hk")
+#                                #summary(fitqtl)
+#                                
+#                                
+#                                ## find additional QTLs
+#                                #out.aq <- addqtl(x_norm, qtl = refinqtl, pheno.col = i, formula = f, method="hk")
+#                                #max(out.aq)
+#                            }
+#                            record
+#                          }
+# parallel::stopCluster(cl) # Stop cluster
 #tmp <- x_norm_sum_map
 #tmp$qtl[!is.na(tmp$qtl)] <- 1:length(tmp$qtl[!is.na(tmp$qtl)])
 #x_norm_sum_map <- tmp
@@ -465,7 +440,7 @@ doParallel::registerDoParallel(cl)
 x_non_par_sum_map <- foreach(i=2:ncol(x_non_par$pheno),
                              .combine = rbind) %dopar% {
                                #transformation.info <- raw_data_transformed_non_par$feature == features_np[i]
-                               #transformation.info <- raw_data_transformed_non_par[transformation.info,c("transf","transf.value")][1,]
+                               #transformation.info <- raw_data_transformed_non_par[transformation.info,c("transf", "transf_val")][1,]
                                
                                record <- data.frame(
                                  ID = i - 1,
@@ -485,7 +460,7 @@ x_non_par_sum_map <- foreach(i=2:ncol(x_non_par$pheno),
                                  p10.lod.thr = NA,
                                  #p.val = NA,
                                  #transf = transformation.info$transf,
-                                 #transf.val = transformation.info$transf.value,
+                                 #transf.val = transformation.info$transf_val,
                                  method = "non.parametric-scanone",
                                  p5.qtl = FALSE,
                                  p10.qtl = FALSE

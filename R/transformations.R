@@ -83,7 +83,7 @@ log_transformation <- function(data,
   record <- data.frame(
     flag = "Non-normal",
     transf = "",
-    transf.value = 0
+    transf_val = 0
   )
   
   pvals <- data.frame(matrix(vector(), 1, length(transf)))
@@ -113,7 +113,7 @@ log_transformation <- function(data,
   compare_hist(data, transformed, feature, prefix, xlab)
   record$flag = "Normal"
   record$transf <- "log"
-  record$transf.value <- base
+  record$transf_val <- base
   return(record)
 }
 
@@ -148,7 +148,7 @@ power_transformation <- function(data,
   record <- data.frame(
     flag = "Non-normal",
     transf = "",
-    transf.value = 0
+    transf_val = 0
   )
   
   pvals <- data.frame(matrix(vector(), 1, length(transf)))
@@ -178,7 +178,7 @@ power_transformation <- function(data,
   compare_hist(data, transformed, feature, prefix, xlab)
   record$flag = "Normal"
   record$transf <- "power"
-  record$transf.value <- power
+  record$transf_val <- power
   return(record)
 }
 
@@ -214,7 +214,7 @@ root_transformation <- function(data,
   record <- data.frame(
     flag = "Non-normal",
     transf = "",
-    transf.value = 0
+    transf_val = 0
   )
   
   pvals <- data.frame(matrix(vector(), 1, length(transf)))
@@ -244,7 +244,7 @@ root_transformation <- function(data,
   compare_hist(data, transformed, feature, prefix, xlab)
   record$flag = "Normal"
   record$transf <- "root"
-  record$transf.value <- root
+  record$transf_val <- root
   return(record)
 }
 
@@ -290,7 +290,7 @@ transform_data <- function(data,
     values = data,
     flag = "Non-normal",
     transf = "",
-    transf.value = 0,
+    transf_val = 0,
     stringsAsFactors = FALSE
   )
   
@@ -333,7 +333,7 @@ transform_data <- function(data,
     compare_hist(data, transformed, feature, prefix, xlab)
     record$values <- transformed
     record$transf <- "log"
-    record$transf.value <- base
+    record$transf_val <- base
     return(record)
   }
   else if (transf == 2) { # Power transformation
@@ -351,7 +351,7 @@ transform_data <- function(data,
     compare_hist(data, transformed, feature, prefix, xlab)
     record$values <- transformed
     record$transf <- "power"
-    record$transf.value <- power
+    record$transf_val <- power
     return(record)
   }
   else { # Root transformation
@@ -369,7 +369,7 @@ transform_data <- function(data,
     compare_hist(data, transformed, feature, prefix, xlab)
     record$values <- transformed
     record$transf <- "root"
-    record$transf.value <- root
+    record$transf_val <- root
     return(record)
   }
 }
