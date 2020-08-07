@@ -497,12 +497,14 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
   x_sum_map <- foreach(i = feature_indices,
                             .combine = rbind) %dopar% {
                               if (!is.null(raw_data_normalised)) {
-                              transf_info <- raw_data_normalised$feature == features[i]
-                              transf_info <- raw_data_normalised[transf_info, c("transf", "transf.value")][1, ]
+                                transf_info <- raw_data_normalised$feature == features[i]
+                                transf_info <- raw_data_normalised[transf_info, c("transf", "transf.value")][1, ]
                               }
-                              else
+                              else {
                                 transf_info <- data.frame(transf = NA, transf.value = NA)
+                              }
                               
+                              # Structure for QTL
                               record <- data.frame(
                                 # ID = i - 1,
                                 qtl.ID = NA,
@@ -528,10 +530,7 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                               )
                               
                               is.pseudo.marker <- function(marker) {
-                                if(grepl("loc", marker)){
-                                  return(TRUE)
-                                }
-                                return(FALSE)
+                                return(ifelse(grepl("loc", marker), TRUE, FALSE))
                               }
                               
                               transform.pseudomarker <- function(cross, marker, chr, pos) {
