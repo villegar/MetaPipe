@@ -13,6 +13,7 @@ repos:
 before_install:
  #- sh ./get_openmpi.sh 
  - sudo apt-get -y install openmpi-bin libopenmpi-dev
+ - sudo apt-get -y install libmagick++-dev
 
 r_packages:
   - covr
