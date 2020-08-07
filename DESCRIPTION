@@ -47,6 +47,7 @@ Imports:
     tidyverse, 
     VIM
 Suggests:
+    hexSticker, 
     testthat
 Depends: 
     R (>= 3.6)
