@@ -507,26 +507,26 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                               # Structure for QTL
                               record <- data.frame(
                                 # ID = i - 1,
-                                qtl.ID = NA,
+                                qtl_ID = NA,
                                 trait = features[i],
                                 ind = num_indv_phend_n,
                                 lg = NA,
-                                lod.peak = NA,
-                                pos.peak = NA,
+                                lod_peak = NA,
+                                pos_peak = NA,
                                 marker = NA,
-                                pos.p95.bay.int = NA,
-                                marker.p95.bay.int = NA,
+                                pos_p95_bay_int = NA,
+                                marker_p95_bay_int = NA,
                                 pvar = NA,
-                                est.add = NA,
-                                est.dom = NA,
-                                p5.lod.thr = NA,
-                                p10.lod.thr = NA,
-                                p.val = NA,
+                                est_add = NA,
+                                est_dom = NA,
+                                p5_lod_thr = NA,
+                                p10_lod_thr = NA,
+                                pval = NA,
                                 transf = transf_info$transf,
                                 transf.val = transf_info$transf.value,
                                 method = qtl_method,
-                                p5.qtl = FALSE,
-                                p10.qtl = FALSE
+                                p5_qtl = FALSE,
+                                p10_qtl = FALSE
                               )
                               
                               is.pseudo.marker <- function(marker) {
@@ -564,16 +564,16 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                                   #peak.lod <- normal.scanone$lod == max(normal.scanone$lod)
                                   # Extract Peak QTL information
                                   new.record$lg <- summary.normal.scanone[k,"chr"]       
-                                  new.record$lod.peak <- summary.normal.scanone[k,"lod"]
-                                  new.record$pos.peak <- summary.normal.scanone[k,"pos"]
+                                  new.record$lod_peak <- summary.normal.scanone[k,"lod"]
+                                  new.record$pos_peak <- summary.normal.scanone[k,"pos"]
                                   marker <- rownames(summary.normal.scanone)[k]
                                   # Verify if current QTL has a pseudomarker
-                                  marker.info <- transform.pseudomarker(x_norm,marker,new.record$lg,new.record$pos.peak)
+                                  marker.info <- transform.pseudomarker(x_norm,marker,new.record$lg,new.record$pos_peak)
                                   new.record$marker <- marker.info[1]
-                                  new.record$pos.peak <- as.numeric(marker.info[2])
+                                  new.record$pos_peak <- as.numeric(marker.info[2])
                                   
                                   if(!is.na(new.record$lg)) {
-                                    new.record$qtl.ID <- with(new.record, sprintf("%s:%s@%f",features[i],lg,pos.peak))
+                                    new.record$qtl_ID <- with(new.record, sprintf("%s:%s@%f",features[i],lg,pos_peak))
                                   }
                                   
                                   p95.bayesian <- qtl::bayesint(normal.scanone, chr = new.record$lg ,expandtomarkers = TRUE, prob = 0.95)
@@ -590,11 +590,11 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                                     p95.bayesian[l,"marker"] <- marker.info[1]
                                     p95.bayesian[l,"pos"] <- as.numeric(marker.info[2])
                                   }
-                                  new.record$pos.p95.bay.int <- paste0(p95.bayesian[low.bound,"pos"],"-",
+                                  new.record$pos_p95_bay_int <- paste0(p95.bayesian[low.bound,"pos"],"-",
                                                                        p95.bayesian[upper.bound,"pos"])
-                                  new.record$marker.p95.bay.int <- paste0(p95.bayesian[low.bound,"marker"],"-",
+                                  new.record$marker_p95_bay_int <- paste0(p95.bayesian[low.bound,"marker"],"-",
                                                                           p95.bayesian[upper.bound,"marker"])
-                                  #new.record$marker.p95.bay.int <- paste0(rownames(p95.bayesian)[low.bound],"-",
+                                  #new.record$marker_p95_bay_int <- paste0(rownames(p95.bayesian)[low.bound],"-",
                                   #                                         rownames(p95.bayesian)[upper.bound])
                                   if(k > 1){
                                     record <- rbind(record,new.record)
@@ -617,13 +617,13 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                                                                   abline(h=p10, lwd=2, lty="solid", col="red"),
                                                                 paste0(PLOTS_DIR,"/LOD-",features[i]), width = 18)
                                 
-                                record[,]$p5.lod.thr <- p5
-                                record[,]$p10.lod.thr <- p10
+                                record[,]$p5_lod_thr <- p5
+                                record[,]$p10_lod_thr <- p10
                                 
-                                p5.index <- record$lod.peak >= p5
-                                p10.index <- record$lod.peak >= p10
-                                if(!is.na(p5.index) && any(p5.index)){ record[p5.index,]$p5.qtl <- TRUE }
-                                if(!is.na(p10.index)&& any(p10.index)){ record[p10.index,]$p10.qtl <- TRUE }
+                                p5.index <- record$lod_peak >= p5
+                                p10.index <- record$lod_peak >= p10
+                                if(!is.na(p5.index) && any(p5.index)){ record[p5.index,]$p5_qtl <- TRUE }
+                                if(!is.na(p10.index)&& any(p10.index)){ record[p10.index,]$p10_qtl <- TRUE }
                                 
                                 
                                 chr <- as.numeric(summary.normal.scanone$chr)
@@ -639,16 +639,16 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                                   
                                   if(length(summary.fitqtl)){
                                     p.var <- as.numeric(summary.fitqtl[[1]][1,"%var"])
-                                    p.value.f <- as.numeric(summary.fitqtl[[1]][,"Pvalue(F)"])[1]
+                                    pvalue.f <- as.numeric(summary.fitqtl[[1]][,"Pvalue(F)"])[1]
                                     estimates <- as.numeric(summary.fitqtl$ests[,"est"])[-1]
                                     record[m,]$pvar <- p.var
-                                    record[m,]$p.val <- p.value.f
-                                    record[m,]$est.add <- estimates[1]
-                                    record[m,]$est.dom <- estimates[2]
+                                    record[m,]$pval <- pvalue.f
+                                    record[m,]$est_add <- estimates[1]
+                                    record[m,]$est_dom <- estimates[2]
                                     #for(l in 1:length(estimates)){
                                     #  offset <- 2*(l-1)
-                                    #  record[l,]$est.add <- estimates[offset + 1]
-                                    #  record[l,]$est.dom <- estimates[offset + 2]
+                                    #  record[l,]$est_add <- estimates[offset + 1]
+                                    #  record[l,]$est_dom <- estimates[offset + 2]
                                     #}
                                   }
                                 }
