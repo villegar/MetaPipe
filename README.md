@@ -1,16 +1,11 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# MetaPipe
+# MetaPipe <img src="inst/images/metapipe.png" alt="metapipe-logo" align="right" height=200px/>
 
 MetaPipe: A High-Performance Computing pipeline for QTL mapping of large
-metabolomic
-datasets
-
-<!-- badges: start -->
-
+metabolomic datasets <!-- badges: start -->
 <!-- [![Build Status](https://travis-ci.com/villegar/MetaPipe.svg?branch=master)](https://travis-ci.com/villegar/MetaPipe) -->
-
 [![](https://travis-ci.com/villegar/MetaPipe.svg?branch=master)](https://travis-ci.com/villegar/MetaPipe)
 [![](https://img.shields.io/badge/devel%20version-0.0.1-blue.svg)](https://github.com/villegar/MetaPipe)
 [![](https://img.shields.io/github/languages/code-size/villegar/MetaPipe.svg)](https://github.com/villegar/MetaPipe)

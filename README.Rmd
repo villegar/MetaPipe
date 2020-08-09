@@ -13,9 +13,8 @@ knitr::opts_chunk$set(
 )
 ```
 
-# MetaPipe
+# MetaPipe <img src="inst/images/metapipe.png" alt="metapipe-logo" align="right" height=200px/>
 MetaPipe: A High-Performance Computing pipeline for QTL mapping of large metabolomic datasets
-
 <!-- badges: start -->
 <!-- [![Build Status](https://travis-ci.com/villegar/MetaPipe.svg?branch=master)](https://travis-ci.com/villegar/MetaPipe) -->
 `r badger::badge_travis("villegar/MetaPipe", is_commercial = TRUE)`
