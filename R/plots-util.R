@@ -180,12 +180,32 @@ generate_hist <- function(data, feature, prefix, xlab){
   ggplot_save(myPlot,paste0(prefix,"_",feature))
 }
 
-generate_logo <- function() {
-  hexSticker::sticker("inst/figures/metapipe-400.png", package="MetaPipe", 
-                      h_color = "black",  h_fill = "white",
-                      dpi = 1600,
-                      l_x = 1.0, l_y = 1.0, spotlight = FALSE, 
-                      s_x = 1.0, s_y = .85, s_width = .55,
-                      p_x = 1.0, p_y = 1.6, p_size = 6, p_color = "black",
-                      filename="inst/figures/logo-400.png")
+#' Create Hexagonal logo for MetaPipe
+#'
+#' @param subplot subplot/image/icon to be used in the background
+#' @param dpi dots per inch
+#' @param h_color hexagon edge color
+#' @param h_fill hexagon filling color
+#' @param output output filename and path
+#' @param p_color package name color
+#'
+#' @export
+#'
+#' @examples
+#' hex_logo()
+#' hex_logo(h_fill = "#ffcc5c", output = "inst/images/metapipe-yellow.png", p_color = "#000000")
+#' hex_logo(h_fill = "#175574", output = "inst/images/metapipe-blue.png", p_color = "#eeeeee")
+hex_logo <- function(subplot = "inst/images/lab-2.png",
+                     dpi = 800,
+                     h_color = "#000000",
+                     h_fill = "#363b74",
+                     output = "inst/images/metapipe.png",
+                     p_color = "#eeeeee") {
+  hexSticker::sticker(subplot = subplot, package = "MetaPipe", 
+                      h_color = h_color,  h_fill = h_fill,
+                      dpi = dpi,
+                      # l_x = 1.0, l_y = 1.0, spotlight = FALSE, 
+                      s_x = 1.0, s_y = .85, s_width = .5,
+                      p_x = 1.0, p_y = 1.52, p_size = 6, p_color = p_color,
+                      filename = output)
 }
