@@ -249,17 +249,10 @@ write.csv(x_norm_scone, file = paste0(OUT_PREFIX, "_normal_scanone.csv"))
 #                              p10.qtl = FALSE
 #                            )
 #                            
-#                            is.pseudo.marker <- function(marker){
-#                              if(grepl("loc",marker)){
-#                                return(TRUE)
-#                              }
-#                              return(FALSE)
-#                            }
-#                            
 #                            transform.pseudomarker <- function(cross, marker, chr, pos){
 #                              new.marker <- marker
 #                              new.pos <- pos
-#                              if(is.pseudo.marker(marker)){
+#                              if(MetaPipe::is_pseudo_marker(marker)){
 #                                marker.info <- qtl::find.markerpos(cross, 
 #                                                                   qtl::find.marker(cross, chr = chr, pos = pos))
 #                                new.marker <- rownames(marker.info)
@@ -466,17 +459,10 @@ x_non_par_sum_map <- foreach(i=2:ncol(x_non_par$pheno),
                                  p10.qtl = FALSE
                                )
                                
-                               is.pseudo.marker <- function(marker){
-                                 if(grepl("loc",marker)){
-                                   return(TRUE)
-                                 }
-                                 return(FALSE)
-                               }
-                               
                                transform.pseudomarker <- function(cross, marker, chr, pos){
                                  new.marker <- marker
                                  new.pos <- pos
-                                 if(is.pseudo.marker(marker)){
+                                 if(MetaPipe::is_pseudo_marker(marker)){
                                    marker.info <- qtl::find.markerpos(cross, 
                                                                       qtl::find.marker(cross, chr = chr, pos = pos))
                                    new.marker <- rownames(marker.info)

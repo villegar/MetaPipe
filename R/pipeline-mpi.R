@@ -324,17 +324,10 @@ x.normal.summary.mapping <- foreach(i=2:ncol(x.normal$pheno),
                                         p10.qtl = FALSE
                                       )
                                       
-                                      is.pseudo.marker <- function(marker){
-                                        if(grepl("loc",marker)){
-                                          return(TRUE)
-                                        }
-                                        return(FALSE)
-                                      }
-                                      
                                       transform.pseudomarker <- function(cross, marker, chr, pos){
                                         new.marker <- marker
                                         new.pos <- pos
-                                        if(is.pseudo.marker(marker)){
+                                        if(MetaPipe::is_pseudo_marker(marker)){
                                           marker.info <- find.markerpos(cross, find.marker(cross, chr = chr, pos = pos))
                                           new.marker <- rownames(marker.info)
                                           new.pos <- marker.info$pos
@@ -482,17 +475,10 @@ x.non.parametric.summary.mapping <- foreach(i=2:ncol(x.non.parametric$pheno),
                                                 p10.qtl = FALSE
                                               )
                                               
-                                              is.pseudo.marker <- function(marker){
-                                                if(grepl("loc",marker)){
-                                                  return(TRUE)
-                                                }
-                                                return(FALSE)
-                                              }
-                                              
                                               transform.pseudomarker <- function(cross, marker, chr, pos){
                                                 new.marker <- marker
                                                 new.pos <- pos
-                                                if(is.pseudo.marker(marker)){
+                                                if(MetaPipe::is_pseudo_marker(marker)){
                                                   marker.info <- find.markerpos(cross, find.marker(cross, chr = chr, pos = pos))
                                                   new.marker <- rownames(marker.info)
                                                   new.pos <- marker.info$pos
