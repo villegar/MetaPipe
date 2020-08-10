@@ -13,6 +13,17 @@ is_pseudo_marker <- function(marker) {
   return(ifelse(grepl("loc", marker), TRUE, FALSE))
 }
 
+#' Transforms a pseudo-marker to a standar marker by looking for the nearest one
+#'
+#' @param x_data cross-file containing genetic map data and features
+#' @param marker pseudo marker to be transformed
+#' @param chr pseudo-marker's chromosome 
+#' @param pos pseudo-marker's position
+#'
+#' @return a prime marker and position
+#' @export
+#'
+# @examples
 transform_pseudo_marker <- function(x_data, marker, chr, pos) {
   markerp <- marker
   posp <- pos
