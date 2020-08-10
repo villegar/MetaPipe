@@ -12,3 +12,17 @@
 is_pseudo_marker <- function(marker) {
   return(ifelse(grepl("loc", marker), TRUE, FALSE))
 }
+
+
+
+transform_pseudomarker <- function(cross, marker, chr, pos) {
+  new.marker <- marker
+  new.pos <- pos
+  if(MetaPipe::is_pseudo_marker(marker)) {
+    marker.info <- qtl::find.markerpos(cross, 
+                                       qtl::find.marker(cross, chr = chr, pos = pos))
+    new.marker <- rownames(marker.info)
+    new.pos <- marker.info$pos
+  }
+  return(c(new.marker,as.character(new.pos)))
+}
