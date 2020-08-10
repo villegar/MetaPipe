@@ -193,13 +193,11 @@ generate_hist <- function(data, feature, prefix, xlab){
 #'
 #' @examples
 #' hex_logo()
-#' hex_logo(h_fill = "#ffcc5c", output = "inst/images/metapipe-yellow.png", p_color = "#000000")
-#' hex_logo(h_fill = "#175574", output = "inst/images/metapipe-blue.png", p_color = "#eeeeee")
-hex_logo <- function(subplot = "inst/images/lab-2.png",
+hex_logo <- function(subplot = system.file("images/lab-2.png", package = "MetaPipe"),
                      dpi = 800,
                      h_color = "#000000",
                      h_fill = "#363b74",
-                     output = "inst/images/metapipe.png",
+                     output = system.file("images/metapipe.png", package = "MetaPipe"),
                      p_color = "#eeeeee") {
   hexSticker::sticker(subplot = subplot, package = "MetaPipe", 
                       h_color = h_color,  h_fill = h_fill,
