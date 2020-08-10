@@ -529,18 +529,6 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                                 p10_qtl = FALSE
                               )
                               
-                              transform.pseudomarker <- function(cross, marker, chr, pos) {
-                                new.marker <- marker
-                                new.pos <- pos
-                                if(MetaPipe::is_pseudo_marker(marker)) {
-                                  marker.info <- qtl::find.markerpos(cross, 
-                                                                     qtl::find.marker(cross, chr = chr, pos = pos))
-                                  new.marker <- rownames(marker.info)
-                                  new.pos <- marker.info$pos
-                                }
-                                return(c(new.marker,as.character(new.pos)))
-                              }
-                              
                               # Run single scan
                               normal.scanone <-  qtl::scanone(x_norm, pheno.col = i,  ...)
                               summary.normal.scanone <- summary(normal.scanone, threshold = LOD.THRESHOLD)
@@ -564,7 +552,7 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                                   new.record$pos_peak <- summary.normal.scanone[k,"pos"]
                                   marker <- rownames(summary.normal.scanone)[k]
                                   # Verify if current QTL has a pseudomarker
-                                  marker.info <- transform.pseudomarker(x_norm,marker,new.record$lg,new.record$pos_peak)
+                                  marker.info <- MetaPipe::transform_pseudo_marker(x_norm,marker,new.record$lg,new.record$pos_peak)
                                   new.record$marker <- marker.info[1]
                                   new.record$pos_peak <- as.numeric(marker.info[2])
                                   
@@ -582,7 +570,7 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                                   # Verify if the Bayesian interval QTLs have pseudomarkers
                                   for(l in 1:nrow(p95.bayesian)){
                                     marker <- rownames(p95.bayesian)[l]
-                                    marker.info <- transform.pseudomarker(x_norm,marker,p95.bayesian[l,"chr"],p95.bayesian[l,"pos"])
+                                    marker.info <- MetaPipe::transform_pseudo_marker(x_norm,marker,p95.bayesian[l,"chr"],p95.bayesian[l,"pos"])
                                     p95.bayesian[l,"marker"] <- marker.info[1]
                                     p95.bayesian[l,"pos"] <- as.numeric(marker.info[2])
                                   }

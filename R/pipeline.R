@@ -249,18 +249,6 @@ write.csv(x_norm_scone, file = paste0(OUT_PREFIX, "_normal_scanone.csv"))
 #                              p10.qtl = FALSE
 #                            )
 #                            
-#                            transform.pseudomarker <- function(cross, marker, chr, pos){
-#                              new.marker <- marker
-#                              new.pos <- pos
-#                              if(MetaPipe::is_pseudo_marker(marker)){
-#                                marker.info <- qtl::find.markerpos(cross, 
-#                                                                   qtl::find.marker(cross, chr = chr, pos = pos))
-#                                new.marker <- rownames(marker.info)
-#                                new.pos <- marker.info$pos
-#                              }
-#                              return(c(new.marker,as.character(new.pos)))
-#                            }
-#                            
 #                            # Run single scan
 #                            normal.scanone <-  qtl::scanone(x_norm, pheno.col = i,  model = "normal", method = "hk")
 #                            summary.normal.scanone <- summary(normal.scanone, threshold = LOD.THRESHOLD)
@@ -284,7 +272,7 @@ write.csv(x_norm_scone, file = paste0(OUT_PREFIX, "_normal_scanone.csv"))
 #                                new.record$pos.peak <- summary.normal.scanone[k,"pos"]
 #                                marker <- rownames(summary.normal.scanone)[k]
 #                                # Verify if current QTL has a pseudomarker
-#                                marker.info <- transform.pseudomarker(x_norm,marker,new.record$lg,new.record$pos.peak)
+#                                marker.info <- MetaPipe::transform_pseudo_marker(x_norm,marker,new.record$lg,new.record$pos.peak)
 #                                new.record$marker <- marker.info[1]
 #                                new.record$pos.peak <- as.numeric(marker.info[2])
 #                                
@@ -302,7 +290,7 @@ write.csv(x_norm_scone, file = paste0(OUT_PREFIX, "_normal_scanone.csv"))
 #                                # Verify if the Bayesian interval QTLs have pseudomarkers
 #                                for(l in 1:nrow(p95.bayesian)){
 #                                  marker <- rownames(p95.bayesian)[l]
-#                                  marker.info <- transform.pseudomarker(x_norm,marker,p95.bayesian[l,"chr"],p95.bayesian[l,"pos"])
+#                                  marker.info <- MetaPipe::transform_pseudo_marker(x_norm,marker,p95.bayesian[l,"chr"],p95.bayesian[l,"pos"])
 #                                  p95.bayesian[l,"marker"] <- marker.info[1]
 #                                  p95.bayesian[l,"pos"] <- as.numeric(marker.info[2])
 #                                }
@@ -459,18 +447,6 @@ x_non_par_sum_map <- foreach(i=2:ncol(x_non_par$pheno),
                                  p10.qtl = FALSE
                                )
                                
-                               transform.pseudomarker <- function(cross, marker, chr, pos){
-                                 new.marker <- marker
-                                 new.pos <- pos
-                                 if(MetaPipe::is_pseudo_marker(marker)){
-                                   marker.info <- qtl::find.markerpos(cross, 
-                                                                      qtl::find.marker(cross, chr = chr, pos = pos))
-                                   new.marker <- rownames(marker.info)
-                                   new.pos <- marker.info$pos
-                                 }
-                                 return(c(new.marker,as.character(new.pos)))
-                               }
-                               
                                # Run single scan
                                non.parametric.scanone <- qtl::scanone(x_non_par, pheno.col = i,  model = "np")
                                summary.non.parametric.scanone <- summary(non.parametric.scanone, threshold = LOD.THRESHOLD)
@@ -494,7 +470,7 @@ x_non_par_sum_map <- foreach(i=2:ncol(x_non_par$pheno),
                                    new.record$pos.peak <- summary.non.parametric.scanone[k,"pos"]
                                    marker <- rownames(summary.non.parametric.scanone)[k]
                                    # Verify if current QTL has a pseudomarker
-                                   marker.info <- transform.pseudomarker(x_non_par,marker,new.record$lg,new.record$pos.peak)
+                                   marker.info <- MetaPipe::transform_pseudo_marker(x_non_par,marker,new.record$lg,new.record$pos.peak)
                                    new.record$marker <- marker.info[1]
                                    new.record$pos.peak <- as.numeric(marker.info[2])
                                    
@@ -512,7 +488,7 @@ x_non_par_sum_map <- foreach(i=2:ncol(x_non_par$pheno),
                                    # Verify if the Bayesian interval QTLs have pseudomarkers
                                    for(l in 1:nrow(p95.bayesian)){
                                      marker <- rownames(p95.bayesian)[l]
-                                     marker.info <- transform.pseudomarker(x_non_par,marker,p95.bayesian[l,"chr"],p95.bayesian[l,"pos"])
+                                     marker.info <- MetaPipe::transform_pseudo_marker(x_non_par,marker,p95.bayesian[l,"chr"],p95.bayesian[l,"pos"])
                                      p95.bayesian[l,"marker"] <- marker.info[1]
                                      p95.bayesian[l,"pos"] <- as.numeric(marker.info[2])
                                    }

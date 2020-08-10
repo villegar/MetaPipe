@@ -324,17 +324,6 @@ x.normal.summary.mapping <- foreach(i=2:ncol(x.normal$pheno),
                                         p10.qtl = FALSE
                                       )
                                       
-                                      transform.pseudomarker <- function(cross, marker, chr, pos){
-                                        new.marker <- marker
-                                        new.pos <- pos
-                                        if(MetaPipe::is_pseudo_marker(marker)){
-                                          marker.info <- find.markerpos(cross, find.marker(cross, chr = chr, pos = pos))
-                                          new.marker <- rownames(marker.info)
-                                          new.pos <- marker.info$pos
-                                        }
-                                        return(c(new.marker,as.character(new.pos)))
-                                      }
-                                      
                                       # Run single scan
                                       normal.scanone <-  scanone(x.normal, pheno.col = i,  model = "normal", method = "hk")
                                       summary.normal.scanone <- summary(normal.scanone, threshold = LOD.THRESHOLD)
@@ -358,7 +347,7 @@ x.normal.summary.mapping <- foreach(i=2:ncol(x.normal$pheno),
                                           new.record$pos.peak <- summary.normal.scanone[k,"pos"]
                                           marker <- rownames(summary.normal.scanone)[k]
                                           # Verify if current QTL has a pseudomarker
-                                          marker.info <- transform.pseudomarker(x.normal,marker,new.record$lg,new.record$pos.peak)
+                                          marker.info <- MetaPipe::transform_pseudo_marker(x.normal,marker,new.record$lg,new.record$pos.peak)
                                           new.record$marker <- marker.info[1]
                                           new.record$pos.peak <- as.numeric(marker.info[2])
                                           
@@ -376,7 +365,7 @@ x.normal.summary.mapping <- foreach(i=2:ncol(x.normal$pheno),
                                           # Verify if the Bayesian interval QTLs have pseudomarkers
                                           for(l in 1:nrow(p95.bayesian)){
                                             marker <- rownames(p95.bayesian)[l]
-                                            marker.info <- transform.pseudomarker(x.normal,marker,p95.bayesian[l,"chr"],p95.bayesian[l,"pos"])
+                                            marker.info <- MetaPipe::transform_pseudo_marker(x.normal,marker,p95.bayesian[l,"chr"],p95.bayesian[l,"pos"])
                                             p95.bayesian[l,"marker"] <- marker.info[1]
                                             p95.bayesian[l,"pos"] <- as.numeric(marker.info[2])
                                           }
@@ -475,17 +464,6 @@ x.non.parametric.summary.mapping <- foreach(i=2:ncol(x.non.parametric$pheno),
                                                 p10.qtl = FALSE
                                               )
                                               
-                                              transform.pseudomarker <- function(cross, marker, chr, pos){
-                                                new.marker <- marker
-                                                new.pos <- pos
-                                                if(MetaPipe::is_pseudo_marker(marker)){
-                                                  marker.info <- find.markerpos(cross, find.marker(cross, chr = chr, pos = pos))
-                                                  new.marker <- rownames(marker.info)
-                                                  new.pos <- marker.info$pos
-                                                }
-                                                return(c(new.marker,as.character(new.pos)))
-                                              }
-                                              
                                               # Run single scan
                                               non.parametric.scanone <-  scanone(x.non.parametric, pheno.col = i,  model = "np")
                                               summary.non.parametric.scanone <- summary(non.parametric.scanone, threshold = LOD.THRESHOLD)
@@ -509,7 +487,7 @@ x.non.parametric.summary.mapping <- foreach(i=2:ncol(x.non.parametric$pheno),
                                                   new.record$pos.peak <- summary.non.parametric.scanone[k,"pos"]
                                                   marker <- rownames(summary.non.parametric.scanone)[k]
                                                   # Verify if current QTL has a pseudomarker
-                                                  marker.info <- transform.pseudomarker(x.non.parametric,marker,new.record$lg,new.record$pos.peak)
+                                                  marker.info <- MetaPipe::transform_pseudo_marker(x.non.parametric,marker,new.record$lg,new.record$pos.peak)
                                                   new.record$marker <- marker.info[1]
                                                   new.record$pos.peak <- as.numeric(marker.info[2])
                                                   
@@ -527,7 +505,7 @@ x.non.parametric.summary.mapping <- foreach(i=2:ncol(x.non.parametric$pheno),
                                                   # Verify if the Bayesian interval QTLs have pseudomarkers
                                                   for(l in 1:nrow(p95.bayesian)){
                                                     marker <- rownames(p95.bayesian)[l]
-                                                    marker.info <- transform.pseudomarker(x.non.parametric,marker,p95.bayesian[l,"chr"],p95.bayesian[l,"pos"])
+                                                    marker.info <- MetaPipe::transform_pseudo_marker(x.non.parametric,marker,p95.bayesian[l,"chr"],p95.bayesian[l,"pos"])
                                                     p95.bayesian[l,"marker"] <- marker.info[1]
                                                     p95.bayesian[l,"pos"] <- as.numeric(marker.info[2])
                                                   }
