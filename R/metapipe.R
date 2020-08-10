@@ -594,8 +594,6 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                                                                        p95.bayesian[upper.bound,"pos"])
                                   new.record$marker_p95_bay_int <- paste0(p95.bayesian[low.bound,"marker"],"-",
                                                                           p95.bayesian[upper.bound,"marker"])
-                                  #new.record$marker_p95_bay_int <- paste0(rownames(p95.bayesian)[low.bound],"-",
-                                  #                                         rownames(p95.bayesian)[upper.bound])
                                   if(k > 1){
                                     record <- rbind(record,new.record)
                                   }else{
@@ -652,18 +650,6 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                                     #}
                                   }
                                 }
-                                
-                                # No needed for this data set
-                                #refinqtl <- refineqtl(x_norm, qtl = qtl_s, pheno.col = i, formula = f, verbose = FALSE, model = "normal", method="hk")
-                                #refinqtl
-                                
-                                #fitqtl <- fitqtl(x_norm, pheno.col = i, refinqtl, formula = f, get.ests = TRUE, model = "normal", method="hk")
-                                #summary(fitqtl)
-                                
-                                
-                                ## find additional QTLs
-                                #out.aq <- addqtl(x_norm, qtl = refinqtl, pheno.col = i, formula = f, method="hk")
-                                #max(out.aq)
                               }
                               record
                             }
