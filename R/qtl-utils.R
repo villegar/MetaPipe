@@ -19,10 +19,10 @@ transform_pseudomarker <- function(cross, marker, chr, pos) {
   markerp <- marker
   posp <- pos
   if(MetaPipe::is_pseudo_marker(marker)) {
-    marker.info <- qtl::find.markerpos(cross, 
-                                       qtl::find.marker(cross, chr = chr, pos = pos))
-    markerp <- rownames(marker.info)
-    posp <- marker.info$pos
+    minfo <- qtl::find.markerpos(cross, 
+                                 qtl::find.marker(cross, chr = chr, pos = pos))
+    markerp <- rownames(minfo)
+    posp <- minfo$pos
   }
   return(c(markerp, as.character(posp)))
 }
