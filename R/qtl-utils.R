@@ -17,12 +17,12 @@ is_pseudo_marker <- function(marker) {
 
 transform_pseudomarker <- function(cross, marker, chr, pos) {
   markerp <- marker
-  new.pos <- pos
+  posp <- pos
   if(MetaPipe::is_pseudo_marker(marker)) {
     marker.info <- qtl::find.markerpos(cross, 
                                        qtl::find.marker(cross, chr = chr, pos = pos))
     markerp <- rownames(marker.info)
-    new.pos <- marker.info$pos
+    posp <- marker.info$pos
   }
-  return(c(markerp, as.character(new.pos)))
+  return(c(markerp, as.character(posp)))
 }
