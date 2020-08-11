@@ -530,9 +530,9 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                               )
                               
                               # Run single scan
-                              normal.scanone <-  qtl::scanone(x_norm, pheno.col = i, ...)
-                              summary.normal.scanone <- summary(normal.scanone, threshold = lod_threshold)
-                              lod.count <- nrow(summary.normal.scanone)
+                              x_scone <-  qtl::scanone(x_norm, pheno.col = i, ...)
+                              summary.x_scone <- summary(x_scone, threshold = lod_threshold)
+                              lod.count <- nrow(summary.x_scone)
                               if(!is.null(lod.count) && lod.count > 0) {
                                 for(k in 1:lod.count){
                                   if(k > 1){
@@ -543,14 +543,14 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                                   } else{
                                     new.record <- record # Copy record structured and data
                                   }
-                                  #lod.count <- sum(normal.scanone$lod >= lod_threshold)
+                                  #lod.count <- sum(x_scone$lod >= lod_threshold)
                                   
-                                  #peak.lod <- normal.scanone$lod == max(normal.scanone$lod)
+                                  #peak.lod <- x_scone$lod == max(x_scone$lod)
                                   # Extract Peak QTL information
-                                  new.record$lg <- summary.normal.scanone[k,"chr"]       
-                                  new.record$lod_peak <- summary.normal.scanone[k,"lod"]
-                                  new.record$pos_peak <- summary.normal.scanone[k,"pos"]
-                                  marker <- rownames(summary.normal.scanone)[k]
+                                  new.record$lg <- summary.x_scone[k,"chr"]       
+                                  new.record$lod_peak <- summary.x_scone[k,"lod"]
+                                  new.record$pos_peak <- summary.x_scone[k,"pos"]
+                                  marker <- rownames(summary.x_scone)[k]
                                   # Verify if current QTL has a pseudomarker
                                   marker.info <- MetaPipe::transform_pseudo_marker(x_norm,marker,new.record$lg,new.record$pos_peak)
                                   new.record$marker <- marker.info[1]
@@ -560,9 +560,9 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                                     new.record$qtl_ID <- with(new.record, sprintf("%s:%s@%f",features[i],lg,pos_peak))
                                   }
                                   
-                                  p95.bayesian <- qtl::bayesint(normal.scanone, chr = new.record$lg ,expandtomarkers = TRUE, prob = 0.95)
+                                  p95.bayesian <- qtl::bayesint(x_scone, chr = new.record$lg ,expandtomarkers = TRUE, prob = 0.95)
                                   p95.bayesian <- unique(p95.bayesian)
-                                  #p95.bayesian <- summary(normal.scanone,  perms=normal.scanone.per, alpha=0.5, pvalues=TRUE)
+                                  #p95.bayesian <- summary(x_scone,  perms=x_scone.per, alpha=0.5, pvalues=TRUE)
                                   low.bound <- 1#p95.bayesian$pos == min(p95.bayesian$pos)
                                   upper.bound <- p95.bayesian$pos == max(p95.bayesian$pos)
                                   
@@ -586,15 +586,15 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                                 }
                                 
                                 #if(lod.count > 0){
-                                #summary(normal.scanone, threshold = 3)
-                                #lod.plot <- plot(normal.scanone, ylab="LOD Score")
+                                #summary(x_scone, threshold = 3)
+                                #lod.plot <- plot(x_scone, ylab="LOD Score")
                                 #cat(paste0("Scanone: ",i,"\t\tLODs: ",lod.count,"\n"))
-                                normal.scanone.per <- qtl::scanone(x_norm, pheno.col = i, model = "normal", method = "hk", n.perm = PERMUTATIONS)
-                                p5 <- summary(normal.scanone.per)[[1]]  #  5% percent
-                                p10 <- summary(normal.scanone.per)[[2]] # 10% percent
+                                x_scone.per <- qtl::scanone(x_norm, pheno.col = i, model = "normal", method = "hk", n.perm = PERMUTATIONS)
+                                p5 <- summary(x_scone.per)[[1]]  #  5% percent
+                                p10 <- summary(x_scone.per)[[2]] # 10% percent
                                 
                                 
-                                lod.plot <- MetaPipe::save_plot(plot(normal.scanone, ylab="LOD Score") + 
+                                lod.plot <- MetaPipe::save_plot(plot(x_scone, ylab="LOD Score") + 
                                                                   abline(h=p5, lwd=2, lty="solid", col="red") +
                                                                   abline(h=p10, lwd=2, lty="solid", col="red"),
                                                                 paste0(PLOTS_DIR,"/LOD-",features[i]), width = 18)
@@ -608,13 +608,13 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                                 if(!is.na(p10.index)&& any(p10.index)){ record[p10.index,]$p10_qtl <- TRUE }
                                 
                                 
-                                chr <- as.numeric(summary.normal.scanone$chr)
-                                pos <- as.numeric(summary.normal.scanone$pos)
+                                chr <- as.numeric(summary.x_scone$chr)
+                                pos <- as.numeric(summary.x_scone$pos)
                                 qtl_s <- qtl::makeqtl(x_norm, chr, pos, what=c("prob"))
                                 
                                 for(m in 1:length(chr)){
                                   #qtl_s <- makeqtl(x_norm, chr[m], pos[m], what=c("prob"))
-                                  #f <- as.formula(paste0("y~",paste0("Q",seq(1:nrow(summary.normal.scanone)), collapse = " + ")))
+                                  #f <- as.formula(paste0("y~",paste0("Q",seq(1:nrow(summary.x_scone)), collapse = " + ")))
                                   f <- as.formula(paste0("y~",paste0("Q",m, collapse = " + ")))
                                   fitqtl <- qtl::fitqtl(x_norm, pheno.col = i, qtl_s, formula = f , get.ests = TRUE, model = "normal", method="hk")
                                   summary.fitqtl <- summary(fitqtl)
