@@ -494,6 +494,9 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
   # Extract feature names
   features <- colnames(x_data$pheno)
   
+  # Obtain number of individuals (population)
+  num_indv <- summary(x_data)[[2]]
+  
   x_sum_map <- foreach(i = feature_indices,
                             .combine = rbind) %dopar% {
                               if (!is.null(raw_data_normalised)) {
