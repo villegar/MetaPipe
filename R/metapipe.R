@@ -512,7 +512,7 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                                 # ID = i - 1,
                                 qtl_ID = NA,
                                 trait = features[i],
-                                ind = num_indv_phend_n,
+                                ind = num_indv,
                                 lg = NA,
                                 lod_peak = NA,
                                 pos_peak = NA,
@@ -534,8 +534,8 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                               
                               # Run single scan
                               x_scone <-  qtl::scanone(x_norm, pheno.col = i, ...)
-                              summary.x_scone <- summary(x_scone, threshold = lod_threshold)
-                              lod.count <- nrow(summary.x_scone)
+                              sum_x_scone <- summary(x_scone, threshold = lod_threshold)
+                              lod.count <- nrow(sum_x_scone)
                               if(!is.null(lod.count) && lod.count > 0) {
                                 for(k in 1:lod.count){
                                   if(k > 1){
@@ -550,10 +550,10 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                                   
                                   #peak.lod <- x_scone$lod == max(x_scone$lod)
                                   # Extract Peak QTL information
-                                  new.record$lg <- summary.x_scone[k,"chr"]       
-                                  new.record$lod_peak <- summary.x_scone[k,"lod"]
-                                  new.record$pos_peak <- summary.x_scone[k,"pos"]
-                                  marker <- rownames(summary.x_scone)[k]
+                                  new.record$lg <- sum_x_scone[k,"chr"]       
+                                  new.record$lod_peak <- sum_x_scone[k,"lod"]
+                                  new.record$pos_peak <- sum_x_scone[k,"pos"]
+                                  marker <- rownames(sum_x_scone)[k]
                                   # Verify if current QTL has a pseudomarker
                                   marker.info <- MetaPipe::transform_pseudo_marker(x_norm,marker,new.record$lg,new.record$pos_peak)
                                   new.record$marker <- marker.info[1]
@@ -611,13 +611,13 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                                 if(!is.na(p10.index)&& any(p10.index)){ record[p10.index,]$p10_qtl <- TRUE }
                                 
                                 
-                                chr <- as.numeric(summary.x_scone$chr)
-                                pos <- as.numeric(summary.x_scone$pos)
+                                chr <- as.numeric(sum_x_scone$chr)
+                                pos <- as.numeric(sum_x_scone$pos)
                                 qtl_s <- qtl::makeqtl(x_norm, chr, pos, what=c("prob"))
                                 
                                 for(m in 1:length(chr)){
                                   #qtl_s <- makeqtl(x_norm, chr[m], pos[m], what=c("prob"))
-                                  #f <- as.formula(paste0("y~",paste0("Q",seq(1:nrow(summary.x_scone)), collapse = " + ")))
+                                  #f <- as.formula(paste0("y~",paste0("Q",seq(1:nrow(sum_x_scone)), collapse = " + ")))
                                   f <- as.formula(paste0("y~",paste0("Q",m, collapse = " + ")))
                                   fitqtl <- qtl::fitqtl(x_norm, pheno.col = i, qtl_s, formula = f , get.ests = TRUE, model = "normal", method="hk")
                                   summary.fitqtl <- summary(fitqtl)
