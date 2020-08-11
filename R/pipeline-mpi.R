@@ -92,7 +92,7 @@ len_excluded_columns <- length(excluded_columns)
 transformation.values <- c(2,exp(1))#,3,4,5,6,7,8,9,10
 raw_data <- "sp.csv"
 SEED <- 20190901 # Seed for QTL Analysis
-LOD.THRESHOLD <- 3 # LOD threhold for QTL Analysis
+lod_threshold <- 3 # LOD threhold for QTL Analysis
 prop_na <- 0.5 # Allows 50% of NAs per feature
 
 # Environment configuration
@@ -326,7 +326,7 @@ x.normal.summary.mapping <- foreach(i=2:ncol(x.normal$pheno),
                                       
                                       # Run single scan
                                       normal.scanone <-  scanone(x.normal, pheno.col = i,  model = "normal", method = "hk")
-                                      summary.normal.scanone <- summary(normal.scanone, threshold = LOD.THRESHOLD)
+                                      summary.normal.scanone <- summary(normal.scanone, threshold = lod_threshold)
                                       lod.count <- nrow(summary.normal.scanone)
                                       if(lod.count){
                                         for(k in 1:lod.count){
@@ -338,7 +338,7 @@ x.normal.summary.mapping <- foreach(i=2:ncol(x.normal$pheno),
                                           }else{
                                             new.record <- record # Copy record structured and data
                                           }
-                                          #lod.count <- sum(normal.scanone$lod >= LOD.THRESHOLD)
+                                          #lod.count <- sum(normal.scanone$lod >= lod_threshold)
                                           
                                           #peak.lod <- normal.scanone$lod == max(normal.scanone$lod)
                                           # Extract Peak QTL information
@@ -466,7 +466,7 @@ x.non.parametric.summary.mapping <- foreach(i=2:ncol(x.non.parametric$pheno),
                                               
                                               # Run single scan
                                               non.parametric.scanone <-  scanone(x.non.parametric, pheno.col = i,  model = "np")
-                                              summary.non.parametric.scanone <- summary(non.parametric.scanone, threshold = LOD.THRESHOLD)
+                                              summary.non.parametric.scanone <- summary(non.parametric.scanone, threshold = lod_threshold)
                                               lod.count <- nrow(summary.non.parametric.scanone)
                                               if(lod.count){
                                                 for(k in 1:lod.count){
@@ -478,7 +478,7 @@ x.non.parametric.summary.mapping <- foreach(i=2:ncol(x.non.parametric$pheno),
                                                   }else{
                                                     new.record <- record # Copy record structured and data
                                                   }
-                                                  #lod.count <- sum(non.parametric.scanone$lod >= LOD.THRESHOLD)
+                                                  #lod.count <- sum(non.parametric.scanone$lod >= lod_threshold)
                                                   
                                                   #peak.lod <- non.parametric.scanone$lod == max(non.parametric.scanone$lod)
                                                   # Extract Peak QTL information
@@ -550,8 +550,8 @@ x2.normal <- sim.geno(x.normal)
 #effectplot(x2, pheno.col = "M155T28", mname1 = "gbs_13_305342", main = NULL)
 t.qtl <- rbind.fill(x.normal.summary.mapping[x.normal.summary.mapping$p5.qtl,],
                     x.non.parametric.summary.mapping[x.non.parametric.summary.mapping$p5.qtl,])
-threshold3.qtl <- rbind.fill(x.normal.summary.mapping[x.normal.summary.mapping$lod.peak > LOD.THRESHOLD,],
-                             x.non.parametric.summary.mapping[x.non.parametric.summary.mapping$lod.peak > LOD.THRESHOLD,])
+threshold3.qtl <- rbind.fill(x.normal.summary.mapping[x.normal.summary.mapping$lod.peak > lod_threshold,],
+                             x.non.parametric.summary.mapping[x.non.parametric.summary.mapping$lod.peak > lod_threshold,])
 features.t.qtl <- as.character(t.qtl$trait)
 markers.t.qtl <- as.character(t.qtl$marker)
 

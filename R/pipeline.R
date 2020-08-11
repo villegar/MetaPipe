@@ -92,7 +92,7 @@ excluded_columns <- c(1,2,3)
 len_excluded_columns <- length(excluded_columns)
 transf_vals <- c(2,exp(1))#,3,4,5,6,7,8,9,10
 SEED <- 20190901 # Seed for QTL Analysis
-LOD.THRESHOLD <- 3 # LOD threhold for QTL Analysis
+lod_threshold <- 3 # LOD threhold for QTL Analysis
 prop_na <- 0.5 # Allows 50% of NAs per feature
 
 # Environment configuration
@@ -251,7 +251,7 @@ write.csv(x_norm_scone, file = paste0(OUT_PREFIX, "_normal_scanone.csv"))
 #                            
 #                            # Run single scan
 #                            normal.scanone <-  qtl::scanone(x_norm, pheno.col = i,  model = "normal", method = "hk")
-#                            summary.normal.scanone <- summary(normal.scanone, threshold = LOD.THRESHOLD)
+#                            summary.normal.scanone <- summary(normal.scanone, threshold = lod_threshold)
 #                            lod.count <- nrow(summary.normal.scanone)
 #                            if(!is.null(lod.count) && lod.count > 0) {
 #                              for(k in 1:lod.count){
@@ -263,7 +263,7 @@ write.csv(x_norm_scone, file = paste0(OUT_PREFIX, "_normal_scanone.csv"))
 #                                }else{
 #                                  new.record <- record # Copy record structured and data
 #                                }
-#                                #lod.count <- sum(normal.scanone$lod >= LOD.THRESHOLD)
+#                                #lod.count <- sum(normal.scanone$lod >= lod_threshold)
 #                                
 #                                #peak.lod <- normal.scanone$lod == max(normal.scanone$lod)
 #                                # Extract Peak QTL information
@@ -449,7 +449,7 @@ x_non_par_sum_map <- foreach(i=2:ncol(x_non_par$pheno),
                                
                                # Run single scan
                                non.parametric.scanone <- qtl::scanone(x_non_par, pheno.col = i,  model = "np")
-                               summary.non.parametric.scanone <- summary(non.parametric.scanone, threshold = LOD.THRESHOLD)
+                               summary.non.parametric.scanone <- summary(non.parametric.scanone, threshold = lod_threshold)
                                lod.count <- nrow(summary.non.parametric.scanone)
                                if(!is.null(lod.count) && lod.count > 0) {
                                  for(k in 1:lod.count){
@@ -461,7 +461,7 @@ x_non_par_sum_map <- foreach(i=2:ncol(x_non_par$pheno),
                                    }else{
                                      new.record <- record # Copy record structured and data
                                    }
-                                   #lod.count <- sum(non.parametric.scanone$lod >= LOD.THRESHOLD)
+                                   #lod.count <- sum(non.parametric.scanone$lod >= lod_threshold)
                                    
                                    #peak.lod <- non.parametric.scanone$lod == max(non.parametric.scanone$lod)
                                    # Extract Peak QTL information
@@ -556,8 +556,8 @@ x_norm_sim <- qtl::sim.geno(x_norm)
 
 true_qtl <- plyr::rbind.fill(x_norm_sum_map[x_norm_sum_map$p5.qtl,],
                              x_non_par_sum_map[x_non_par_sum_map$p5.qtl,])
-thrsh3_qtl <- plyr::rbind.fill(x_norm_sum_map[x_norm_sum_map$lod.peak > LOD.THRESHOLD,],
-                               x_non_par_sum_map[x_non_par_sum_map$lod.peak > LOD.THRESHOLD,])
+thrsh3_qtl <- plyr::rbind.fill(x_norm_sum_map[x_norm_sum_map$lod.peak > lod_threshold,],
+                               x_non_par_sum_map[x_non_par_sum_map$lod.peak > lod_threshold,])
 true_qtl_features <- as.character(true_qtl$trait)
 true_qtl_markers <- as.character(true_qtl$marker)
 

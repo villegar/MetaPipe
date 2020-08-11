@@ -530,8 +530,8 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                               )
                               
                               # Run single scan
-                              normal.scanone <-  qtl::scanone(x_norm, pheno.col = i,  ...)
-                              summary.normal.scanone <- summary(normal.scanone, threshold = LOD.THRESHOLD)
+                              normal.scanone <-  qtl::scanone(x_norm, pheno.col = i, ...)
+                              summary.normal.scanone <- summary(normal.scanone, threshold = lod_threshold)
                               lod.count <- nrow(summary.normal.scanone)
                               if(!is.null(lod.count) && lod.count > 0) {
                                 for(k in 1:lod.count){
@@ -543,7 +543,7 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                                   } else{
                                     new.record <- record # Copy record structured and data
                                   }
-                                  #lod.count <- sum(normal.scanone$lod >= LOD.THRESHOLD)
+                                  #lod.count <- sum(normal.scanone$lod >= lod_threshold)
                                   
                                   #peak.lod <- normal.scanone$lod == max(normal.scanone$lod)
                                   # Extract Peak QTL information
