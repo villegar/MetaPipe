@@ -480,7 +480,7 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
   return(x_scone)
 }
 
-qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_normalised = NULL, ...) {
+qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_normalised = NULL, lod_threshold = 3, ...) {
   # Start parallel backend
   cl <- parallel::makeCluster(cpus)
   doParallel::registerDoParallel(cl)
