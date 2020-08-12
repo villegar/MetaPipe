@@ -1,7 +1,9 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# MetaPipe <img src="inst/images/metapipe.png" alt="metapipe-logo" align="right" height=200px/>
+<!-- /Library/Frameworks/R.framework/Versions/4.0/Resources/library/MetaPipe/images/metapipe.png -->
+
+# MetaPipe <img src="https://raw.githubusercontent.com/villegar/MetaPipe/master/inst/images/metapipe.png" alt="metapipe-logo" align="right" height=200px/>
 
 MetaPipe: A High-Performance Computing pipeline for QTL mapping of large
 metabolomic datasets <!-- badges: start -->
