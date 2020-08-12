@@ -560,11 +560,11 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                                     nrecord$qtl_ID <- with(nrecord, sprintf("%s:%s@%f", features[i], lg, pos_peak))
                                   }
                                   
-                                  p95_bayes <- qtl::bayesint(x_scone, chr = nrecord$lg ,expandtomarkers = TRUE, prob = 0.95)
+                                  # Compute the 95% Bayes' CI
+                                  p95_bayes <- qtl::bayesint(x_scone, chr = nrecord$lg, expandtomarkers = TRUE, prob = 0.95)
                                   p95_bayes <- unique(p95_bayes)
-                                  #p95_bayes <- summary(x_scone,  perms=x_scone.per, alpha=0.5, pvalues=TRUE)
-                                  low.bound <- 1#p95_bayes$pos == min(p95_bayes$pos)
-                                  upper.bound <- p95_bayes$pos == max(p95_bayes$pos)
+                                  low.bound <- 1 #p95_bayes$pos == min(p95_bayes$pos)
+                                  upper.bound <- which.max(p95_bayes$pos) #p95_bayes$pos == max(p95_bayes$pos)
                                   
                                   p95_bayes$marker <- NA # Add new column for markers, prevent duplicated row names
                                   # Verify if the Bayesian interval QTLs have pseudomarkers
