@@ -549,10 +549,11 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                                   nrecord$lod_peak <- sum_x_scone[k, "lod"]
                                   nrecord$pos_peak <- sum_x_scone[k, "pos"]
                                   marker <- rownames(sum_x_scone)[k]
+                                  
                                   # Verify if current QTL has a pseudomarker
-                                  marker.info <- MetaPipe::transform_pseudo_marker(x_norm,marker,nrecord$lg,nrecord$pos_peak)
-                                  nrecord$marker <- marker.info[1]
-                                  nrecord$pos_peak <- as.numeric(marker.info[2])
+                                  marker_info <- MetaPipe::transform_pseudo_marker(x_norm, marker, nrecord$lg, nrecord$pos_peak)
+                                  nrecord$marker <- marker_info[1]
+                                  nrecord$pos_peak <- as.numeric(marker_info[2])
                                   
                                   if(!is.na(nrecord$lg)) {
                                     nrecord$qtl_ID <- with(nrecord, sprintf("%s:%s@%f",features[i],lg,pos_peak))
@@ -568,9 +569,9 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                                   # Verify if the Bayesian interval QTLs have pseudomarkers
                                   for(l in 1:nrow(p95.bayesian)){
                                     marker <- rownames(p95.bayesian)[l]
-                                    marker.info <- MetaPipe::transform_pseudo_marker(x_norm,marker,p95.bayesian[l,"chr"],p95.bayesian[l,"pos"])
-                                    p95.bayesian[l,"marker"] <- marker.info[1]
-                                    p95.bayesian[l,"pos"] <- as.numeric(marker.info[2])
+                                    marker_info <- MetaPipe::transform_pseudo_marker(x_norm,marker,p95.bayesian[l,"chr"],p95.bayesian[l,"pos"])
+                                    p95.bayesian[l,"marker"] <- marker_info[1]
+                                    p95.bayesian[l,"pos"] <- as.numeric(marker_info[2])
                                   }
                                   nrecord$pos_p95_bay_int <- paste0(p95.bayesian[low.bound,"pos"],"-",
                                                                        p95.bayesian[upper.bound,"pos"])
