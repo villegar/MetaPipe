@@ -480,7 +480,7 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
   return(x_scone)
 }
 
-qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_normalised = NULL, lod_threshold = 3, parametric = TRUE, ...) {
+qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_normalised = NULL, lod_threshold = 3, parametric = TRUE, n_perm = 1000, ...) {
   # Start parallel backend
   cl <- parallel::makeCluster(cpus)
   doParallel::registerDoParallel(cl)
@@ -591,7 +591,7 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                                 #summary(x_scone, threshold = 3)
                                 #lod.plot <- plot(x_scone, ylab="LOD Score")
                                 #cat(paste0("Scanone: ",i,"\t\tLODs: ",lod_cnt,"\n"))
-                                x_scone_perm <- qtl::scanone(x_norm, pheno.col = i, n.perm = PERMUTATIONS, ...) # model = "normal", method = "hk"
+                                x_scone_perm <- qtl::scanone(x_norm, pheno.col = i, n.perm = n_perm, ...) # model = "normal", method = "hk"
                                 p5 <- summary(x_scone_perm)[[1]]  #  5% percent
                                 p10 <- summary(x_scone_perm)[[2]] # 10% percent
                                 
