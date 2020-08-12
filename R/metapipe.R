@@ -526,7 +526,7 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                                 p10_lod_thr = NA,
                                 pval = NA,
                                 transf = transf_info$transf,
-                                transf.val = transf_info$transf_val,
+                                transf_val = transf_info$transf_val,
                                 method = qtl_method,
                                 p5_qtl = FALSE,
                                 p10_qtl = FALSE
@@ -539,31 +539,26 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                               if(!is.null(lod_cnt) && lod_cnt > 0) {
                                 for(k in 1:lod_cnt){
                                   if(k > 1){
-                                    #new.record <- record[0,] # Create an empty record object
-                                    #new.record[1,] <- NA
-                                    new.record <- record[1,] # Create copy of record object
-                                    #new.record$ID <- NA # Drop the feature ID
+                                    nrecord <- record[1, ] # Create copy of record object
                                   } else{
-                                    new.record <- record # Copy record structured and data
+                                    nrecord <- record # Copy record structured and data
                                   }
-                                  #lod_cnt <- sum(x_scone$lod >= lod_threshold)
                                   
-                                  #peak.lod <- x_scone$lod == max(x_scone$lod)
                                   # Extract Peak QTL information
-                                  new.record$lg <- sum_x_scone[k,"chr"]       
-                                  new.record$lod_peak <- sum_x_scone[k,"lod"]
-                                  new.record$pos_peak <- sum_x_scone[k,"pos"]
+                                  nrecord$lg <- sum_x_scone[k, "chr"]       
+                                  nrecord$lod_peak <- sum_x_scone[k, "lod"]
+                                  nrecord$pos_peak <- sum_x_scone[k, "pos"]
                                   marker <- rownames(sum_x_scone)[k]
                                   # Verify if current QTL has a pseudomarker
-                                  marker.info <- MetaPipe::transform_pseudo_marker(x_norm,marker,new.record$lg,new.record$pos_peak)
-                                  new.record$marker <- marker.info[1]
-                                  new.record$pos_peak <- as.numeric(marker.info[2])
+                                  marker.info <- MetaPipe::transform_pseudo_marker(x_norm,marker,nrecord$lg,nrecord$pos_peak)
+                                  nrecord$marker <- marker.info[1]
+                                  nrecord$pos_peak <- as.numeric(marker.info[2])
                                   
-                                  if(!is.na(new.record$lg)) {
-                                    new.record$qtl_ID <- with(new.record, sprintf("%s:%s@%f",features[i],lg,pos_peak))
+                                  if(!is.na(nrecord$lg)) {
+                                    nrecord$qtl_ID <- with(nrecord, sprintf("%s:%s@%f",features[i],lg,pos_peak))
                                   }
                                   
-                                  p95.bayesian <- qtl::bayesint(x_scone, chr = new.record$lg ,expandtomarkers = TRUE, prob = 0.95)
+                                  p95.bayesian <- qtl::bayesint(x_scone, chr = nrecord$lg ,expandtomarkers = TRUE, prob = 0.95)
                                   p95.bayesian <- unique(p95.bayesian)
                                   #p95.bayesian <- summary(x_scone,  perms=x_scone.per, alpha=0.5, pvalues=TRUE)
                                   low.bound <- 1#p95.bayesian$pos == min(p95.bayesian$pos)
@@ -577,14 +572,14 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                                     p95.bayesian[l,"marker"] <- marker.info[1]
                                     p95.bayesian[l,"pos"] <- as.numeric(marker.info[2])
                                   }
-                                  new.record$pos_p95_bay_int <- paste0(p95.bayesian[low.bound,"pos"],"-",
+                                  nrecord$pos_p95_bay_int <- paste0(p95.bayesian[low.bound,"pos"],"-",
                                                                        p95.bayesian[upper.bound,"pos"])
-                                  new.record$marker_p95_bay_int <- paste0(p95.bayesian[low.bound,"marker"],"-",
+                                  nrecord$marker_p95_bay_int <- paste0(p95.bayesian[low.bound,"marker"],"-",
                                                                           p95.bayesian[upper.bound,"marker"])
                                   if(k > 1){
-                                    record <- rbind(record,new.record)
+                                    record <- rbind(record,nrecord)
                                   }else{
-                                    record <- new.record
+                                    record <- nrecord
                                   }
                                 }
                                 
