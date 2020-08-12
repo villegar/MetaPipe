@@ -574,6 +574,7 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                                     p95_bayes[l, "marker"] <- marker_info[1]
                                     p95_bayes[l, "pos"] <- as.numeric(marker_info[2])
                                   }
+                                  
                                   nrecord$pos_p95_bay_int <- paste0(p95_bayes[low_bound, "pos"], "-",
                                                                     p95_bayes[upper_bound, "pos"])
                                   nrecord$marker_p95_bay_int <- paste0(p95_bayes[low_bound, "marker"], "-",
@@ -590,7 +591,7 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                                 #summary(x_scone, threshold = 3)
                                 #lod.plot <- plot(x_scone, ylab="LOD Score")
                                 #cat(paste0("Scanone: ",i,"\t\tLODs: ",lod_cnt,"\n"))
-                                x_scone_perm <- qtl::scanone(x_norm, pheno.col = i, model = "normal", method = "hk", n.perm = PERMUTATIONS)
+                                x_scone_perm <- qtl::scanone(x_norm, pheno.col = i, n.perm = PERMUTATIONS, ...) # model = "normal", method = "hk"
                                 p5 <- summary(x_scone_perm)[[1]]  #  5% percent
                                 p10 <- summary(x_scone_perm)[[2]] # 10% percent
                                 
