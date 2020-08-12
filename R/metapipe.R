@@ -538,7 +538,7 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                               lod_cnt <- nrow(sum_x_scone)
                               if(!is.null(lod_cnt) && lod_cnt > 0) {
                                 for(k in 1:lod_cnt){
-                                  if(k > 1){
+                                  if(k > 1) {
                                     nrecord <- record[1, ] # Create copy of record object
                                   } else{
                                     nrecord <- record # Copy record structured and data
@@ -565,22 +565,22 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                                   p95_bayes <- unique(p95_bayes)
                                   low_bound <- 1 #p95_bayes$pos == min(p95_bayes$pos)
                                   upper_bound <- which.max(p95_bayes$pos) #p95_bayes$pos == max(p95_bayes$pos)
-                                  
                                   p95_bayes$marker <- NA # Add new column for markers, prevent duplicated row names
-                                  # Verify if the Bayesian interval QTLs have pseudomarkers
-                                  for(l in 1:nrow(p95_bayes)){
+                                  
+                                  # Verify if the 95% Bayes' CI QTLs have pseudomarkers
+                                  for(l in 1:nrow(p95_bayes)) {
                                     marker <- rownames(p95_bayes)[l]
-                                    marker_info <- MetaPipe::transform_pseudo_marker(x_norm,marker,p95_bayes[l,"chr"],p95_bayes[l,"pos"])
-                                    p95_bayes[l,"marker"] <- marker_info[1]
-                                    p95_bayes[l,"pos"] <- as.numeric(marker_info[2])
+                                    marker_info <- MetaPipe::transform_pseudo_marker(x_norm, marker, p95_bayes[l, "chr"], p95_bayes[l, "pos"])
+                                    p95_bayes[l, "marker"] <- marker_info[1]
+                                    p95_bayes[l, "pos"] <- as.numeric(marker_info[2])
                                   }
-                                  nrecord$pos_p95_bay_int <- paste0(p95_bayes[low_bound,"pos"],"-",
+                                  nrecord$pos_p95_bay_int <- paste0(p95_bayes[low_bound,"pos"], "-", 
                                                                        p95_bayes[upper_bound,"pos"])
-                                  nrecord$marker_p95_bay_int <- paste0(p95_bayes[low_bound,"marker"],"-",
+                                  nrecord$marker_p95_bay_int <- paste0(p95_bayes[low_bound,"marker"], "-", 
                                                                           p95_bayes[upper_bound,"marker"])
-                                  if(k > 1){
+                                  if(k > 1) {
                                     record <- rbind(record,nrecord)
-                                  }else{
+                                  } else {
                                     record <- nrecord
                                   }
                                 }
