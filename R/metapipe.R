@@ -611,12 +611,12 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                                 record[, ]$p10_lod_thr <- p10
                                 
                                 p5_idx <- record$lod_peak >= p5
-                                p10.index <- record$lod_peak >= p10
+                                p10_idx <- record$lod_peak >= p10
                                 if(!is.na(p5_idx) && any(p5_idx)) { 
                                   record[p5_idx, ]$p5_qtl <- TRUE 
                                 }
-                                if(!is.na(p10.index) && any(p10.index)) { 
-                                  record[p10.index, ]$p10_qtl <- TRUE 
+                                if(!is.na(p10_idx) && any(p10_idx)) { 
+                                  record[p10_idx, ]$p10_qtl <- TRUE 
                                 }
                                 
                                 if (parametric) {
