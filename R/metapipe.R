@@ -595,11 +595,21 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                                 p5 <- summary(x_scone_perm)[[1]]  #  5% percent
                                 p10 <- summary(x_scone_perm)[[2]] # 10% percent
                                 
-                                
-                                lod_plot <- MetaPipe::save_plot(plot(x_scone, ylab="LOD Score") + 
-                                                                  abline(h=p5, lwd=2, lty="solid", col="red") +
-                                                                  abline(h=p10, lwd=2, lty="solid", col="red"),
-                                                                paste0(PLOTS_DIR,"/LOD-",features[i]), width = 18)
+                                lod_plot <- MetaPipe::save_plot(
+                                  plot(x_scone, ylab = "LOD Score") +
+                                    abline(h = p5, 
+                                           lwd = 2,
+                                           lty = "solid",
+                                           col = "red"
+                                    ) +
+                                    abline(h = p10, 
+                                           lwd = 2, 
+                                           lty = "dashed",
+                                           col = "blue"
+                                    ),
+                                  paste0(PLOTS_DIR, "/LOD-", features[i]),
+                                  width = 18
+                                )
                                 
                                 record[,]$p5_lod_thr <- p5
                                 record[,]$p10_lod_thr <- p10
