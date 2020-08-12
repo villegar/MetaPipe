@@ -47,37 +47,37 @@ CPUS <- cores[1] - 1
 # closeAllConnections()
 
 if(length(args) < 1){
-  PERMUTATIONS <- 1000 # Number of permutations for QTL Analysis
+  N_PERM <- 1000 # Number of N_PERM for QTL Analysis
   REPLACE_NA <- FALSE
   PARETO_SCALING <- FALSE
   OUT_PREFIX <- "metabolomics"
   PLOTS_DIR <- "metabolomics"
 } else if(length(args) < 2){
-  PERMUTATIONS <- as.numeric(args[1]) # Number of permutations for QTL Analysis
+  N_PERM <- as.numeric(args[1]) # Number of N_PERM for QTL Analysis
   REPLACE_NA <- FALSE
   PARETO_SCALING <- FALSE
   OUT_PREFIX <- "metabolomics"
   PLOTS_DIR <- "metabolomics"
 } else if(length(args) < 3){
-  PERMUTATIONS <- as.numeric(args[1]) # Number of permutations for QTL Analysis
+  N_PERM <- as.numeric(args[1]) # Number of N_PERM for QTL Analysis
   REPLACE_NA <- as.logical(args[2])
   PARETO_SCALING <- FALSE
   OUT_PREFIX <- "metabolomics"
   PLOTS_DIR <- "metabolomics"
 } else if(length(args) < 4){
-  PERMUTATIONS <- as.numeric(args[1]) # Number of permutations for QTL Analysis
+  N_PERM <- as.numeric(args[1]) # Number of N_PERM for QTL Analysis
   REPLACE_NA <- as.logical(args[2])
   PARETO_SCALING <- as.logical(args[3])
   OUT_PREFIX <- "metabolomics"
   PLOTS_DIR <- "metabolomics"
 } else if(length(args) < 5){
-  PERMUTATIONS <- as.numeric(args[1]) # Number of permutations for QTL Analysis
+  N_PERM <- as.numeric(args[1]) # Number of N_PERM for QTL Analysis
   REPLACE_NA <- as.logical(args[2])
   PARETO_SCALING <- as.logical(args[3])
   OUT_PREFIX <- args[4]
   PLOTS_DIR <- "metabolomics"
 } else {
-  PERMUTATIONS <- as.numeric(args[1]) # Number of permutations for QTL Analysis
+  N_PERM <- as.numeric(args[1]) # Number of N_PERM for QTL Analysis
   REPLACE_NA <- as.logical(args[2])
   PARETO_SCALING <- as.logical(args[3])
   OUT_PREFIX <- args[4]
@@ -85,7 +85,7 @@ if(length(args) < 1){
 }
 
 tictoc::tic.clearlog()
-cat(paste0("CMD Parameters: (",PERMUTATIONS,",",REPLACE_NA,",",PARETO_SCALING,",",OUT_PREFIX,",",PLOTS_DIR,")"))
+cat(paste0("CMD Parameters: (",N_PERM,",",REPLACE_NA,",",PARETO_SCALING,",",OUT_PREFIX,",",PLOTS_DIR,")"))
 
 # Global parameters
 excluded_columns <- c(1,2,3)
@@ -311,7 +311,7 @@ write.csv(x_norm_scone, file = paste0(OUT_PREFIX, "_normal_scanone.csv"))
 #                                #summary(normal.scanone, threshold = 3)
 #                                #lod.plot <- plot(normal.scanone, ylab="LOD Score")
 #                                #cat(paste0("Scanone: ",i,"\t\tLODs: ",lod.count,"\n"))
-#                                normal.scanone.per <- qtl::scanone(x_norm, pheno.col = i, model = "normal", method = "hk", n.perm = PERMUTATIONS)
+#                                normal.scanone.per <- qtl::scanone(x_norm, pheno.col = i, model = "normal", method = "hk", n.perm = N_PERM)
 #                                p5 <- summary(normal.scanone.per)[[1]]  #  5% percent
 #                                p10 <- summary(normal.scanone.per)[[2]] # 10% percent
 #                                
@@ -505,7 +505,7 @@ x_non_par_sum_map <- foreach(i=2:ncol(x_non_par$pheno),
                                    }
                                  }
                                  
-                                 non.parametric.scanone.per <- qtl::scanone(x_non_par, pheno.col = i, model = "np", n.perm = PERMUTATIONS)
+                                 non.parametric.scanone.per <- qtl::scanone(x_non_par, pheno.col = i, model = "np", n.perm = N_PERM)
                                  p5 <- summary(non.parametric.scanone.per)[[1]]  #  5% percent
                                  p10 <- summary(non.parametric.scanone.per)[[2]] # 10% percent
                                  
@@ -750,5 +750,5 @@ tictoc::toc(log = TRUE) # Heatmap for true QTLs
 # closeAllConnections()
 tictoc::toc(log = TRUE) # Total
 log.txt <- tictoc::tic.log(format = TRUE)
-write(unlist(log.txt), paste0(OUT_PREFIX,".log.times.p",PERMUTATIONS,".txt"))
+write(unlist(log.txt), paste0(OUT_PREFIX,".log.times.p",N_PERM,".txt"))
 }
