@@ -480,7 +480,7 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
   return(x_scone)
 }
 
-qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_normalised = NULL, lod_threshold = 3, parametric = TRUE, n_perm = 1000, ...) {
+qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_normalised = NULL, lod_threshold = 3, parametric = TRUE, n_perm = 1000, plots_dir = getwd(), ...) {
   # Start parallel backend
   cl <- parallel::makeCluster(cpus)
   doParallel::registerDoParallel(cl)
@@ -603,7 +603,7 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                                            lty = "dashed",
                                            col = "blue"
                                     ),
-                                  paste0(PLOTS_DIR, "/LOD-", features[i]),
+                                  paste0(plots_dir, "/LOD-", features[i]),
                                   width = 18
                                 )
                                 
