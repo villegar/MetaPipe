@@ -535,9 +535,9 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                               # Run single scan
                               x_scone <-  qtl::scanone(x_norm, pheno.col = i, ...)
                               sum_x_scone <- summary(x_scone, threshold = lod_threshold)
-                              lod.count <- nrow(sum_x_scone)
-                              if(!is.null(lod.count) && lod.count > 0) {
-                                for(k in 1:lod.count){
+                              lod_cnt <- nrow(sum_x_scone)
+                              if(!is.null(lod_cnt) && lod_cnt > 0) {
+                                for(k in 1:lod_cnt){
                                   if(k > 1){
                                     #new.record <- record[0,] # Create an empty record object
                                     #new.record[1,] <- NA
@@ -546,7 +546,7 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                                   } else{
                                     new.record <- record # Copy record structured and data
                                   }
-                                  #lod.count <- sum(x_scone$lod >= lod_threshold)
+                                  #lod_cnt <- sum(x_scone$lod >= lod_threshold)
                                   
                                   #peak.lod <- x_scone$lod == max(x_scone$lod)
                                   # Extract Peak QTL information
@@ -588,10 +588,10 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                                   }
                                 }
                                 
-                                #if(lod.count > 0){
+                                #if(lod_cnt > 0){
                                 #summary(x_scone, threshold = 3)
                                 #lod.plot <- plot(x_scone, ylab="LOD Score")
-                                #cat(paste0("Scanone: ",i,"\t\tLODs: ",lod.count,"\n"))
+                                #cat(paste0("Scanone: ",i,"\t\tLODs: ",lod_cnt,"\n"))
                                 x_scone.per <- qtl::scanone(x_norm, pheno.col = i, model = "normal", method = "hk", n.perm = PERMUTATIONS)
                                 p5 <- summary(x_scone.per)[[1]]  #  5% percent
                                 p10 <- summary(x_scone.per)[[2]] # 10% percent
@@ -644,28 +644,28 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
 }
 
 qtl_preprocessing <- function(genetic_map, out_prefix = "metapipe") {
-#   genetic_map <- read.csv("OriginalMap.csv")
-#   colnames(genetic_map)[1] <- "ID"
-#   genetic_map$ID <- as.character(genetic_map$ID)
+# #   genetic_map <- read.csv("OriginalMap.csv")
+# #   colnames(genetic_map)[1] <- "ID"
+# #   genetic_map$ID <- as.character(genetic_map$ID)
+# #   
+#   ## Normal features
+#   raw_data_norm <- read.csv(paste0(out_prefix,"_raw_data_norm.csv"), stringsAsFactors = FALSE)
+# #   colnames(raw_data_norm)[1] <- "ID"
+# #   raw_data_norm$GenoID <- with(raw_data_norm,
+# #                                gsub(" ", "0", paste0(Generation, "_", sprintf("%3s", as.character(ID))))
+# #                               )
+# #   raw_data_norm$ID <- raw_data_norm$GenoID
+# #   raw_data_norm$GenoID <- NULL
+# #   
+#   pheno_norm <- dplyr::inner_join(raw_data_norm, genetic_map, by = "ID")[, colnames(raw_data_norm)]
+#   pheno_norm$Group <- NULL
+#   pheno_norm$Generation <- NULL
+#   geno_norm <- rbind(genetic_map[1:2, ],
+#                      dplyr::inner_join(pheno_norm, genetic_map, by = "ID")[, colnames(genetic_map)]
+#                     )
 #   
-  ## Normal features
-  raw_data_norm <- read.csv(paste0(out_prefix,"_raw_data_norm.csv"), stringsAsFactors = FALSE)
-#   colnames(raw_data_norm)[1] <- "ID"
-#   raw_data_norm$GenoID <- with(raw_data_norm,
-#                                gsub(" ", "0", paste0(Generation, "_", sprintf("%3s", as.character(ID))))
-#                               )
-#   raw_data_norm$ID <- raw_data_norm$GenoID
-#   raw_data_norm$GenoID <- NULL
-#   
-  pheno_norm <- dplyr::inner_join(raw_data_norm, genetic_map, by = "ID")[, colnames(raw_data_norm)]
-  pheno_norm$Group <- NULL
-  pheno_norm$Generation <- NULL
-  geno_norm <- rbind(genetic_map[1:2, ],
-                     dplyr::inner_join(pheno_norm, genetic_map, by = "ID")[, colnames(genetic_map)]
-                    )
-  
-  ## Non-parametric features
-  raw_data_non_par <- read.csv(paste0(out_prefix, "_raw_data_non_par.csv"), stringsAsFactors = FALSE)
+#   ## Non-parametric features
+#   raw_data_non_par <- read.csv(paste0(out_prefix, "_raw_data_non_par.csv"), stringsAsFactors = FALSE)
 #   colnames(raw_data_non_par)[1] <- "ID"
 #   raw_data_non_par$GenoID <- with(raw_data_non_par,
 #                                   gsub(" ", "0", paste0(Generation, "_", sprintf("%3s", as.character(ID))))
