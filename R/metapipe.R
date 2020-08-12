@@ -460,7 +460,7 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
   x_scone <- foreach::foreach(i = feature_indices,
                      .combine = cbind) %dopar% {
                        # Run single scan
-                       scone <- qtl::scanone(x_data, pheno.col = i,  ...) #model = "normal", method = "hk")
+                       scone <- qtl::scanone(x_data, pheno.col = i, ...) #model = "normal", method = "hk")
                        if(i == 2) {
                          record <- data.frame(
                            chr = scone$chr,
@@ -480,7 +480,7 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
   return(x_scone)
 }
 
-qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_normalised = NULL, lod_threshold = 3, ...) {
+qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_normalised = NULL, lod_threshold = 3, parametric = TRUE, ...) {
   # Start parallel backend
   cl <- parallel::makeCluster(cpus)
   doParallel::registerDoParallel(cl)
@@ -574,12 +574,13 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                                     p95_bayes[l, "marker"] <- marker_info[1]
                                     p95_bayes[l, "pos"] <- as.numeric(marker_info[2])
                                   }
-                                  nrecord$pos_p95_bay_int <- paste0(p95_bayes[low_bound,"pos"], "-", 
-                                                                       p95_bayes[upper_bound,"pos"])
-                                  nrecord$marker_p95_bay_int <- paste0(p95_bayes[low_bound,"marker"], "-", 
-                                                                          p95_bayes[upper_bound,"marker"])
+                                  nrecord$pos_p95_bay_int <- paste0(p95_bayes[low_bound, "pos"], "-",
+                                                                    p95_bayes[upper_bound, "pos"])
+                                  nrecord$marker_p95_bay_int <- paste0(p95_bayes[low_bound, "marker"], "-",
+                                                                       p95_bayes[upper_bound, "marker"])
+                                  
                                   if(k > 1) {
-                                    record <- rbind(record,nrecord)
+                                    record <- rbind(record, nrecord)
                                   } else {
                                     record <- nrecord
                                   }
@@ -607,31 +608,27 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                                 if(!is.na(p5.index) && any(p5.index)){ record[p5.index,]$p5_qtl <- TRUE }
                                 if(!is.na(p10.index)&& any(p10.index)){ record[p10.index,]$p10_qtl <- TRUE }
                                 
-                                
-                                chr <- as.numeric(sum_x_scone$chr)
-                                pos <- as.numeric(sum_x_scone$pos)
-                                qtl_s <- qtl::makeqtl(x_norm, chr, pos, what=c("prob"))
-                                
-                                for(m in 1:length(chr)){
-                                  #qtl_s <- makeqtl(x_norm, chr[m], pos[m], what=c("prob"))
-                                  #f <- as.formula(paste0("y~",paste0("Q",seq(1:nrow(sum_x_scone)), collapse = " + ")))
-                                  f <- as.formula(paste0("y~",paste0("Q",m, collapse = " + ")))
-                                  fitqtl <- qtl::fitqtl(x_norm, pheno.col = i, qtl_s, formula = f , get.ests = TRUE, model = "normal", method="hk")
-                                  summary.fitqtl <- summary(fitqtl)
+                                if (parametric) {
+                                  chr <- as.numeric(sum_x_scone$chr)
+                                  pos <- as.numeric(sum_x_scone$pos)
+                                  qtl_s <- qtl::makeqtl(x_norm, chr, pos, what=c("prob"))
                                   
-                                  if(length(summary.fitqtl)){
-                                    p.var <- as.numeric(summary.fitqtl[[1]][1,"%var"])
-                                    pvalue.f <- as.numeric(summary.fitqtl[[1]][,"Pvalue(F)"])[1]
-                                    estimates <- as.numeric(summary.fitqtl$ests[,"est"])[-1]
-                                    record[m,]$pvar <- p.var
-                                    record[m,]$pval <- pvalue.f
-                                    record[m,]$est_add <- estimates[1]
-                                    record[m,]$est_dom <- estimates[2]
-                                    #for(l in 1:length(estimates)){
-                                    #  offset <- 2*(l-1)
-                                    #  record[l,]$est_add <- estimates[offset + 1]
-                                    #  record[l,]$est_dom <- estimates[offset + 2]
-                                    #}
+                                  for(m in 1:length(chr)){
+                                    #qtl_s <- makeqtl(x_norm, chr[m], pos[m], what=c("prob"))
+                                    #f <- as.formula(paste0("y~",paste0("Q",seq(1:nrow(sum_x_scone)), collapse = " + ")))
+                                    f <- as.formula(paste0("y~",paste0("Q",m, collapse = " + ")))
+                                    fitqtl <- qtl::fitqtl(x_norm, pheno.col = i, qtl_s, formula = f , get.ests = TRUE, model = "normal", method="hk")
+                                    summary.fitqtl <- summary(fitqtl)
+                                    
+                                    if(length(summary.fitqtl)){
+                                      p.var <- as.numeric(summary.fitqtl[[1]][1,"%var"])
+                                      pvalue.f <- as.numeric(summary.fitqtl[[1]][,"Pvalue(F)"])[1]
+                                      estimates <- as.numeric(summary.fitqtl$ests[,"est"])[-1]
+                                      record[m,]$pvar <- p.var
+                                      record[m,]$pval <- pvalue.f
+                                      record[m,]$est_add <- estimates[1]
+                                      record[m,]$est_dom <- estimates[2]
+                                    }
                                   }
                                 }
                               }
