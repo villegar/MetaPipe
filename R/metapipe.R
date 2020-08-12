@@ -587,10 +587,6 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                                   }
                                 }
                                 
-                                #if(lod_cnt > 0){
-                                #summary(x_scone, threshold = 3)
-                                #lod.plot <- plot(x_scone, ylab="LOD Score")
-                                #cat(paste0("Scanone: ",i,"\t\tLODs: ",lod_cnt,"\n"))
                                 x_scone_perm <- qtl::scanone(x_norm, pheno.col = i, n.perm = n_perm, ...) # model = "normal", method = "hk"
                                 p5 <- summary(x_scone_perm)[[1]]  #  5% percent
                                 p10 <- summary(x_scone_perm)[[2]] # 10% percent
@@ -611,13 +607,17 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                                   width = 18
                                 )
                                 
-                                record[,]$p5_lod_thr <- p5
-                                record[,]$p10_lod_thr <- p10
+                                record[, ]$p5_lod_thr <- p5
+                                record[, ]$p10_lod_thr <- p10
                                 
                                 p5.index <- record$lod_peak >= p5
                                 p10.index <- record$lod_peak >= p10
-                                if(!is.na(p5.index) && any(p5.index)){ record[p5.index,]$p5_qtl <- TRUE }
-                                if(!is.na(p10.index)&& any(p10.index)){ record[p10.index,]$p10_qtl <- TRUE }
+                                if(!is.na(p5.index) && any(p5.index)) { 
+                                  record[p5.index, ]$p5_qtl <- TRUE 
+                                }
+                                if(!is.na(p10.index) && any(p10.index)) { 
+                                  record[p10.index, ]$p10_qtl <- TRUE 
+                                }
                                 
                                 if (parametric) {
                                   chr <- as.numeric(sum_x_scone$chr)
