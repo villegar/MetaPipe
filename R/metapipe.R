@@ -590,9 +590,9 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                                 #summary(x_scone, threshold = 3)
                                 #lod.plot <- plot(x_scone, ylab="LOD Score")
                                 #cat(paste0("Scanone: ",i,"\t\tLODs: ",lod_cnt,"\n"))
-                                x_scone.per <- qtl::scanone(x_norm, pheno.col = i, model = "normal", method = "hk", n.perm = PERMUTATIONS)
-                                p5 <- summary(x_scone.per)[[1]]  #  5% percent
-                                p10 <- summary(x_scone.per)[[2]] # 10% percent
+                                x_scone_perm <- qtl::scanone(x_norm, pheno.col = i, model = "normal", method = "hk", n.perm = PERMUTATIONS)
+                                p5 <- summary(x_scone_perm)[[1]]  #  5% percent
+                                p10 <- summary(x_scone_perm)[[2]] # 10% percent
                                 
                                 
                                 lod.plot <- MetaPipe::save_plot(plot(x_scone, ylab="LOD Score") + 
