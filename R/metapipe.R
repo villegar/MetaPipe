@@ -486,6 +486,10 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
 
 #' Perform QTL mapping permutation test using scanone to obtain significant QTLs
 #'
+#' @importFrom graphics abline
+#' @importFrom graphics legend
+#' @importFrom stats as.formula
+#' 
 #' @param x_data cross-data containing genetic map data and features
 #' @param cpus number of CPUS to be used
 #' @param qtl_method QTL mapping method [default: scanone]
@@ -498,7 +502,7 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
 #' 
 #' @return data frame containing the significant QTLs information
 #' @export
-#'
+#' 
 #' @examples
 #' # Create toy dataset
 #' excluded_columns <- c(2)
@@ -531,7 +535,9 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
 #' set.seed(seed)
 #' x <- qtl::jittermap(x)
 #' x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
-#' x_qtl_perm <- MetaPipe::qtl_perm_test(x, n_perm = 5, model = "normal", method="hk")
+#' \dontrun{
+#' x_qtl_perm <- MetaPipe::qtl_perm_test(x, n_perm = 5, model = "normal", method = "hk")
+#' }
 #' 
 #' @seealso \code{\link{assess_normality}} and \code{\link{qtl_scone}}
 qtl_perm_test <- function(x_data, 
