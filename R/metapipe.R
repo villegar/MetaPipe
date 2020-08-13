@@ -630,12 +630,12 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                                     #f <- as.formula(paste0("y~",paste0("Q",seq(1:nrow(sum_x_scone)), collapse = " + ")))
                                     f <- as.formula(paste0("y~", paste0("Q", m, collapse = " + ")))
                                     fit_qtl <- qtl::fitqtl(x_norm, pheno.col = i, qtl_s, formula = f , get.ests = TRUE, ...) # model = "normal", method="hk"
-                                    summary.fit_qtl <- summary(fit_qtl)
+                                    sum_fit_qtl <- summary(fit_qtl)
                                     
-                                    if(length(summary.fit_qtl)){
-                                      p.var <- as.numeric(summary.fit_qtl[[1]][1,"%var"])
-                                      pvalue.f <- as.numeric(summary.fit_qtl[[1]][,"Pvalue(F)"])[1]
-                                      estimates <- as.numeric(summary.fit_qtl$ests[,"est"])[-1]
+                                    if(length(sum_fit_qtl)){
+                                      p.var <- as.numeric(sum_fit_qtl[[1]][1,"%var"])
+                                      pvalue.f <- as.numeric(sum_fit_qtl[[1]][,"Pvalue(F)"])[1]
+                                      estimates <- as.numeric(sum_fit_qtl$ests[,"est"])[-1]
                                       record[m,]$pvar <- p.var
                                       record[m,]$pval <- pvalue.f
                                       record[m,]$est_add <- estimates[1]
