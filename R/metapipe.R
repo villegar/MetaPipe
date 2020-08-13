@@ -480,7 +480,31 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
   return(x_scone)
 }
 
-qtl_perm_test <- function(x_data, cpus = 1, qtl_method = "scanone", raw_data_normalised = NULL, lod_threshold = 3, parametric = TRUE, n_perm = 1000, plots_dir = getwd(), ...) {
+#' Perform QTL mapping permutation test using scanone to obtain significant QTLs
+#'
+#' @param x_data cross-data containing genetic map data and features
+#' @param cpus number of CPUS to be used
+#' @param qtl_method QTL mapping method [default: scanone]
+#' @param raw_data_normalised normalised raw data
+#' @param lod_threshold LOD score threshold to look up for significant QTLs
+#' @param parametric boolean flag to indicate whether or not x_data is parametric
+#' @param n_perm number of permutations
+#' @param plots_dir 
+#' @param ... S4 parameters for R/qtl library
+#'
+#' @return
+#' @export
+#'
+#' @examples
+qtl_perm_test <- function(x_data, 
+                          cpus = 1, 
+                          qtl_method = "scanone", 
+                          raw_data_normalised = NULL, 
+                          lod_threshold = 3, 
+                          parametric = TRUE, 
+                          n_perm = 1000, 
+                          plots_dir = getwd(), 
+                          ...) {
   # Start parallel backend
   cl <- parallel::makeCluster(cpus, setup_strategy = "sequential")
   doParallel::registerDoParallel(cl)
