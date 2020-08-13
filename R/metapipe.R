@@ -497,155 +497,156 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
   # Obtain number of individuals (population)
   num_indv <- summary(x_data)[[2]]
   
-  x_sum_map <- foreach::foreach(i = feature_indices,
-                            .combine = rbind) %dopar% {
-                              if (!is.null(raw_data_normalised)) {
-                                transf_info <- raw_data_normalised$feature == features[i]
-                                transf_info <- raw_data_normalised[transf_info, c("transf", "transf_val")][1, ]
-                              }
-                              else {
-                                transf_info <- data.frame(transf = NA, transf_val = NA)
-                              }
-                              
-                              # Structure for QTL
-                              record <- data.frame(
-                                # ID = i - 1,
-                                qtl_ID = NA,
-                                trait = features[i],
-                                ind = num_indv,
-                                lg = NA,
-                                lod_peak = NA,
-                                pos_peak = NA,
-                                marker = NA,
-                                pos_p95_bay_int = NA,
-                                marker_p95_bay_int = NA,
-                                pvar = NA,
-                                est_add = NA,
-                                est_dom = NA,
-                                p5_lod_thr = NA,
-                                p10_lod_thr = NA,
-                                pval = NA,
-                                transf = transf_info$transf,
-                                transf_val = transf_info$transf_val,
-                                method = qtl_method,
-                                p5_qtl = FALSE,
-                                p10_qtl = FALSE
-                              )
-                              
-                              # Run single scan
-                              x_scone <-  qtl::scanone(x_norm, pheno.col = i, ...)
-                              sum_x_scone <- summary(x_scone, threshold = lod_threshold)
-                              lod_cnt <- nrow(sum_x_scone)
-                              if(!is.null(lod_cnt) && lod_cnt > 0) {
-                                for(k in 1:lod_cnt){
-                                  if(k > 1) {
-                                    nrecord <- record[1, ] # Create copy of record object
-                                  } else{
-                                    nrecord <- record # Copy record structured and data
-                                  }
-                                  
-                                  # Extract Peak QTL information
-                                  nrecord$lg <- sum_x_scone[k, "chr"]       
-                                  nrecord$lod_peak <- sum_x_scone[k, "lod"]
-                                  nrecord$pos_peak <- sum_x_scone[k, "pos"]
-                                  marker <- rownames(sum_x_scone)[k]
-                                  
-                                  # Verify if current QTL has a pseudomarker
-                                  marker_info <- MetaPipe::transform_pseudo_marker(x_norm, marker, nrecord$lg, nrecord$pos_peak)
-                                  nrecord$marker <- marker_info[1]
-                                  nrecord$pos_peak <- as.numeric(marker_info[2])
-                                  
-                                  # Create QTL ID: feature:LG@position
-                                  if(!is.na(nrecord$lg)) {
-                                    nrecord$qtl_ID <- with(nrecord, sprintf("%s:%s@%f", features[i], lg, pos_peak))
-                                  }
-                                  
-                                  # Compute the 95% Bayes' CI
-                                  p95_bayes <- qtl::bayesint(x_scone, chr = nrecord$lg, expandtomarkers = TRUE, prob = 0.95)
-                                  p95_bayes <- unique(p95_bayes)
-                                  low_bound <- 1 #p95_bayes$pos == min(p95_bayes$pos)
-                                  upper_bound <- which.max(p95_bayes$pos) #p95_bayes$pos == max(p95_bayes$pos)
-                                  p95_bayes$marker <- NA # Add new column for markers, prevent duplicated row names
-                                  
-                                  # Verify if the 95% Bayes' CI QTLs have pseudomarkers
-                                  for(l in 1:nrow(p95_bayes)) {
-                                    marker <- rownames(p95_bayes)[l]
-                                    marker_info <- MetaPipe::transform_pseudo_marker(x_norm, marker, p95_bayes[l, "chr"], p95_bayes[l, "pos"])
-                                    p95_bayes[l, "marker"] <- marker_info[1]
-                                    p95_bayes[l, "pos"] <- as.numeric(marker_info[2])
-                                  }
-                                  
-                                  nrecord$pos_p95_bay_int <- paste0(p95_bayes[low_bound, "pos"], "-",
-                                                                    p95_bayes[upper_bound, "pos"])
-                                  nrecord$marker_p95_bay_int <- paste0(p95_bayes[low_bound, "marker"], "-",
-                                                                       p95_bayes[upper_bound, "marker"])
-                                  
-                                  if(k > 1) {
-                                    record <- rbind(record, nrecord)
-                                  } else {
-                                    record <- nrecord
-                                  }
-                                }
-                                
-                                x_scone_perm <- qtl::scanone(x_norm, pheno.col = i, n.perm = n_perm, ...) # model = "normal", method = "hk"
-                                p5 <- summary(x_scone_perm)[[1]]  #  5% percent
-                                p10 <- summary(x_scone_perm)[[2]] # 10% percent
-                                
-                                lod_plot <- MetaPipe::save_plot(
-                                  plot(x_scone, ylab = "LOD Score") +
-                                    abline(h = p5, 
-                                           lwd = 2,
-                                           lty = "solid",
-                                           col = "red"
-                                    ) +
-                                    abline(h = p10, 
-                                           lwd = 2, 
-                                           lty = "dashed",
-                                           col = "blue"
-                                    ),
-                                  paste0(plots_dir, "/LOD-", features[i]),
-                                  width = 18
-                                )
-                                
-                                record[, ]$p5_lod_thr <- p5
-                                record[, ]$p10_lod_thr <- p10
-                                
-                                p5_idx <- record$lod_peak >= p5
-                                p10_idx <- record$lod_peak >= p10
-                                if(!is.na(p5_idx) && any(p5_idx)) { 
-                                  record[p5_idx, ]$p5_qtl <- TRUE 
-                                }
-                                if(!is.na(p10_idx) && any(p10_idx)) { 
-                                  record[p10_idx, ]$p10_qtl <- TRUE 
-                                }
-                                
-                                # For paremetric QTL mapping only
-                                if (parametric) {
-                                  chr <- as.numeric(sum_x_scone$chr)
-                                  pos <- as.numeric(sum_x_scone$pos)
-                                  qtl_s <- qtl::makeqtl(x_norm, chr, pos, what = c("prob"))
-                                  
-                                  for(m in 1:length(chr)){
-                                    #qtl_s <- makeqtl(x_norm, chr[m], pos[m], what=c("prob"))
-                                    #f <- as.formula(paste0("y~",paste0("Q",seq(1:nrow(sum_x_scone)), collapse = " + ")))
-                                    f <- as.formula(paste0("y~", paste0("Q", m, collapse = " + ")))
-                                    fit_qtl <- qtl::fitqtl(x_norm, pheno.col = i, qtl_s, formula = f , get.ests = TRUE, ...) # model = "normal", method="hk"
-                                    sum_fit_qtl <- summary(fit_qtl)
-                                    
-                                    if(length(sum_fit_qtl)){
-                                      p.var <- as.numeric(sum_fit_qtl[[1]][1, "%var"])
-                                      pvalue.f <- as.numeric(sum_fit_qtl[[1]][, "Pvalue(F)"])[1]
-                                      estimates <- as.numeric(sum_fit_qtl$ests[, "est"])[-1]
-                                      record[m, ]$pvar <- p.var
-                                      record[m, ]$pval <- pvalue.f
-                                      record[m, ]$est_add <- estimates[1]
-                                      record[m, ]$est_dom <- estimates[2]
-                                    }
-                                  }
-                                }
-                              }
-                              record
-                            }
+  x_sum_map <- 
+    foreach::foreach(i = feature_indices,
+                     .combine = rbind) %dopar% {
+                       if (!is.null(raw_data_normalised)) {
+                         transf_info <- raw_data_normalised$feature == features[i]
+                         transf_info <- raw_data_normalised[transf_info, c("transf", "transf_val")][1, ]
+                       }
+                       else {
+                         transf_info <- data.frame(transf = NA, transf_val = NA)
+                       }
+                       
+                       # Structure for QTL
+                       record <- data.frame(
+                         # ID = i - 1,
+                         qtl_ID = NA,
+                         trait = features[i],
+                         ind = num_indv,
+                         lg = NA,
+                         lod_peak = NA,
+                         pos_peak = NA,
+                         marker = NA,
+                         pos_p95_bay_int = NA,
+                         marker_p95_bay_int = NA,
+                         pvar = NA,
+                         est_add = NA,
+                         est_dom = NA,
+                         p5_lod_thr = NA,
+                         p10_lod_thr = NA,
+                         pval = NA,
+                         transf = transf_info$transf,
+                         transf_val = transf_info$transf_val,
+                         method = qtl_method,
+                         p5_qtl = FALSE,
+                         p10_qtl = FALSE
+                       )
+                       
+                       # Run single scan
+                       x_scone <-  qtl::scanone(x_norm, pheno.col = i, ...)
+                       sum_x_scone <- summary(x_scone, threshold = lod_threshold)
+                       lod_cnt <- nrow(sum_x_scone)
+                       if(!is.null(lod_cnt) && lod_cnt > 0) {
+                         for(k in 1:lod_cnt){
+                           if(k > 1) {
+                             nrecord <- record[1, ] # Create copy of record object
+                           } else{
+                             nrecord <- record # Copy record structured and data
+                           }
+                           
+                           # Extract Peak QTL information
+                           nrecord$lg <- sum_x_scone[k, "chr"]       
+                           nrecord$lod_peak <- sum_x_scone[k, "lod"]
+                           nrecord$pos_peak <- sum_x_scone[k, "pos"]
+                           marker <- rownames(sum_x_scone)[k]
+                           
+                           # Verify if current QTL has a pseudomarker
+                           marker_info <- MetaPipe::transform_pseudo_marker(x_norm, marker, nrecord$lg, nrecord$pos_peak)
+                           nrecord$marker <- marker_info[1]
+                           nrecord$pos_peak <- as.numeric(marker_info[2])
+                           
+                           # Create QTL ID: feature:LG@position
+                           if(!is.na(nrecord$lg)) {
+                             nrecord$qtl_ID <- with(nrecord, sprintf("%s:%s@%f", features[i], lg, pos_peak))
+                           }
+                           
+                           # Compute the 95% Bayes' CI
+                           p95_bayes <- qtl::bayesint(x_scone, chr = nrecord$lg, expandtomarkers = TRUE, prob = 0.95)
+                           p95_bayes <- unique(p95_bayes)
+                           low_bound <- 1 #p95_bayes$pos == min(p95_bayes$pos)
+                           upper_bound <- which.max(p95_bayes$pos) #p95_bayes$pos == max(p95_bayes$pos)
+                           p95_bayes$marker <- NA # Add new column for markers, prevent duplicated row names
+                           
+                           # Verify if the 95% Bayes' CI QTLs have pseudomarkers
+                           for(l in 1:nrow(p95_bayes)) {
+                             marker <- rownames(p95_bayes)[l]
+                             marker_info <- MetaPipe::transform_pseudo_marker(x_norm, marker, p95_bayes[l, "chr"], p95_bayes[l, "pos"])
+                             p95_bayes[l, "marker"] <- marker_info[1]
+                             p95_bayes[l, "pos"] <- as.numeric(marker_info[2])
+                           }
+                           
+                           nrecord$pos_p95_bay_int <- paste0(p95_bayes[low_bound, "pos"], "-",
+                                                             p95_bayes[upper_bound, "pos"])
+                           nrecord$marker_p95_bay_int <- paste0(p95_bayes[low_bound, "marker"], "-",
+                                                                p95_bayes[upper_bound, "marker"])
+                           
+                           if(k > 1) {
+                             record <- rbind(record, nrecord)
+                           } else {
+                             record <- nrecord
+                           }
+                         }
+                         
+                         x_scone_perm <- qtl::scanone(x_norm, pheno.col = i, n.perm = n_perm, ...) # model = "normal", method = "hk"
+                         p5 <- summary(x_scone_perm)[[1]]  #  5% percent
+                         p10 <- summary(x_scone_perm)[[2]] # 10% percent
+                         
+                         lod_plot <- MetaPipe::save_plot(
+                           plot(x_scone, ylab = "LOD Score") +
+                             abline(h = p5, 
+                                    lwd = 2,
+                                    lty = "solid",
+                                    col = "red"
+                             ) +
+                             abline(h = p10, 
+                                    lwd = 2, 
+                                    lty = "dashed",
+                                    col = "blue"
+                             ),
+                           paste0(plots_dir, "/LOD-", features[i]),
+                           width = 18
+                         )
+                         
+                         record[, ]$p5_lod_thr <- p5
+                         record[, ]$p10_lod_thr <- p10
+                         
+                         p5_idx <- record$lod_peak >= p5
+                         p10_idx <- record$lod_peak >= p10
+                         if(!is.na(p5_idx) && any(p5_idx)) { 
+                           record[p5_idx, ]$p5_qtl <- TRUE 
+                         }
+                         if(!is.na(p10_idx) && any(p10_idx)) { 
+                           record[p10_idx, ]$p10_qtl <- TRUE 
+                         }
+                         
+                         # For paremetric QTL mapping only
+                         if (parametric) {
+                           chr <- as.numeric(sum_x_scone$chr)
+                           pos <- as.numeric(sum_x_scone$pos)
+                           qtl_s <- qtl::makeqtl(x_norm, chr, pos, what = c("prob"))
+                           
+                           for(m in 1:length(chr)){
+                             #qtl_s <- makeqtl(x_norm, chr[m], pos[m], what=c("prob"))
+                             #f <- as.formula(paste0("y~",paste0("Q",seq(1:nrow(sum_x_scone)), collapse = " + ")))
+                             f <- as.formula(paste0("y~", paste0("Q", m, collapse = " + ")))
+                             fit_qtl <- qtl::fitqtl(x_norm, pheno.col = i, qtl_s, formula = f , get.ests = TRUE, ...) # model = "normal", method="hk"
+                             sum_fit_qtl <- summary(fit_qtl)
+                             
+                             if(length(sum_fit_qtl)){
+                               p.var <- as.numeric(sum_fit_qtl[[1]][1, "%var"])
+                               pvalue.f <- as.numeric(sum_fit_qtl[[1]][, "Pvalue(F)"])[1]
+                               estimates <- as.numeric(sum_fit_qtl$ests[, "est"])[-1]
+                               record[m, ]$pvar <- p.var
+                               record[m, ]$pval <- pvalue.f
+                               record[m, ]$est_add <- estimates[1]
+                               record[m, ]$est_dom <- estimates[2]
+                             }
+                           }
+                         }
+                       }
+                       record
+                     }
   parallel::stopCluster(cl) # Stop cluster
   return(x_sum_map)
 }
