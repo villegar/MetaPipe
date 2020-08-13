@@ -563,7 +563,7 @@ qtl_perm_test <- function(x_data,
   features <- colnames(x_data$pheno)
   
   # Obtain number of individuals (population)
-  num_indv <- summary(x_data)[[2]]
+  num_indv <- nrow(x_data$pheno) #summary(x_data)[[2]]
   
   x_sum_map <- 
     foreach::foreach(i = feature_indices,
@@ -656,7 +656,7 @@ qtl_perm_test <- function(x_data,
                            }
                          }
                          
-                         x_scone_perm <- qtl::scanone(x_data, pheno.col = i, n.perm = n_perm, ...) # model = "normal", method = "hk"
+                         x_scone_perm <- qtl::scanone(x_data, pheno.col = i, n.perm = n_perm, ...)
                          p5 <- summary(x_scone_perm)[[1]]  #  5% percent
                          p10 <- summary(x_scone_perm)[[2]] # 10% percent
                          
