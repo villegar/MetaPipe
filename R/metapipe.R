@@ -405,7 +405,7 @@ random_map <- function(genotypes = c("A", "H", "B"), lg = 1:10, markers = 10, po
 
 #' Perform QTL mapping scanone to obtain LOD scores for all features and markers
 #'
-#' @param x_data cross-file containing genetic map data and features
+#' @param x_data cross-data containing genetic map data and features
 #' @param cpus number of CPUS to be used
 #' @param ... S4 parameters for R/qtl library
 #'
@@ -443,6 +443,8 @@ random_map <- function(genotypes = c("A", "H", "B"), lg = 1:10, markers = 10, po
 #' x <- qtl::jittermap(x)
 #' x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
 #' x_scone <- MetaPipe::qtl_scone(x, 1, model = "normal", method = "hk")
+#' 
+#' @seealso \code{\link{qtl_perm_test}}
 qtl_scone <- function(x_data, cpus = 1, ...) {
   # Start parallel backend
   cl <- parallel::makeCluster(cpus, setup_strategy = "sequential")
@@ -496,6 +498,8 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
 #' @export
 #'
 #' @examples
+#' 
+#' @seealso \code{\link{qtl_scone}}
 qtl_perm_test <- function(x_data, 
                           cpus = 1, 
                           qtl_method = "scanone", 
