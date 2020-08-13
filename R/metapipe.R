@@ -482,7 +482,7 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
 
 qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_normalised = NULL, lod_threshold = 3, parametric = TRUE, n_perm = 1000, plots_dir = getwd(), ...) {
   # Start parallel backend
-  cl <- parallel::makeCluster(cpus)
+  cl <- parallel::makeCluster(cpus, setup_strategy = "sequential")
   doParallel::registerDoParallel(cl)
   
   # Load binary operator for backend
