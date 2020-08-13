@@ -39,7 +39,10 @@ is_pseudo_marker <- function(marker) {
 #'                                       transf = "",
 #'                                       transf_val = NA,
 #'                                       stringsAsFactors = FALSE)
-#' assess_normality_postprocessing(example_data, excluded_columns, example_data_normalised, out_prefix = here::here("metapipe"))
+#' assess_normality_postprocessing(example_data, 
+#'                                 excluded_columns, 
+#'                                 example_data_normalised, 
+#'                                 out_prefix = here::here("metapipe"))
 #' 
 #' # Create and store random genetic map [for testing only]
 #' genetic_map <- random_map(population = population, seed = seed)
