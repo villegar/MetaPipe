@@ -294,7 +294,7 @@ test_that("qtl mapping scanone works", {
   set.seed(seed)
   x <- qtl::jittermap(x)
   x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
-  x_norm_scone <- MetaPipe::qtl_scone(x, 1)
+  x_norm_scone <- MetaPipe::qtl_scone(x, 1, model = "normal", method = "hk")
   expect_equal(c(190, 4), dim(x_norm_scone))
   
   # Delete temporary files

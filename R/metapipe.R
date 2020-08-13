@@ -442,7 +442,7 @@ random_map <- function(genotypes = c("A", "H", "B"), lg = 1:10, markers = 10, po
 #' set.seed(seed)
 #' x <- qtl::jittermap(x)
 #' x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
-#' x_scone <- MetaPipe::qtl_scone(x, 1)
+#' x_scone <- MetaPipe::qtl_scone(x, 1, model = "normal", method = "hk")
 qtl_scone <- function(x_data, cpus = 1, ...) {
   # Start parallel backend
   cl <- parallel::makeCluster(cpus, setup_strategy = "sequential")
