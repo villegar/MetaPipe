@@ -619,16 +619,17 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                                   record[p10_idx, ]$p10_qtl <- TRUE 
                                 }
                                 
+                                # For paremetric QTL mapping only
                                 if (parametric) {
                                   chr <- as.numeric(sum_x_scone$chr)
                                   pos <- as.numeric(sum_x_scone$pos)
-                                  qtl_s <- qtl::makeqtl(x_norm, chr, pos, what=c("prob"))
+                                  qtl_s <- qtl::makeqtl(x_norm, chr, pos, what = c("prob"))
                                   
                                   for(m in 1:length(chr)){
                                     #qtl_s <- makeqtl(x_norm, chr[m], pos[m], what=c("prob"))
                                     #f <- as.formula(paste0("y~",paste0("Q",seq(1:nrow(sum_x_scone)), collapse = " + ")))
-                                    f <- as.formula(paste0("y~",paste0("Q",m, collapse = " + ")))
-                                    fitqtl <- qtl::fitqtl(x_norm, pheno.col = i, qtl_s, formula = f , get.ests = TRUE, model = "normal", method="hk")
+                                    f <- as.formula(paste0("y~", paste0("Q", m, collapse = " + ")))
+                                    fitqtl <- qtl::fitqtl(x_norm, pheno.col = i, qtl_s, formula = f , get.ests = TRUE, ...) # model = "normal", method="hk"
                                     summary.fitqtl <- summary(fitqtl)
                                     
                                     if(length(summary.fitqtl)){
