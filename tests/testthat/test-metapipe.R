@@ -342,7 +342,7 @@ test_that("qtl mapping permutation test with scanone works", {
   x <- qtl::jittermap(x)
   x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
   x_qtl_perm <- MetaPipe::qtl_perm_test(x, n_perm = 5, model = "normal", method = "hk")
-  expect_equal(c(5, 20), dim(x_qtl_perm))
+  expect_equal(c(9, 20), dim(x_qtl_perm))
   
   filenames <- c("LOD-F1.png", 
                  "LOD-F2.png")
