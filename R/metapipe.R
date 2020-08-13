@@ -491,7 +491,7 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
 #' @param lod_threshold LOD score threshold to look up for significant QTLs
 #' @param parametric boolean flag to indicate whether or not x_data is parametric
 #' @param n_perm number of permutations
-#' @param plots_dir 
+#' @param plots_dir output directory for plots
 #' @param ... S4 parameters for R/qtl library
 #' 
 #' @return data frame containing the significant QTLs information

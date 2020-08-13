@@ -31,7 +31,7 @@ qtl_perm_test(
 
 \item{n_perm}{number of permutations}
 
-\item{plots_dir}{}
+\item{plots_dir}{output directory for plots}
 
 \item{...}{S4 parameters for R/qtl library}
 }
