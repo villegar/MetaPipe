@@ -629,13 +629,13 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                                     #qtl_s <- makeqtl(x_norm, chr[m], pos[m], what=c("prob"))
                                     #f <- as.formula(paste0("y~",paste0("Q",seq(1:nrow(sum_x_scone)), collapse = " + ")))
                                     f <- as.formula(paste0("y~", paste0("Q", m, collapse = " + ")))
-                                    fitqtl <- qtl::fitqtl(x_norm, pheno.col = i, qtl_s, formula = f , get.ests = TRUE, ...) # model = "normal", method="hk"
-                                    summary.fitqtl <- summary(fitqtl)
+                                    fit_qtl <- qtl::fitqtl(x_norm, pheno.col = i, qtl_s, formula = f , get.ests = TRUE, ...) # model = "normal", method="hk"
+                                    summary.fit_qtl <- summary(fit_qtl)
                                     
-                                    if(length(summary.fitqtl)){
-                                      p.var <- as.numeric(summary.fitqtl[[1]][1,"%var"])
-                                      pvalue.f <- as.numeric(summary.fitqtl[[1]][,"Pvalue(F)"])[1]
-                                      estimates <- as.numeric(summary.fitqtl$ests[,"est"])[-1]
+                                    if(length(summary.fit_qtl)){
+                                      p.var <- as.numeric(summary.fit_qtl[[1]][1,"%var"])
+                                      pvalue.f <- as.numeric(summary.fit_qtl[[1]][,"Pvalue(F)"])[1]
+                                      estimates <- as.numeric(summary.fit_qtl$ests[,"est"])[-1]
                                       record[m,]$pvar <- p.var
                                       record[m,]$pval <- pvalue.f
                                       record[m,]$est_add <- estimates[1]
