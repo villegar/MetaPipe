@@ -633,13 +633,13 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                                     sum_fit_qtl <- summary(fit_qtl)
                                     
                                     if(length(sum_fit_qtl)){
-                                      p.var <- as.numeric(sum_fit_qtl[[1]][1,"%var"])
-                                      pvalue.f <- as.numeric(sum_fit_qtl[[1]][,"Pvalue(F)"])[1]
-                                      estimates <- as.numeric(sum_fit_qtl$ests[,"est"])[-1]
-                                      record[m,]$pvar <- p.var
-                                      record[m,]$pval <- pvalue.f
-                                      record[m,]$est_add <- estimates[1]
-                                      record[m,]$est_dom <- estimates[2]
+                                      p.var <- as.numeric(sum_fit_qtl[[1]][1, "%var"])
+                                      pvalue.f <- as.numeric(sum_fit_qtl[[1]][, "Pvalue(F)"])[1]
+                                      estimates <- as.numeric(sum_fit_qtl$ests[, "est"])[-1]
+                                      record[m, ]$pvar <- p.var
+                                      record[m, ]$pval <- pvalue.f
+                                      record[m, ]$est_add <- estimates[1]
+                                      record[m, ]$est_dom <- estimates[2]
                                     }
                                   }
                                 }
