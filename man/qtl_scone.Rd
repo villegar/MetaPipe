@@ -7,7 +7,7 @@
 qtl_scone(x_data, cpus = 1, ...)
 }
 \arguments{
-\item{x_data}{cross-file containing genetic map data and features}
+\item{x_data}{cross-data containing genetic map data and features}
 
 \item{cpus}{number of CPUS to be used}
 
@@ -50,4 +50,8 @@ set.seed(seed)
 x <- qtl::jittermap(x)
 x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
 x_scone <- MetaPipe::qtl_scone(x, 1, model = "normal", method = "hk")
+
+}
+\seealso{
+\code{\link{qtl_perm_test}}
 }
