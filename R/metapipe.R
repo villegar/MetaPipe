@@ -445,7 +445,7 @@ random_map <- function(genotypes = c("A", "H", "B"), lg = 1:10, markers = 10, po
 #' x_scone <- MetaPipe::qtl_scone(x, 1)
 qtl_scone <- function(x_data, cpus = 1, ...) {
   # Start parallel backend
-  cl <- parallel::makeCluster(cpus)
+  cl <- parallel::makeCluster(cpus, setup_strategy = "sequential")
   doParallel::registerDoParallel(cl)
   
   # Load binary operator for backend
