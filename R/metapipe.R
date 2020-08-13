@@ -647,6 +647,7 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                               record
                             }
   parallel::stopCluster(cl) # Stop cluster
+  return(x_sum_map)
 }
 
 qtl_preprocessing <- function(genetic_map, out_prefix = "metapipe") {
