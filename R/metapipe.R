@@ -487,19 +487,49 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
 #' @param x_data cross-data containing genetic map data and features
 #' @param cpus number of CPUS to be used
 #' @param qtl_method QTL mapping method [default: scanone]
-#' @param raw_data_normalised normalised raw data
+#' @param raw_data_normalised normalised raw data, see \code{\link{assess_normality}}
 #' @param lod_threshold LOD score threshold to look up for significant QTLs
 #' @param parametric boolean flag to indicate whether or not x_data is parametric
 #' @param n_perm number of permutations
 #' @param plots_dir 
 #' @param ... S4 parameters for R/qtl library
-#'
-#' @return
+#' 
+#' @return data frame containing the significant QTLs information
 #' @export
 #'
 #' @examples
+#' # Create toy dataset
+#' excluded_columns <- c(2)
+#' population <- 5
+#' seed <- 1
+#' example_data <- data.frame(ID = 1:population,
+#'                            P1 = c("one", "two", "three", "four", "five"),
+#'                            F1 = rnorm(population),
+#'                            F2 = rnorm(population))
+#' example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
+#'                                       feature = rep(c("F1", "F2"), each = 5),
+#'                                       values = c(example_data$F1, example_data$F2),
+#'                                       flag = "Normal",
+#'                                       transf = "",
+#'                                       transf_val = NA,
+#'                                       stringsAsFactors = FALSE)
+#' assess_normality_postprocessing(example_data, excluded_columns, example_data_normalised, out_prefix = here::here("metapipe"))
 #' 
-#' @seealso \code{\link{qtl_scone}}
+#' # Create and store random genetic map [for testing only]
+#' genetic_map <- random_map(population = population, seed = seed)
+#' write.csv(genetic_map, here::here("metapipe_genetic_map.csv"), row.names = FALSE)
+#' print(list.files(here::here()))
+#' # Load cross file with genetic map and raw data for normal features
+#' x <- qtl::read.cross(format = "csvs", 
+#'                      dir = here::here(),
+#'                      genfile = "metapipe_genetic_map.csv",
+#'                      phefile = "metapipe_raw_data_norm.csv")
+#' set.seed(seed)
+#' x <- qtl::jittermap(x)
+#' x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
+#' x_qtl_perm <- qtl_perm_test(x, n_perm = 2, cpus = 1, model = "normal", method="hk")
+#' 
+#' @seealso \code{\link{assess_normality}} and \code{\link{qtl_scone}}
 qtl_perm_test <- function(x_data, 
                           cpus = 1, 
                           qtl_method = "scanone", 
