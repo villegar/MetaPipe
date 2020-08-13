@@ -32,7 +32,7 @@ transform_data(
 \item{digits}{significant digits to compare p-values of transformations}
 }
 \value{
-
+transformed record
 }
 \description{
 Normalise data using different methods: log, power, and root, with a 

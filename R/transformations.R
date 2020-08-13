@@ -260,7 +260,7 @@ root_transformation <- function(data,
 #' @param plots_prefix prefix for plots with or without path
 #' @param digits significant digits to compare p-values of transformations
 #'
-#' @return
+#' @return transformed record
 #' @export
 #'
 #' @examples
