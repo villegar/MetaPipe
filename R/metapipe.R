@@ -480,7 +480,7 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
   return(x_scone)
 }
 
-qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_normalised = NULL, lod_threshold = 3, parametric = TRUE, n_perm = 1000, plots_dir = getwd(), ...) {
+qtl_perm_test <- function(x_data, cpus = 1, qtl_method = "scanone", raw_data_normalised = NULL, lod_threshold = 3, parametric = TRUE, n_perm = 1000, plots_dir = getwd(), ...) {
   # Start parallel backend
   cl <- parallel::makeCluster(cpus, setup_strategy = "sequential")
   doParallel::registerDoParallel(cl)
@@ -534,7 +534,7 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                        )
                        
                        # Run single scan
-                       x_scone <-  qtl::scanone(x_norm, pheno.col = i, ...)
+                       x_scone <-  qtl::scanone(x_data, pheno.col = i, ...)
                        sum_x_scone <- summary(x_scone, threshold = lod_threshold)
                        lod_cnt <- nrow(sum_x_scone)
                        if(!is.null(lod_cnt) && lod_cnt > 0) {
@@ -552,7 +552,7 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                            marker <- rownames(sum_x_scone)[k]
                            
                            # Verify if current QTL has a pseudomarker
-                           marker_info <- MetaPipe::transform_pseudo_marker(x_norm, marker, nrecord$lg, nrecord$pos_peak)
+                           marker_info <- MetaPipe::transform_pseudo_marker(x_data, marker, nrecord$lg, nrecord$pos_peak)
                            nrecord$marker <- marker_info[1]
                            nrecord$pos_peak <- as.numeric(marker_info[2])
                            
@@ -571,7 +571,7 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                            # Verify if the 95% Bayes' CI QTLs have pseudomarkers
                            for(l in 1:nrow(p95_bayes)) {
                              marker <- rownames(p95_bayes)[l]
-                             marker_info <- MetaPipe::transform_pseudo_marker(x_norm, marker, p95_bayes[l, "chr"], p95_bayes[l, "pos"])
+                             marker_info <- MetaPipe::transform_pseudo_marker(x_data, marker, p95_bayes[l, "chr"], p95_bayes[l, "pos"])
                              p95_bayes[l, "marker"] <- marker_info[1]
                              p95_bayes[l, "pos"] <- as.numeric(marker_info[2])
                            }
@@ -588,7 +588,7 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                            }
                          }
                          
-                         x_scone_perm <- qtl::scanone(x_norm, pheno.col = i, n.perm = n_perm, ...) # model = "normal", method = "hk"
+                         x_scone_perm <- qtl::scanone(x_data, pheno.col = i, n.perm = n_perm, ...) # model = "normal", method = "hk"
                          p5 <- summary(x_scone_perm)[[1]]  #  5% percent
                          p10 <- summary(x_scone_perm)[[2]] # 10% percent
                          
@@ -624,13 +624,13 @@ qtl_perm_test <- function(x_data, cpus = 1, qt_method = "scanone", raw_data_norm
                          if (parametric) {
                            chr <- as.numeric(sum_x_scone$chr)
                            pos <- as.numeric(sum_x_scone$pos)
-                           qtl_s <- qtl::makeqtl(x_norm, chr, pos, what = c("prob"))
+                           qtl_s <- qtl::makeqtl(x_data, chr, pos, what = c("prob"))
                            
                            for(m in 1:length(chr)){
-                             #qtl_s <- makeqtl(x_norm, chr[m], pos[m], what=c("prob"))
+                             #qtl_s <- makeqtl(x_data, chr[m], pos[m], what=c("prob"))
                              #f <- as.formula(paste0("y~",paste0("Q",seq(1:nrow(sum_x_scone)), collapse = " + ")))
                              f <- as.formula(paste0("y~", paste0("Q", m, collapse = " + ")))
-                             fit_qtl <- qtl::fitqtl(x_norm, pheno.col = i, qtl_s, formula = f , get.ests = TRUE, ...) # model = "normal", method="hk"
+                             fit_qtl <- qtl::fitqtl(x_data, pheno.col = i, qtl_s, formula = f , get.ests = TRUE, ...) # model = "normal", method="hk"
                              sum_fit_qtl <- summary(fit_qtl)
                              
                              if(length(sum_fit_qtl)){
