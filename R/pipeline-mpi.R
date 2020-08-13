@@ -7,39 +7,39 @@ args = commandArgs(trailingOnly=TRUE) # Command line arguments
 #install.packages("qtl2", repos="http://rqtl.org/qtl2cran")
 
 # General Libraries
-library(Amelia, quietly = TRUE)
-library(ggplot2, quietly = TRUE)
-library(gplots)
-library(grid, quietly = TRUE)
-library(gridExtra, quietly = TRUE)
-library(latex2exp, quietly = TRUE)
-library(MASS, quietly = TRUE)
-library(plyr, quietly = TRUE)
-library(psych, quietly = TRUE)
-library(R.devices, quietly = TRUE)
-library(tictoc, quietly = TRUE)
-library(tidyverse, quietly = TRUE)
-library(VIM, quietly = TRUE)
-
-# Parallel Libraries
-library(foreach, quietly = TRUE)
-library(doParallel, quietly = TRUE)
-#library(snow, quietly = TRUE)
-
-# PCA Libraries
-library(FactoMineR, quietly = TRUE)
-library(factoextra, quietly = TRUE)
-
-# QTL Analysis
-library(qtl, quietly = TRUE)
-
-# Source util functions
-# source("plots-util.R")
-# source("transformations.R")
-
-# Load MPI libraries
-library(Rmpi)
-library(doMPI)
+# library(Amelia, quietly = TRUE)
+# library(ggplot2, quietly = TRUE)
+# library(gplots)
+# library(grid, quietly = TRUE)
+# library(gridExtra, quietly = TRUE)
+# library(latex2exp, quietly = TRUE)
+# library(MASS, quietly = TRUE)
+# library(plyr, quietly = TRUE)
+# library(psych, quietly = TRUE)
+# library(R.devices, quietly = TRUE)
+# library(tictoc, quietly = TRUE)
+# library(tidyverse, quietly = TRUE)
+# library(VIM, quietly = TRUE)
+# 
+# # Parallel Libraries
+# library(foreach, quietly = TRUE)
+# library(doParallel, quietly = TRUE)
+# #library(snow, quietly = TRUE)
+# 
+# # PCA Libraries
+# library(FactoMineR, quietly = TRUE)
+# library(factoextra, quietly = TRUE)
+# 
+# # QTL Analysis
+# library(qtl, quietly = TRUE)
+# 
+# # Source util functions
+# # source("plots-util.R")
+# # source("transformations.R")
+# 
+# # Load MPI libraries
+# library(Rmpi)
+# library(doMPI)
 
 main_mpi <- function(){
 # Resources
