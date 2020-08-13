@@ -35,12 +35,14 @@ example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
                                       transf = "",
                                       transf_val = NA,
                                       stringsAsFactors = FALSE)
-assess_normality_postprocessing(example_data, excluded_columns, example_data_normalised, out_prefix = here::here("metapipe"))
+assess_normality_postprocessing(example_data, excluded_columns, 
+                                example_data_normalised, 
+                                out_prefix = here::here("metapipe"))
 
 # Create and store random genetic map [for testing only]
 genetic_map <- random_map(population = population, seed = seed)
 write.csv(genetic_map, here::here("metapipe_genetic_map.csv"), row.names = FALSE)
-print(list.files(here::here()))
+
 # Load cross file with genetic map and raw data for normal features
 x <- qtl::read.cross(format = "csvs", 
                      dir = here::here(),

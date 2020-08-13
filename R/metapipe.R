@@ -428,12 +428,14 @@ random_map <- function(genotypes = c("A", "H", "B"), lg = 1:10, markers = 10, po
 #'                                       transf = "",
 #'                                       transf_val = NA,
 #'                                       stringsAsFactors = FALSE)
-#' assess_normality_postprocessing(example_data, excluded_columns, example_data_normalised, out_prefix = here::here("metapipe"))
+#' assess_normality_postprocessing(example_data, excluded_columns, 
+#'                                 example_data_normalised, 
+#'                                 out_prefix = here::here("metapipe"))
 #' 
 #' # Create and store random genetic map [for testing only]
 #' genetic_map <- random_map(population = population, seed = seed)
 #' write.csv(genetic_map, here::here("metapipe_genetic_map.csv"), row.names = FALSE)
-#' print(list.files(here::here()))
+#' 
 #' # Load cross file with genetic map and raw data for normal features
 #' x <- qtl::read.cross(format = "csvs", 
 #'                      dir = here::here(),
@@ -462,7 +464,7 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
   x_scone <- foreach::foreach(i = feature_indices,
                      .combine = cbind) %dopar% {
                        # Run single scan
-                       scone <- qtl::scanone(x_data, pheno.col = i, ...) #model = "normal", method = "hk")
+                       scone <- qtl::scanone(x_data, pheno.col = i, ...)
                        if(i == 2) {
                          record <- data.frame(
                            chr = scone$chr,
@@ -513,12 +515,14 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
 #'                                       transf = "",
 #'                                       transf_val = NA,
 #'                                       stringsAsFactors = FALSE)
-#' assess_normality_postprocessing(example_data, excluded_columns, example_data_normalised, out_prefix = here::here("metapipe"))
+#' assess_normality_postprocessing(example_data, excluded_columns, 
+#'                                 example_data_normalised, 
+#'                                 out_prefix = here::here("metapipe"))
 #' 
 #' # Create and store random genetic map [for testing only]
 #' genetic_map <- random_map(population = population, seed = seed)
 #' write.csv(genetic_map, here::here("metapipe_genetic_map.csv"), row.names = FALSE)
-#' print(list.files(here::here()))
+#' 
 #' # Load cross file with genetic map and raw data for normal features
 #' x <- qtl::read.cross(format = "csvs", 
 #'                      dir = here::here(),
@@ -527,7 +531,7 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
 #' set.seed(seed)
 #' x <- qtl::jittermap(x)
 #' x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
-#' x_qtl_perm <- qtl_perm_test(x, n_perm = 5, model = "normal", method="hk")
+#' x_qtl_perm <- MetaPipe::qtl_perm_test(x, n_perm = 5, model = "normal", method="hk")
 #' 
 #' @seealso \code{\link{assess_normality}} and \code{\link{qtl_scone}}
 qtl_perm_test <- function(x_data, 
