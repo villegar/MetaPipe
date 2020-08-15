@@ -354,6 +354,21 @@ test_that("qtl mapping permutation test with scanone works", {
     expect_false(file.exists(f))
   }
   
+  x_qtl_perm_alt <- qtl_perm_test(x_data = x, 
+                                  n_perm = 5, 
+                                  raw_data_normalised = example_data_normalised, 
+                                  model = "normal", 
+                                  method = "hk")
+  expect_equal(c(9, 20), dim(x_qtl_perm_alt))
+  
+  for (f in filenames) {
+    expect_true(file.exists(f))
+    expect_false(dir.exists(f))
+    expect_gt(file.size(f), 0)
+    file.remove(f)
+    expect_false(file.exists(f))
+  }
+  
   # Delete temporary files
   filenames <- c("metapipe_normalisation_stats.csv", 
                  "metapipe_raw_data_non_par.csv", 
