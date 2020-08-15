@@ -602,14 +602,14 @@ qtl_perm_test <- function(x_data,
                        )
                        
                        # Run single scan
-                       x_scone <-  qtl::scanone(x_data, pheno.col = i, ...)
+                       x_scone <- qtl::scanone(x_data, pheno.col = i, ...)
                        sum_x_scone <- summary(x_scone, threshold = lod_threshold)
                        lod_cnt <- nrow(sum_x_scone)
                        if(!is.null(lod_cnt) && lod_cnt > 0) {
-                         for(k in 1:lod_cnt){
+                         for(k in 1:lod_cnt) {
                            if(k > 1) {
                              nrecord <- record[1, ] # Create copy of record object
-                           } else{
+                           } else {
                              nrecord <- record # Copy record structured and data
                            }
                            
@@ -679,7 +679,7 @@ qtl_perm_test <- function(x_data,
                                     lty = c("solid", "dashed"), 
                                     lwd = 2
                                    )
-                             },
+                           },
                            paste0(plots_dir, "/LOD-", features[i]),
                            width = 18
                          )
@@ -687,13 +687,13 @@ qtl_perm_test <- function(x_data,
                          record[, ]$p5_lod_thr <- p5
                          record[, ]$p10_lod_thr <- p10
                          
-                         p5_idx <- record$lod_peak >= p5
-                         p10_idx <- record$lod_peak >= p10
-                         if(!is.na(p5_idx) && any(p5_idx)) { 
-                           record[p5_idx, ]$p5_qtl <- TRUE 
+                         p5_idx <- which(record$lod_peak >= p5)
+                         p10_idx <- which(record$lod_peak >= p10)
+                         if (length(p5_idx) > 0) {
+                           record[p5_idx, ]$p5_qtl <- TRUE
                          }
-                         if(!is.na(p10_idx) && any(p10_idx)) { 
-                           record[p10_idx, ]$p10_qtl <- TRUE 
+                         if (length(p10_idx) > 0) {
+                           record[p10_idx, ]$p10_qtl <- TRUE
                          }
                          
                          # For paremetric QTL mapping only
@@ -709,7 +709,7 @@ qtl_perm_test <- function(x_data,
                              fit_qtl <- qtl::fitqtl(x_data, pheno.col = i, qtl_s, formula = f , get.ests = TRUE, ...) # model = "normal", method="hk"
                              sum_fit_qtl <- summary(fit_qtl)
                              
-                             if(length(sum_fit_qtl)){
+                             if(length(sum_fit_qtl) > 0){
                                p.var <- as.numeric(sum_fit_qtl[[1]][1, "%var"])
                                pvalue.f <- as.numeric(sum_fit_qtl[[1]][, "Pvalue(F)"])[1]
                                estimates <- as.numeric(sum_fit_qtl$ests[, "est"])[-1]
