@@ -22,21 +22,21 @@ args = commandArgs(trailingOnly=TRUE) # Command line arguments
 # library(VIM)
 
 # Parallel Libraries
-library(foreach)
-library(doParallel)
-#library(Rmpi)
-#library(snow)
-
-# PCA Libraries
-library(FactoMineR)
-library(factoextra)
-
-# QTL Analysis
-library(qtl)
-
-# Source util functions
-# source("plots-util.R")
-# source("transformations.R")
+# library(foreach)
+# library(doParallel)
+# #library(Rmpi)
+# #library(snow)
+# 
+# # PCA Libraries
+# library(FactoMineR)
+# library(factoextra)
+# 
+# # QTL Analysis
+# library(qtl)
+# 
+# # Source util functions
+# # source("plots-util.R")
+# # source("transformations.R")
 
 main <- function(){
 
