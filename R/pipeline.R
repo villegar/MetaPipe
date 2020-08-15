@@ -391,141 +391,144 @@ num_indv_phend_np <- summary(x_non_par)[[2]]
 print("Starting with Non-Parametric QTL Analysis")
 
 # Obtain LOD scores for all features and markers
-cl <- parallel::makeCluster(ceiling(CPUS*1), outfile=paste0('./info_parallel_QTL.log'))
-doParallel::registerDoParallel(cl)
-x_non_par_scone <- foreach(i=2:ncol(x_non_par$pheno),
-                     .combine = cbind) %dopar% {
-                       
-                       # Run single scan
-                       non.parametric.scanone <- qtl::scanone(x_non_par, pheno.col = i,  model = "np")
-                       if(i == 2){
-                         record <- data.frame(
-                           chr = non.parametric.scanone$chr,
-                           pos = non.parametric.scanone$pos,
-                           lod = non.parametric.scanone$lod,
-                           row.names = rownames(non.parametric.scanone)
-                         )
-                         colnames(record)[3] <- features_np[i]
-                       }
-                       else{
-                         record <- data.frame(data = non.parametric.scanone$lod)
-                         colnames(record) <- features_np[i]
-                       }
-                       record
-                     }
-parallel::stopCluster(cl) # Stop cluster
+x_non_par_scone <- MetaPipe::qtl_scone(x_norm, CPUS, model = "np")
+# cl <- parallel::makeCluster(ceiling(CPUS*1), outfile=paste0('./info_parallel_QTL.log'))
+# doParallel::registerDoParallel(cl)
+# x_non_par_scone <- foreach(i=2:ncol(x_non_par$pheno),
+#                      .combine = cbind) %dopar% {
+#                        
+#                        # Run single scan
+#                        non.parametric.scanone <- qtl::scanone(x_non_par, pheno.col = i,  model = "np")
+#                        if(i == 2){
+#                          record <- data.frame(
+#                            chr = non.parametric.scanone$chr,
+#                            pos = non.parametric.scanone$pos,
+#                            lod = non.parametric.scanone$lod,
+#                            row.names = rownames(non.parametric.scanone)
+#                          )
+#                          colnames(record)[3] <- features_np[i]
+#                        }
+#                        else{
+#                          record <- data.frame(data = non.parametric.scanone$lod)
+#                          colnames(record) <- features_np[i]
+#                        }
+#                        record
+#                      }
+# parallel::stopCluster(cl) # Stop cluster
 write.csv(x_non_par_scone, file = paste0(OUT_PREFIX,"_non_par_scanone.csv"))
 
-cl <- parallel::makeCluster(ceiling(CPUS*0.5), outfile=paste0('./info_parallel_QTL.log'))
-doParallel::registerDoParallel(cl)
-x_non_par_sum_map <- foreach(i=2:ncol(x_non_par$pheno),
-                             .combine = rbind) %dopar% {
-                               #transformation.info <- raw_data_transformed_non_par$feature == features_np[i]
-                               #transformation.info <- raw_data_transformed_non_par[transformation.info,c("transf", "transf_val")][1,]
-                               
-                               record <- data.frame(
-                                 ID = i - 1,
-                                 qtl.ID = NA,
-                                 trait = features_np[i],
-                                 ind = num_indv_phend_np,
-                                 lg = NA,
-                                 lod.peak = NA,
-                                 pos.peak = NA,
-                                 marker = NA,
-                                 pos.p95.bay.int = NA,
-                                 marker.p95.bay.int = NA,
-                                 #pvar = NA,
-                                 #est.add = NA,
-                                 #est.dom = NA,
-                                 p5.lod.thr = NA,
-                                 p10.lod.thr = NA,
-                                 #p.val = NA,
-                                 #transf = transformation.info$transf,
-                                 #transf.val = transformation.info$transf_val,
-                                 method = "non.parametric-scanone",
-                                 p5.qtl = FALSE,
-                                 p10.qtl = FALSE
-                               )
-                               
-                               # Run single scan
-                               non.parametric.scanone <- qtl::scanone(x_non_par, pheno.col = i,  model = "np")
-                               summary.non.parametric.scanone <- summary(non.parametric.scanone, threshold = lod_threshold)
-                               lod.count <- nrow(summary.non.parametric.scanone)
-                               if(!is.null(lod.count) && lod.count > 0) {
-                                 for(k in 1:lod.count){
-                                   if(k > 1){
-                                     #new.record <- record[0,] # Create an empty record object
-                                     #new.record[1,] <- NA
-                                     new.record <- record[1,] # Create copy of record object
-                                     #new.record$ID <- NA # Drop the feature ID
-                                   }else{
-                                     new.record <- record # Copy record structured and data
-                                   }
-                                   #lod.count <- sum(non.parametric.scanone$lod >= lod_threshold)
-                                   
-                                   #peak.lod <- non.parametric.scanone$lod == max(non.parametric.scanone$lod)
-                                   # Extract Peak QTL information
-                                   new.record$lg <- summary.non.parametric.scanone[k,"chr"]       
-                                   new.record$lod.peak <- summary.non.parametric.scanone[k,"lod"]
-                                   new.record$pos.peak <- summary.non.parametric.scanone[k,"pos"]
-                                   marker <- rownames(summary.non.parametric.scanone)[k]
-                                   # Verify if current QTL has a pseudomarker
-                                   marker.info <- MetaPipe::transform_pseudo_marker(x_non_par,marker,new.record$lg,new.record$pos.peak)
-                                   new.record$marker <- marker.info[1]
-                                   new.record$pos.peak <- as.numeric(marker.info[2])
-                                   
-                                   if(!is.na(new.record$lg)){
-                                     new.record$qtl.ID <- with(new.record, sprintf("%s:%s@%f",features_np[i],lg,pos.peak))
-                                   }
-                                   
-                                   p95.bayesian <- qtl::bayesint(non.parametric.scanone, chr = new.record$lg, expandtomarkers = TRUE, prob = 0.95)
-                                   p95.bayesian <- unique(p95.bayesian)
-                                   #p95.bayesian <- summary(non.parametric.scanone,  perms=non.parametric.scanone.per, alpha=0.5, pvalues=TRUE)
-                                   low.bound <- 1#p95.bayesian$pos == min(p95.bayesian$pos)
-                                   upper.bound <- p95.bayesian$pos == max(p95.bayesian$pos)
-                                   
-                                   p95.bayesian$marker <- NA # Add new column for markers, prevent duplicated row names
-                                   # Verify if the Bayesian interval QTLs have pseudomarkers
-                                   for(l in 1:nrow(p95.bayesian)){
-                                     marker <- rownames(p95.bayesian)[l]
-                                     marker.info <- MetaPipe::transform_pseudo_marker(x_non_par,marker,p95.bayesian[l,"chr"],p95.bayesian[l,"pos"])
-                                     p95.bayesian[l,"marker"] <- marker.info[1]
-                                     p95.bayesian[l,"pos"] <- as.numeric(marker.info[2])
-                                   }
-                                   new.record$pos.p95.bay.int <- paste0(p95.bayesian[low.bound,"pos"],"-",
-                                                                        p95.bayesian[upper.bound,"pos"])
-                                   new.record$marker.p95.bay.int <- paste0(p95.bayesian[low.bound,"marker"],"-",
-                                                                           p95.bayesian[upper.bound,"marker"])
-                                   #new.record$marker.p95.bay.int <- paste0(rownames(p95.bayesian)[low.bound],"-",
-                                   #                                         rownames(p95.bayesian)[upper.bound])
-                                   if(k > 1){
-                                     record <- rbind(record,new.record)
-                                   }else{
-                                     record <- new.record
-                                   }
-                                 }
-                                 
-                                 non.parametric.scanone.per <- qtl::scanone(x_non_par, pheno.col = i, model = "np", n.perm = N_PERM)
-                                 p5 <- summary(non.parametric.scanone.per)[[1]]  #  5% percent
-                                 p10 <- summary(non.parametric.scanone.per)[[2]] # 10% percent
-                                 
-                                 
-                                 lod.plot <- MetaPipe::save_plot(plot(non.parametric.scanone, ylab="LOD Score") + 
-                                                        abline(h=p5, lwd=2, lty="solid", col="red") +
-                                                        abline(h=p10, lwd=2, lty="solid", col="red"),
-                                                      paste0(PLOTS_DIR,"/LOD-NP-", features_np[i]), width = 18)
-                                 
-                                 record[,]$p5.lod.thr <- p5
-                                 record[,]$p10.lod.thr <- p10
-                                 
-                                 p5.index <- record$lod.peak >= p5
-                                 p10.index <- record$lod.peak >= p10
-                                 if(!is.na(p5.index) && any(p5.index)){ record[p5.index,]$p5.qtl <- TRUE }
-                                 if(!is.na(p10.index)&& any(p10.index)){ record[p10.index,]$p10.qtl <- TRUE }
-                               }
-                               record
-                             }
-parallel::stopCluster(cl) # Stop cluster
+
+x_norm_sum_map <- MetaPipe::qtl_perm_test(x_norm, CPUS, parametric = FALSE, model = "np")
+# cl <- parallel::makeCluster(ceiling(CPUS*0.5), outfile=paste0('./info_parallel_QTL.log'))
+# doParallel::registerDoParallel(cl)
+# x_non_par_sum_map <- foreach(i=2:ncol(x_non_par$pheno),
+#                              .combine = rbind) %dopar% {
+#                                #transformation.info <- raw_data_transformed_non_par$feature == features_np[i]
+#                                #transformation.info <- raw_data_transformed_non_par[transformation.info,c("transf", "transf_val")][1,]
+#                                
+#                                record <- data.frame(
+#                                  ID = i - 1,
+#                                  qtl.ID = NA,
+#                                  trait = features_np[i],
+#                                  ind = num_indv_phend_np,
+#                                  lg = NA,
+#                                  lod.peak = NA,
+#                                  pos.peak = NA,
+#                                  marker = NA,
+#                                  pos.p95.bay.int = NA,
+#                                  marker.p95.bay.int = NA,
+#                                  #pvar = NA,
+#                                  #est.add = NA,
+#                                  #est.dom = NA,
+#                                  p5.lod.thr = NA,
+#                                  p10.lod.thr = NA,
+#                                  #p.val = NA,
+#                                  #transf = transformation.info$transf,
+#                                  #transf.val = transformation.info$transf_val,
+#                                  method = "non.parametric-scanone",
+#                                  p5.qtl = FALSE,
+#                                  p10.qtl = FALSE
+#                                )
+#                                
+#                                # Run single scan
+#                                non.parametric.scanone <- qtl::scanone(x_non_par, pheno.col = i,  model = "np")
+#                                summary.non.parametric.scanone <- summary(non.parametric.scanone, threshold = lod_threshold)
+#                                lod.count <- nrow(summary.non.parametric.scanone)
+#                                if(!is.null(lod.count) && lod.count > 0) {
+#                                  for(k in 1:lod.count){
+#                                    if(k > 1){
+#                                      #new.record <- record[0,] # Create an empty record object
+#                                      #new.record[1,] <- NA
+#                                      new.record <- record[1,] # Create copy of record object
+#                                      #new.record$ID <- NA # Drop the feature ID
+#                                    }else{
+#                                      new.record <- record # Copy record structured and data
+#                                    }
+#                                    #lod.count <- sum(non.parametric.scanone$lod >= lod_threshold)
+#                                    
+#                                    #peak.lod <- non.parametric.scanone$lod == max(non.parametric.scanone$lod)
+#                                    # Extract Peak QTL information
+#                                    new.record$lg <- summary.non.parametric.scanone[k,"chr"]       
+#                                    new.record$lod.peak <- summary.non.parametric.scanone[k,"lod"]
+#                                    new.record$pos.peak <- summary.non.parametric.scanone[k,"pos"]
+#                                    marker <- rownames(summary.non.parametric.scanone)[k]
+#                                    # Verify if current QTL has a pseudomarker
+#                                    marker.info <- MetaPipe::transform_pseudo_marker(x_non_par,marker,new.record$lg,new.record$pos.peak)
+#                                    new.record$marker <- marker.info[1]
+#                                    new.record$pos.peak <- as.numeric(marker.info[2])
+#                                    
+#                                    if(!is.na(new.record$lg)){
+#                                      new.record$qtl.ID <- with(new.record, sprintf("%s:%s@%f",features_np[i],lg,pos.peak))
+#                                    }
+#                                    
+#                                    p95.bayesian <- qtl::bayesint(non.parametric.scanone, chr = new.record$lg, expandtomarkers = TRUE, prob = 0.95)
+#                                    p95.bayesian <- unique(p95.bayesian)
+#                                    #p95.bayesian <- summary(non.parametric.scanone,  perms=non.parametric.scanone.per, alpha=0.5, pvalues=TRUE)
+#                                    low.bound <- 1#p95.bayesian$pos == min(p95.bayesian$pos)
+#                                    upper.bound <- p95.bayesian$pos == max(p95.bayesian$pos)
+#                                    
+#                                    p95.bayesian$marker <- NA # Add new column for markers, prevent duplicated row names
+#                                    # Verify if the Bayesian interval QTLs have pseudomarkers
+#                                    for(l in 1:nrow(p95.bayesian)){
+#                                      marker <- rownames(p95.bayesian)[l]
+#                                      marker.info <- MetaPipe::transform_pseudo_marker(x_non_par,marker,p95.bayesian[l,"chr"],p95.bayesian[l,"pos"])
+#                                      p95.bayesian[l,"marker"] <- marker.info[1]
+#                                      p95.bayesian[l,"pos"] <- as.numeric(marker.info[2])
+#                                    }
+#                                    new.record$pos.p95.bay.int <- paste0(p95.bayesian[low.bound,"pos"],"-",
+#                                                                         p95.bayesian[upper.bound,"pos"])
+#                                    new.record$marker.p95.bay.int <- paste0(p95.bayesian[low.bound,"marker"],"-",
+#                                                                            p95.bayesian[upper.bound,"marker"])
+#                                    #new.record$marker.p95.bay.int <- paste0(rownames(p95.bayesian)[low.bound],"-",
+#                                    #                                         rownames(p95.bayesian)[upper.bound])
+#                                    if(k > 1){
+#                                      record <- rbind(record,new.record)
+#                                    }else{
+#                                      record <- new.record
+#                                    }
+#                                  }
+#                                  
+#                                  non.parametric.scanone.per <- qtl::scanone(x_non_par, pheno.col = i, model = "np", n.perm = N_PERM)
+#                                  p5 <- summary(non.parametric.scanone.per)[[1]]  #  5% percent
+#                                  p10 <- summary(non.parametric.scanone.per)[[2]] # 10% percent
+#                                  
+#                                  
+#                                  lod.plot <- MetaPipe::save_plot(plot(non.parametric.scanone, ylab="LOD Score") + 
+#                                                         abline(h=p5, lwd=2, lty="solid", col="red") +
+#                                                         abline(h=p10, lwd=2, lty="solid", col="red"),
+#                                                       paste0(PLOTS_DIR,"/LOD-NP-", features_np[i]), width = 18)
+#                                  
+#                                  record[,]$p5.lod.thr <- p5
+#                                  record[,]$p10.lod.thr <- p10
+#                                  
+#                                  p5.index <- record$lod.peak >= p5
+#                                  p10.index <- record$lod.peak >= p10
+#                                  if(!is.na(p5.index) && any(p5.index)){ record[p5.index,]$p5.qtl <- TRUE }
+#                                  if(!is.na(p10.index)&& any(p10.index)){ record[p10.index,]$p10.qtl <- TRUE }
+#                                }
+#                                record
+#                              }
+# parallel::stopCluster(cl) # Stop cluster
 
 write.csv(x_non_par_sum_map, file = paste0(OUT_PREFIX, "_non_par_summ_map.csv"), row.names=FALSE, na="")
 
