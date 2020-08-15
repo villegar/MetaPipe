@@ -30,5 +30,5 @@ hex_logo(
 Create Hexagonal logo for MetaPipe
 }
 \examples{
-hex_logo(output = "inst/images/metapipe.png")
+hex_logo()
 }
