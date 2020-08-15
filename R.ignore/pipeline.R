@@ -417,7 +417,6 @@ x_non_par_scone <- MetaPipe::qtl_scone(x_norm, CPUS, model = "np")
 # parallel::stopCluster(cl) # Stop cluster
 write.csv(x_non_par_scone, file = paste0(OUT_PREFIX,"_non_par_scanone.csv"))
 
-
 x_norm_sum_map <- MetaPipe::qtl_perm_test(x_norm, CPUS, parametric = FALSE, model = "np")
 # cl <- parallel::makeCluster(ceiling(CPUS*0.5), outfile=paste0('./info_parallel_QTL.log'))
 # doParallel::registerDoParallel(cl)
