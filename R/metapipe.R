@@ -118,7 +118,7 @@ assess_normality <- function(raw_data,
                              plots_dir = getwd(), 
                              transf_vals = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10)) {
   # Start parallel backend
-  cl <- parallel::makeCluster(cpus)
+  cl <- parallel::makeCluster(cpus, setup_strategy = "sequential")
   doParallel::registerDoParallel(cl)
   
   # Load binary operator for backend
