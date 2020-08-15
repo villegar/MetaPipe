@@ -73,9 +73,7 @@ x <- qtl::read.cross(format = "csvs",
 set.seed(seed)
 x <- qtl::jittermap(x)
 x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
-\dontrun{
 x_qtl_perm <- MetaPipe::qtl_perm_test(x, n_perm = 5, model = "normal", method = "hk")
-}
 
 }
 \seealso{
