@@ -192,7 +192,7 @@ generate_hist <- function(data, feature, prefix, xlab){
 #' @export
 #'
 #' @examples
-#' hex_logo(output = "inst/images/metapipe.png")
+#' hex_logo()
 hex_logo <- function(subplot = system.file("images/lab-2.png", package = "MetaPipe"),
                      dpi = 800,
                      h_color = "#000000",
