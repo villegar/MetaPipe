@@ -217,7 +217,7 @@ print("Starting with QTL Analysis")
 print("Starting with Normal QTL Analysis")
 x_norm_scone <- MetaPipe::qtl_scone(x_norm, CPUS)
 write.csv(x_norm_scone, file = paste0(OUT_PREFIX, "_normal_scanone.csv"))
-
+x_norm_sum_map <- MetaPipe::qtl_perm_test(x_norm, CPUS, parametric = TRUE, model = "normal", method = "hk")
 # cl <- parallel::makeCluster(ceiling(CPUS*0.5), outfile=paste0('./info_parallel_QTL.log'))
 # doParallel::registerDoParallel(cl)
 # x_norm_sum_map <- foreach(i=2:ncol(x_norm$pheno),
