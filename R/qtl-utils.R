@@ -87,12 +87,12 @@ effect_plots <- function(x_data_sim, qtl_data, cpus = 1) {
     if(qtl_data[i, ]$method == "normal-scanone") {
       if(qtl_data[i, ]$transf == "log") {
         ylab <-
-          paste0("$\\log_{", qtl_data[i, ]$transf.val, "}(", features[i], ")$")
+          paste0("$\\log_{", qtl_data[i, ]$transf_val, "}(", features[i], ")$")
       } else if (qtl_data[i, ]$transf == "root") {
         ylab <-
-          paste0("$\\sqrt[", qtl_data[i, ]$transf.val, "]{", features[i], "}$")
+          paste0("$\\sqrt[", qtl_data[i, ]$transf_val, "]{", features[i], "}$")
       } else if (qtl_data[i, ]$transf == "power") {
-        ylab <- paste0("$(", features[i], ")^", qtl_data[i, ]$transf.val, "$")
+        ylab <- paste0("$(", features[i], ")^", qtl_data[i, ]$transf_val, "$")
       } else {
         ylab <- features[i]
       }
