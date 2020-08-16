@@ -69,7 +69,7 @@ transform_pseudo_marker <- function(x_data, marker, chr, pos) {
   return(c(markerp, as.character(posp)))
 }
 
-effect_plots <- function(qtl_data, cpus = 1) {
+effect_plots <- function(x_data_sim, qtl_data, cpus = 1) {
   # Start parallel backend
   cl <- parallel::makeCluster(cpus, setup_strategy = "sequential")
   doParallel::registerDoParallel(cl)
@@ -101,7 +101,7 @@ effect_plots <- function(qtl_data, cpus = 1) {
       }
       MetaPipe::save_plot(
         qtl::effectplot(
-          x_norm_sim,
+          x_data_sim,
           pheno.col = features[i],
           mname1 = markers[i],
           main = NULL,
@@ -113,7 +113,7 @@ effect_plots <- function(qtl_data, cpus = 1) {
       ylab <- features[i]
       MetaPipe::save_plot(
         qtl::effectplot(
-          x_non_par_sim,
+          x_data_sim,
           pheno.col = as.character(features[i]),
           mname1 = markers[i],
           main = NULL,
