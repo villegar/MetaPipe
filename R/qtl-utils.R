@@ -77,9 +77,6 @@ effect_plots <- function(x_data_sim, qtl_data, cpus = 1) {
   # Load binary operator for backend
   `%dopar%` <- foreach::`%dopar%`
   
-  # Compute feature indices, accounting for the offset of ID and properties
-  feature_indices <- 2:ncol(x_data$pheno)
-  
   # Extract feature names
   features <- as.character(qtl_data$trait)
   
