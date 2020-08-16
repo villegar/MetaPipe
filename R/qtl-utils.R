@@ -69,7 +69,7 @@ transform_pseudo_marker <- function(x_data, marker, chr, pos) {
   return(c(markerp, as.character(posp)))
 }
 
-effect_plots <- function(x_data_sim, qtl_data, cpus = 1) {
+effect_plots <- function(x_data_sim, qtl_data, cpus = 1, plots_dir = getwd()) {
   # Start parallel backend
   cl <- parallel::makeCluster(cpus, setup_strategy = "sequential")
   doParallel::registerDoParallel(cl)
@@ -104,7 +104,7 @@ effect_plots <- function(x_data_sim, qtl_data, cpus = 1) {
           main = NULL,
           ylab = latex2exp::TeX(ylab)
         ),
-        paste0(PLOTS_DIR, "/EFF-", features[i], "-", markers[i])
+        paste0(plots_dir, "/EFF-", features[i], "-", markers[i])
       )
     } else {
       ylab <- features[i]
@@ -116,7 +116,7 @@ effect_plots <- function(x_data_sim, qtl_data, cpus = 1) {
           main = NULL,
           ylab = latex2exp::TeX(ylab)
         ),
-        paste0(PLOTS_DIR, "/EFF-NP-", features[i], "-", markers[i])
+        paste0(plots_dir, "/EFF-NP-", features[i], "-", markers[i])
       )
     }
   }
