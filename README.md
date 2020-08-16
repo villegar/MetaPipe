@@ -18,9 +18,11 @@ metabolomic datasets <!-- badges: start -->
 
 <!-- badges: end -->
 
-<!-- The goal of MetaPipe is to ... -->
+The goal of MetaPipe is to provide an easy, yet powerful tool capable of
+conduction QTL mapping analyses on metabolomics
+data.
 
-<!-- ## Installation -->
+## Installation
 
 <!-- You can install the released version of MetaPipe from [CRAN](https://CRAN.R-project.org) with: -->
 
@@ -32,13 +34,13 @@ metabolomic datasets <!-- badges: start -->
 
 <!-- And the development version from [GitHub](https://github.com/) with: -->
 
-<!-- ``` r -->
+You can install the development version from
+[GitHub](https://github.com/) with:
 
-<!-- # install.packages("devtools") -->
-
-<!-- devtools::install_github("villegar/MetaPipe") -->
-
-<!-- ``` -->
+``` r
+# install.packages("devtools")
+devtools::install_github("villegar/MetaPipe")
+```
 
 <!-- ## Example -->
 

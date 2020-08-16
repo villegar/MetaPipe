@@ -28,9 +28,9 @@ MetaPipe: A High-Performance Computing pipeline for QTL mapping of large metabol
 
 <!-- badges: end -->
 
-<!-- The goal of MetaPipe is to ... -->
+The goal of MetaPipe is to provide an easy, yet powerful tool capable of conduction QTL mapping analyses on metabolomics data.
 
-<!-- ## Installation -->
+## Installation
 
 <!-- You can install the released version of MetaPipe from [CRAN](https://CRAN.R-project.org) with: -->
 
@@ -40,10 +40,11 @@ MetaPipe: A High-Performance Computing pipeline for QTL mapping of large metabol
 
 <!-- And the development version from [GitHub](https://github.com/) with: -->
 
-<!-- ``` r -->
-<!-- # install.packages("devtools") -->
-<!-- devtools::install_github("villegar/MetaPipe") -->
-<!-- ``` -->
+You can install the development version from [GitHub](https://github.com/) with:
+``` r
+# install.packages("devtools")
+devtools::install_github("villegar/MetaPipe")
+```
 <!-- ## Example -->
 
 <!-- This is a basic example which shows you how to solve a common problem: -->
