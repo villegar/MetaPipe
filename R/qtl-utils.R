@@ -81,27 +81,30 @@ effect_plots <- function(qtl_data, cpus = 1) {
   feature_indices <- 2:ncol(x_data$pheno)
   
   # Extract feature names
-  features <- colnames(x_data$pheno)
+  features <- as.character(qtl_data$trait)
+  
+  # Extract markers
+  markers <- as.character(qtl_data$marker)
 
   plots <- foreach(i = 1:nrow(qtl_data)) %dopar% {
     if(qtl_data[i,]$method == "normal-scanone"){
       if(qtl_data[i,]$transf == "log"){
-        ylab <- paste0("$\\log_{",qtl_data[i,]$transf.val,"}(",qtl_data_features[i],")$")
+        ylab <- paste0("$\\log_{",qtl_data[i,]$transf.val,"}(",features[i],")$")
       } else if(qtl_data[i,]$transf == "root"){
-        ylab <- paste0("$\\sqrt[",qtl_data[i,]$transf.val,"]{",qtl_data_features[i],"}$")
+        ylab <- paste0("$\\sqrt[",qtl_data[i,]$transf.val,"]{",features[i],"}$")
       } else if(qtl_data[i,]$transf == "power"){
-        ylab <- paste0("$(",qtl_data_features[i],")^",qtl_data[i,]$transf.val,"$")
+        ylab <- paste0("$(",features[i],")^",qtl_data[i,]$transf.val,"$")
       } else {
-        ylab <- qtl_data_features[i]
+        ylab <- features[i]
       }
-      effect_plots <- MetaPipe::save_plot(qtl::effectplot(x_norm_sim, pheno.col = qtl_data_features[i], 
-                                                          mname1 = qtl_data_markers[i], main = NULL, ylab = latex2exp::TeX(ylab)),
-                                          paste0(PLOTS_DIR,"/EFF-",qtl_data_features[i],"-",qtl_data_markers[i]))
+      effect_plots <- MetaPipe::save_plot(qtl::effectplot(x_norm_sim, pheno.col = features[i], 
+                                                          mname1 = markers[i], main = NULL, ylab = latex2exp::TeX(ylab)),
+                                          paste0(PLOTS_DIR,"/EFF-",features[i],"-",markers[i]))
     } else {
-      ylab <- qtl_data_features[i]
-      effect_plots <- MetaPipe::save_plot(qtl::effectplot(x_non_par_sim, pheno.col = as.character(qtl_data_features[i]), 
-                                                          mname1 = qtl_data_markers[i], main = NULL, ylab = latex2exp::TeX(ylab)),
-                                          paste0(PLOTS_DIR,"/EFF-NP-",qtl_data_features[i],"-",qtl_data_markers[i]))
+      ylab <- features[i]
+      effect_plots <- MetaPipe::save_plot(qtl::effectplot(x_non_par_sim, pheno.col = as.character(features[i]), 
+                                                          mname1 = markers[i], main = NULL, ylab = latex2exp::TeX(ylab)),
+                                          paste0(PLOTS_DIR,"/EFF-NP-",features[i],"-",markers[i]))
     }
   }
   parallel::stopCluster(cl) # Stop cluster
