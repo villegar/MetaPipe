@@ -87,24 +87,40 @@ effect_plots <- function(qtl_data, cpus = 1) {
   markers <- as.character(qtl_data$marker)
 
   plots <- foreach(i = 1:nrow(qtl_data)) %dopar% {
-    if(qtl_data[i,]$method == "normal-scanone"){
-      if(qtl_data[i,]$transf == "log"){
-        ylab <- paste0("$\\log_{",qtl_data[i,]$transf.val,"}(",features[i],")$")
-      } else if(qtl_data[i,]$transf == "root"){
-        ylab <- paste0("$\\sqrt[",qtl_data[i,]$transf.val,"]{",features[i],"}$")
-      } else if(qtl_data[i,]$transf == "power"){
-        ylab <- paste0("$(",features[i],")^",qtl_data[i,]$transf.val,"$")
+    if(qtl_data[i, ]$method == "normal-scanone") {
+      if(qtl_data[i, ]$transf == "log") {
+        ylab <-
+          paste0("$\\log_{", qtl_data[i, ]$transf.val, "}(", features[i], ")$")
+      } else if (qtl_data[i, ]$transf == "root") {
+        ylab <-
+          paste0("$\\sqrt[", qtl_data[i, ]$transf.val, "]{", features[i], "}$")
+      } else if (qtl_data[i, ]$transf == "power") {
+        ylab <- paste0("$(", features[i], ")^", qtl_data[i, ]$transf.val, "$")
       } else {
         ylab <- features[i]
       }
-      effect_plots <- MetaPipe::save_plot(qtl::effectplot(x_norm_sim, pheno.col = features[i], 
-                                                          mname1 = markers[i], main = NULL, ylab = latex2exp::TeX(ylab)),
-                                          paste0(PLOTS_DIR,"/EFF-",features[i],"-",markers[i]))
+      MetaPipe::save_plot(
+        qtl::effectplot(
+          x_norm_sim,
+          pheno.col = features[i],
+          mname1 = markers[i],
+          main = NULL,
+          ylab = latex2exp::TeX(ylab)
+        ),
+        paste0(PLOTS_DIR, "/EFF-", features[i], "-", markers[i])
+      )
     } else {
       ylab <- features[i]
-      effect_plots <- MetaPipe::save_plot(qtl::effectplot(x_non_par_sim, pheno.col = as.character(features[i]), 
-                                                          mname1 = markers[i], main = NULL, ylab = latex2exp::TeX(ylab)),
-                                          paste0(PLOTS_DIR,"/EFF-NP-",features[i],"-",markers[i]))
+      MetaPipe::save_plot(
+        qtl::effectplot(
+          x_non_par_sim,
+          pheno.col = as.character(features[i]),
+          mname1 = markers[i],
+          main = NULL,
+          ylab = latex2exp::TeX(ylab)
+        ),
+        paste0(PLOTS_DIR, "/EFF-NP-", features[i], "-", markers[i])
+      )
     }
   }
   parallel::stopCluster(cl) # Stop cluster
