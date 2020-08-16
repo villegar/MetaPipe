@@ -83,7 +83,7 @@ effect_plots <- function(x_data_sim, qtl_data, cpus = 1, plots_dir = getwd()) {
   # Extract markers
   markers <- as.character(qtl_data$marker)
 
-  plots <- foreach(i = 1:nrow(qtl_data)) %dopar% {
+  plots <- foreach::foreach(i = 1:nrow(qtl_data)) %dopar% {
     if(qtl_data[i, ]$method == "normal-scanone") {
       if(qtl_data[i, ]$transf == "log") {
         ylab <-
