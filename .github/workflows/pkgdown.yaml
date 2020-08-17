@@ -32,7 +32,9 @@ jobs:
       
       - name: Install OpenMPI
         run: |
-          brew install open-mpi
+          export HOMEBREW_CC=$(which gcc)
+          export HOMEBREW_CXX=$(which g++)
+          brew reinstall openmpi --build-from-source
           
       - name: Install dependencies
         run: |
