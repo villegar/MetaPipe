@@ -105,6 +105,7 @@ where `raw_data_filename` is the filename containg the raw data, either absolute
 
 ```{r loading-raw-data}
 # Dummy data set
+set.seed(123)
 example_data <- data.frame(ID = c(1,2,3,4,5),
                            P1 = c("one", "two", "three", "four", "five"), 
                            F1 = rnorm(5), 
@@ -119,6 +120,9 @@ load_raw("example_data.csv", c(2))
 load_raw("example_data_dup.csv", c(2))
 ```
 
+### Replace missing data
+
+### Assess normality
 <!-- What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so: -->
 
 <!-- ```{r cars} -->

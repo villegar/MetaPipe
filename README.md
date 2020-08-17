@@ -209,6 +209,7 @@ e.g. `c(2, 3, ..., M)`.
 
 ``` r
 # Dummy data set
+set.seed(123)
 example_data <- data.frame(ID = c(1,2,3,4,5),
                            P1 = c("one", "two", "three", "four", "five"), 
                            F1 = rnorm(5), 
@@ -220,20 +221,24 @@ write.csv(example_data[c(1:5, 1, 2), ], "example_data_dup.csv", row.names = FALS
 
 # Load the data
 load_raw("example_data.csv", c(2))
-#>   ID    P1         F1         F2
-#> 1  1   one  0.7385226 -0.5075755
-#> 2  2   two  1.9370058  0.9575687
-#> 3  3 three -0.6704865 -0.3290465
-#> 4  4  four -0.4076667  1.2337800
-#> 5  5  five -1.0915699  0.5501291
+#>   ID    P1          F1         F2
+#> 1  1   one -0.56047565  1.7150650
+#> 2  2   two -0.23017749  0.4609162
+#> 3  3 three  1.55870831 -1.2650612
+#> 4  4  four  0.07050839 -0.6868529
+#> 5  5  five  0.12928774 -0.4456620
 load_raw("example_data_dup.csv", c(2))
-#>   ID    P1         F1         F2
-#> 1  1   one  0.7385226 -0.5075755
-#> 2  2   two  1.9370058  0.9575687
-#> 3  3 three -0.6704865 -0.3290465
-#> 4  4  four -0.4076667  1.2337800
-#> 5  5  five -1.0915699  0.5501291
+#>   ID    P1          F1         F2
+#> 1  1   one -0.56047565  1.7150650
+#> 2  2   two -0.23017749  0.4609162
+#> 3  3 three  1.55870831 -1.2650612
+#> 4  4  four  0.07050839 -0.6868529
+#> 5  5  five  0.12928774 -0.4456620
 ```
+
+### Replace missing data
+
+### Assess normality
 
 <!-- What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so: -->
 
