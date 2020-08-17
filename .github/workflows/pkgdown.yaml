@@ -32,7 +32,7 @@ jobs:
       
       - name: Install OpenMPI
         run: |
-          brew link --overwrite gcc
+          brew install gcc
           brew install openmpi
           
       - name: Install dependencies
