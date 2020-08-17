@@ -32,6 +32,7 @@ jobs:
       
       - name: Install OpenMPI
         run: |
+          rm -rf /usr/local/bin/gfortran
           brew install --force gcc
           brew install openmpi
           
