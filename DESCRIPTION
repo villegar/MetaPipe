@@ -45,11 +45,13 @@ Imports:
     tidyverse, 
     VIM
 Suggests:
-    doMPI, 
+    doMPI,
     hexSticker,
     knitr,
     kableExtra,
-    Rmpi, 
+    rmarkdown,
+    Rmpi,
     testthat
 Depends: 
     R (>= 3.6)
+VignetteBuilder: knitr
