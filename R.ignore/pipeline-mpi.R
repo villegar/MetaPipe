@@ -278,17 +278,17 @@ tic("Normal QTL analysis: Summary mapping")
 
 # In case R exits unexpectedly, have it automatically clean up
 # resources taken up by Rmpi (slaves, memory, etc...)
-.Last <- function(){
-   if (is.loaded("mpi_initialize")){
-     if (mpi.comm.size(1) > 0){
-       print("Please use mpi.close.Rslaves() to close workers.")
-       mpi.close.Rslaves()
-     }
-     print("Please use mpi.quit() to quit R")
-     mpi.quit()
-     # .Call("mpi_finalize", PACKAGE = "Rmpi")
-   }
-}
+# .Last <- function(){
+#    if (is.loaded("mpi_initialize")){
+#      if (mpi.comm.size(1) > 0){
+#        print("Please use mpi.close.Rslaves() to close workers.")
+#        mpi.close.Rslaves()
+#      }
+#      print("Please use mpi.quit() to quit R")
+#      mpi.quit()
+#      # .Call("mpi_finalize", PACKAGE = "Rmpi")
+#    }
+# }
 
 # Obtain LOD scores for all features and markers
 cl <- startMPIcluster()
