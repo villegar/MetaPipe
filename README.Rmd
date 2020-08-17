@@ -1,5 +1,6 @@
 ---
 output: github_document
+always_allow_html: yes
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -11,6 +12,24 @@ knitr::opts_chunk$set(
   fig.path = "man/figures/README-",
   out.width = "100%"
 )
+options(knitr.kable.NA = '')
+hcolor <- "#363B74"
+tcolor <- "#EEEEEE"
+```
+
+<!-- Extra CSS -->
+```{css styles, echo = FALSE}
+p {
+  margin-bottom: 0px !important;
+}
+```
+
+<!-- Utilitary functions -->
+```{r utils, echo = FALSE}
+# Include sub-index with HTML tag sub
+sub_html <- function(str1, str2) {
+  return(paste0("[", str1, "]<sub>", str2, "</sub>"))
+}
 ```
 
 <!-- `r system.file("images/metapipe.png", package = "MetaPipe")` -->
@@ -27,6 +46,7 @@ MetaPipe: A High-Performance Computing pipeline for QTL mapping of large metabol
 <!-- `r badger::badge_cran_checks("MetaPipe")` -->
 
 <!-- badges: end -->
+## Overview
 
 The goal of MetaPipe is to provide an easy to use and powerful tool capable of performing QTL mapping analyses. 
 <!-- on metabolomics data. -->
@@ -46,14 +66,58 @@ You can install the development version from [GitHub](https://github.com/) with:
 # install.packages("remotes")
 remotes::install_github("villegar/MetaPipe")
 ```
-<!-- ## Example -->
+## Example
 
 <!-- This is a basic example which shows you how to solve a common problem: -->
+You should start by loading `MetaPipe` on your session.
+```{r example}
+library(MetaPipe)
+```
 
-<!-- ```{r example} -->
-<!-- library(MetaPipe) -->
-<!-- ## basic example code -->
-<!-- ``` -->
+### Loading raw data
+`MetaPipe` only accepts  comma-separated values (CSV) files with the following structure:
+
+```{r raw-data-structure, echo = FALSE}
+nrows <- 2
+raw_df <- data.frame(A = rep("&nbsp;", nrows),
+                     B = rep(NA, nrows),
+                     C = rep(NA, nrows),
+                     D = rep(NA, nrows),
+                     E = rep(NA, nrows),
+                     G = rep(NA, nrows),
+                     H = rep(NA, nrows))
+colnames(raw_df) <- c("ID", 
+                      sub_html("Property", 1), "...", sub_html("Property", "M"), 
+                      sub_html("Trait", 1), "...", sub_html("Trait", "N"))
+`%>%` <- dplyr::`%>%`
+knitr::kable(raw_df, format = "html", escape = FALSE, align = 'c') %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = FALSE, position = 'center') %>%
+  kableExtra::row_spec(0, extra_css = "vertical-align: middle;", background = hcolor, color = tcolor)
+```
+
+Where the first column (`ID`) should be an unique identifier for each entry, if there are repeated values `MetaPipe` will aggregate (mean) and replace them by a single row. The data structure can have 0 to M properties, including categorical and numeric. Finally, at least one one trait is expected.
+
+The function call is as follows:
+```{r loading-raw-data-fx-call, eval = FALSE}
+load_raw(raw_data_filename = "FILE.CSV", excluded_columns = c(...))
+```
+where `raw_data_filename` is the filename containg the raw data, either absolute or relative paths are accepted. Next, the argument `excluded_columns` is a vector containing the indices of the properties, e.g. `c(2, 3, ..., M)`.
+
+```{r loading-raw-data}
+# Dummy data set
+example_data <- data.frame(ID = c(1,2,3,4,5),
+                           P1 = c("one", "two", "three", "four", "five"), 
+                           F1 = rnorm(5), 
+                           F2 = rnorm(5))
+## Write to disk
+write.csv(example_data, "example_data.csv", row.names = FALSE)
+## Create copy with duplicated rows
+write.csv(example_data[c(1:5, 1, 2), ], "example_data_dup.csv", row.names = FALSE)
+
+# Load the data
+load_raw("example_data.csv", c(2))
+load_raw("example_data_dup.csv", c(2))
+```
 
 <!-- What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so: -->
 
