@@ -18,9 +18,9 @@ metabolomic datasets <!-- badges: start -->
 
 <!-- badges: end -->
 
-The goal of MetaPipe is to provide an easy, yet powerful tool capable of
-conduction QTL mapping analyses on metabolomics
-data.
+The goal of MetaPipe is to provide an easy to use and powerful tool
+capable of performing QTL mapping analyses.
+<!-- on metabolomics data. -->
 
 ## Installation
 
@@ -38,8 +38,8 @@ You can install the development version from
 [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("villegar/MetaPipe")
+# install.packages("remotes")
+remotes::install_github("villegar/MetaPipe")
 ```
 
 <!-- ## Example -->
