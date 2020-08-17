@@ -29,7 +29,11 @@ jobs:
           path: ${{ env.R_LIBS_USER }}
           key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
-
+      
+      - name: Install OpenMPI
+        run: |
+          brew install open-mpi
+          
       - name: Install dependencies
         run: |
           remotes::install_deps(dependencies = TRUE)
