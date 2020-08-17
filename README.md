@@ -3,12 +3,6 @@
 
 <!-- Extra CSS -->
 
-<style type="text/css">
-p {
-  margin-bottom: 0px !important;
-}
-</style>
-
 <!-- Utilitary functions -->
 
 <!-- /Library/Frameworks/R.framework/Versions/4.0/Resources/library/MetaPipe/images/metapipe.png -->
@@ -226,19 +220,19 @@ write.csv(example_data[c(1:5, 1, 2), ], "example_data_dup.csv", row.names = FALS
 
 # Load the data
 load_raw("example_data.csv", c(2))
-#>   ID    P1          F1         F2
-#> 1  1   one  1.44868825 -1.2032279
-#> 2  2   two -1.71948895 -0.5696326
-#> 3  3 three -1.93950917 -0.4608050
-#> 4  4  four  0.03416626  1.2695910
-#> 5  5  five -1.36494912 -0.9164381
+#>   ID    P1         F1         F2
+#> 1  1   one  0.7385226 -0.5075755
+#> 2  2   two  1.9370058  0.9575687
+#> 3  3 three -0.6704865 -0.3290465
+#> 4  4  four -0.4076667  1.2337800
+#> 5  5  five -1.0915699  0.5501291
 load_raw("example_data_dup.csv", c(2))
-#>   ID    P1          F1         F2
-#> 1  1   one  1.44868825 -1.2032279
-#> 2  2   two -1.71948895 -0.5696326
-#> 3  3 three -1.93950917 -0.4608050
-#> 4  4  four  0.03416626  1.2695910
-#> 5  5  five -1.36494912 -0.9164381
+#>   ID    P1         F1         F2
+#> 1  1   one  0.7385226 -0.5075755
+#> 2  2   two  1.9370058  0.9575687
+#> 3  3 three -0.6704865 -0.3290465
+#> 4  4  four -0.4076667  1.2337800
+#> 5  5  five -1.0915699  0.5501291
 ```
 
 <!-- What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so: -->

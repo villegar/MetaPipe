@@ -18,7 +18,7 @@ tcolor <- "#EEEEEE"
 ```
 
 <!-- Extra CSS -->
-```{css styles, echo = FALSE}
+```{css styles, echo = FALSE, eval = FALSE}
 p {
   margin-bottom: 0px !important;
 }
