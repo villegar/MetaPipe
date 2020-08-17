@@ -46,7 +46,9 @@ Imports:
     VIM
 Suggests:
     doMPI, 
-    hexSticker, 
+    hexSticker,
+    knitr,
+    kableExtra,
     Rmpi, 
     testthat
 Depends: 
