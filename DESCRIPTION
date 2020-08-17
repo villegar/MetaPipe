@@ -24,7 +24,6 @@ LazyData: true
 RoxygenNote: 7.1.1
 Imports: 
     Amelia, 
-    doMPI, 
     doParallel, 
     dplyr, 
     factoextra, 
@@ -41,13 +40,14 @@ Imports:
     plyr, 
     psych, 
     qtl, 
-    Rmpi, 
     R.devices, 
     tictoc, 
     tidyverse, 
     VIM
 Suggests:
+    doMPI, 
     hexSticker, 
+    Rmpi, 
     testthat
 Depends: 
     R (>= 3.6)
