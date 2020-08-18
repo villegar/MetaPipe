@@ -1,8 +1,8 @@
 ---
-title: "Loading raw data"
+title: "Load raw data"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Loading raw data}
+  %\VignetteIndexEntry{Load raw data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -42,7 +42,7 @@ library(MetaPipe)
 `MetaPipe` only accepts  comma-separated values (CSV) files with the following structure:
 
 ```{r raw-data-structure, echo = FALSE}
-nrows <- 2
+nrows <- 1
 raw_df <- data.frame(A = rep("&nbsp;", nrows),
                      B = rep(NA, nrows),
                      C = rep(NA, nrows),
@@ -55,7 +55,7 @@ colnames(raw_df) <- c("ID",
                       sub_html("Trait", 1), "...", sub_html("Trait", "N"))
 `%>%` <- dplyr::`%>%`
 knitr::kable(raw_df, format = "html", escape = FALSE, align = 'c') %>%
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = FALSE, position = 'center') %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover")) %>%
   kableExtra::row_spec(0, extra_css = "vertical-align: middle;", background = hcolor, color = tcolor)
 ```
 
