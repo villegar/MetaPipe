@@ -52,7 +52,25 @@ jobs:
           path: ${{ env.R_LIBS_USER }}
           key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
-
+      
+      - name: Install OpenMPI
+        run: |
+          if [ "$RUNNER_OS" == "Linux" ]; then
+            apt install gcc
+            apt install openmpi
+          elif [ "$RUNNER_OS" == "Windows" ]; then
+            choco install openmpi
+          elif [ "$RUNNER_OS" == "macOS" ]; then
+            rm -rf /usr/local/bin/gfortran
+            brew install gcc
+            brew install openmpi
+          else
+            echo "$RUNNER_OS not supported"
+            exit 1
+          fi
+        shell: bash
+          
+          
       - name: Install system dependencies
         if: runner.os == 'Linux'
         run: |
