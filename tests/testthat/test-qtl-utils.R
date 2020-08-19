@@ -98,7 +98,7 @@ test_that("effect plots work", {
   filenames <- c("EFF-F1-S6_4.png",
                  "EFF-F1-S7_1.png",
                  "EFF-F1-S8_3.png",
-                 "EFF-F1-S10_4.png",
+                 "EFF-NP-F1-S10_4.png",
                  "EFF-F2-S2_8.png",
                  "EFF-F2-S4_9.png",
                  "EFF-F2-S6_3.png",
