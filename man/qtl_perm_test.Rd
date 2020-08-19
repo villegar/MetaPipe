@@ -7,7 +7,7 @@
 qtl_perm_test(
   x_data,
   cpus = 1,
-  qtl_method = "scanone",
+  qtl_method = "par-scanone",
   raw_data_normalised = NULL,
   lod_threshold = 3,
   parametric = TRUE,

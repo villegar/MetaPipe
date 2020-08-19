@@ -540,7 +540,7 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
 #' @seealso \code{\link{assess_normality}} and \code{\link{qtl_scone}}
 qtl_perm_test <- function(x_data, 
                           cpus = 1, 
-                          qtl_method = "scanone", 
+                          qtl_method = "par-scanone", 
                           raw_data_normalised = NULL, 
                           lod_threshold = 3, 
                           parametric = TRUE, 
