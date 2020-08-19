@@ -5,7 +5,7 @@
 
 <!-- Utilitary functions -->
 
-<!-- /Library/Frameworks/R.framework/Versions/4.0/Resources/library/MetaPipe/images/metapipe.png -->
+<!-- /Users/runner/work/_temp/Library/MetaPipe/images/metapipe.png -->
 
 # MetaPipe <img src="https://raw.githubusercontent.com/villegar/MetaPipe/master/inst/images/metapipe.png" alt="metapipe-logo" align="right" height=200px/>
 
@@ -80,7 +80,7 @@ load_raw(raw_data_filename = "FILE.CSV", excluded_columns = c(...))
 where `raw_data_filename` is the filename containg the raw data, both
 absolute and relative paths are accepted. Next, the argument
 `excluded_columns` is a vector containing the indices of the properties,
-e.g. `c(2, 3, ..., M)`.
+e.g. `c(2, 3, ..., M)`.
 
 ``` r
 # Dummy data set
@@ -122,7 +122,7 @@ replace_missing(raw_data = example_data,
 
 where `raw_data` is a data frame containing the raw data, as described
 in [Load Raw Data](#load-raw-data) and `excluded_columns` is a vector
-containing the indices of the properties, e.g. `c(2, 3, ..., M)`. The
+containing the indices of the properties, e.g. `c(2, 3, ..., M)`. The
 other arguments are optional, `out_prefix` is the prefix for output
 files, `prop_na` is the proportion of NA values (used to drop features),
 and `replace_na` is a logical flag to indicate whether or not NAs should
