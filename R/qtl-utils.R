@@ -132,6 +132,8 @@ effect_plots <- function(x_data_sim, qtl_data, cpus = 1, plots_dir = getwd()) {
 
   plots <- foreach::foreach(i = 1:nrow(qtl_data)) %dopar% {
     if(qtl_data[i, ]$method == "par-scanone") {
+      qtl_data[i, ]$transf <-
+        ifelse(is.na(qtl_data[i, ]$transf), "", qtl_data[i, ]$transf)
       if(qtl_data[i, ]$transf == "log") {
         ylab <-
           paste0("$\\log_{", qtl_data[i, ]$transf_val, "}(", features[i], ")$")
