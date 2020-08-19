@@ -45,6 +45,7 @@ Imports:
     tidyverse, 
     VIM
 Suggests:
+    badger,
     doMPI,
     hexSticker,
     knitr,
