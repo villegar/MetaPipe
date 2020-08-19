@@ -54,7 +54,7 @@ colnames(raw_df) <- c("ID",
                       sub_html("Property", 1), "...", sub_html("Property", "M"), 
                       sub_html("Trait", 1), "...", sub_html("Trait", "N"))
 `%>%` <- dplyr::`%>%`
-knitr::kable(raw_df, format = "html", escape = FALSE, align = 'c') %>%
+knitr::kable(raw_df, format = "html", escape = FALSE) %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover")) %>%
   kableExtra::row_spec(0, extra_css = "vertical-align: middle;", background = hcolor, color = tcolor)
 ```
