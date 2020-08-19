@@ -84,8 +84,16 @@ test_that("effect plots work", {
   x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
   x_qtl_perm <- qtl_perm_test(x, n_perm = 5, model = "normal", method = "hk")
   x_sim <- qtl::sim.geno(x)
+  
+  # Modify QTL data to include transformation data [for testing only]
+  x_qtl_perm[1, c("transf", "transf_val")] <- c("log", "2")
+  x_qtl_perm[2, c("transf", "transf_val")] <- c("root", "2")
+  x_qtl_perm[3, c("transf", "transf_val")] <- c("power", "2")
+  
+  # Modify QTL data to include skewed traits
+  x_qtl_perm[4, c("method")] <- "skw-scanone"
+  
   effect_plots(x_sim, x_qtl_perm)
-  #expect_equal(c(9, 20), dim(x_qtl_perm))
   
   filenames <- c("EFF-F1-S6_4.png",
                  "EFF-F1-S7_1.png",
