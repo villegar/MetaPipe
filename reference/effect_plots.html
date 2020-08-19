@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Perform QTL mapping permutation test using scanone to obtain significant QTLs — qtl_perm_test • MetaPipe</title>
+<title>Create effect plots for significant QTLS found with  
+<code><a href='qtl_perm_test.html'>qtl_perm_test</a></code>. — effect_plots • MetaPipe</title>
 
 
 <!-- jquery -->
@@ -39,8 +40,10 @@
 
 
 
-<meta property="og:title" content="Perform QTL mapping permutation test using scanone to obtain significant QTLs — qtl_perm_test" />
-<meta property="og:description" content="Perform QTL mapping permutation test using scanone to obtain significant QTLs" />
+<meta property="og:title" content="Create effect plots for significant QTLS found with  
+<code><a href='qtl_perm_test.html'>qtl_perm_test</a></code>. — effect_plots" />
+<meta property="og:description" content="Create effect plots for significant QTLS found with  
+qtl_perm_test." />
 
 
 
@@ -123,74 +126,43 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Perform QTL mapping permutation test using scanone to obtain significant QTLs</h1>
-    <small class="dont-index">Source: <a href='https://github.com/villegar/MetaPipe/blob/master/R/metapipe.R'><code>R/metapipe.R</code></a></small>
-    <div class="hidden name"><code>qtl_perm_test.Rd</code></div>
+    <h1>Create effect plots for significant QTLS found with  
+<code><a href='qtl_perm_test.html'>qtl_perm_test</a></code>.</h1>
+    <small class="dont-index">Source: <a href='https://github.com/villegar/MetaPipe/blob/master/R/qtl-utils.R'><code>R/qtl-utils.R</code></a></small>
+    <div class="hidden name"><code>effect_plots.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Perform QTL mapping permutation test using scanone to obtain significant QTLs</p>
+    <p>Create effect plots for significant QTLS found with  
+<code><a href='qtl_perm_test.html'>qtl_perm_test</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>qtl_perm_test</span>(
-  <span class='no'>x_data</span>,
-  <span class='kw'>cpus</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>qtl_method</span> <span class='kw'>=</span> <span class='st'>"par-scanone"</span>,
-  <span class='kw'>raw_data_normalised</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>lod_threshold</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='kw'>parametric</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>n_perm</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
-  <span class='kw'>plots_dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(),
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>effect_plots</span>(<span class='no'>x_data_sim</span>, <span class='no'>qtl_data</span>, <span class='kw'>cpus</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>plots_dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>())</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x_data</th>
-      <td><p>cross-data containing genetic map data and features</p></td>
+      <th>x_data_sim</th>
+      <td><p>Cross-data simulated with <code><a href='https://rdrr.io/pkg/qtl/man/sim.geno.html'>qtl::sim.geno</a></code></p></td>
+    </tr>
+    <tr>
+      <th>qtl_data</th>
+      <td><p>Significant QTL's data</p></td>
     </tr>
     <tr>
       <th>cpus</th>
       <td><p>number of CPUS to be used</p></td>
     </tr>
     <tr>
-      <th>qtl_method</th>
-      <td><p>QTL mapping method [default: scanone]</p></td>
-    </tr>
-    <tr>
-      <th>raw_data_normalised</th>
-      <td><p>normalised raw data, see <code><a href='assess_normality.html'>assess_normality</a></code></p></td>
-    </tr>
-    <tr>
-      <th>lod_threshold</th>
-      <td><p>LOD score threshold to look up for significant QTLs</p></td>
-    </tr>
-    <tr>
-      <th>parametric</th>
-      <td><p>boolean flag to indicate whether or not x_data is parametric</p></td>
-    </tr>
-    <tr>
-      <th>n_perm</th>
-      <td><p>number of permutations</p></td>
-    </tr>
-    <tr>
       <th>plots_dir</th>
       <td><p>output directory for plots</p></td>
     </tr>
-    <tr>
-      <th>...</th>
-      <td><p>S4 parameters for R/qtl library</p></td>
-    </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>data frame containing the significant QTLs information</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='assess_normality.html'>assess_normality</a></code> and <code><a href='qtl_scone.html'>qtl_scone</a></code></p></div>
+    <div class='dont-index'><p><code><a href='qtl_perm_test.html'>qtl_perm_test</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Create toy dataset</span>
@@ -227,7 +199,9 @@
 #&gt;  --Cross type: f2 </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='no'>seed</span>)
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>qtl</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/qtl/man/jittermap.html'>jittermap</a></span>(<span class='no'>x</span>)
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>qtl</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/qtl/man/calc.genoprob.html'>calc.genoprob</a></span>(<span class='no'>x</span>, <span class='kw'>step</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>error.prob</span> <span class='kw'>=</span> <span class='fl'>0.001</span>)
-<span class='no'>x_qtl_perm</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>MetaPipe</span><span class='kw ns'>::</span><span class='fu'>qtl_perm_test</span>(<span class='no'>x</span>, <span class='kw'>n_perm</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='st'>"normal"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"hk"</span>)</div></pre>
+<span class='no'>x_qtl_perm</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>MetaPipe</span><span class='kw ns'>::</span><span class='fu'><a href='qtl_perm_test.html'>qtl_perm_test</a></span>(<span class='no'>x</span>, <span class='kw'>n_perm</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='st'>"normal"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"hk"</span>)
+<span class='no'>x_sim</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>qtl</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/qtl/man/sim.geno.html'>sim.geno</a></span>(<span class='no'>x</span>)
+<span class='fu'>effect_plots</span>(<span class='no'>x_sim</span>, <span class='no'>x_qtl_perm</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
