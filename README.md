@@ -45,7 +45,7 @@ You can install the development version from
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("villegar/MetaPipe")
+remotes::install_github("villegar/MetaPipe", build_vignettes = TRUE)
 ```
 
 ## Example
@@ -60,150 +60,22 @@ library(MetaPipe)
 
 ### Loading raw data
 
-`MetaPipe` only accepts comma-separated values (CSV) files with the
-following
-structure:
-
-<table class="table table-striped table-hover" style="width: auto !important; margin-left: auto; margin-right: auto;">
-
-<thead>
-
-<tr>
-
-<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
-
-ID
-
-</th>
-
-<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
-
-\[Property\]<sub>1</sub>
-
-</th>
-
-<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
-
-…
-
-</th>
-
-<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
-
-\[Property\]<sub>M</sub>
-
-</th>
-
-<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
-
-\[Trait\]<sub>1</sub>
-
-</th>
-
-<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
-
-…
-
-</th>
-
-<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
-
-\[Trait\]<sub>N</sub>
-
-</th>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-<tr>
-
-<td style="text-align:center;">
-
- 
-
-</td>
-
-<td style="text-align:center;">
-
-</td>
-
-<td style="text-align:center;">
-
-</td>
-
-<td style="text-align:center;">
-
-</td>
-
-<td style="text-align:center;">
-
-</td>
-
-<td style="text-align:center;">
-
-</td>
-
-<td style="text-align:center;">
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:center;">
-
- 
-
-</td>
-
-<td style="text-align:center;">
-
-</td>
-
-<td style="text-align:center;">
-
-</td>
-
-<td style="text-align:center;">
-
-</td>
-
-<td style="text-align:center;">
-
-</td>
-
-<td style="text-align:center;">
-
-</td>
-
-<td style="text-align:center;">
-
-</td>
-
-</tr>
-
-</tbody>
-
-</table>
-
-Where the first column (`ID`) should be an unique identifier for each
-entry, if there are repeated values `MetaPipe` will aggregate (mean) and
-replace them by a single row. The data structure can have 0 to M
-properties, including categorical and numeric. Finally, at least one one
-trait is expected.
-
-The function call is as follows:
+For details about the data structure and extended documentation, see the
+vignette [Load Raw
+Data](https://villegar.github.io/MetaPipe/articles/load-raw-data).
+
+``` r
+vignette("load-raw-data", package = "MetaPipe")
+```
+
+#### Function call
 
 ``` r
 load_raw(raw_data_filename = "FILE.CSV", excluded_columns = c(...))
 ```
 
-where `raw_data_filename` is the filename containg the raw data, either
-absolute or relative paths are accepted. Next, the argument
+where `raw_data_filename` is the filename containg the raw data, both
+absolute and relative paths are accepted. Next, the argument
 `excluded_columns` is a vector containing the indices of the properties,
 e.g. `c(2, 3, ..., M)`.
 
@@ -216,8 +88,6 @@ example_data <- data.frame(ID = c(1,2,3,4,5),
                            F2 = rnorm(5))
 ## Write to disk
 write.csv(example_data, "example_data.csv", row.names = FALSE)
-## Create copy with duplicated rows
-write.csv(example_data[c(1:5, 1, 2), ], "example_data_dup.csv", row.names = FALSE)
 
 # Load the data
 load_raw("example_data.csv", c(2))
@@ -227,16 +97,16 @@ load_raw("example_data.csv", c(2))
 #> 3  3 three  1.55870831 -1.2650612
 #> 4  4  four  0.07050839 -0.6868529
 #> 5  5  five  0.12928774 -0.4456620
-load_raw("example_data_dup.csv", c(2))
-#>   ID    P1          F1         F2
-#> 1  1   one -0.56047565  1.7150650
-#> 2  2   two -0.23017749  0.4609162
-#> 3  3 three  1.55870831 -1.2650612
-#> 4  4  four  0.07050839 -0.6868529
-#> 5  5  five  0.12928774 -0.4456620
 ```
 
 ### Replace missing data
+
+For extended documentation, see the vignette [Replace Missing
+Data](https://villegar.github.io/MetaPipe/articles/replace-missing-data).
+
+``` r
+vignette("replace-missing-data", package = "MetaPipe")
+```
 
 ### Assess normality
 

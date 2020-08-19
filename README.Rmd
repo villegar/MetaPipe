@@ -64,7 +64,7 @@ The goal of MetaPipe is to provide an easy to use and powerful tool capable of p
 You can install the development version from [GitHub](https://github.com/) with:
 ``` r
 # install.packages("remotes")
-remotes::install_github("villegar/MetaPipe")
+remotes::install_github("villegar/MetaPipe", build_vignettes = TRUE)
 ```
 ## Example
 
@@ -75,33 +75,17 @@ library(MetaPipe)
 ```
 
 ### Loading raw data
-`MetaPipe` only accepts  comma-separated values (CSV) files with the following structure:
+For details about the data structure and extended documentation, see the vignette [Load Raw Data](https://villegar.github.io/MetaPipe/articles/load-raw-data). 
 
-```{r raw-data-structure, echo = FALSE}
-nrows <- 2
-raw_df <- data.frame(A = rep("&nbsp;", nrows),
-                     B = rep(NA, nrows),
-                     C = rep(NA, nrows),
-                     D = rep(NA, nrows),
-                     E = rep(NA, nrows),
-                     G = rep(NA, nrows),
-                     H = rep(NA, nrows))
-colnames(raw_df) <- c("ID", 
-                      sub_html("Property", 1), "...", sub_html("Property", "M"), 
-                      sub_html("Trait", 1), "...", sub_html("Trait", "N"))
-`%>%` <- dplyr::`%>%`
-knitr::kable(raw_df, format = "html", escape = FALSE, align = 'c') %>%
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = FALSE, position = 'center') %>%
-  kableExtra::row_spec(0, extra_css = "vertical-align: middle;", background = hcolor, color = tcolor)
+```{r, eval = FALSE}
+vignette("load-raw-data", package = "MetaPipe")
 ```
 
-Where the first column (`ID`) should be an unique identifier for each entry, if there are repeated values `MetaPipe` will aggregate (mean) and replace them by a single row. The data structure can have 0 to M properties, including categorical and numeric. Finally, at least one one trait is expected.
-
-The function call is as follows:
+#### Function call
 ```{r loading-raw-data-fx-call, eval = FALSE}
 load_raw(raw_data_filename = "FILE.CSV", excluded_columns = c(...))
 ```
-where `raw_data_filename` is the filename containg the raw data, either absolute or relative paths are accepted. Next, the argument `excluded_columns` is a vector containing the indices of the properties, e.g. `c(2, 3, ..., M)`.
+where `raw_data_filename` is the filename containg the raw data, both absolute and relative paths are accepted. Next, the argument `excluded_columns` is a vector containing the indices of the properties, e.g. `c(2, 3, ..., M)`.
 
 ```{r loading-raw-data}
 # Dummy data set
@@ -112,15 +96,17 @@ example_data <- data.frame(ID = c(1,2,3,4,5),
                            F2 = rnorm(5))
 ## Write to disk
 write.csv(example_data, "example_data.csv", row.names = FALSE)
-## Create copy with duplicated rows
-write.csv(example_data[c(1:5, 1, 2), ], "example_data_dup.csv", row.names = FALSE)
 
 # Load the data
 load_raw("example_data.csv", c(2))
-load_raw("example_data_dup.csv", c(2))
 ```
 
 ### Replace missing data
+For extended documentation, see the vignette [Replace Missing Data](https://villegar.github.io/MetaPipe/articles/replace-missing-data). 
+
+```{r, eval = FALSE}
+vignette("replace-missing-data", package = "MetaPipe")
+```
 
 ### Assess normality
 <!-- What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so: -->
