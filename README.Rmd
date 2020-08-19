@@ -42,8 +42,10 @@ MetaPipe: A High-Performance Computing pipeline for QTL mapping of large metabol
 `r badger::badge_code_size("villegar/MetaPipe")`
 `r badger::badge_cran_release("MetaPipe", color = "red")`
 `r badger::badge_codecov("villegar/MetaPipe")`
+`r badger::badge_github_actions()`
 <!-- `r badger::badge_dependencies("MetaPipe")` -->
 <!-- `r badger::badge_cran_checks("MetaPipe")` -->
+<!-- [![R build status](https://github.com/villegar/MetaPipe/workflows/R-CMD-check/badge.svg)](https://github.com/villegar/MetaPipe/actions) -->
 
 <!-- badges: end -->
 ## Overview
