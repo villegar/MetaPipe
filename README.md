@@ -58,7 +58,7 @@ You should start by loading `MetaPipe` on your session.
 library(MetaPipe)
 ```
 
-### Loading raw data
+### Load raw data
 
 For details about the data structure and extended documentation, see the
 vignette [Load Raw
@@ -106,6 +106,57 @@ Data](https://villegar.github.io/MetaPipe/articles/replace-missing-data).
 
 ``` r
 vignette("replace-missing-data", package = "MetaPipe")
+```
+
+#### Function call
+
+``` r
+replace_missing(raw_data = example_data, 
+                excluded_columns = c(2), 
+                # Optional
+                out_prefix = "metapipe", prop_na = 0.5, replace_na = FALSE)
+```
+
+where `raw_data` is a data frame containing the raw data, as described
+in [Load Raw Data](#load-raw-data) and `excluded_columns` is a vector
+containing the indices of the properties, e.g. `c(2, 3, ..., M)`. The
+other arguments are optional, `out_prefix` is the prefix for output
+files, `prop_na` is the proportion of NA values (used to drop features),
+and `replace_na` is a logical flag to indicate whether or not NAs should
+be replace by half of the minimum value.
+
+``` r
+# Inserting missing values manually
+example_data$F1[2:3] <- NA
+example_data$F2[4] <- NA
+
+# No changes expected
+replace_missing(example_data, c(2))
+#>   ID    P1          F1         F2
+#> 1  1   one -0.56047565  1.7150650
+#> 2  2   two          NA  0.4609162
+#> 3  3 three          NA -1.2650612
+#> 4  4  four  0.07050839         NA
+#> 5  5  five  0.12928774 -0.4456620
+
+# Traits with 25% of NA should be dropped
+replace_missing(example_data, c(2), prop_na =  0.25)
+#> The following features were dropped because they have 25% or more missing values: F1
+#>   ID    P1         F2
+#> 1  1   one  1.7150650
+#> 2  2   two  0.4609162
+#> 3  3 three -1.2650612
+#> 4  4  four         NA
+#> 5  5  five -0.4456620
+
+# NAs should be replaced by half of the minimum value
+replace_missing(example_data, c(2), replace_na =  TRUE)
+#>   ID    P1          F1         F2
+#> 1  1   one -0.56047565  1.7150650
+#> 2  2   two -0.28023782  0.4609162
+#> 3  3 three -0.28023782 -1.2650612
+#> 4  4  four  0.07050839 -0.6325306
+#> 5  5  five  0.12928774 -0.4456620
 ```
 
 ### Assess normality
