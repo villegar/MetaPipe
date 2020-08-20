@@ -118,7 +118,7 @@ assess_normality <- function(raw_data,
                              plots_dir = getwd(), 
                              transf_vals = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10)) {
   # Start parallel backend
-  cl <- parallel::makeCluster(cpus, setup_strategy = "sequential")
+  cl <- parallel::makeCluster(cpus)# , setup_strategy = "sequential")
   doParallel::registerDoParallel(cl)
   
   # Load binary operator for backend
@@ -449,7 +449,7 @@ random_map <- function(genotypes = c("A", "H", "B"), lg = 1:10, markers = 10, po
 #' @seealso \code{\link{qtl_perm_test}}
 qtl_scone <- function(x_data, cpus = 1, ...) {
   # Start parallel backend
-  cl <- parallel::makeCluster(cpus, setup_strategy = "sequential")
+  cl <- parallel::makeCluster(cpus)# , setup_strategy = "sequential")
   doParallel::registerDoParallel(cl)
   
   # Load binary operator for backend
@@ -548,7 +548,7 @@ qtl_perm_test <- function(x_data,
                           plots_dir = getwd(), 
                           ...) {
   # Start parallel backend
-  cl <- parallel::makeCluster(cpus, setup_strategy = "sequential")
+  cl <- parallel::makeCluster(cpus)# , setup_strategy = "sequential")
   doParallel::registerDoParallel(cl)
   
   # Load binary operator for backend
