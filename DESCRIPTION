@@ -46,12 +46,10 @@ Imports:
     VIM
 Suggests:
     badger,
-    doMPI,
     hexSticker,
     knitr,
     kableExtra,
     rmarkdown,
-    Rmpi,
     testthat
 Depends: 
     R (>= 3.6)
