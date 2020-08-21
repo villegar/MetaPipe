@@ -135,7 +135,7 @@ assess_normality <- function(raw_data,
   
   # Extract features (column names)
   features <- colnames(raw_data)
-  raw_data_normalised <- foreach::foreach(i = feature_indices,
+  raw_data_normalised <- foreach::foreach(i = feature_indices, 
                                   .combine = rbind) %dopar% {
                                     # Create and populate entry for current feature
                                     record <- data.frame( 
@@ -155,7 +155,7 @@ assess_normality <- function(raw_data,
                                       #  warning(paste0("Could not processed the feature ", i))
                                       pvalue <- shapiro.test(raw_data[, i])[[2]]
                                       if(pvalue <= 0.05) { # Data must be transformed
-                                        tmp <- MetaPipe::transform_data(data = raw_data[, i], 
+                                        tmp <- transform_data(data = raw_data[, i], 
                                                               feature = features[i], 
                                                               alpha = 0.05, 
                                                               index = i, 
@@ -173,7 +173,7 @@ assess_normality <- function(raw_data,
                                         xlab <- features[i]
                                         transformation <- "NORM"
                                         prefix <- paste0(plots_dir,"/HIST_", i, "_", transformation)
-                                        MetaPipe::generate_hist(data = raw_data[, i], 
+                                        generate_hist(data = raw_data[, i], 
                                                                 feature = features[i], 
                                                                 prefix = prefix, 
                                                                 xlab = xlab)
@@ -253,7 +253,7 @@ assess_normality_postprocessing <- function(raw_data,
     raw_data_norm <-
       cbind(raw_data[, 1, drop = FALSE],
             if (pareto_scaling)
-              MetaPipe::paretoscale(raw_data_norm)
+              paretoscale(raw_data_norm)
             else
               raw_data_norm)
   }
@@ -263,7 +263,7 @@ assess_normality_postprocessing <- function(raw_data,
     raw_data_non_par <-
       cbind(raw_data[, 1, drop = FALSE],
             if (pareto_scaling)
-              MetaPipe::paretoscale(raw_data_non_par)
+              paretoscale(raw_data_non_par)
             else
               raw_data_non_par
     )
@@ -444,7 +444,7 @@ random_map <- function(genotypes = c("A", "H", "B"), lg = 1:10, markers = 10, po
 #' set.seed(seed)
 #' x <- qtl::jittermap(x)
 #' x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
-#' x_scone <- MetaPipe::qtl_scone(x, 1, model = "normal", method = "hk")
+#' x_scone <- qtl_scone(x, 1, model = "normal", method = "hk")
 #' 
 #' @seealso \code{\link{qtl_perm_test}}
 qtl_scone <- function(x_data, cpus = 1, ...) {
@@ -535,7 +535,7 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
 #' set.seed(seed)
 #' x <- qtl::jittermap(x)
 #' x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
-#' x_qtl_perm <- MetaPipe::qtl_perm_test(x, n_perm = 5, model = "normal", method = "hk")
+#' x_qtl_perm <- qtl_perm_test(x, n_perm = 5, model = "normal", method = "hk")
 #' 
 #' @seealso \code{\link{assess_normality}} and \code{\link{qtl_scone}}
 qtl_perm_test <- function(x_data, 
@@ -618,7 +618,7 @@ qtl_perm_test <- function(x_data,
                            marker <- rownames(sum_x_scone)[k]
                            
                            # Verify if current QTL has a pseudomarker
-                           marker_info <- MetaPipe::transform_pseudo_marker(x_data, marker, nrecord$lg, nrecord$pos_peak)
+                           marker_info <- transform_pseudo_marker(x_data, marker, nrecord$lg, nrecord$pos_peak)
                            nrecord$marker <- marker_info[1]
                            nrecord$pos_peak <- as.numeric(marker_info[2])
                            
@@ -637,7 +637,7 @@ qtl_perm_test <- function(x_data,
                            # Verify if the 95% Bayes' CI QTLs have pseudomarkers
                            for(l in 1:nrow(p95_bayes)) {
                              marker <- rownames(p95_bayes)[l]
-                             marker_info <- MetaPipe::transform_pseudo_marker(x_data, marker, p95_bayes[l, "chr"], p95_bayes[l, "pos"])
+                             marker_info <- transform_pseudo_marker(x_data, marker, p95_bayes[l, "chr"], p95_bayes[l, "pos"])
                              p95_bayes[l, "marker"] <- marker_info[1]
                              p95_bayes[l, "pos"] <- as.numeric(marker_info[2])
                            }
@@ -658,7 +658,7 @@ qtl_perm_test <- function(x_data,
                          p5 <- summary(x_scone_perm)[[1]]  #  5% percent
                          p10 <- summary(x_scone_perm)[[2]] # 10% percent
                          
-                         lod_plot <- MetaPipe::save_plot(
+                         lod_plot <- save_plot(
                            {
                              plot(x_scone, ylab = "LOD Score") +
                              abline(h = p5, 
