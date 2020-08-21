@@ -51,7 +51,7 @@ x <- qtl::read.cross(format = "csvs",
 set.seed(seed)
 x <- qtl::jittermap(x)
 x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
-x_scone <- MetaPipe::qtl_scone(x, 1, model = "normal", method = "hk")
+x_scone <- qtl_scone(x, 1, model = "normal", method = "hk")
 
 }
 \seealso{
