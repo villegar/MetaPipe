@@ -660,12 +660,12 @@ qtl_perm_test <- function(x_data,
                          
                          lod_plot <- MetaPipe::save_plot(
                            {
-                             plot(x_scone, ylab = "LOD Score") +
+                             plot(x_scone, ylab = "LOD Score")
                              abline(h = p5, 
                                     lwd = 2,
                                     lty = "solid",
                                     col = "red"
-                             ) +
+                             )
                              abline(h = p10, 
                                     lwd = 2, 
                                     lty = "dashed",
