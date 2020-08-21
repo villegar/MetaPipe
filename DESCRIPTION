@@ -1,7 +1,7 @@
 Package: MetaPipe
 Type: Package
-Title: MetaPipe: A High-Performance Computing pipeline for QTL mapping of large
-        ionomic and metabolomic datasets
+Title: MetaPipe: A High-Performance Computing Pipeline for QTL Mapping of Large
+        Ionomic and Metabolomic Datasets
 Version: 0.0.1
 Authors@R: c(
     person(given = "Roberto",
