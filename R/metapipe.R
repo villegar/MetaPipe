@@ -136,6 +136,7 @@ assess_normality <- function(raw_data,
   # Extract features (column names)
   features <- colnames(raw_data)
   raw_data_normalised <- foreach::foreach(i = feature_indices, 
+                                          .packages = c('MetaPipe'), 
                                   .combine = rbind) %dopar% {
                                     # Create and populate entry for current feature
                                     record <- data.frame( 
