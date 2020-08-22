@@ -186,27 +186,7 @@
 <span class='co'># Create and store random genetic map [for testing only]</span>
 <span class='no'>genetic_map</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='random_map.html'>random_map</a></span>(<span class='kw'>population</span> <span class='kw'>=</span> <span class='no'>population</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='no'>seed</span>)
 <span class='fu'><a href='https://rdrr.io/r/utils/write.table.html'>write.csv</a></span>(<span class='no'>genetic_map</span>, <span class='kw pkg'>here</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/here/man/here.html'>here</a></span>(<span class='st'>"metapipe_genetic_map.csv"</span>), <span class='kw'>row.names</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>list.files</a></span>(<span class='kw pkg'>here</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/here/man/here.html'>here</a></span>()))</div><div class='output co'>#&gt;  [1] "404.html"                            
-#&gt;  [2] "articles"                            
-#&gt;  [3] "authors.html"                        
-#&gt;  [4] "bootstrap-toc.css"                   
-#&gt;  [5] "bootstrap-toc.js"                    
-#&gt;  [6] "docsearch.css"                       
-#&gt;  [7] "docsearch.js"                        
-#&gt;  [8] "index.html"                          
-#&gt;  [9] "LICENSE-text.html"                   
-#&gt; [10] "LICENSE.html"                        
-#&gt; [11] "link.svg"                            
-#&gt; [12] "metapipe_genetic_map.csv"            
-#&gt; [13] "metapipe_normalisation_stats.csv"    
-#&gt; [14] "metapipe_raw_data_non_par.csv"       
-#&gt; [15] "metapipe_raw_data_norm.csv"          
-#&gt; [16] "metapipe_raw_data_normalised_all.csv"
-#&gt; [17] "news"                                
-#&gt; [18] "pkgdown.css"                         
-#&gt; [19] "pkgdown.js"                          
-#&gt; [20] "pkgdown.yml"                         
-#&gt; [21] "reference"                           </div><div class='input'><span class='co'># Load cross file with genetic map and raw data for normal features</span>
+<span class='co'># Load cross file with genetic map and raw data for normal features</span>
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>qtl</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/qtl/man/read.cross.html'>read.cross</a></span>(<span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"csvs"</span>,
                      <span class='kw'>dir</span> <span class='kw'>=</span> <span class='kw pkg'>here</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/here/man/here.html'>here</a></span>(),
                      <span class='kw'>genfile</span> <span class='kw'>=</span> <span class='st'>"metapipe_genetic_map.csv"</span>,
