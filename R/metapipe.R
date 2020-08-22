@@ -173,7 +173,7 @@ assess_normality <- function(raw_data,
                                         xlab <- features[i]
                                         transformation <- "NORM"
                                         prefix <- paste0(plots_dir,"/HIST_", i, "_", transformation)
-                                        MetaPipe::generate_hist(data = raw_data[, i], 
+                                        generate_hist(data = raw_data[, i], 
                                                                 feature = features[i], 
                                                                 prefix = prefix, 
                                                                 xlab = xlab)
