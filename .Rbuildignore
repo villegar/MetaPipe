@@ -9,3 +9,5 @@
 ^\.github$
 ^doc$
 ^Meta$
+^R\.ignore$
+^get_openmpi\.sh$
