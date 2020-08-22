@@ -32,7 +32,7 @@ jobs:
       
       - name: External dependencies
         run: |
-          brew install --with-x11 cairo
+          brew install cairo
           
       - name: Install dependencies
         run: |

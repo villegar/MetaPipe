@@ -63,7 +63,7 @@ jobs:
       - name: External dependencies
         if: runner.os == 'macOS'
         run: |
-          brew install --with-x11 cairo
+          brew install cairo
           
       - name: Install dependencies
         run: |
