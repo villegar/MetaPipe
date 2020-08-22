@@ -60,7 +60,11 @@ jobs:
           do
             eval sudo $cmd
           done < <(Rscript -e 'cat(remotes::system_requirements("ubuntu", "20.04"), sep = "\n")')
-
+      - name: External dependencies
+        if: runner.os == 'macOS'
+        run: |
+          brew install --with-x11 cairo
+          
       - name: Install dependencies
         run: |
           remotes::install_deps(dependencies = TRUE)
