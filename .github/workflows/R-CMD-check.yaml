@@ -78,6 +78,7 @@ jobs:
         run: |
           .libPaths()
           sessionInfo()
+          install.packages(c("hexSticker", "kableExtra", "qpdf"))
         shell: Rscript {0}
           
       - name: Install dependencies
