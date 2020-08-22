@@ -72,6 +72,13 @@ jobs:
         run: |
           choco install cairoshell
           choco install xming
+      
+      - name: Check environment (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          .libPaths()
+          sessionInfo()
+        shell: Rscript {0}
           
       - name: Install dependencies
         run: |
