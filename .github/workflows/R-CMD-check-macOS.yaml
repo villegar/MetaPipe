@@ -33,6 +33,7 @@ jobs:
       - name: External dependencies
         run: |
           brew install cairo
+          brew cask install xquartz
           
       - name: Install dependencies
         run: |
