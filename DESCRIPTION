@@ -48,6 +48,7 @@ Suggests:
     hexSticker,
     knitr,
     kableExtra,
+    qpdf,
     rmarkdown,
     testthat
 Depends: 
