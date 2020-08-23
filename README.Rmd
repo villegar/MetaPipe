@@ -136,6 +136,7 @@ replace_missing(example_data, c(2), prop_na =  0.25)
 replace_missing(example_data, c(2), replace_na =  TRUE)
 ```
 
+
 ### Assess normality
 <!-- What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so: -->
 

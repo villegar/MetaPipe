@@ -137,7 +137,7 @@ example_data$T2[4] <- NA
 
 # No changes expected
 replace_missing(example_data, c(2))
-#> The following features were dropped because they have 50% or more missing values: 
+#> The following traits were dropped because they have 50% or more missing values: 
 #> T5
 #>   ID    P1          T1         T2        T3    T4
 #> 1  1   one -0.56047565  1.7150650        NA    NA
@@ -148,7 +148,7 @@ replace_missing(example_data, c(2))
 
 # Traits with 25% of NA should be dropped
 replace_missing(example_data, c(2), prop_na =  0.25)
-#> The following features were dropped because they have 25% or more missing values: 
+#> The following traits were dropped because they have 25% or more missing values: 
 #> T1, T4, T5
 #>   ID    P1         T2        T3
 #> 1  1   one  1.7150650        NA
@@ -159,7 +159,7 @@ replace_missing(example_data, c(2), prop_na =  0.25)
 
 # NAs should be replaced by half of the minimum value
 replace_missing(example_data, c(2), replace_na =  TRUE)
-#> The following features were dropped because they have 100% missing values: 
+#> The following traits were dropped because they have 100% missing values: 
 #> T5
 #>   ID    P1          T1         T2         T3    T4
 #> 1  1   one -0.56047565  1.7150650 0.05534136 -0.25
