@@ -3,7 +3,7 @@ test_that("load raw data works", {
   # Data frame with the raw data: 1 property and 2 features
   example_data <- data.frame(ID = c(1, 2, 3, 4, 5), 
                              P1 = c("one", "two", "three", "four", "five"), 
-                             F1 = rnorm(5), 
+                             T1 = rnorm(5), 
                              F2 = rnorm(5),
                              stringsAsFactors = FALSE)
   
@@ -39,16 +39,16 @@ test_that("replace missing data works", {
   # Data frame with the raw data: 1 property and 2 features
   example_data <- data.frame(ID = c(1, 2, 3, 4, 5), 
                              P1 = c("one", "two", "three", "four", "five"), 
-                             F1 = rnorm(5), 
+                             T1 = rnorm(5), 
                              F2 = rnorm(5))
  
   # Inserting missing values manually
-  example_data$F1[2:3] <- NA
+  example_data$T1[2:3] <- NA
   example_data$F2[4] <- NA
   
   # Expected output when replacing by half of the minimum value
   example_data_alt <- example_data[,]
-  example_data_alt$F1[2:3] <- min(example_data$F1, na.rm = TRUE)/2
+  example_data_alt$T1[2:3] <- min(example_data$T1, na.rm = TRUE)/2
   example_data_alt$F2[4] <- min(example_data$F2, na.rm = TRUE)/2
   
   # Testing the function with different parameters
@@ -58,7 +58,7 @@ test_that("replace missing data works", {
   
   # Comparing results
   expect_equal(example_data, results_1)
-  expect_equal(example_data[, colnames(example_data) != "F1"], results_2)
+  expect_equal(example_data[, colnames(example_data) != "T1"], results_2)
   expect_equal(example_data_alt, results_3)
   
   # Checking for file generated in the test where prop_na =  0.25
@@ -74,11 +74,11 @@ test_that("normality assessment works", {
   set.seed(123)
   example_data <- data.frame(ID = c(1, 2, 3, 4, 5), 
                              P1 = c("one", "two", "three", "four", "five"), 
-                             F1 = rnorm(5), 
+                             T1 = rnorm(5), 
                              F2 = rnorm(5))
   expected_output <- data.frame(index = rep(c(1, 2), each = 5),
-                                feature = rep(c("F1", "F2"), each = 5),
-                                values = c(example_data$F1, example_data$F2),
+                                feature = rep(c("T1", "F2"), each = 5),
+                                values = c(example_data$T1, example_data$F2),
                                 flag = "Normal",
                                 transf = "",
                                 transf_val = NA,
@@ -86,7 +86,7 @@ test_that("normality assessment works", {
   
   # Transforming data for log_2 normalisation
   example_data_exp2 <- example_data[,]
-  example_data_exp2$F1 <- 2 ^ example_data$F1
+  example_data_exp2$T1 <- 2 ^ example_data$T1
 
   # Expected output for log_2 normalisation
   expected_output_exp2 <- expected_output[,]
@@ -98,7 +98,7 @@ test_that("normality assessment works", {
   expect_equal(expected_output_exp2, assess_normality(example_data_exp2, c(1, 2)))
   
   # Check for generated histograms
-  filenames <- c("HIST_1_LOG_2_F1.png", "HIST_1_NORM_F1.png", "HIST_2_NORM_F2.png")
+  filenames <- c("HIST_1_LOG_2_T1.png", "HIST_1_NORM_T1.png", "HIST_2_NORM_F2.png")
   for (f in filenames) {
     expect_true(file.exists(f))
     expect_false(dir.exists(f))
@@ -112,11 +112,11 @@ test_that("normality assessment postprocessing works", {
   set.seed(123)
   example_data <- data.frame(ID = c(1, 2, 3, 4, 5), 
                              P1 = c("one", "two", "three", "four", "five"), 
-                             F1 = rnorm(5), 
+                             T1 = rnorm(5), 
                              F2 = rnorm(5))
   expected_output <- data.frame(index = rep(c(1, 2), each = 5),
-                                feature = rep(c("F1", "F2"), each = 5),
-                                values = c(example_data$F1, example_data$F2),
+                                feature = rep(c("T1", "F2"), each = 5),
+                                values = c(example_data$T1, example_data$F2),
                                 flag = "Normal",
                                 transf = "",
                                 transf_val = NA,
@@ -124,7 +124,7 @@ test_that("normality assessment postprocessing works", {
   
   # Transforming data for log_2 normalisation
   example_data_exp2 <- example_data[,]
-  example_data_exp2$F1 <- 2 ^ example_data$F1
+  example_data_exp2$T1 <- 2 ^ example_data$T1
   
   # Expected output for log_2 normalisation
   expected_output_exp2 <- expected_output[,]
@@ -133,7 +133,7 @@ test_that("normality assessment postprocessing works", {
   
   # Adding noise to feature to make it non-parametric
   example_data_non_par <- example_data[,]
-  example_data_non_par$F1 <- c(0, 15000, 0, 17, 0)
+  example_data_non_par$T1 <- c(0, 15000, 0, 17, 0)
   
   # Expected output for log_2 normalisation
   expected_output_non_par <- expected_output[,]
@@ -193,11 +193,11 @@ test_that("normality assessment statistics work", {
   set.seed(123)
   example_data <- data.frame(ID = c(1, 2, 3, 4, 5), 
                              P1 = c("one", "two", "three", "four", "five"), 
-                             F1 = rnorm(5), 
+                             T1 = rnorm(5), 
                              F2 = rnorm(5))
   expected_output <- data.frame(index = rep(c(1, 2), each = 5),
-                                feature = rep(c("F1", "F2"), each = 5),
-                                values = c(example_data$F1, example_data$F2),
+                                feature = rep(c("T1", "F2"), each = 5),
+                                values = c(example_data$T1, example_data$F2),
                                 flag = "Normal",
                                 transf = "",
                                 transf_val = NA,
@@ -205,7 +205,7 @@ test_that("normality assessment statistics work", {
   
   # Transforming data for log_2 normalisation
   example_data_exp2 <- example_data[,]
-  example_data_exp2$F1 <- 2 ^ example_data$F1
+  example_data_exp2$T1 <- 2 ^ example_data$T1
   
   # Expected output for log_2 normalisation
   expected_output_exp2 <- expected_output[,]
@@ -271,11 +271,11 @@ test_that("qtl mapping scanone works", {
   setwd(here::here())
   example_data <- data.frame(ID = 1:population,
                              P1 = c("one", "two", "three", "four", "five"),
-                             F1 = rnorm(population),
+                             T1 = rnorm(population),
                              F2 = rnorm(population))
   example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
-                                        feature = rep(c("F1", "F2"), each = 5),
-                                        values = c(example_data$F1, example_data$F2),
+                                        feature = rep(c("T1", "F2"), each = 5),
+                                        values = c(example_data$T1, example_data$F2),
                                         flag = "Normal",
                                         transf = "",
                                         transf_val = NA,
@@ -318,11 +318,11 @@ test_that("qtl mapping permutation test with scanone works", {
   setwd(here::here())
   example_data <- data.frame(ID = 1:population,
                              P1 = c("one", "two", "three", "four", "five"),
-                             F1 = rnorm(population),
+                             T1 = rnorm(population),
                              F2 = rnorm(population))
   example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
-                                        feature = rep(c("F1", "F2"), each = 5),
-                                        values = c(example_data$F1, example_data$F2),
+                                        feature = rep(c("T1", "F2"), each = 5),
+                                        values = c(example_data$T1, example_data$F2),
                                         flag = "Normal",
                                         transf = "",
                                         transf_val = NA,
@@ -344,7 +344,7 @@ test_that("qtl mapping permutation test with scanone works", {
   x_qtl_perm <- qtl_perm_test(x, n_perm = 5, model = "normal", method = "hk")
   expect_equal(c(9, 20), dim(x_qtl_perm))
 
-  filenames <- c("LOD-F1.png",
+  filenames <- c("LOD-T1.png",
                  "LOD-F2.png")
   for (f in filenames) {
     expect_true(file.exists(f))
