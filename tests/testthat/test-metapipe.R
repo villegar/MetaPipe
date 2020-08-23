@@ -4,7 +4,7 @@ test_that("load raw data works", {
   example_data <- data.frame(ID = c(1, 2, 3, 4, 5), 
                              P1 = c("one", "two", "three", "four", "five"), 
                              T1 = rnorm(5), 
-                             F2 = rnorm(5),
+                             T2 = rnorm(5),
                              stringsAsFactors = FALSE)
   
   # Raw data without duplicates
@@ -40,16 +40,16 @@ test_that("replace missing data works", {
   example_data <- data.frame(ID = c(1, 2, 3, 4, 5), 
                              P1 = c("one", "two", "three", "four", "five"), 
                              T1 = rnorm(5), 
-                             F2 = rnorm(5))
+                             T2 = rnorm(5))
  
   # Inserting missing values manually
   example_data$T1[2:3] <- NA
-  example_data$F2[4] <- NA
+  example_data$T2[4] <- NA
   
   # Expected output when replacing by half of the minimum value
   example_data_alt <- example_data[,]
   example_data_alt$T1[2:3] <- min(example_data$T1, na.rm = TRUE)/2
-  example_data_alt$F2[4] <- min(example_data$F2, na.rm = TRUE)/2
+  example_data_alt$T2[4] <- min(example_data$T2, na.rm = TRUE)/2
   
   # Testing the function with different parameters
   results_1 <- replace_missing(example_data, c(2))
@@ -75,10 +75,10 @@ test_that("normality assessment works", {
   example_data <- data.frame(ID = c(1, 2, 3, 4, 5), 
                              P1 = c("one", "two", "three", "four", "five"), 
                              T1 = rnorm(5), 
-                             F2 = rnorm(5))
+                             T2 = rnorm(5))
   expected_output <- data.frame(index = rep(c(1, 2), each = 5),
-                                feature = rep(c("T1", "F2"), each = 5),
-                                values = c(example_data$T1, example_data$F2),
+                                feature = rep(c("T1", "T2"), each = 5),
+                                values = c(example_data$T1, example_data$T2),
                                 flag = "Normal",
                                 transf = "",
                                 transf_val = NA,
@@ -98,7 +98,7 @@ test_that("normality assessment works", {
   expect_equal(expected_output_exp2, assess_normality(example_data_exp2, c(1, 2)))
   
   # Check for generated histograms
-  filenames <- c("HIST_1_LOG_2_T1.png", "HIST_1_NORM_T1.png", "HIST_2_NORM_F2.png")
+  filenames <- c("HIST_1_LOG_2_T1.png", "HIST_1_NORM_T1.png", "HIST_2_NORM_T2.png")
   for (f in filenames) {
     expect_true(file.exists(f))
     expect_false(dir.exists(f))
@@ -113,10 +113,10 @@ test_that("normality assessment postprocessing works", {
   example_data <- data.frame(ID = c(1, 2, 3, 4, 5), 
                              P1 = c("one", "two", "three", "four", "five"), 
                              T1 = rnorm(5), 
-                             F2 = rnorm(5))
+                             T2 = rnorm(5))
   expected_output <- data.frame(index = rep(c(1, 2), each = 5),
-                                feature = rep(c("T1", "F2"), each = 5),
-                                values = c(example_data$T1, example_data$F2),
+                                feature = rep(c("T1", "T2"), each = 5),
+                                values = c(example_data$T1, example_data$T2),
                                 flag = "Normal",
                                 transf = "",
                                 transf_val = NA,
@@ -194,10 +194,10 @@ test_that("normality assessment statistics work", {
   example_data <- data.frame(ID = c(1, 2, 3, 4, 5), 
                              P1 = c("one", "two", "three", "four", "five"), 
                              T1 = rnorm(5), 
-                             F2 = rnorm(5))
+                             T2 = rnorm(5))
   expected_output <- data.frame(index = rep(c(1, 2), each = 5),
-                                feature = rep(c("T1", "F2"), each = 5),
-                                values = c(example_data$T1, example_data$F2),
+                                feature = rep(c("T1", "T2"), each = 5),
+                                values = c(example_data$T1, example_data$T2),
                                 flag = "Normal",
                                 transf = "",
                                 transf_val = NA,
@@ -272,10 +272,10 @@ test_that("qtl mapping scanone works", {
   example_data <- data.frame(ID = 1:population,
                              P1 = c("one", "two", "three", "four", "five"),
                              T1 = rnorm(population),
-                             F2 = rnorm(population))
+                             T2 = rnorm(population))
   example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
-                                        feature = rep(c("T1", "F2"), each = 5),
-                                        values = c(example_data$T1, example_data$F2),
+                                        feature = rep(c("T1", "T2"), each = 5),
+                                        values = c(example_data$T1, example_data$T2),
                                         flag = "Normal",
                                         transf = "",
                                         transf_val = NA,
@@ -319,10 +319,10 @@ test_that("qtl mapping permutation test with scanone works", {
   example_data <- data.frame(ID = 1:population,
                              P1 = c("one", "two", "three", "four", "five"),
                              T1 = rnorm(population),
-                             F2 = rnorm(population))
+                             T2 = rnorm(population))
   example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
-                                        feature = rep(c("T1", "F2"), each = 5),
-                                        values = c(example_data$T1, example_data$F2),
+                                        feature = rep(c("T1", "T2"), each = 5),
+                                        values = c(example_data$T1, example_data$T2),
                                         flag = "Normal",
                                         transf = "",
                                         transf_val = NA,
@@ -345,7 +345,7 @@ test_that("qtl mapping permutation test with scanone works", {
   expect_equal(c(9, 20), dim(x_qtl_perm))
 
   filenames <- c("LOD-T1.png",
-                 "LOD-F2.png")
+                 "LOD-T2.png")
   for (f in filenames) {
     expect_true(file.exists(f))
     expect_false(dir.exists(f))
