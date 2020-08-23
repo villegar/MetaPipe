@@ -30,11 +30,11 @@ is_pseudo_marker <- function(marker) {
 #' seed <- 1
 #' example_data <- data.frame(ID = 1:population,
 #'                            P1 = c("one", "two", "three", "four", "five"),
-#'                            F1 = rnorm(population),
+#'                            T1 = rnorm(population),
 #'                            F2 = rnorm(population))
 #' example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
-#'                                       feature = rep(c("F1", "F2"), each = 5),
-#'                                       values = c(example_data$F1, example_data$F2),
+#'                                       feature = rep(c("T1", "F2"), each = 5),
+#'                                       values = c(example_data$T1, example_data$F2),
 #'                                       flag = "Normal",
 #'                                       transf = "",
 #'                                       transf_val = NA,
@@ -85,11 +85,11 @@ transform_pseudo_marker <- function(x_data, marker, chr, pos) {
 #' seed <- 1
 #' example_data <- data.frame(ID = 1:population,
 #'                            P1 = c("one", "two", "three", "four", "five"),
-#'                            F1 = rnorm(population),
+#'                            T1 = rnorm(population),
 #'                            F2 = rnorm(population))
 #' example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
-#'                                       feature = rep(c("F1", "F2"), each = 5),
-#'                                       values = c(example_data$F1, example_data$F2),
+#'                                       feature = rep(c("T1", "F2"), each = 5),
+#'                                       values = c(example_data$T1, example_data$F2),
 #'                                       flag = "Normal",
 #'                                       transf = "",
 #'                                       transf_val = NA,
