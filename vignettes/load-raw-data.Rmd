@@ -59,14 +59,13 @@ knitr::kable(raw_df, format = "html", escape = FALSE, table.attr = "style='width
   kableExtra::row_spec(0, extra_css = "vertical-align: middle;", background = hcolor, color = tcolor) %>%
   kableExtra::column_spec(1:7, border_left = TRUE, border_right = TRUE)
 ```
-
-Where the first column (`ID`) should be an unique identifier for each entry, if there are repeated values `MetaPipe` will aggregate (mean) and replace them by a single row. The data structure can have 0 to M properties, including categorical and numeric. Finally, at least one one trait is expected.
+where the first column (`ID`) should be an unique identifier for each entry, if there are repeated values `MetaPipe` will aggregate and replace them by a single row (mean across entries). The data structure can have 0 to M properties, including categorical and numerical. Finally, at least one one trait is expected.
 
 The function call is as follows:
 ```{r loading-raw-data-fx-call, eval = FALSE}
 load_raw(raw_data_filename = "FILE.CSV", excluded_columns = c(...))
 ```
-where `raw_data_filename` is the filename containg the raw data, either absolute or relative paths are accepted. Next, the argument `excluded_columns` is a vector containing the indices of the properties, e.g. `c(2, 3, ..., M)`.
+where `raw_data_filename` is the filename containg the raw data, either absolute or relative paths are accepted. The argument `excluded_columns` is a vector containing the indices of the properties, e.g. `c(2, 3, ..., M)`.
 
 ```{r loading-raw-data}
 # Toy dataset
@@ -84,3 +83,5 @@ write.csv(example_data[c(1:5, 1, 2), ], "example_data_dup.csv", row.names = FALS
 load_raw("example_data.csv", c(2))
 load_raw("example_data_dup.csv", c(2))
 ```
+
+Next, see either [Replace Missing Data](replace-missing-data.html) [Optional] or [Assess Normality](assess-normality.html). 
