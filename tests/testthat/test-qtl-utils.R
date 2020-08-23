@@ -13,10 +13,10 @@ test_that("transform pseudo-marker works", {
   example_data <- data.frame(ID = 1:population,
                              P1 = c("one", "two", "three", "four", "five"),
                              T1 = rnorm(population),
-                             F2 = rnorm(population))
+                             T2 = rnorm(population))
   example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
-                                        feature = rep(c("T1", "F2"), each = 5),
-                                        values = c(example_data$T1, example_data$F2),
+                                        feature = rep(c("T1", "T2"), each = 5),
+                                        values = c(example_data$T1, example_data$T2),
                                         flag = "Normal",
                                         transf = "",
                                         transf_val = NA,
@@ -60,10 +60,10 @@ test_that("effect plots work", {
   example_data <- data.frame(ID = 1:population,
                              P1 = c("one", "two", "three", "four", "five"),
                              T1 = rnorm(population),
-                             F2 = rnorm(population))
+                             T2 = rnorm(population))
   example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
-                                        feature = rep(c("T1", "F2"), each = 5),
-                                        values = c(example_data$T1, example_data$F2),
+                                        feature = rep(c("T1", "T2"), each = 5),
+                                        values = c(example_data$T1, example_data$T2),
                                         flag = "Normal",
                                         transf = "",
                                         transf_val = NA,
@@ -99,11 +99,11 @@ test_that("effect plots work", {
                  "EFF-T1-S7_1.png",
                  "EFF-T1-S8_3.png",
                  "EFF-NP-T1-S10_4.png",
-                 "EFF-F2-S2_8.png",
-                 "EFF-F2-S4_9.png",
-                 "EFF-F2-S6_3.png",
-                 "EFF-F2-S7_9.png",
-                 "EFF-F2-S9_5.png")
+                 "EFF-T2-S2_8.png",
+                 "EFF-T2-S4_9.png",
+                 "EFF-T2-S6_3.png",
+                 "EFF-T2-S7_9.png",
+                 "EFF-T2-S9_5.png")
   for (f in filenames) {
     expect_true(file.exists(f))
     expect_false(dir.exists(f))
@@ -114,7 +114,7 @@ test_that("effect plots work", {
   
   # Delete temporary files
   filenames <- c("LOD-T1.png",
-                 "LOD-F2.png",
+                 "LOD-T2.png",
                  "metapipe_normalisation_stats.csv", 
                  "metapipe_raw_data_non_par.csv", 
                  "metapipe_raw_data_norm.csv", 
