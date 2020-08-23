@@ -80,7 +80,7 @@ replace_missing <- function(raw_data, excluded_columns, out_prefix = "metapipe",
     NACount <- which(colMeans(is.na(raw_data[,-excluded_columns])) >= prop_na) + length(excluded_columns)
     if(length(NACount)) {
       write.csv(raw_data[, c(excluded_columns, NACount)], file = paste0(out_prefix,"_NA_raw_data.csv"), row.names = FALSE)
-      msg <- "The following features were dropped because they have "
+      msg <- "The following traits were dropped because they have "
       msg <- paste0(msg, (prop_na*100), "% or more missing values: \n")
       msg <- paste0(msg, paste(colnames(raw_data)[NACount], collapse = ", "), "\n")
       message(msg)
@@ -92,7 +92,7 @@ replace_missing <- function(raw_data, excluded_columns, out_prefix = "metapipe",
   NACount <- which(lapply(raw_data, function(x) all(is.na(x))) == TRUE)
   NACount <- unname(NACount[!(NACount %in% excluded_columns)])
   if(length(NACount) > 0){
-    msg <- "The following features were dropped because they have "
+    msg <- "The following traits were dropped because they have "
     msg <- paste0(msg, "100% missing values: \n")
     msg <- paste0(msg, paste(colnames(raw_data)[NACount], collapse = ", "), "\n")
     message(msg)
