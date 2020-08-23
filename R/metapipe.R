@@ -13,8 +13,8 @@
 #' @examples
 #' example_data <- data.frame(ID = c(1,2,3,4,5), 
 #'                            P1 = c("one", "two", "three", "four", "five"), 
-#'                            F1 = rnorm(5), 
-#'                            F2 = rnorm(5))
+#'                            T1 = rnorm(5), 
+#'                            T2 = rnorm(5))
 #' write.csv(example_data, "example_data.csv", row.names = FALSE)
 #' write.csv(example_data[c(1:5, 1, 2), ], "example_data_dup.csv", row.names = FALSE)
 #' load_raw("example_data.csv", c(1, 2))
@@ -61,10 +61,11 @@ load_raw <- function(raw_data_filename, excluded_columns) {
 #' @examples
 #' example_data <- data.frame(ID = c(1,2,3,4,5), 
 #'                            P1 = c("one", "two", "three", "four", "five"), 
-#'                            F1 = rnorm(5), 
-#'                            F2 = rnorm(5))
-#' example_data$F1[2:3] <- NA 
-#' example_data$F2[4] <- NA 
+#'                            T1 = rnorm(5), 
+#'                            T2 = rnorm(5),
+#'                            T3 = c(NA, rnorm(4)),                  #  20 % NAs
+#'                            T4 = c(NA, 1.2, -0.5, NA, 0.87),       #  40 % NAs
+#'                            T5 = NA)                               # 100 % NAs
 #' replace_missing(example_data, c(1, 2))
 #' replace_missing(example_data, c(1, 2), prop_na =  0.25)
 #' replace_missing(example_data, c(1, 2), replace_na =  TRUE)
@@ -117,8 +118,8 @@ replace_missing <- function(raw_data, excluded_columns, out_prefix = "metapipe",
 #' @examples
 #' example_data <- data.frame(ID = c(1,2,3,4,5), 
 #'                            P1 = c("one", "two", "three", "four", "five"), 
-#'                            F1 = rnorm(5), 
-#'                            F2 = rnorm(5))
+#'                            T1 = rnorm(5), 
+#'                            T2 = rnorm(5))
 #' assess_normality(example_data, c(1, 2))
 #' 
 #' @seealso \code{\link{assess_normality_postprocessing}} and \code{\link{assess_normality_stats}}
@@ -212,8 +213,8 @@ assess_normality <- function(raw_data,
 #' @examples
 #' example_data <- data.frame(ID = c(1,2,3,4,5), 
 #'                            P1 = c("one", "two", "three", "four", "five"), 
-#'                            F1 = rnorm(5), 
-#'                            F2 = rnorm(5))
+#'                            T1 = rnorm(5), 
+#'                            T2 = rnorm(5))
 #' example_data_normalised <- assess_normality(example_data, c(1, 2))
 #' assess_normality_postprocessing(example_data, c(1, 2), example_data_normalised)
 #' 
@@ -323,8 +324,8 @@ assess_normality_postprocessing <- function(raw_data,
 #' @examples
 #' example_data <- data.frame(ID = c(1,2,3,4,5), 
 #'                            P1 = c("one", "two", "three", "four", "five"), 
-#'                            F1 = rnorm(5), 
-#'                            F2 = rnorm(5))
+#'                            T1 = rnorm(5), 
+#'                            T2 = rnorm(5))
 #' example_data_normalised <- assess_normality(example_data, c(1, 2))
 #' assess_normality_postprocessing(example_data, c(1, 2), example_data_normalised)
 #' assess_normality_stats()
@@ -431,11 +432,11 @@ random_map <- function(genotypes = c("A", "H", "B"), lg = 1:10, markers = 10, po
 #' seed <- 1
 #' example_data <- data.frame(ID = 1:population,
 #'                            P1 = c("one", "two", "three", "four", "five"),
-#'                            F1 = rnorm(population),
-#'                            F2 = rnorm(population))
+#'                            T1 = rnorm(population),
+#'                            T2 = rnorm(population))
 #' example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
-#'                                       feature = rep(c("F1", "F2"), each = 5),
-#'                                       values = c(example_data$F1, example_data$F2),
+#'                                       feature = rep(c("T1", "T2"), each = 5),
+#'                                       values = c(example_data$T1, example_data$T2),
 #'                                       flag = "Normal",
 #'                                       transf = "",
 #'                                       transf_val = NA,
@@ -522,11 +523,11 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
 #' seed <- 1
 #' example_data <- data.frame(ID = 1:population,
 #'                            P1 = c("one", "two", "three", "four", "five"),
-#'                            F1 = rnorm(population),
-#'                            F2 = rnorm(population))
+#'                            T1 = rnorm(population),
+#'                            T2 = rnorm(population))
 #' example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
-#'                                       feature = rep(c("F1", "F2"), each = 5),
-#'                                       values = c(example_data$F1, example_data$F2),
+#'                                       feature = rep(c("T1", "T2"), each = 5),
+#'                                       values = c(example_data$T1, example_data$T2),
 #'                                       flag = "Normal",
 #'                                       transf = "",
 #'                                       transf_val = NA,
