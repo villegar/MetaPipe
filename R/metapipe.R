@@ -74,7 +74,7 @@ replace_missing <- function(raw_data, excluded_columns, out_prefix = "metapipe",
   
   # Missing values are replaced by half of the minimum non-zero value for each feature.
   if(replace_na) {
-    NA2halfmin <- function(x) suppressWarnings(replace(x, is.na(x), (min(x, na.rm = TRUE)/2)))
+    NA2halfmin <- function(x) suppressWarnings(replace(x, is.na(x), ifelse(all(is.na(x)), NA, (min(x, na.rm = TRUE)/2))))
     raw_data[,-excluded_columns] <- lapply(raw_data[,-excluded_columns], NA2halfmin)
   } else {
     NACount <- which(colMeans(is.na(raw_data[,-excluded_columns])) >= prop_na) + length(excluded_columns)
@@ -87,6 +87,7 @@ replace_missing <- function(raw_data, excluded_columns, out_prefix = "metapipe",
       raw_data[, NACount] <- NULL
     }
   }
+  
   return(raw_data)
 }
 
