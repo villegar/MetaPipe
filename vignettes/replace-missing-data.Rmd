@@ -10,7 +10,9 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.path = "man/figures/replace-missing-data-",
+  out.width = "100%"
 )
 ```
 
@@ -18,36 +20,70 @@ knitr::opts_chunk$set(
 library(MetaPipe)
 ```
 
-### Create toy dataset
-```{r loading-raw-data}
-# Toy dataset
-set.seed(123)
-example_data <- data.frame(ID = c(1,2,3,4,5),
-                           P1 = c("one", "two", "three", "four", "five"), 
-                           F1 = rnorm(5), 
-                           F2 = rnorm(5))
-```
+`MetaPipe` can handle with missing data in a couple of ways:
 
-### Function call
+1. Drop traits which exceed an NA proportion threshold (50% by default)
+2. Replace NAs by half of the minimum value within each trait 
+
+## Function call
 ```{r replace-missing-data-fx-call, eval = FALSE}
 replace_missing(raw_data = example_data, 
                 excluded_columns = c(2), 
                 # Optional
-                out_prefix = "metapipe", prop_na = 0.5, replace_na = FALSE)
+                out_prefix = "metapipe", 
+                prop_na = 0.5, 
+                replace_na = FALSE)
 ```
-where `raw_data` is a data frame containing the raw data, as described in [Load Raw Data](load-raw-data) and `excluded_columns` is a vector containing the indices of the properties, e.g. `c(2, 3, ..., M)`. The other arguments are optional, `out_prefix` is the prefix for output files, `prop_na` is the proportion of NA values (used to drop features), and `replace_na` is a logical flag to indicate whether or not NAs should be replace by half of the minimum value.
+where `raw_data` is a data frame containing the raw data, as described in [Load Raw Data](load-raw-data.html) and `excluded_columns` is a vector containing the indices of the properties, e.g. `c(2, 3, ..., M)`. The other arguments are optional, `out_prefix` is the prefix for output files, `prop_na` is the proportion of NA values (used to drop traits), and `replace_na` is a logical flag to indicate whether or not NAs should be replace by half of the minimum value.
 
-```{r replace-missing-data-example}
-# Inserting missing values manually
-example_data$F1[2:3] <- NA
-example_data$F2[4] <- NA
+## Drop traits
+By default the pipeline will drop traits that exceed an NA proportion threshold, 
+this can be fine tuned by the user with the parameter `prop_na`. It is important 
+to keep in mind the side effects of excluding variables from the QTL mapping, 
+like making wrong conclusions regarding the most significant QTLs.
 
-# No changes expected
+```{r drop-traits-example}
+set.seed(123)
+example_data <- data.frame(ID = 1:5,
+                           P1 = c("one", "two", "three", "four", "five"), 
+                           T1 = rnorm(5), 
+                           T2 = rnorm(5),
+                           T3 = c(NA, rnorm(4)),                     #  20 % NAs
+                           T4 = c(NA, 1.2, -0.5, NA, 0.87),          #  40 % NAs
+                           T5 = NA)                                  # 100 % NAs
+
+# Default parameters: NA proportion = 50%
 replace_missing(example_data, c(2))
 
-# Traits with 25% of NA should be dropped
-replace_missing(example_data, c(2), prop_na =  0.25)
-
-# NAs should be replaced by half of the minimum value
-replace_missing(example_data, c(2), replace_na =  TRUE)
+# NA proportion = 30%
+replace_missing(example_data, c(2), prop_na = 0.3)
 ```
+
+## Replace NAs
+Alternatively, the user can indicate whether or not NA values should be replaced
+by finding the minimum value for each trait and dividing it by two. This result 
+can be achieved by passing the parameter `replace_na = TRUE`. Users should be 
+cautious when using this approach, as the replacement of data points can have
+side effects that might lead to the wrong conclusions.
+
+```{r replace-na-example}
+set.seed(123)
+example_data <- data.frame(ID = 1:5,
+                           P1 = c("one", "two", "three", "four", "five"), 
+                           T1 = rnorm(5), 
+                           T2 = rnorm(5),
+                           T3 = c(NA, rnorm(4)),                     #  20 % NAs
+                           T4 = c(NA, 1.2, -0.5, NA, 0.87),          #  40 % NAs
+                           T5 = NA)                                  # 100 % NAs
+
+# Default parameters: NA proportion = 50%
+replace_missing(example_data, c(2), replace_na = TRUE)
+
+# NA proportion = 30%
+replace_missing(example_data, c(2), prop_na = 0.3, replace_na = TRUE)
+```
+
+From the last example can be seen that `prop_na` and `replace_na` are mutually
+exclusive, and `replace_na` has precedence over `prop_na`.
+
+Next, see [Assess Normality](assess-normality.html). 
