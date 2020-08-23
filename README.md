@@ -46,7 +46,7 @@ You can install the development version from
 [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("remotes")
+# install.packages(c("hexSticker", "kableExtra", "qpdf", remotes")
 remotes::install_github("villegar/MetaPipe", build_vignettes = TRUE)
 ```
 
@@ -86,19 +86,22 @@ e.g. `c(2, 3, ..., M)`.
 set.seed(123)
 example_data <- data.frame(ID = c(1,2,3,4,5),
                            P1 = c("one", "two", "three", "four", "five"), 
-                           F1 = rnorm(5), 
-                           F2 = rnorm(5))
+                           T1 = rnorm(5), 
+                           T2 = rnorm(5),
+                           T3 = c(NA, rnorm(4)),                     #  20 % NAs
+                           T4 = c(NA, 1.2, -0.5, NA, 0.87),          #  40 % NAs
+                           T5 = NA)                                  # 100 % NAs
 ## Write to disk
 write.csv(example_data, "example_data.csv", row.names = FALSE)
 
 # Load the data
 load_raw("example_data.csv", c(2))
-#>   ID    P1          F1         F2
-#> 1  1   one -0.56047565  1.7150650
-#> 2  2   two -0.23017749  0.4609162
-#> 3  3 three  1.55870831 -1.2650612
-#> 4  4  four  0.07050839 -0.6868529
-#> 5  5  five  0.12928774 -0.4456620
+#>   ID    P1          T1         T2        T3    T4 T5
+#> 1  1   one -0.56047565  1.7150650        NA    NA NA
+#> 2  2   two -0.23017749  0.4609162 1.2240818  1.20 NA
+#> 3  3 three  1.55870831 -1.2650612 0.3598138 -0.50 NA
+#> 4  4  four  0.07050839 -0.6868529 0.4007715    NA NA
+#> 5  5  five  0.12928774 -0.4456620 0.1106827  0.87 NA
 ```
 
 ### Replace missing data
@@ -129,36 +132,41 @@ be replace by half of the minimum value.
 
 ``` r
 # Inserting missing values manually
-example_data$F1[2:3] <- NA
-example_data$F2[4] <- NA
+example_data$T1[2:3] <- NA
+example_data$T2[4] <- NA
 
 # No changes expected
 replace_missing(example_data, c(2))
-#>   ID    P1          F1         F2
-#> 1  1   one -0.56047565  1.7150650
-#> 2  2   two          NA  0.4609162
-#> 3  3 three          NA -1.2650612
-#> 4  4  four  0.07050839         NA
-#> 5  5  five  0.12928774 -0.4456620
+#> The following features were dropped because they have 50% or more missing values: 
+#> T5
+#>   ID    P1          T1         T2        T3    T4
+#> 1  1   one -0.56047565  1.7150650        NA    NA
+#> 2  2   two          NA  0.4609162 1.2240818  1.20
+#> 3  3 three          NA -1.2650612 0.3598138 -0.50
+#> 4  4  four  0.07050839         NA 0.4007715    NA
+#> 5  5  five  0.12928774 -0.4456620 0.1106827  0.87
 
 # Traits with 25% of NA should be dropped
 replace_missing(example_data, c(2), prop_na =  0.25)
-#> The following features were dropped because they have 25% or more missing values: F1
-#>   ID    P1         F2
-#> 1  1   one  1.7150650
-#> 2  2   two  0.4609162
-#> 3  3 three -1.2650612
-#> 4  4  four         NA
-#> 5  5  five -0.4456620
+#> The following features were dropped because they have 25% or more missing values: 
+#> T1, T4, T5
+#>   ID    P1         T2        T3
+#> 1  1   one  1.7150650        NA
+#> 2  2   two  0.4609162 1.2240818
+#> 3  3 three -1.2650612 0.3598138
+#> 4  4  four         NA 0.4007715
+#> 5  5  five -0.4456620 0.1106827
 
 # NAs should be replaced by half of the minimum value
 replace_missing(example_data, c(2), replace_na =  TRUE)
-#>   ID    P1          F1         F2
-#> 1  1   one -0.56047565  1.7150650
-#> 2  2   two -0.28023782  0.4609162
-#> 3  3 three -0.28023782 -1.2650612
-#> 4  4  four  0.07050839 -0.6325306
-#> 5  5  five  0.12928774 -0.4456620
+#> The following features were dropped because they have 100% missing values: 
+#> T5
+#>   ID    P1          T1         T2         T3    T4
+#> 1  1   one -0.56047565  1.7150650 0.05534136 -0.25
+#> 2  2   two -0.28023782  0.4609162 1.22408180  1.20
+#> 3  3 three -0.28023782 -1.2650612 0.35981383 -0.50
+#> 4  4  four  0.07050839 -0.6325306 0.40077145 -0.25
+#> 5  5  five  0.12928774 -0.4456620 0.11068272  0.87
 ```
 
 ### Assess normality

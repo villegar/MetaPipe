@@ -64,7 +64,7 @@ The goal of MetaPipe is to provide an easy to use and powerful tool capable of p
 
 You can install the development version from [GitHub](https://github.com/) with:
 ``` r
-# install.packages("remotes")
+# install.packages(c("hexSticker", "kableExtra", "qpdf", remotes")
 remotes::install_github("villegar/MetaPipe", build_vignettes = TRUE)
 ```
 ## Example
@@ -93,8 +93,11 @@ where `raw_data_filename` is the filename containg the raw data, both absolute a
 set.seed(123)
 example_data <- data.frame(ID = c(1,2,3,4,5),
                            P1 = c("one", "two", "three", "four", "five"), 
-                           F1 = rnorm(5), 
-                           F2 = rnorm(5))
+                           T1 = rnorm(5), 
+                           T2 = rnorm(5),
+                           T3 = c(NA, rnorm(4)),                     #  20 % NAs
+                           T4 = c(NA, 1.2, -0.5, NA, 0.87),          #  40 % NAs
+                           T5 = NA)                                  # 100 % NAs
 ## Write to disk
 write.csv(example_data, "example_data.csv", row.names = FALSE)
 
@@ -120,8 +123,8 @@ where `raw_data` is a data frame containing the raw data, as described in [Load 
 
 ```{r replace-missing-data-example}
 # Inserting missing values manually
-example_data$F1[2:3] <- NA
-example_data$F2[4] <- NA
+example_data$T1[2:3] <- NA
+example_data$T2[4] <- NA
 
 # No changes expected
 replace_missing(example_data, c(2))
