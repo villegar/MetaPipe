@@ -32,10 +32,11 @@ Replace missing values (NAs)
 \examples{
 example_data <- data.frame(ID = c(1,2,3,4,5), 
                            P1 = c("one", "two", "three", "four", "five"), 
-                           F1 = rnorm(5), 
-                           F2 = rnorm(5))
-example_data$F1[2:3] <- NA 
-example_data$F2[4] <- NA 
+                           T1 = rnorm(5), 
+                           T2 = rnorm(5),
+                           T3 = c(NA, rnorm(4)),                  #  20 \% NAs
+                           T4 = c(NA, 1.2, -0.5, NA, 0.87),       #  40 \% NAs
+                           T5 = NA)                               # 100 \% NAs
 replace_missing(example_data, c(1, 2))
 replace_missing(example_data, c(1, 2), prop_na =  0.25)
 replace_missing(example_data, c(1, 2), replace_na =  TRUE)
