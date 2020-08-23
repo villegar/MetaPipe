@@ -126,7 +126,7 @@ where `raw_data` is a data frame containing the raw data, as described
 in [Load Raw Data](#load-raw-data) and `excluded_columns` is a vector
 containing the indices of the properties, e.g. `c(2, 3, ..., M)`. The
 other arguments are optional, `out_prefix` is the prefix for output
-files, `prop_na` is the proportion of NA values (used to drop features),
+files, `prop_na` is the proportion of NA values (used to drop traits),
 and `replace_na` is a logical flag to indicate whether or not NAs should
 be replace by half of the minimum value.
 

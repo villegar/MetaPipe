@@ -119,7 +119,7 @@ replace_missing(raw_data = example_data,
                 # Optional
                 out_prefix = "metapipe", prop_na = 0.5, replace_na = FALSE)
 ```
-where `raw_data` is a data frame containing the raw data, as described in [Load Raw Data](#load-raw-data) and `excluded_columns` is a vector containing the indices of the properties, e.g. `c(2, 3, ..., M)`. The other arguments are optional, `out_prefix` is the prefix for output files, `prop_na` is the proportion of NA values (used to drop features), and `replace_na` is a logical flag to indicate whether or not NAs should be replace by half of the minimum value.
+where `raw_data` is a data frame containing the raw data, as described in [Load Raw Data](#load-raw-data) and `excluded_columns` is a vector containing the indices of the properties, e.g. `c(2, 3, ..., M)`. The other arguments are optional, `out_prefix` is the prefix for output files, `prop_na` is the proportion of NA values (used to drop traits), and `replace_na` is a logical flag to indicate whether or not NAs should be replace by half of the minimum value.
 
 ```{r replace-missing-data-example}
 # Inserting missing values manually
