@@ -12,11 +12,11 @@ test_that("transform pseudo-marker works", {
   setwd(here::here())
   example_data <- data.frame(ID = 1:population,
                              P1 = c("one", "two", "three", "four", "five"),
-                             F1 = rnorm(population),
+                             T1 = rnorm(population),
                              F2 = rnorm(population))
   example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
-                                        feature = rep(c("F1", "F2"), each = 5),
-                                        values = c(example_data$F1, example_data$F2),
+                                        feature = rep(c("T1", "F2"), each = 5),
+                                        values = c(example_data$T1, example_data$F2),
                                         flag = "Normal",
                                         transf = "",
                                         transf_val = NA,
@@ -59,11 +59,11 @@ test_that("effect plots work", {
   setwd(here::here())
   example_data <- data.frame(ID = 1:population,
                              P1 = c("one", "two", "three", "four", "five"),
-                             F1 = rnorm(population),
+                             T1 = rnorm(population),
                              F2 = rnorm(population))
   example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
-                                        feature = rep(c("F1", "F2"), each = 5),
-                                        values = c(example_data$F1, example_data$F2),
+                                        feature = rep(c("T1", "F2"), each = 5),
+                                        values = c(example_data$T1, example_data$F2),
                                         flag = "Normal",
                                         transf = "",
                                         transf_val = NA,
@@ -95,10 +95,10 @@ test_that("effect plots work", {
   
   effect_plots(x_sim, x_qtl_perm)
   
-  filenames <- c("EFF-F1-S6_4.png",
-                 "EFF-F1-S7_1.png",
-                 "EFF-F1-S8_3.png",
-                 "EFF-NP-F1-S10_4.png",
+  filenames <- c("EFF-T1-S6_4.png",
+                 "EFF-T1-S7_1.png",
+                 "EFF-T1-S8_3.png",
+                 "EFF-NP-T1-S10_4.png",
                  "EFF-F2-S2_8.png",
                  "EFF-F2-S4_9.png",
                  "EFF-F2-S6_3.png",
@@ -113,7 +113,7 @@ test_that("effect plots work", {
   }
   
   # Delete temporary files
-  filenames <- c("LOD-F1.png",
+  filenames <- c("LOD-T1.png",
                  "LOD-F2.png",
                  "metapipe_normalisation_stats.csv", 
                  "metapipe_raw_data_non_par.csv", 
