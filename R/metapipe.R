@@ -134,7 +134,7 @@ assess_normality <- function(raw_data,
   doParallel::registerDoParallel(cl)
   
   # Load binary operator for backend
-  `%dopar%` <- foreach::`%dopar%`
+  #`%dopar%` <- foreach::`%dopar%`
   
   # Exclude column 1, ID
   excluded_columns <- unique(c(1, excluded_columns))
@@ -417,7 +417,7 @@ random_map <- function(genotypes = c("A", "H", "B"), lg = 1:10, markers = 10, po
 }
 
 #' Perform QTL mapping scanone to obtain LOD scores for all features and markers
-#'
+#' @importFrom foreach %dopar%
 #' @param x_data cross-data containing genetic map data and features
 #' @param cpus number of CPUS to be used
 #' @param ... S4 parameters for R/qtl library
@@ -466,7 +466,7 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
   doParallel::registerDoParallel(cl)
   
   # Load binary operator for backend
-  `%dopar%` <- foreach::`%dopar%`
+  # `%dopar%` <- foreach::`%dopar%`
   
   # Compute feature indices, accounting for the offset of ID and properties
   feature_indices <- 2:ncol(x_data$pheno)
@@ -498,7 +498,7 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
 }
 
 #' Perform QTL mapping permutation test using scanone to obtain significant QTLs
-#'
+#' @importFrom foreach %dopar%
 #' @importFrom graphics abline
 #' @importFrom graphics legend
 #' @importFrom stats as.formula
@@ -565,7 +565,7 @@ qtl_perm_test <- function(x_data,
   doParallel::registerDoParallel(cl)
   
   # Load binary operator for backend
-  `%dopar%` <- foreach::`%dopar%`
+  # `%dopar%` <- foreach::`%dopar%`
   
   # Compute feature indices, accounting for the offset of ID and properties
   feature_indices <- 2:ncol(x_data$pheno)
