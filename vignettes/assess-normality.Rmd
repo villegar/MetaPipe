@@ -10,10 +10,29 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.path = "man/figures/assess-normality-",
+  out.width = "100%"
 )
+
+options(knitr.kable.NA = '')
+hcolor <- "#363B74"
+tcolor <- "#EEEEEE"
 ```
 
 ```{r setup}
 library(MetaPipe)
+```
+
+`MetaPipe` assesses the normality of variables (traits) by performing a 
+Shapiro-Wilk test on the raw data (see [Load Raw Data](load-raw-data.html) and 
+[Replace Missing Data](replace-missing-data.html)). Based on whether or not the
+data approximates a normal distribution, an array of transformations will be 
+computed, and the normality assessed one more time.
+
+The diagram below shows the tree of transformations that can be performed, the
+user can specify the transformation values passing a vector to `transf_vals`; by 
+default, `[2, e, 3, 4, 5, 6, 7, 8, 9, 10]`.
+```{r assess-normality-diagram, echo = FALSE}
+DiagrammeR::grViz(system.file("figures/assess-normality-graph.gv", package = "MetaPipe"))
 ```
