@@ -45,6 +45,7 @@ Imports:
     VIM
 Suggests:
     badger,
+    DiagrammeR,
     hexSticker,
     knitr,
     kableExtra,
