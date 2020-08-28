@@ -17,6 +17,7 @@ before_install:
 
 r_packages:
   - covr
+  - DiagrammeR
 
 after_success:
   - Rscript -e 'library(covr); codecov()'
