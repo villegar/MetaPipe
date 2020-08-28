@@ -1,4 +1,6 @@
 language: r
+r: 
+  - release
 os: linux
 dist: xenial
 cache:
