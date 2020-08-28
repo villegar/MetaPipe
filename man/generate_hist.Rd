@@ -4,16 +4,16 @@
 \alias{generate_hist}
 \title{This function generates a single histogram}
 \usage{
-generate_hist(data, feature, prefix, xlab)
+generate_hist(data, feature, prefix = "metapipe", xlab = NULL)
 }
 \arguments{
 \item{data}{Histogram data}
 
 \item{feature}{Feature name}
 
-\item{prefix}{File prefix}
+\item{prefix}{File prefix [default: metapipe]}
 
-\item{xlab}{x-axis label}
+\item{xlab}{x-axis label [default: NULL]}
 }
 \description{
 This function generates a single histogram
