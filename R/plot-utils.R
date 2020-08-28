@@ -155,15 +155,15 @@ compare_hist <- function(original, transformed, feature, prefix, xlab){
 #'
 #' @param data Histogram data
 #' @param feature Feature name
-#' @param prefix File prefix
-#' @param xlab x-axis label
+#' @param prefix File prefix [default: metapipe]
+#' @param xlab x-axis label [default: NULL]
 #'
 #' @export
 #'
 #' @examples
 #' norm_dist <- rnorm(100)
 #' generate_hist(norm_dist, "XYZ", "xyz_hist", "x")
-generate_hist <- function(data, feature, prefix, xlab){
+generate_hist <- function(data, feature, prefix = "metapipe", xlab = NULL){
   ALPHA <- 1
   BINS <- 20
   histogram <- data.frame(original = data)
