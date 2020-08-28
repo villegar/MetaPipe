@@ -153,9 +153,9 @@ compare_hist <- function(original, transformed, feature, prefix, xlab){
 
 #' This function generates a single histogram
 #'
-#' @param data Histogram data
-#' @param feature Feature name
-#' @param prefix File prefix [default: metapipe]
+#' @param data histogram data
+#' @param title plot title
+#' @param prefix file prefix [default: metapipe]
 #' @param xlab x-axis label [default: NULL]
 #'
 #' @export
@@ -163,7 +163,7 @@ compare_hist <- function(original, transformed, feature, prefix, xlab){
 #' @examples
 #' norm_dist <- rnorm(100)
 #' generate_hist(norm_dist, "XYZ", "xyz_hist", "x")
-generate_hist <- function(data, feature, prefix = "metapipe", xlab = NULL){
+generate_hist <- function(data, title, prefix = "metapipe", xlab = NULL){
   ALPHA <- 1
   BINS <- 20
   histogram <- data.frame(original = data)
@@ -175,9 +175,8 @@ generate_hist <- function(data, feature, prefix = "metapipe", xlab = NULL){
                             col = "black", 
                             fill = "#7FCDBB") +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 60, hjust = 1)) + 
-    ggplot2::labs(title=paste("Feature", feature), x = "", y = "") +
-    ggplot2::xlab(paste0(feature))
-  ggplot_save(myPlot,paste0(prefix, "_", feature))
+    ggplot2::labs(title = title, x = xlab, y = ylab)
+  ggplot_save(myPlot,paste0(prefix, "_", title))
 }
 
 #' Create Hexagonal logo for MetaPipe
