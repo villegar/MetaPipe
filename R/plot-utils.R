@@ -157,13 +157,14 @@ compare_hist <- function(original, transformed, feature, prefix, xlab){
 #' @param title plot title
 #' @param prefix file prefix [default: metapipe]
 #' @param xlab x-axis label [default: NULL]
+#' @param save boolean flag to indicate if that plot should be save to disk [default: TRUE]
 #'
 #' @export
 #'
 #' @examples
 #' norm_dist <- rnorm(100)
 #' generate_hist(norm_dist, "XYZ", "xyz_hist", "x")
-generate_hist <- function(data, title, prefix = "metapipe", xlab = NULL){
+generate_hist <- function(data, title, prefix = "metapipe", xlab = NULL, save = TRUE){
   ALPHA <- 1
   BINS <- 20
   histogram <- data.frame(original = data)
@@ -175,8 +176,14 @@ generate_hist <- function(data, title, prefix = "metapipe", xlab = NULL){
                             col = "black", 
                             fill = "#7FCDBB") +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 60, hjust = 1)) + 
-    ggplot2::labs(title = title, x = xlab, y = ylab)
-  ggplot_save(myPlot,paste0(prefix, "_", title))
+    ggplot2::labs(title = title, x = xlab, y = NULL)
+
+  if (!save)
+    return(myPlot)
+  filename <- gsub("[[:punct:]]", "", paste0(prefix, "_", title))
+  filename <- gsub(" ", "-", filename)
+  ggplot_save(myPlot, filename)
+  return(NULL)
 }
 
 #' Create Hexagonal logo for MetaPipe
