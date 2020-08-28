@@ -175,9 +175,9 @@ generate_hist <- function(data, feature, prefix = "metapipe", xlab = NULL){
                             col = "black", 
                             fill = "#7FCDBB") +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 60, hjust = 1)) + 
-    ggplot2::labs(title=paste("Feature",feature), x="", y="") +
+    ggplot2::labs(title=paste("Feature", feature), x = "", y = "") +
     ggplot2::xlab(paste0(feature))
-  ggplot_save(myPlot,paste0(prefix,"_",feature))
+  ggplot_save(myPlot,paste0(prefix, "_", feature))
 }
 
 #' Create Hexagonal logo for MetaPipe
