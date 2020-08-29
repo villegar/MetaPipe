@@ -180,7 +180,7 @@ generate_hist <- function(data, title, prefix = "metapipe", xlab = NULL, save = 
 
   if (!save)
     return(myPlot)
-  filename <- gsub("[[:punct:]]", "", paste0(prefix, "_", title))
+  filename <- gsub("[[:punct:]]", "", paste(prefix, title))
   filename <- gsub(" ", "-", filename)
   ggplot_save(myPlot, filename)
   return(NULL)
