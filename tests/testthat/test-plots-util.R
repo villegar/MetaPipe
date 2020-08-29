@@ -59,7 +59,7 @@ test_that("generate histogram works", {
   generate_hist(norm_dist, "XYZ", "hist", "x")
   output <- generate_hist(norm_dist, "XYZ", "hist", "x", FALSE)
   expect_equal(class(output), c("gg", "ggplot"))
-  filename <- "hist-XYZ.png"
+  filename <- "hist_XYZ.png"
   expect_true(file.exists(filename))
   expect_false(dir.exists(filename))
   expect_gt(file.size(filename), 0)
