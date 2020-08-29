@@ -57,7 +57,9 @@ test_that("compare histograms works", {
 test_that("generate histogram works", {
   norm_dist <- rnorm(100)
   generate_hist(norm_dist, "XYZ", "hist", "x")
-  filename <- "hist_XYZ.png"
+  output <- generate_hist(norm_dist, "XYZ", "hist", "x", FALSE)
+  expect_equal(class(output), c("gg", "ggplot"))
+  filename <- "hist-XYZ.png"
   expect_true(file.exists(filename))
   expect_false(dir.exists(filename))
   expect_gt(file.size(filename), 0)
