@@ -148,10 +148,9 @@ assess_normality <- function(raw_data,
   # Extract features (column names)
   features <- colnames(raw_data)
   raw_data_normalised <- foreach::foreach(i = feature_indices, 
-                                          .packages = c('MetaPipe'), 
                                   .combine = rbind) %dopar% {
                                     # Create and populate entry for current feature
-                                    record <- data.frame( 
+                                    record <- data.frame(
                                       index = i,
                                       feature = features[i],
                                       values = raw_data[, i],
@@ -187,7 +186,7 @@ assess_normality <- function(raw_data,
                                         transformation <- "NORM"
                                         prefix <- paste0(plots_dir,"/HIST_", i, "_", transformation)
                                         MetaPipe::generate_hist(data = raw_data[, i], 
-                                                                feature = features[i], 
+                                                                title = features[i], 
                                                                 prefix = prefix, 
                                                                 xlab = xlab)
                                         record$flag <- "Normal"
