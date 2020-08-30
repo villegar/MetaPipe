@@ -51,15 +51,16 @@ test_that("replace missing data works", {
   example_data_alt <- example_data[,]
   example_data_alt$T1[2:3] <- min(example_data$T1, na.rm = TRUE)/2
   example_data_alt$T2[4] <- min(example_data$T2, na.rm = TRUE)/2
+  example_data_alt$T3 <- NULL
   
   # Testing the function with different parameters
-  results_1 <- replace_missing(example_data, c(2))
+  expect_message(results_1 <- replace_missing(example_data, c(2)))
   expect_message(results_2 <- replace_missing(example_data, c(1, 2), prop_na =  0.25))
-  results_3 <- replace_missing(example_data, c(1, 2), replace_na =  TRUE)
+  expect_message(results_3 <- replace_missing(example_data, c(1, 2), replace_na =  TRUE))
   
   # Comparing results
-  expect_equal(example_data, results_1)
-  expect_equal(example_data[, colnames(example_data) != "T1"], results_2)
+  expect_equal(example_data[, -5], results_1) # Drop T3
+  expect_equal(example_data[, -c(3, 5)], results_2) # Drop T1 and T3
   expect_equal(example_data_alt, results_3)
   
   # Checking for file generated in the test where prop_na =  0.25
