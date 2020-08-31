@@ -158,24 +158,40 @@ compare_hist <- function(original, transformed, feature, prefix, xlab){
 #' @param prefix file prefix [default: metapipe]
 #' @param xlab x-axis label [default: NULL]
 #' @param save boolean flag to indicate if that plot should be save to disk [default: TRUE]
+#' @param alpha value to set the transparency of the bins [default: 1]
+#' @param angle rotation angle for labels [default: 60]
+#' @param bins number of bins to plot [default: 20]
+#' @param col color for bins border [default: "black"]
+#' @param hjust horizontal adjustment of labels [default: 1]
+#' @param fill filling color [default: "#7FCDBB"]
+# @param ... S4 parameters for the ggplot2 library
 #'
 #' @export
 #'
 #' @examples
 #' norm_dist <- rnorm(100)
 #' generate_hist(norm_dist, "XYZ", "xyz_hist", "x")
-generate_hist <- function(data, title, prefix = "metapipe", xlab = NULL, save = TRUE){
-  ALPHA <- 1
-  BINS <- 20
+generate_hist <- function(data, 
+                          title, 
+                          prefix = "metapipe", 
+                          xlab = NULL, 
+                          save = TRUE, 
+                          alpha = 1,
+                          angle = 60,
+                          bins = 20, 
+                          col = "black",
+                          hjust = 1,
+                          fill = "#7FCDBB") {
   histogram <- data.frame(original = data)
   myPlot <- ggplot2::ggplot(data = histogram, ggplot2::aes(original)) +
-    ggplot2::geom_histogram(alpha = ALPHA, 
+    ggplot2::geom_histogram(alpha = alpha, 
                             ggplot2::aes(y = ..count..), 
                             position = "identity", 
-                            bins = BINS, 
-                            col = "black", 
-                            fill = "#7FCDBB") +
-    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 60, hjust = 1)) + 
+                            bins = bins, 
+                            col = col, 
+                            fill = fill) +
+    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = angle, 
+                                                       hjust = hjust)) + 
     ggplot2::labs(title = title, x = xlab, y = NULL)
 
   if (!save)
