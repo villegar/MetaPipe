@@ -136,6 +136,10 @@ assess_normality <- function(raw_data,
   # Load binary operator for backend
   #`%dopar%` <- foreach::`%dopar%`
   
+  # Verify that plots_dir exists
+  if (!dir.exists(plots_dir))
+    dir.create(plots_dir, FALSE)
+  
   # Exclude column 1, ID
   excluded_columns <- unique(c(1, excluded_columns))
   
