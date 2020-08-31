@@ -10,9 +10,9 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>",
-  fig.path = "man/figures/assess-normality-",
-  out.width = "100%"
+  comment = "#>"#,
+  # fig.path = "man/figures/assess-normality-",
+  # out.width = "100%"
 )
 
 options(knitr.kable.NA = '')
@@ -30,16 +30,15 @@ Shapiro-Wilk test on the raw data (see [Load Raw Data](load-raw-data.html) and
 data approximates a normal distribution, an array of transformations will be 
 computed, and the normality assessed one more time.
 
-```{r, echo = FALSE}
+```{r assess-normality-example-data-before, echo = FALSE, dpi = 150, fig.align = 'center'}
 set.seed(123)
 test_data <- rnorm(500)
 MetaPipe::generate_hist(exp(1)^test_data, NULL, xlab = latex2exp::TeX("e^{data}"), save = FALSE)
-#hist()
 ```
 
 The diagram below shows the tree of transformations that can be performed, the
 user can specify the transformation values passing a vector to `transf_vals`; by 
 default, `[2, e, 3, 4, 5, 6, 7, 8, 9, 10]`.
 ```{r assess-normality-diagram, echo = FALSE}
-DiagrammeR::grViz(system.file("figures/assess-normality-graph.gv", package = "MetaPipe"))
+DiagrammeR::grViz(system.file("figures/assess-normality-graph.gv", package = "MetaPipe"), width = "100%")
 ```
