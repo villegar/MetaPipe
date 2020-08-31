@@ -4,7 +4,19 @@
 \alias{generate_hist}
 \title{This function generates a single histogram}
 \usage{
-generate_hist(data, title, prefix = "metapipe", xlab = NULL, save = TRUE)
+generate_hist(
+  data,
+  title,
+  prefix = "metapipe",
+  xlab = NULL,
+  save = TRUE,
+  alpha = 1,
+  angle = 60,
+  bins = 20,
+  col = "black",
+  hjust = 1,
+  fill = "#7FCDBB"
+)
 }
 \arguments{
 \item{data}{histogram data}
@@ -16,6 +28,18 @@ generate_hist(data, title, prefix = "metapipe", xlab = NULL, save = TRUE)
 \item{xlab}{x-axis label [default: NULL]}
 
 \item{save}{boolean flag to indicate if that plot should be save to disk [default: TRUE]}
+
+\item{alpha}{value to set the transparency of the bins [default: 1]}
+
+\item{angle}{rotation angle for labels [default: 60]}
+
+\item{bins}{number of bins to plot [default: 20]}
+
+\item{col}{color for bins border [default: "black"]}
+
+\item{hjust}{horizontal adjustment of labels [default: 1]}
+
+\item{fill}{filling color [default: "#7FCDBB"]}
 }
 \description{
 This function generates a single histogram
