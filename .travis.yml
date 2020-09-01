@@ -19,6 +19,7 @@ before_install:
 
 r_packages:
   - covr
+  - shiny
   - DiagrammeR
 
 after_success:
