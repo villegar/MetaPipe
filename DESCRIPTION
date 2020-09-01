@@ -48,10 +48,8 @@ Imports:
 Suggests:
     badger,
     hexSticker,
-    htmlwidgets,
     knitr,
     kableExtra,
-    qpdf,
     rmarkdown,
     testthat
 Depends: 
