@@ -41,6 +41,7 @@ Imports:
     psych, 
     qtl, 
     R.devices, 
+    shiny,
     tictoc, 
     tidyverse, 
     VIM
@@ -52,7 +53,6 @@ Suggests:
     kableExtra,
     qpdf,
     rmarkdown,
-    shiny,
     testthat
 Depends: 
     R (>= 4.0)
