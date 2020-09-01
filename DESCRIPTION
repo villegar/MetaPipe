@@ -47,10 +47,12 @@ Suggests:
     badger,
     DiagrammeR,
     hexSticker,
+    htmlwidgets,
     knitr,
     kableExtra,
     qpdf,
     rmarkdown,
+    shiny,
     testthat
 Depends: 
     R (>= 3.6)
