@@ -37,7 +37,9 @@ example_data <- data.frame(ID = c(1,2,3,4,5),
                            P1 = c("one", "two", "three", "four", "five"), 
                            T1 = rnorm(5), 
                            T2 = rnorm(5))
+\dontrun{
 assess_normality(example_data, c(1, 2))
+}
 
 }
 \seealso{

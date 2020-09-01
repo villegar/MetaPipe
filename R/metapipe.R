@@ -120,7 +120,9 @@ replace_missing <- function(raw_data, excluded_columns, out_prefix = "metapipe",
 #'                            P1 = c("one", "two", "three", "four", "five"), 
 #'                            T1 = rnorm(5), 
 #'                            T2 = rnorm(5))
+#' \dontrun{
 #' assess_normality(example_data, c(1, 2))
+#' }
 #' 
 #' @seealso \code{\link{assess_normality_postprocessing}} and \code{\link{assess_normality_stats}}
 assess_normality <- function(raw_data, 
