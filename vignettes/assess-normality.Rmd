@@ -7,7 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+```{r rmd-options, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"#,
@@ -18,6 +18,8 @@ knitr::opts_chunk$set(
 options(knitr.kable.NA = '')
 hcolor <- "#363B74"
 tcolor <- "#EEEEEE"
+
+knitr::opts_chunk$set(dpi = 300, fig.width = 7)
 ```
 
 ```{r setup}
@@ -30,15 +32,21 @@ Shapiro-Wilk test on the raw data (see [Load Raw Data](load-raw-data.html) and
 data approximates a normal distribution, an array of transformations will be 
 computed, and the normality assessed one more time.
 
-```{r assess-normality-example-data-before, echo = FALSE, dpi = 150, fig.align = 'center'}
+```{r assess-normality-example-data-before, echo = FALSE, fig.align = 'center', out.width = "60%"}
 set.seed(123)
 test_data <- rnorm(500)
-MetaPipe::generate_hist(exp(1)^test_data, NULL, xlab = latex2exp::TeX("e^{data}"), save = FALSE)
+MetaPipe::generate_hist(exp(1)^test_data, NULL, xlab = latex2exp::TeX("e^{data}"), save = FALSE, alpha = 1, fill = hcolor)
+
+MetaPipe::generate_hist(log(exp(1)^test_data), NULL, xlab = latex2exp::TeX("ln(e^{data})"), save = FALSE, alpha = 1, fill = hcolor)
+
+MetaPipe::generate_hist(test_data, NULL, xlab = latex2exp::TeX("data"), save = FALSE, alpha = 1, fill = hcolor)
+
 ```
 
 The diagram below shows the tree of transformations that can be performed, the
 user can specify the transformation values passing a vector to `transf_vals`; by 
 default, `[2, e, 3, 4, 5, 6, 7, 8, 9, 10]`.
-```{r assess-normality-diagram, echo = FALSE}
+
+```{r assess-normality-diagram, echo = FALSE, out.width = "50%"}
 DiagrammeR::grViz(system.file("figures/assess-normality-graph.gv", package = "MetaPipe"), width = "100%")
 ```
