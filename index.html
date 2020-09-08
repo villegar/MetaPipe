@@ -110,36 +110,45 @@
 <!-- ``` -->
 <!-- And the development version from [GitHub](https://github.com/) with: -->
 <p>You can install the development version from <a href="https://github.com/">GitHub</a> with:</p>
-<div class="sourceCode" id="cb1"><pre class="r"><span class="co"># install.packages(c("hexSticker", "kableExtra", "qpdf", remotes")</span>
-<span class="kw pkg">remotes</span><span class="kw ns">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"villegar/MetaPipe"</span>, <span class="kw">build_vignettes</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="co"># install.packages(c("hexSticker", "kableExtra", "qpdf", remotes")</span>
+<span class="kw">remotes</span>::<span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"villegar/MetaPipe"</span>, build_vignettes = <span class="fl">TRUE</span>)
+</pre></div>
 </div>
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h2>
 <!-- This is a basic example which shows you how to solve a common problem: -->
 <p>You should start by loading <code>MetaPipe</code> on your session.</p>
-<div class="sourceCode" id="cb2"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">MetaPipe</span>)</pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/villegar/MetaPipe">MetaPipe</a></span>)
+</pre></div>
 <div id="load-raw-data" class="section level3">
 <h3 class="hasAnchor">
 <a href="#load-raw-data" class="anchor"></a>Load raw data</h3>
 <p>For details about the data structure and extended documentation, see the vignette <a href="https://villegar.github.io/MetaPipe/articles/load-raw-data">Load Raw Data</a>.</p>
-<div class="sourceCode" id="cb3"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span>(<span class="st">"load-raw-data"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"MetaPipe"</span>)</pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span>(<span class="st">"load-raw-data"</span>, package = <span class="st">"MetaPipe"</span>)
+</pre></div>
 <div id="function-call" class="section level4">
 <h4 class="hasAnchor">
 <a href="#function-call" class="anchor"></a>Function call</h4>
-<div class="sourceCode" id="cb4"><pre class="r"><span class="fu"><a href="reference/load_raw.html">load_raw</a></span>(<span class="kw">raw_data_filename</span> <span class="kw">=</span> <span class="st">"FILE.CSV"</span>, <span class="kw">excluded_columns</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="no">...</span>))</pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="fu"><a href="reference/load_raw.html">load_raw</a></span>(raw_data_filename = <span class="st">"FILE.CSV"</span>, excluded_columns = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">...</span>))
+</pre></div>
 <p>where <code>raw_data_filename</code> is the filename containg the raw data, both absolute and relative paths are accepted. Next, the argument <code>excluded_columns</code> is a vector containing the indices of the properties, e.g. <code><a href="https://rdrr.io/r/base/c.html">c(2, 3, ..., M)</a></code>.</p>
-<div class="sourceCode" id="cb5"><pre class="r"><span class="co"># Toy dataset</span>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="co"># Toy dataset</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">123</span>)
-<span class="no">example_data</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">ID</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>),
-                           <span class="kw">P1</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"one"</span>, <span class="st">"two"</span>, <span class="st">"three"</span>, <span class="st">"four"</span>, <span class="st">"five"</span>),
-                           <span class="kw">T1</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="fl">5</span>),
-                           <span class="kw">T2</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="fl">5</span>),
-                           <span class="kw">T3</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">NA</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="fl">4</span>)),                     <span class="co">#  20 % NAs</span>
-                           <span class="kw">T4</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">NA</span>, <span class="fl">1.2</span>, -<span class="fl">0.5</span>, <span class="fl">NA</span>, <span class="fl">0.87</span>),          <span class="co">#  40 % NAs</span>
-                           <span class="kw">T5</span> <span class="kw">=</span> <span class="fl">NA</span>)                                  <span class="co"># 100 % NAs</span>
+<span class="kw">example_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(ID = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>),
+                           P1 = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"one"</span>, <span class="st">"two"</span>, <span class="st">"three"</span>, <span class="st">"four"</span>, <span class="st">"five"</span>), 
+                           T1 = <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="fl">5</span>), 
+                           T2 = <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="fl">5</span>),
+                           T3 = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">NA</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="fl">4</span>)),                     <span class="co">#  20 % NAs</span>
+                           T4 = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">NA</span>, <span class="fl">1.2</span>, <span class="op">-</span><span class="fl">0.5</span>, <span class="fl">NA</span>, <span class="fl">0.87</span>),          <span class="co">#  40 % NAs</span>
+                           T5 = <span class="fl">NA</span>)                                  <span class="co"># 100 % NAs</span>
 <span class="co">## Write to disk</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span>(<span class="no">example_data</span>, <span class="st">"example_data.csv"</span>, <span class="kw">row.names</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
+<span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span>(<span class="kw">example_data</span>, <span class="st">"example_data.csv"</span>, row.names = <span class="fl">FALSE</span>)
 
 <span class="co"># Load the data</span>
 <span class="fu"><a href="reference/load_raw.html">load_raw</a></span>(<span class="st">"example_data.csv"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>))
@@ -148,28 +157,34 @@
 <span class="co">#&gt; 2  2   two -0.23017749  0.4609162 1.2240818  1.20 NA</span>
 <span class="co">#&gt; 3  3 three  1.55870831 -1.2650612 0.3598138 -0.50 NA</span>
 <span class="co">#&gt; 4  4  four  0.07050839 -0.6868529 0.4007715    NA NA</span>
-<span class="co">#&gt; 5  5  five  0.12928774 -0.4456620 0.1106827  0.87 NA</span></pre></div>
+<span class="co">#&gt; 5  5  five  0.12928774 -0.4456620 0.1106827  0.87 NA</span>
+</pre></div>
 </div>
 </div>
 <div id="replace-missing-data" class="section level3">
 <h3 class="hasAnchor">
 <a href="#replace-missing-data" class="anchor"></a>Replace missing data</h3>
 <p>For extended documentation, see the vignette <a href="https://villegar.github.io/MetaPipe/articles/replace-missing-data">Replace Missing Data</a>.</p>
-<div class="sourceCode" id="cb6"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span>(<span class="st">"replace-missing-data"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"MetaPipe"</span>)</pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span>(<span class="st">"replace-missing-data"</span>, package = <span class="st">"MetaPipe"</span>)
+</pre></div>
 <div id="function-call-1" class="section level4">
 <h4 class="hasAnchor">
 <a href="#function-call-1" class="anchor"></a>Function call</h4>
-<div class="sourceCode" id="cb7"><pre class="r"><span class="fu"><a href="reference/replace_missing.html">replace_missing</a></span>(<span class="kw">raw_data</span> <span class="kw">=</span> <span class="no">example_data</span>,
-                <span class="kw">excluded_columns</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>),
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="fu"><a href="reference/replace_missing.html">replace_missing</a></span>(raw_data = <span class="kw">example_data</span>, 
+                excluded_columns = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>), 
                 <span class="co"># Optional</span>
-                <span class="kw">out_prefix</span> <span class="kw">=</span> <span class="st">"metapipe"</span>, <span class="kw">prop_na</span> <span class="kw">=</span> <span class="fl">0.5</span>, <span class="kw">replace_na</span> <span class="kw">=</span> <span class="fl">FALSE</span>)</pre></div>
+                out_prefix = <span class="st">"metapipe"</span>, prop_na = <span class="fl">0.5</span>, replace_na = <span class="fl">FALSE</span>)
+</pre></div>
 <p>where <code>raw_data</code> is a data frame containing the raw data, as described in <a href="#load-raw-data">Load Raw Data</a> and <code>excluded_columns</code> is a vector containing the indices of the properties, e.g. <code><a href="https://rdrr.io/r/base/c.html">c(2, 3, ..., M)</a></code>. The other arguments are optional, <code>out_prefix</code> is the prefix for output files, <code>prop_na</code> is the proportion of NA values (used to drop traits), and <code>replace_na</code> is a logical flag to indicate whether or not NAs should be replace by half of the minimum value.</p>
-<div class="sourceCode" id="cb8"><pre class="r"><span class="co"># Inserting missing values manually</span>
-<span class="no">example_data</span>$<span class="no">T1</span>[<span class="fl">2</span>:<span class="fl">3</span>] <span class="kw">&lt;-</span> <span class="fl">NA</span>
-<span class="no">example_data</span>$<span class="no">T2</span>[<span class="fl">4</span>] <span class="kw">&lt;-</span> <span class="fl">NA</span>
+<div class="sourceCode" id="cb8"><pre class="downlit">
+<span class="co"># Inserting missing values manually</span>
+<span class="kw">example_data</span><span class="op">$</span><span class="kw">T1</span>[<span class="fl">2</span><span class="op">:</span><span class="fl">3</span>] <span class="op">&lt;-</span> <span class="fl">NA</span>
+<span class="kw">example_data</span><span class="op">$</span><span class="kw">T2</span>[<span class="fl">4</span>] <span class="op">&lt;-</span> <span class="fl">NA</span>
 
 <span class="co"># No changes expected</span>
-<span class="fu"><a href="reference/replace_missing.html">replace_missing</a></span>(<span class="no">example_data</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>))
+<span class="fu"><a href="reference/replace_missing.html">replace_missing</a></span>(<span class="kw">example_data</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>))
 <span class="co">#&gt; The following traits were dropped because they have 50% or more missing values: </span>
 <span class="co">#&gt; T5</span>
 <span class="co">#&gt;   ID    P1          T1         T2        T3    T4</span>
@@ -180,7 +195,7 @@
 <span class="co">#&gt; 5  5  five  0.12928774 -0.4456620 0.1106827  0.87</span>
 
 <span class="co"># Traits with 25% of NA should be dropped</span>
-<span class="fu"><a href="reference/replace_missing.html">replace_missing</a></span>(<span class="no">example_data</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>), <span class="kw">prop_na</span> <span class="kw">=</span>  <span class="fl">0.25</span>)
+<span class="fu"><a href="reference/replace_missing.html">replace_missing</a></span>(<span class="kw">example_data</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>), prop_na =  <span class="fl">0.25</span>)
 <span class="co">#&gt; The following traits were dropped because they have 25% or more missing values: </span>
 <span class="co">#&gt; T1, T4, T5</span>
 <span class="co">#&gt;   ID    P1         T2        T3</span>
@@ -191,7 +206,7 @@
 <span class="co">#&gt; 5  5  five -0.4456620 0.1106827</span>
 
 <span class="co"># NAs should be replaced by half of the minimum value</span>
-<span class="fu"><a href="reference/replace_missing.html">replace_missing</a></span>(<span class="no">example_data</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>), <span class="kw">replace_na</span> <span class="kw">=</span>  <span class="fl">TRUE</span>)
+<span class="fu"><a href="reference/replace_missing.html">replace_missing</a></span>(<span class="kw">example_data</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>), replace_na =  <span class="fl">TRUE</span>)
 <span class="co">#&gt; The following traits were dropped because they have 100% missing values: </span>
 <span class="co">#&gt; T5</span>
 <span class="co">#&gt;   ID    P1          T1         T2         T3    T4</span>
@@ -199,7 +214,8 @@
 <span class="co">#&gt; 2  2   two -0.28023782  0.4609162 1.22408180  1.20</span>
 <span class="co">#&gt; 3  3 three -0.28023782 -1.2650612 0.35981383 -0.50</span>
 <span class="co">#&gt; 4  4  four  0.07050839 -0.6325306 0.40077145 -0.25</span>
-<span class="co">#&gt; 5  5  five  0.12928774 -0.4456620 0.11068272  0.87</span></pre></div>
+<span class="co">#&gt; 5  5  five  0.12928774 -0.4456620 0.11068272  0.87</span>
+</pre></div>
 </div>
 </div>
 <div id="assess-normality" class="section level3">
@@ -254,7 +270,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

@@ -139,12 +139,12 @@
     </div>
 
     <pre class="usage"><span class='fu'>log_transformation</span>(
-  <span class='no'>data</span>,
-  <span class='kw'>feature</span> <span class='kw'>=</span> <span class='st'>"DATA"</span>,
-  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.05</span>,
-  <span class='kw'>transf</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>, <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span>(<span class='fl'>1</span>), <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>, <span class='fl'>7</span>, <span class='fl'>8</span>, <span class='fl'>9</span>, <span class='fl'>10</span>),
-  <span class='kw'>plots_prefix</span> <span class='kw'>=</span> <span class='st'>"HIST"</span>,
-  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>6</span>
+  <span class='kw'>data</span>,
+  feature = <span class='st'>"DATA"</span>,
+  alpha = <span class='fl'>0.05</span>,
+  transf = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>, <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span>(<span class='fl'>1</span>), <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>, <span class='fl'>7</span>, <span class='fl'>8</span>, <span class='fl'>9</span>, <span class='fl'>10</span>),
+  plots_prefix = <span class='st'>"HIST"</span>,
+  digits = <span class='fl'>6</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -183,8 +183,9 @@ transformation was performed</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>123</span>)
-<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>100</span>, <span class='fl'>5</span>)
-<span class='fu'>log_transformation</span>(<span class='fl'>2</span> ^ <span class='no'>data</span>, <span class='st'>"EXP_2"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: failed to load cairo DLL</span></div><div class='output co'>#&gt;     flag transf transf_val
+<span class='kw'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>100</span>, <span class='fl'>5</span>)
+<span class='fu'>log_transformation</span>(<span class='fl'>2</span> <span class='op'>^</span> <span class='kw'>data</span>, <span class='st'>"EXP_2"</span>)
+</div><div class='output co'>#&gt; <span class='warning'>Warning: failed to load cairo DLL</span></div><div class='output co'>#&gt;     flag transf transf_val
 #&gt; 1 Normal    log          2</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -201,7 +202,7 @@ transformation was performed</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

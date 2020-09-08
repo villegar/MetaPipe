@@ -138,7 +138,7 @@
     <p>Transforms a pseudo-marker to a standar marker by looking for the nearest one</p>
     </div>
 
-    <pre class="usage"><span class='fu'>transform_pseudo_marker</span>(<span class='no'>x_data</span>, <span class='no'>marker</span>, <span class='no'>chr</span>, <span class='no'>pos</span>)</pre>
+    <pre class="usage"><span class='fu'>transform_pseudo_marker</span>(<span class='kw'>x_data</span>, <span class='kw'>marker</span>, <span class='kw'>chr</span>, <span class='kw'>pos</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -167,40 +167,42 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Create toy dataset</span>
-<span class='no'>excluded_columns</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>)
-<span class='no'>population</span> <span class='kw'>&lt;-</span> <span class='fl'>5</span>
-<span class='no'>seed</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>
-<span class='no'>example_data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>ID</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='no'>population</span>,
-                           <span class='kw'>P1</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"one"</span>, <span class='st'>"two"</span>, <span class='st'>"three"</span>, <span class='st'>"four"</span>, <span class='st'>"five"</span>),
-                           <span class='kw'>T1</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='no'>population</span>),
-                           <span class='kw'>T2</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='no'>population</span>))
-<span class='no'>example_data_normalised</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>index</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>), <span class='kw'>each</span> <span class='kw'>=</span> <span class='fl'>5</span>),
-                                      <span class='kw'>feature</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"T1"</span>, <span class='st'>"T2"</span>), <span class='kw'>each</span> <span class='kw'>=</span> <span class='fl'>5</span>),
-                                      <span class='kw'>values</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>example_data</span>$<span class='no'>T1</span>, <span class='no'>example_data</span>$<span class='no'>T2</span>),
-                                      <span class='kw'>flag</span> <span class='kw'>=</span> <span class='st'>"Normal"</span>,
-                                      <span class='kw'>transf</span> <span class='kw'>=</span> <span class='st'>""</span>,
-                                      <span class='kw'>transf_val</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-                                      <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'><a href='assess_normality_postprocessing.html'>assess_normality_postprocessing</a></span>(<span class='no'>example_data</span>,
-                                <span class='no'>excluded_columns</span>,
-                                <span class='no'>example_data_normalised</span>,
-                                <span class='kw'>out_prefix</span> <span class='kw'>=</span> <span class='kw pkg'>here</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/here/man/here.html'>here</a></span>(<span class='st'>"metapipe"</span>))
+<span class='kw'>excluded_columns</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>)
+<span class='kw'>population</span> <span class='op'>&lt;-</span> <span class='fl'>5</span>
+<span class='kw'>seed</span> <span class='op'>&lt;-</span> <span class='fl'>1</span>
+<span class='kw'>example_data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(ID = <span class='fl'>1</span><span class='op'>:</span><span class='kw'>population</span>,
+                           P1 = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"one"</span>, <span class='st'>"two"</span>, <span class='st'>"three"</span>, <span class='st'>"four"</span>, <span class='st'>"five"</span>),
+                           T1 = <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='kw'>population</span>),
+                           T2 = <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='kw'>population</span>))
+<span class='kw'>example_data_normalised</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(index = <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>), each = <span class='fl'>5</span>),
+                                      feature = <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"T1"</span>, <span class='st'>"T2"</span>), each = <span class='fl'>5</span>),
+                                      values = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>example_data</span><span class='op'>$</span><span class='kw'>T1</span>, <span class='kw'>example_data</span><span class='op'>$</span><span class='kw'>T2</span>),
+                                      flag = <span class='st'>"Normal"</span>,
+                                      transf = <span class='st'>""</span>,
+                                      transf_val = <span class='fl'>NA</span>,
+                                      stringsAsFactors = <span class='fl'>FALSE</span>)
+<span class='fu'><a href='assess_normality_postprocessing.html'>assess_normality_postprocessing</a></span>(<span class='kw'>example_data</span>, 
+                                <span class='kw'>excluded_columns</span>, 
+                                <span class='kw'>example_data_normalised</span>, 
+                                out_prefix = <span class='kw'>here</span>::<span class='fu'><a href='https://rdrr.io/pkg/here/man/here.html'>here</a></span>(<span class='st'>"metapipe"</span>))
 
 <span class='co'># Create and store random genetic map [for testing only]</span>
-<span class='no'>genetic_map</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='random_map.html'>random_map</a></span>(<span class='kw'>population</span> <span class='kw'>=</span> <span class='no'>population</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='no'>seed</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/write.table.html'>write.csv</a></span>(<span class='no'>genetic_map</span>, <span class='kw pkg'>here</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/here/man/here.html'>here</a></span>(<span class='st'>"metapipe_genetic_map.csv"</span>), <span class='kw'>row.names</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='kw'>genetic_map</span> <span class='op'>&lt;-</span> <span class='fu'><a href='random_map.html'>random_map</a></span>(population = <span class='kw'>population</span>, seed = <span class='kw'>seed</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/write.table.html'>write.csv</a></span>(<span class='kw'>genetic_map</span>, <span class='kw'>here</span>::<span class='fu'><a href='https://rdrr.io/pkg/here/man/here.html'>here</a></span>(<span class='st'>"metapipe_genetic_map.csv"</span>), row.names = <span class='fl'>FALSE</span>)
 <span class='co'># Load cross file with genetic map and raw data for normal features</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>qtl</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/qtl/man/read.cross.html'>read.cross</a></span>(<span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"csvs"</span>,
-                     <span class='kw'>dir</span> <span class='kw'>=</span> <span class='kw pkg'>here</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/here/man/here.html'>here</a></span>(),
-                     <span class='kw'>genfile</span> <span class='kw'>=</span> <span class='st'>"metapipe_genetic_map.csv"</span>,
-                     <span class='kw'>phefile</span> <span class='kw'>=</span> <span class='st'>"metapipe_raw_data_norm.csv"</span>)</div><div class='output co'>#&gt;  --Read the following data:
+<span class='kw'>x</span> <span class='op'>&lt;-</span> <span class='kw'>qtl</span>::<span class='fu'><a href='https://rdrr.io/pkg/qtl/man/read.cross.html'>read.cross</a></span>(format = <span class='st'>"csvs"</span>, 
+                     dir = <span class='kw'>here</span>::<span class='fu'><a href='https://rdrr.io/pkg/here/man/here.html'>here</a></span>(),
+                     genfile = <span class='st'>"metapipe_genetic_map.csv"</span>,
+                     phefile = <span class='st'>"metapipe_raw_data_norm.csv"</span>)
+</div><div class='output co'>#&gt;  --Read the following data:
 #&gt; 	 5  individuals
 #&gt; 	 100  markers
 #&gt; 	 3  phenotypes
-#&gt;  --Cross type: f2 </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='no'>seed</span>)
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>qtl</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/qtl/man/jittermap.html'>jittermap</a></span>(<span class='no'>x</span>)
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>qtl</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/qtl/man/calc.genoprob.html'>calc.genoprob</a></span>(<span class='no'>x</span>, <span class='kw'>step</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>error.prob</span> <span class='kw'>=</span> <span class='fl'>0.001</span>)
-<span class='fu'>transform_pseudo_marker</span>(<span class='no'>x</span>, <span class='st'>'loc1'</span>, <span class='fl'>1</span>, <span class='fl'>2.0</span>)</div><div class='output co'>#&gt; [1] "S1_2"     "2.000001"</div></pre>
+#&gt;  --Cross type: f2 </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='kw'>seed</span>)
+<span class='kw'>x</span> <span class='op'>&lt;-</span> <span class='kw'>qtl</span>::<span class='fu'><a href='https://rdrr.io/pkg/qtl/man/jittermap.html'>jittermap</a></span>(<span class='kw'>x</span>)
+<span class='kw'>x</span> <span class='op'>&lt;-</span> <span class='kw'>qtl</span>::<span class='fu'><a href='https://rdrr.io/pkg/qtl/man/calc.genoprob.html'>calc.genoprob</a></span>(<span class='kw'>x</span>, step = <span class='fl'>1</span>, error.prob = <span class='fl'>0.001</span>)
+<span class='fu'>transform_pseudo_marker</span>(<span class='kw'>x</span>, <span class='st'>'loc1'</span>, <span class='fl'>1</span>, <span class='fl'>2.0</span>)
+</div><div class='output co'>#&gt; [1] "S1_2"     "2.000001"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -216,7 +218,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

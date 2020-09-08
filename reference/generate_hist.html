@@ -138,33 +138,74 @@
     <p>This function generates a single histogram</p>
     </div>
 
-    <pre class="usage"><span class='fu'>generate_hist</span>(<span class='no'>data</span>, <span class='no'>feature</span>, <span class='no'>prefix</span>, <span class='no'>xlab</span>)</pre>
+    <pre class="usage"><span class='fu'>generate_hist</span>(
+  <span class='kw'>data</span>,
+  <span class='kw'>title</span>,
+  prefix = <span class='st'>"metapipe"</span>,
+  xlab = <span class='kw'>NULL</span>,
+  save = <span class='fl'>TRUE</span>,
+  alpha = <span class='fl'>1</span>,
+  angle = <span class='fl'>60</span>,
+  bins = <span class='fl'>20</span>,
+  col = <span class='st'>"black"</span>,
+  hjust = <span class='fl'>1</span>,
+  fill = <span class='st'>"#7FCDBB"</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>Histogram data</p></td>
+      <td><p>histogram data</p></td>
     </tr>
     <tr>
-      <th>feature</th>
-      <td><p>Feature name</p></td>
+      <th>title</th>
+      <td><p>plot title</p></td>
     </tr>
     <tr>
       <th>prefix</th>
-      <td><p>File prefix</p></td>
+      <td><p>file prefix [default: metapipe]</p></td>
     </tr>
     <tr>
       <th>xlab</th>
-      <td><p>x-axis label</p></td>
+      <td><p>x-axis label [default: NULL]</p></td>
+    </tr>
+    <tr>
+      <th>save</th>
+      <td><p>boolean flag to indicate if that plot should be save to disk [default: TRUE]</p></td>
+    </tr>
+    <tr>
+      <th>alpha</th>
+      <td><p>value to set the transparency of the bins [default: 1]</p></td>
+    </tr>
+    <tr>
+      <th>angle</th>
+      <td><p>rotation angle for labels [default: 60]</p></td>
+    </tr>
+    <tr>
+      <th>bins</th>
+      <td><p>number of bins to plot [default: 20]</p></td>
+    </tr>
+    <tr>
+      <th>col</th>
+      <td><p>color for bins border [default: "black"]</p></td>
+    </tr>
+    <tr>
+      <th>hjust</th>
+      <td><p>horizontal adjustment of labels [default: 1]</p></td>
+    </tr>
+    <tr>
+      <th>fill</th>
+      <td><p>filling color [default: "#7FCDBB"]</p></td>
     </tr>
     </table>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>norm_dist</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>100</span>)
-<span class='fu'>generate_hist</span>(<span class='no'>norm_dist</span>, <span class='st'>"XYZ"</span>, <span class='st'>"xyz_hist"</span>, <span class='st'>"x"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: failed to load cairo DLL</span></div><div class='output co'>#&gt; NULL</div></pre>
+    <pre class="examples"><div class='input'><span class='kw'>norm_dist</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>100</span>)
+<span class='fu'>generate_hist</span>(<span class='kw'>norm_dist</span>, <span class='st'>"XYZ"</span>, <span class='st'>"xyz_hist"</span>, <span class='st'>"x"</span>)
+</div><div class='output co'>#&gt; <span class='warning'>Warning: failed to load cairo DLL</span></div><div class='output co'>#&gt; NULL</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -180,7 +221,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

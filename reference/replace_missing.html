@@ -139,11 +139,11 @@
     </div>
 
     <pre class="usage"><span class='fu'>replace_missing</span>(
-  <span class='no'>raw_data</span>,
-  <span class='no'>excluded_columns</span>,
-  <span class='kw'>out_prefix</span> <span class='kw'>=</span> <span class='st'>"metapipe"</span>,
-  <span class='kw'>prop_na</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
-  <span class='kw'>replace_na</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  <span class='kw'>raw_data</span>,
+  <span class='kw'>excluded_columns</span>,
+  out_prefix = <span class='st'>"metapipe"</span>,
+  prop_na = <span class='fl'>0.5</span>,
+  replace_na = <span class='fl'>FALSE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -176,26 +176,29 @@
     <p>data frame containing the raw data without missing values</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>example_data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>ID</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>4</span>,<span class='fl'>5</span>),
-                           <span class='kw'>P1</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"one"</span>, <span class='st'>"two"</span>, <span class='st'>"three"</span>, <span class='st'>"four"</span>, <span class='st'>"five"</span>),
-                           <span class='kw'>T1</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>5</span>),
-                           <span class='kw'>T2</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>5</span>),
-                           <span class='kw'>T3</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>NA</span>, <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>4</span>)),                  <span class='co'>#  20 % NAs</span>
-                           <span class='kw'>T4</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>NA</span>, <span class='fl'>1.2</span>, -<span class='fl'>0.5</span>, <span class='fl'>NA</span>, <span class='fl'>0.87</span>),       <span class='co'>#  40 % NAs</span>
-                           <span class='kw'>T5</span> <span class='kw'>=</span> <span class='fl'>NA</span>)                               <span class='co'># 100 % NAs</span>
-<span class='fu'>replace_missing</span>(<span class='no'>example_data</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>))</div><div class='output co'>#&gt; <span class='message'>The following traits were dropped because they have 50% or more missing values: </span>
+    <pre class="examples"><div class='input'><span class='kw'>example_data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(ID = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>4</span>,<span class='fl'>5</span>), 
+                           P1 = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"one"</span>, <span class='st'>"two"</span>, <span class='st'>"three"</span>, <span class='st'>"four"</span>, <span class='st'>"five"</span>), 
+                           T1 = <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>5</span>), 
+                           T2 = <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>5</span>),
+                           T3 = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>NA</span>, <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>4</span>)),                  <span class='co'>#  20 % NAs</span>
+                           T4 = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>NA</span>, <span class='fl'>1.2</span>, <span class='op'>-</span><span class='fl'>0.5</span>, <span class='fl'>NA</span>, <span class='fl'>0.87</span>),       <span class='co'>#  40 % NAs</span>
+                           T5 = <span class='fl'>NA</span>)                               <span class='co'># 100 % NAs</span>
+<span class='fu'>replace_missing</span>(<span class='kw'>example_data</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>))
+</div><div class='output co'>#&gt; <span class='message'>The following traits were dropped because they have 50% or more missing values: </span>
 #&gt; <span class='message'>T5</span></div><div class='output co'>#&gt;   ID    P1          T1         T2         T3    T4
 #&gt; 1  1   one  0.20609871 -0.7505732         NA    NA
 #&gt; 2  2   two -0.09160289 -0.2871355  1.0464316  1.20
 #&gt; 3  3 three -0.46000136  0.8316341 -0.5196884 -0.50
 #&gt; 4  4  four  0.56749428 -0.5269867  1.0535059    NA
-#&gt; 5  5  five -1.46018697 -1.8326439  1.3615273  0.87</div><div class='input'><span class='fu'>replace_missing</span>(<span class='no'>example_data</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>), <span class='kw'>prop_na</span> <span class='kw'>=</span>  <span class='fl'>0.25</span>)</div><div class='output co'>#&gt; <span class='message'>The following traits were dropped because they have 25% or more missing values: </span>
+#&gt; 5  5  five -1.46018697 -1.8326439  1.3615273  0.87</div><div class='input'><span class='fu'>replace_missing</span>(<span class='kw'>example_data</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>), prop_na =  <span class='fl'>0.25</span>)
+</div><div class='output co'>#&gt; <span class='message'>The following traits were dropped because they have 25% or more missing values: </span>
 #&gt; <span class='message'>T4, T5</span></div><div class='output co'>#&gt;   ID    P1          T1         T2         T3
 #&gt; 1  1   one  0.20609871 -0.7505732         NA
 #&gt; 2  2   two -0.09160289 -0.2871355  1.0464316
 #&gt; 3  3 three -0.46000136  0.8316341 -0.5196884
 #&gt; 4  4  four  0.56749428 -0.5269867  1.0535059
-#&gt; 5  5  five -1.46018697 -1.8326439  1.3615273</div><div class='input'><span class='fu'>replace_missing</span>(<span class='no'>example_data</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>), <span class='kw'>replace_na</span> <span class='kw'>=</span>  <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>The following traits were dropped because they have 100% missing values: </span>
+#&gt; 5  5  five -1.46018697 -1.8326439  1.3615273</div><div class='input'><span class='fu'>replace_missing</span>(<span class='kw'>example_data</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>), replace_na =  <span class='fl'>TRUE</span>)
+</div><div class='output co'>#&gt; <span class='message'>The following traits were dropped because they have 100% missing values: </span>
 #&gt; <span class='message'>T5</span></div><div class='output co'>#&gt;   ID    P1          T1         T2         T3    T4
 #&gt; 1  1   one  0.20609871 -0.7505732 -0.2598442 -0.25
 #&gt; 2  2   two -0.09160289 -0.2871355  1.0464316  1.20
@@ -217,7 +220,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

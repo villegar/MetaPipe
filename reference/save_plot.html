@@ -143,7 +143,7 @@ Portable Network Graphics (PNG) format.</h1>
 Portable Network Graphics (PNG) format.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>save_plot</span>(<span class='no'>myPlot</span>, <span class='no'>name</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>6</span>, <span class='kw'>height</span> <span class='kw'>=</span> <span class='fl'>6</span>)</pre>
+    <pre class="usage"><span class='fu'>save_plot</span>(<span class='kw'>myPlot</span>, <span class='kw'>name</span>, width = <span class='fl'>6</span>, height = <span class='fl'>6</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -171,8 +171,9 @@ Portable Network Graphics (PNG) format.</p>
     <div class='dont-index'><p><code><a href='save_plotPDF.html'>save_plotPDF</a></code> and <code><a href='save_plotTIFF.html'>save_plotTIFF</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>save_plot</span>(<span class='fu'><a href='https://rdrr.io/r/graphics/hist.html'>hist</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>100</span>), <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Histogram of Normal Distribution"</span>),
-<span class='st'>"hist"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: failed to load cairo DLL</span></div><div class='output co'>#&gt; $breaks
+    <pre class="examples"><div class='input'><span class='fu'>save_plot</span>(<span class='fu'><a href='https://rdrr.io/r/graphics/hist.html'>hist</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>100</span>), main = <span class='st'>"Histogram of Normal Distribution"</span>), 
+<span class='st'>"hist"</span>)
+</div><div class='output co'>#&gt; <span class='warning'>Warning: failed to load cairo DLL</span></div><div class='output co'>#&gt; $breaks
 #&gt;  [1] -2.5 -2.0 -1.5 -1.0 -0.5  0.0  0.5  1.0  1.5  2.0  2.5  3.0  3.5
 #&gt; 
 #&gt; $counts
@@ -209,7 +210,7 @@ Portable Network Graphics (PNG) format.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>
