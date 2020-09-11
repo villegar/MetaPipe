@@ -43,8 +43,8 @@ DiagrammeR::grViz(system.file("figures/assess-normality-graph.gv", package = "Me
 
 The function call is as follows:
 ```{r assess-normality-fx-call, eval = FALSE}
-assess_normality(raw_data = example_data, 
-                 excluded_columns = c(2), 
+assess_normality(raw_data = raw_data, 
+                 excluded_columns = c(2, 3, ..., M), 
                  # Optional
                  cpus = 1, 
                  out_prefix = "metapipe", 
@@ -61,12 +61,32 @@ concurrent traits to process, `out_prefix` is the prefix for output files,
 `transf_vals` is a vector containing the transformation values to be used when 
 transforming the original data.
 
+## Example
+
+The following histogram shows a sample data obtained from a normal distribution
+with the command `rnorm`, but it was transformed using the power (`2`) 
+function; thus, the data seems to be skewed:
+
 ```{r assess-normality-example-data-before, echo = FALSE, fig.align = 'center', out.width = "60%"}
 set.seed(123)
 test_data <- rnorm(500)
-MetaPipe::generate_hist(exp(1)^test_data, NULL, xlab = latex2exp::TeX("e^{data}"), save = FALSE, alpha = 1, fill = hcolor)
+MetaPipe::generate_hist(2^test_data, NULL, xlab = latex2exp::TeX("2^{data}"), save = FALSE, alpha = 1, fill = hcolor)
+```
 
-MetaPipe::generate_hist(log(exp(1)^test_data), NULL, xlab = latex2exp::TeX("ln(e^{data})"), save = FALSE, alpha = 1, fill = hcolor)
+Using `MetaPipe` we can find an optimal transformation that "normalises" this 
+data set:
+
+```{r assess-normality-call}
+example_data <- data.frame(ID = 1:500,
+                           T1 = test_data,
+                           T2 = 2^test_data)
+transformed_data <- MetaPipe::assess_normality(example_data, c(1))
+head(transformed_data)
+head(transformed_data[-c(1:500), ])
+```
+
+```{r assess-normality-example-data-after, echo = FALSE, fig.align = 'center', out.width = "60%"}
+MetaPipe::generate_hist(log(2^test_data), NULL, xlab = latex2exp::TeX("log_2(2^{data})"), save = FALSE, alpha = 1, fill = hcolor)
 
 MetaPipe::generate_hist(test_data, NULL, xlab = latex2exp::TeX("data"), save = FALSE, alpha = 1, fill = hcolor)
 ```
