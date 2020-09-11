@@ -81,12 +81,60 @@ example_data <- data.frame(ID = 1:500,
                            T1 = test_data,
                            T2 = 2^test_data)
 transformed_data <- MetaPipe::assess_normality(example_data, c(1))
-head(transformed_data)
-head(transformed_data[-c(1:500), ])
+# head(transformed_data)
+# head(transformed_data[-c(1:500), ])
+```
+The output of this function is a long table of each trait, with the following
+format:
+
+```{r raw-data-structure, echo = FALSE}
+nrows <- 1
+raw_df <- data.frame(A = rep("&nbsp;", nrows),
+                     B = rep(NA, nrows),
+                     C = rep(NA, nrows),
+                     D = rep(NA, nrows),
+                     E = rep(NA, nrows),
+                     G = rep(NA, nrows))
+colnames(raw_df) <- c("index", "feature", "values", "flag", "transf", "transf_val")
+
+`%>%` <- dplyr::`%>%`
+knitr::kable(raw_df, format = "html", escape = FALSE, table.attr = "style='width:100%;'", align = 'c') %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover")) %>%
+  kableExtra::row_spec(0, extra_css = "vertical-align: middle;", background = hcolor, color = tcolor) %>%
+  kableExtra::column_spec(1:6, border_left = TRUE, border_right = TRUE)
 ```
 
-```{r assess-normality-example-data-after, echo = FALSE, fig.align = 'center', out.width = "60%"}
-MetaPipe::generate_hist(log(2^test_data), NULL, xlab = latex2exp::TeX("log_2(2^{data})"), save = FALSE, alpha = 1, fill = hcolor)
+where `index` is a simple numeric value to uniquely identify each trait, 
+`feature` is the trait/variable name, `values` is the actual entry, `flag` 
+indicates whether the entry is parametric (Normal) or skewed (Non-normal), 
+`transf` is the transformationfunction (empty for untransformed traits), and 
+`transf_val` is the transformation value used.
 
+From the previous example, the top 5 entries for the trait `T1` are:
+```{r, echo = FALSE}
+knitr::kable(head(transformed_data), format = "html", escape = FALSE, table.attr = "style='width:100%;'", align = 'c') %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover")) %>%
+  kableExtra::row_spec(0, extra_css = "vertical-align: middle;", background = hcolor, color = tcolor) %>%
+  kableExtra::column_spec(1:6, border_left = TRUE, border_right = TRUE)
+```
+
+And for trait `T2`:
+```{r, echo = FALSE}
+tmp <- head(transformed_data[-c(1:500), ])
+rownames(tmp) <- c(1:6)
+knitr::kable(tmp, format = "html", escape = FALSE, table.attr = "style='width:100%;'", align = 'c') %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover")) %>%
+  kableExtra::row_spec(0, extra_css = "vertical-align: middle;", background = hcolor, color = tcolor) %>%
+  kableExtra::column_spec(1:6, border_left = TRUE, border_right = TRUE)
+```
+
+As expected both tables show the same entries; however, the latter indicates that
+`T2` was transformed using $log_2$.
+
+The figures below shows the original data (`T1`) and the transfomed data (`T2`):
+
+```{r assess-normality-example-data-after, echo = FALSE, fig.align = 'center', out.width = "60%"}
 MetaPipe::generate_hist(test_data, NULL, xlab = latex2exp::TeX("data"), save = FALSE, alpha = 1, fill = hcolor)
+
+MetaPipe::generate_hist(log(2^test_data), NULL, xlab = latex2exp::TeX("log_2(2^{data})"), save = FALSE, alpha = 1, fill = hcolor) 
 ```
