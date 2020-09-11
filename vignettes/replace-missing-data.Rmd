@@ -27,8 +27,8 @@ library(MetaPipe)
 
 ## Function call
 ```{r replace-missing-data-fx-call, eval = FALSE}
-replace_missing(raw_data = example_data, 
-                excluded_columns = c(2), 
+replace_missing(raw_data = raw_data, 
+                excluded_columns = c(2, 3, ..., M), 
                 # Optional
                 out_prefix = "metapipe", 
                 prop_na = 0.5, 

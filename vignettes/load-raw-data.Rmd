@@ -63,7 +63,8 @@ where the first column (`ID`) should be an unique identifier for each entry, if 
 
 The function call is as follows:
 ```{r loading-raw-data-fx-call, eval = FALSE}
-load_raw(raw_data_filename = "FILE.CSV", excluded_columns = c(...))
+load_raw(raw_data_filename = "FILE.CSV", 
+         excluded_columns = c(2, 3, ..., M))
 ```
 where `raw_data_filename` is the filename containg the raw data, either absolute or relative paths are accepted. The argument `excluded_columns` is a vector containing the indices of the properties, e.g. `c(2, 3, ..., M)`.
 
