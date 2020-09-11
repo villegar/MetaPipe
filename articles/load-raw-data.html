@@ -154,7 +154,8 @@ ID
 <p>where the first column (<code>ID</code>) should be an unique identifier for each entry, if there are repeated values <code>MetaPipe</code> will aggregate and replace them by a single row (mean across entries). The data structure can have 0 to M properties, including categorical and numerical. Finally, at least one one trait is expected.</p>
 <p>The function call is as follows:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="fu"><a href="../reference/load_raw.html">load_raw</a></span>(raw_data_filename = <span class="st">"FILE.CSV"</span>, excluded_columns = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">...</span>))
+<span class="fu"><a href="../reference/load_raw.html">load_raw</a></span>(raw_data_filename = <span class="st">"FILE.CSV"</span>, 
+         excluded_columns = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>, <span class="fl">3</span>, <span class="kw">...</span>, <span class="kw">M</span>))
 </pre></div>
 <p>where <code>raw_data_filename</code> is the filename containg the raw data, either absolute or relative paths are accepted. The argument <code>excluded_columns</code> is a vector containing the indices of the properties, e.g. <code><a href="https://rdrr.io/r/base/c.html">c(2, 3, ..., M)</a></code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
