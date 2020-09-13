@@ -15,7 +15,8 @@ generate_hist(
   bins = 20,
   col = "black",
   hjust = 1,
-  fill = "#7FCDBB"
+  fill = "#7FCDBB",
+  is_trait = FALSE
 )
 }
 \arguments{
@@ -40,6 +41,8 @@ generate_hist(
 \item{hjust}{horizontal adjustment of labels [default: 1]}
 
 \item{fill}{filling color [default: "#7FCDBB"]}
+
+\item{is_trait}{if TRUE then prepends "Trait" to title [default: FALSE]}
 }
 \description{
 This function generates a single histogram

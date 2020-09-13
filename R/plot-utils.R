@@ -129,7 +129,7 @@ compare_hist <- function(original, transformed, feature, prefix, xlab){
                             col = "black", 
                             fill = "#FFDF01") +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 60, hjust = 1)) + 
-    ggplot2::labs(title=paste("Feature",feature), x="", y="") +
+    ggplot2::labs(title = paste("Trait", feature), x = "", y = "") +
     ggplot2::xlab(paste0(feature))
   
   transformed.plot <- ggplot2::ggplot(data = histogram, 
@@ -164,6 +164,7 @@ compare_hist <- function(original, transformed, feature, prefix, xlab){
 #' @param col color for bins border [default: "black"]
 #' @param hjust horizontal adjustment of labels [default: 1]
 #' @param fill filling color [default: "#7FCDBB"]
+#' @param is_trait if TRUE then prepends "Trait" to title [default: FALSE]
 # @param ... S4 parameters for the ggplot2 library
 #'
 #' @export
@@ -181,7 +182,8 @@ generate_hist <- function(data,
                           bins = 20, 
                           col = "black",
                           hjust = 1,
-                          fill = "#7FCDBB") {
+                          fill = "#7FCDBB",
+                          is_trait = FALSE) {
   histogram <- data.frame(original = data)
   myPlot <- ggplot2::ggplot(data = histogram, ggplot2::aes(original)) +
     ggplot2::geom_histogram(alpha = alpha, 
@@ -192,7 +194,8 @@ generate_hist <- function(data,
                             fill = fill) +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = angle, 
                                                        hjust = hjust)) + 
-    ggplot2::labs(title = title, x = xlab, y = NULL)
+    ggplot2::labs(title = ifelse(is_trait, paste("Trait", title), title), 
+                  x = xlab, y = NULL)
 
   if (!save)
     return(myPlot)
