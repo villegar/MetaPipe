@@ -212,7 +212,7 @@ knitr::kable(tmp, format = "html", escape = FALSE, table.attr = "style='width:10
 ```
 
 As expected both tables show the same entries; however, the latter indicates that
-`T2` was transformed using $$\log_2$$.
+`T2` was transformed using $`\log_2`$.
 
 The figures below show the original data (`T1`) and the transfomed data (`T2`):
 

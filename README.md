@@ -793,7 +793,7 @@ log
 </table>
 
 As expected both tables show the same entries; however, the latter
-indicates that `T2` was transformed using \[\log_2\].
+indicates that `T2` was transformed using \(`\log_2`\).
 
 The figures below show the original data (`T1`) and the transfomed data
 (`T2`):
