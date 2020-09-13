@@ -4,6 +4,9 @@
 .Rprofile
 docs
 inst/doc
+inst/figures
 doc
 Meta
 README.md
+pkgdown
+man/figures
