@@ -11,7 +11,7 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"#,
-  # fig.path = "man/figures/assess-normality-",
+  #fig.path = "man/figures/assess-normality-"#,
   # out.width = "100%"
 )
 
@@ -129,11 +129,20 @@ knitr::kable(tmp, format = "html", escape = FALSE, table.attr = "style='width:10
 ```
 
 As expected both tables show the same entries; however, the latter indicates that
-`T2` was transformed using $\log_2$.
+`T2` was transformed using $\log_2$. The function will generate histograms for
+all the traits, the naming convention used is:
 
-The figures below show the original data (`T1`) and the transfomed data (`T2`):
+- `HIST_[index]_[transf]_[transf_val]_[feature].png` for transformed traits
+- `HIST_[index]_NORM_[feature].png` for those that were not transformed. 
 
-```{r assess-normality-example-data-after, echo = FALSE, fig.align = 'center', out.width = "60%"}
+For the previous data set `HIST_1_NORM_T1.png` and `HIST_2_LOG_2_T2.png`:
+
+<img src="HIST_1_NORM_T1.png" width="45%" />
+<img src="HIST_2_LOG_2_T2.png" width="45%" />
+
+<!-- The figures below show the original data (`T1`) and the transfomed data (`T2`): -->
+
+```{r assess-normality-example-data-after, echo = FALSE, fig.align = 'center', out.width = "60%", eval = FALSE}
 MetaPipe::generate_hist(test_data, NULL, xlab = latex2exp::TeX("data"), save = FALSE, alpha = 1, fill = hcolor)
 
 MetaPipe::generate_hist(log(2^test_data), NULL, xlab = latex2exp::TeX("log_2(2^{data})"), save = FALSE, alpha = 1, fill = hcolor) 
