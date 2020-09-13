@@ -221,16 +221,38 @@
 <div id="assess-normality" class="section level3">
 <h3 class="hasAnchor">
 <a href="#assess-normality" class="anchor"></a>Assess normality</h3>
-<!-- What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so: -->
-<!-- ```{r cars} -->
-<!-- summary(cars) -->
-<!-- ``` -->
-<!-- You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. -->
-<!-- You can also embed plots, for example: -->
-<!-- ```{r pressure, echo = FALSE} -->
-<!-- plot(pressure) -->
-<!-- ``` -->
-<!-- In that case, don't forget to commit and push the resulting figure files, so they display on GitHub! -->
+<p>For extended documentation, see the vignette <a href="https://villegar.github.io/MetaPipe/articles/assess-normality">Assess Normality</a>.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span>(<span class="st">"assess-normality"</span>, package = <span class="st">"MetaPipe"</span>)
+</pre></div>
+<p><code>MetaPipe</code> assesses the normality of variables (traits) by performing a Shapiro-Wilk test on the raw data (see <a href="load-raw-data.html">Load Raw Data</a> and <a href="replace-missing-data.html">Replace Missing Data</a>). Based on whether or not the data approximates a normal distribution, an array of transformations will be computed, and the normality assessed one more time.</p>
+<div id="function-call-2" class="section level4">
+<h4 class="hasAnchor">
+<a href="#function-call-2" class="anchor"></a>Function call</h4>
+<div class="sourceCode" id="cb10"><pre class="downlit">
+<span class="fu"><a href="reference/assess_normality.html">assess_normality</a></span>(raw_data = <span class="kw">raw_data</span>, 
+                 excluded_columns = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>, <span class="fl">3</span>, <span class="kw">...</span>, <span class="kw">M</span>), 
+                 <span class="co"># Optional</span>
+                 cpus = <span class="fl">1</span>, 
+                 out_prefix = <span class="st">"metapipe"</span>, 
+                 plots_dir = <span class="fu"><a href="https://rdrr.io/r/base/getwd.html">getwd</a></span>(), 
+                 transf_vals = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>, <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(<span class="fl">1</span>), <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span>, <span class="fl">7</span>, <span class="fl">8</span>, <span class="fl">9</span>, <span class="fl">10</span>))
+</pre></div>
+<p>where <code>raw_data</code> is a data frame containing the raw data, as described in <a href="load-raw-data.html">Load Raw Data</a> and <code>excluded_columns</code> is a vector containing the indices of the properties, e.g. <code><a href="https://rdrr.io/r/base/c.html">c(2, 3, ..., M)</a></code>. The other arguments are optional, <code>cpus</code> is the number of cores to use, in other words, the number of concurrent traits to process, <code>out_prefix</code> is the prefix for output files, <code>plots_dir</code> is the output directory where the plots will be stored, and <code>transf_vals</code> is a vector containing the transformation values to be used when transforming the original data.</p>
+</div>
+<div id="example-1" class="section level4">
+<h4 class="hasAnchor">
+<a href="#example-1" class="anchor"></a>Example</h4>
+<p>The following histogram shows a sample data obtained from a normal distribution with the command <code>rnorm</code>, but it was transformed using the power (<code>2</code>) function; thus, the data seems to be skewed:</p>
+<p><img src="reference/figures/README-assess-normality-example-data-before-1.png" width="60%" style="display: block; margin: auto;"></p>
+<p>Using <code>MetaPipe</code> we can find an optimal transformation that “normalises” this data set:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit">
+<span class="kw">example_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(ID = <span class="fl">1</span><span class="op">:</span><span class="fl">500</span>,
+                           T1 = <span class="kw">test_data</span>,
+                           T2 = <span class="fl">2</span><span class="op">^</span><span class="kw">test_data</span>)
+<span class="kw">transformed_data</span> <span class="op">&lt;-</span> <span class="kw">MetaPipe</span>::<span class="fu"><a href="reference/assess_normality.html">assess_normality</a></span>(<span class="kw">example_data</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>))
+</pre></div>
+</div>
 </div>
 </div>
 </div>
@@ -270,7 +292,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
