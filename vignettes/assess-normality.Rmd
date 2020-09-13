@@ -64,7 +64,7 @@ transforming the original data.
 ## Example
 
 The following histogram shows a sample data obtained from a normal distribution
-with the command `rnorm`, but it was transformed using the power (`2`) 
+with the command `rnorm`, but it was transformed using the power (base `2`) 
 function; thus, the data seems to be skewed:
 
 ```{r assess-normality-example-data-before, echo = FALSE, fig.align = 'center', out.width = "60%"}
@@ -129,9 +129,9 @@ knitr::kable(tmp, format = "html", escape = FALSE, table.attr = "style='width:10
 ```
 
 As expected both tables show the same entries; however, the latter indicates that
-`T2` was transformed using $log_2$.
+`T2` was transformed using $\log_2$.
 
-The figures below shows the original data (`T1`) and the transfomed data (`T2`):
+The figures below show the original data (`T1`) and the transfomed data (`T2`):
 
 ```{r assess-normality-example-data-after, echo = FALSE, fig.align = 'center', out.width = "60%"}
 MetaPipe::generate_hist(test_data, NULL, xlab = latex2exp::TeX("data"), save = FALSE, alpha = 1, fill = hcolor)

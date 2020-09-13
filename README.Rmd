@@ -15,6 +15,7 @@ knitr::opts_chunk$set(
 options(knitr.kable.NA = '')
 hcolor <- "#363B74"
 tcolor <- "#EEEEEE"
+`%>%` <- dplyr::`%>%`
 ```
 
 <!-- Extra CSS -->
@@ -173,7 +174,7 @@ transforming the original data.
 #### Example
 
 The following histogram shows a sample data obtained from a normal distribution
-with the command `rnorm`, but it was transformed using the power (`2`) 
+with the command `rnorm`, but it was transformed using the power (base `2`) 
 function; thus, the data seems to be skewed:
 
 ```{r assess-normality-example-data-before, echo = FALSE, fig.align = 'center', out.width = "60%"}
@@ -190,4 +191,33 @@ example_data <- data.frame(ID = 1:500,
                            T1 = test_data,
                            T2 = 2^test_data)
 transformed_data <- MetaPipe::assess_normality(example_data, c(1))
+```
+
+The top 5 entries for the trait `T1` are:
+```{r, echo = FALSE}
+knitr::kable(head(transformed_data), format = "html", escape = FALSE, table.attr = "style='width:100%;'", align = 'c') %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover")) %>%
+  kableExtra::row_spec(0, extra_css = "vertical-align: middle;", background = hcolor, color = tcolor) %>%
+  kableExtra::column_spec(1:6, border_left = TRUE, border_right = TRUE)
+```
+
+And for trait `T2`:
+```{r, echo = FALSE}
+tmp <- head(transformed_data[-c(1:500), ])
+rownames(tmp) <- c(1:6)
+knitr::kable(tmp, format = "html", escape = FALSE, table.attr = "style='width:100%;'", align = 'c') %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover")) %>%
+  kableExtra::row_spec(0, extra_css = "vertical-align: middle;", background = hcolor, color = tcolor) %>%
+  kableExtra::column_spec(1:6, border_left = TRUE, border_right = TRUE)
+```
+
+As expected both tables show the same entries; however, the latter indicates that
+`T2` was transformed using $$\log_2$$.
+
+The figures below show the original data (`T1`) and the transfomed data (`T2`):
+
+```{r assess-normality-example-data-after, echo = FALSE, fig.align = 'center', out.width = "60%"}
+MetaPipe::generate_hist(test_data, NULL, xlab = latex2exp::TeX("T1"), save = FALSE, alpha = 1, fill = hcolor)
+
+MetaPipe::generate_hist(log(2^test_data), NULL, xlab = latex2exp::TeX("log_2(2^{T2})"), save = FALSE, alpha = 1, fill = hcolor) 
 ```

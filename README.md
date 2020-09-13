@@ -211,7 +211,7 @@ data.
 
 The following histogram shows a sample data obtained from a normal
 distribution with the command `rnorm`, but it was transformed using the
-power (`2`) function; thus, the data seems to be
+power (base `2`) function; thus, the data seems to be
 skewed:
 
 <img src="man/figures/README-assess-normality-example-data-before-1.png" width="60%" style="display: block; margin: auto;" />
@@ -225,3 +225,577 @@ example_data <- data.frame(ID = 1:500,
                            T2 = 2^test_data)
 transformed_data <- MetaPipe::assess_normality(example_data, c(1))
 ```
+
+The top 5 entries for the trait `T1`
+are:
+
+<table style="width:100%; margin-left: auto; margin-right: auto;" class="table table-striped table-hover">
+
+<thead>
+
+<tr>
+
+<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
+
+index
+
+</th>
+
+<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
+
+feature
+
+</th>
+
+<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
+
+values
+
+</th>
+
+<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
+
+flag
+
+</th>
+
+<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
+
+transf
+
+</th>
+
+<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
+
+transf\_val
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+1
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+T1
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+\-0.5604756
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+Normal
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+1
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+T1
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+\-0.2301775
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+Normal
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+1
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+T1
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+1.5587083
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+Normal
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+1
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+T1
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+0.0705084
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+Normal
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+1
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+T1
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+0.1292877
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+Normal
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+1
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+T1
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+1.7150650
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+Normal
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+And for trait
+`T2`:
+
+<table style="width:100%; margin-left: auto; margin-right: auto;" class="table table-striped table-hover">
+
+<thead>
+
+<tr>
+
+<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
+
+index
+
+</th>
+
+<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
+
+feature
+
+</th>
+
+<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
+
+values
+
+</th>
+
+<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
+
+flag
+
+</th>
+
+<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
+
+transf
+
+</th>
+
+<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
+
+transf\_val
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+2
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+T2
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+\-0.5604756
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+Normal
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+log
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+2
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+2
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+T2
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+\-0.2301775
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+Normal
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+log
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+2
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+2
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+T2
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+1.5587083
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+Normal
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+log
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+2
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+2
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+T2
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+0.0705084
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+Normal
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+log
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+2
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+2
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+T2
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+0.1292877
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+Normal
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+log
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+2
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+2
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+T2
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+1.7150650
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+Normal
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+log
+
+</td>
+
+<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
+
+2
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+As expected both tables show the same entries; however, the latter
+indicates that `T2` was transformed using \[\log_2\].
+
+The figures below show the original data (`T1`) and the transfomed data
+(`T2`):
+
+<img src="man/figures/README-assess-normality-example-data-after-1.png" width="60%" style="display: block; margin: auto;" /><img src="man/figures/README-assess-normality-example-data-after-2.png" width="60%" style="display: block; margin: auto;" />
