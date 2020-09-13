@@ -194,7 +194,8 @@ assess_normality <- function(raw_data,
                                         MetaPipe::generate_hist(data = raw_data[, i], 
                                                                 title = features[i], 
                                                                 prefix = prefix, 
-                                                                xlab = xlab)
+                                                                xlab = xlab, 
+                                                                is_trait = TRUE)
                                         record$flag <- "Normal"
                                       }
                                     }
