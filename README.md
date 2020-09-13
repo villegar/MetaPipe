@@ -171,22 +171,57 @@ replace_missing(example_data, c(2), replace_na =  TRUE)
 
 ### Assess normality
 
-<!-- What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so: -->
+For extended documentation, see the vignette [Assess
+Normality](https://villegar.github.io/MetaPipe/articles/assess-normality).
 
-<!-- ```{r cars} -->
+``` r
+vignette("assess-normality", package = "MetaPipe")
+```
 
-<!-- summary(cars) -->
+`MetaPipe` assesses the normality of variables (traits) by performing a
+Shapiro-Wilk test on the raw data (see [Load Raw
+Data](load-raw-data.html) and [Replace Missing
+Data](replace-missing-data.html)). Based on whether or not the data
+approximates a normal distribution, an array of transformations will be
+computed, and the normality assessed one more time.
 
-<!-- ``` -->
+#### Function call
 
-<!-- You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. -->
+``` r
+assess_normality(raw_data = raw_data, 
+                 excluded_columns = c(2, 3, ..., M), 
+                 # Optional
+                 cpus = 1, 
+                 out_prefix = "metapipe", 
+                 plots_dir = getwd(), 
+                 transf_vals = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10))
+```
 
-<!-- You can also embed plots, for example: -->
+where `raw_data` is a data frame containing the raw data, as described
+in [Load Raw Data](load-raw-data.html) and `excluded_columns` is a
+vector containing the indices of the properties, e.g. `c(2, 3, ..., M)`.
+The other arguments are optional, `cpus` is the number of cores to use,
+in other words, the number of concurrent traits to process, `out_prefix`
+is the prefix for output files, `plots_dir` is the output directory
+where the plots will be stored, and `transf_vals` is a vector containing
+the transformation values to be used when transforming the original
+data.
 
-<!-- ```{r pressure, echo = FALSE} -->
+#### Example
 
-<!-- plot(pressure) -->
+The following histogram shows a sample data obtained from a normal
+distribution with the command `rnorm`, but it was transformed using the
+power (`2`) function; thus, the data seems to be
+skewed:
 
-<!-- ``` -->
+<img src="man/figures/README-assess-normality-example-data-before-1.png" width="60%" style="display: block; margin: auto;" />
 
-<!-- In that case, don't forget to commit and push the resulting figure files, so they display on GitHub! -->
+Using `MetaPipe` we can find an optimal transformation that “normalises”
+this data set:
+
+``` r
+example_data <- data.frame(ID = 1:500,
+                           T1 = test_data,
+                           T2 = 2^test_data)
+transformed_data <- MetaPipe::assess_normality(example_data, c(1))
+```
