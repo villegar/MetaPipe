@@ -186,12 +186,12 @@ generate_hist <- function(data,
                           fill = "#7FCDBB",
                           is_trait = FALSE) {
   histogram <- data.frame(original = data)
+  # Create tmp title if title != NULL and is_trait = TRUE
+  tmp_title <- title
   if (!is.null(title)) {
     tmp_title <- ifelse(is_trait, paste("Trait", title), title)
   }
-  else {
-    tmp_title <- title
-  }
+  
   myPlot <- ggplot2::ggplot(data = histogram, ggplot2::aes(original)) +
     ggplot2::geom_histogram(alpha = alpha, 
                             ggplot2::aes(y = ..count..), 
