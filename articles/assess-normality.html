@@ -105,8 +105,8 @@
 </pre></div>
 <p><code>MetaPipe</code> assesses the normality of variables (traits) by performing a Shapiro-Wilk test on the raw data (see <a href="load-raw-data.html">Load Raw Data</a> and <a href="replace-missing-data.html">Replace Missing Data</a>). Based on whether or not the data approximates a normal distribution, an array of transformations will be computed, and the normality assessed one more time.</p>
 <p>The diagram below shows the tree of transformations that can be performed, the user can specify the transformation values passing a vector with the argument <code>transf_vals</code> to the function <code>assess_normality</code>; by default, <code>[2, e, 3, 4, 5, 6, 7, 8, 9, 10]</code>.</p>
-<div id="htmlwidget-5c217de898b97375e6db" style="width:100%;height:200px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-5c217de898b97375e6db">{"x":{"diagram":"digraph {\n  graph [layout = dot, rankdir = TB]\n  \n  node [shape = rectangle, style = filled, fillcolor = white]\n  # Transformations\n  rec1 [label = \"Raw data\", fillcolor = \"#363B74\", fontcolor = \"#EEEEEE\"]\n  rec2 [label = \"Logarithmic\",  fillcolor = \"#EEEEEE\", fontcolor = \"#363B74\"]\n  rec3 [label = \"Power\", fillcolor = \"#EEEEEE\", fontcolor = \"#363B74\"]\n  rec4 [label = \"Root\", fillcolor = \"#EEEEEE\", fontcolor = \"#363B74\"]\n  \n  node [shape = circle]\n  # Transformation values\n  rec22 [label = \"2\"]\n  rec2e [label = \"e\"]\n  rec23 [label = \"3\"]\n  rec2x [label = \"...\"]\n  rec210 [label = \"10\"]\n  rec32 [label = \"2\"]\n  rec3e [label = \"e\"]\n  rec33 [label = \"3\"]\n  rec3x [label = \"...\"]\n  rec310 [label = \"10\"]\n  rec42 [label = \"2\"]\n  rec4e [label = \"e\"]\n  rec43 [label = \"3\"]\n  rec4x [label = \"...\"]\n  rec410 [label = \"10\"]\n  \n  # edge definitions with the node IDs\n  # Log transformation\n  rec1 -> rec2 \n  rec2 -> { rec22 rec2e rec23 rec2x rec210 }\n  # Power transformation\n  rec1 -> rec3 \n  rec3 -> { rec32 rec3e rec33 rec3x rec310 }\n  # Root transformation\n  rec1 -> rec4\n  rec4 -> { rec42 rec4e rec43 rec4x rec410 }\n  }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script><p>The function call is as follows:</p>
+<div id="htmlwidget-0f5a8dc68db5ed3eb0ff" style="width:100%;height:200px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-0f5a8dc68db5ed3eb0ff">{"x":{"diagram":"digraph {\n  graph [layout = dot, rankdir = TB]\n  \n  node [shape = rectangle, style = filled, fillcolor = white]\n  # Transformations\n  rec1 [label = \"Raw data\", fillcolor = \"#363B74\", fontcolor = \"#EEEEEE\"]\n  rec2 [label = \"Logarithmic\",  fillcolor = \"#EEEEEE\", fontcolor = \"#363B74\"]\n  rec3 [label = \"Power\", fillcolor = \"#EEEEEE\", fontcolor = \"#363B74\"]\n  rec4 [label = \"Root\", fillcolor = \"#EEEEEE\", fontcolor = \"#363B74\"]\n  \n  node [shape = circle]\n  # Transformation values\n  rec22 [label = \"2\"]\n  rec2e [label = \"e\"]\n  rec23 [label = \"3\"]\n  rec2x [label = \"...\"]\n  rec210 [label = \"10\"]\n  rec32 [label = \"2\"]\n  rec3e [label = \"e\"]\n  rec33 [label = \"3\"]\n  rec3x [label = \"...\"]\n  rec310 [label = \"10\"]\n  rec42 [label = \"2\"]\n  rec4e [label = \"e\"]\n  rec43 [label = \"3\"]\n  rec4x [label = \"...\"]\n  rec410 [label = \"10\"]\n  \n  # edge definitions with the node IDs\n  # Log transformation\n  rec1 -> rec2 \n  rec2 -> { rec22 rec2e rec23 rec2x rec210 }\n  # Power transformation\n  rec1 -> rec3 \n  rec3 -> { rec32 rec3e rec33 rec3x rec310 }\n  # Root transformation\n  rec1 -> rec4\n  rec4 -> { rec42 rec4e rec43 rec4x rec410 }\n  }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script><p>The function call is as follows:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit">
 <span class="fu"><a href="../reference/assess_normality.html">assess_normality</a></span>(raw_data = <span class="kw">raw_data</span>, 
                  excluded_columns = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>, <span class="fl">3</span>, <span class="kw">...</span>, <span class="kw">M</span>), 
@@ -120,7 +120,7 @@
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h2>
-<p>The following histogram shows a sample data obtained from a normal distribution with the command <code>rnorm</code>, but it was transformed using the power (<code>2</code>) function; thus, the data seems to be skewed:</p>
+<p>The following histogram shows a sample data obtained from a normal distribution with the command <code>rnorm</code>, but it was transformed using the power (base <code>2</code>) function; thus, the data seems to be skewed:</p>
 <p><img src="assess-normality_files/figure-html/assess-normality-example-data-before-1.png" width="60%" style="display: block; margin: auto;"></p>
 <p>Using <code>MetaPipe</code> we can find an optimal transformation that “normalises” this data set:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
@@ -448,8 +448,8 @@ log
 </tr>
 </tbody>
 </table>
-<p>As expected both tables show the same entries; however, the latter indicates that <code>T2</code> was transformed using <span class="math inline">\(log_2\)</span>.</p>
-<p>The figures below shows the original data (<code>T1</code>) and the transfomed data (<code>T2</code>):</p>
+<p>As expected both tables show the same entries; however, the latter indicates that <code>T2</code> was transformed using <span class="math inline">\(\log_2\)</span>.</p>
+<p>The figures below show the original data (<code>T1</code>) and the transfomed data (<code>T2</code>):</p>
 <p><img src="assess-normality_files/figure-html/assess-normality-example-data-after-1.png" width="60%" style="display: block; margin: auto;"><img src="assess-normality_files/figure-html/assess-normality-example-data-after-2.png" width="60%" style="display: block; margin: auto;"></p>
 </div>
   </div>
