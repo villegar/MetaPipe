@@ -172,6 +172,7 @@ compare_hist <- function(original, transformed, feature, prefix, xlab){
 #' @examples
 #' norm_dist <- rnorm(100)
 #' generate_hist(norm_dist, "XYZ", "xyz_hist", "x")
+#' generate_hist(norm_dist, "XYZ", "xyz_hist", "x", is_trait = TRUE)
 generate_hist <- function(data, 
                           title, 
                           prefix = "metapipe", 
@@ -185,6 +186,12 @@ generate_hist <- function(data,
                           fill = "#7FCDBB",
                           is_trait = FALSE) {
   histogram <- data.frame(original = data)
+  if (!is.null(title)) {
+    tmp_title <- ifelse(is_trait, paste("Trait", title), title)
+  }
+  else {
+    tmp_title <- title
+  }
   myPlot <- ggplot2::ggplot(data = histogram, ggplot2::aes(original)) +
     ggplot2::geom_histogram(alpha = alpha, 
                             ggplot2::aes(y = ..count..), 
@@ -194,8 +201,7 @@ generate_hist <- function(data,
                             fill = fill) +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = angle, 
                                                        hjust = hjust)) + 
-    ggplot2::labs(title = ifelse(is_trait, paste("Trait", title), title), 
-                  x = xlab, y = NULL)
+    ggplot2::labs(title = tmp_title, x = xlab, y = NULL)
 
   if (!save)
     return(myPlot)
