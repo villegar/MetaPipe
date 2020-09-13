@@ -57,14 +57,17 @@ test_that("compare histograms works", {
 test_that("generate histogram works", {
   norm_dist <- rnorm(100)
   generate_hist(norm_dist, "XYZ", "hist", "x")
+  generate_hist(norm_dist, "ABC", "hist", "x", is_trait = TRUE)
   output <- generate_hist(norm_dist, "XYZ", "hist", "x", FALSE)
   expect_equal(class(output), c("gg", "ggplot"))
-  filename <- "hist_XYZ.png"
-  expect_true(file.exists(filename))
-  expect_false(dir.exists(filename))
-  expect_gt(file.size(filename), 0)
-  file.remove(filename)
-  expect_false(file.exists(filename))
+  filename <- c("hist_XYZ.png", "hist_ABC.png")
+  for(f in filename) {
+    expect_true(file.exists(f))
+    expect_false(dir.exists(f))
+    expect_gt(file.size(f), 0)
+    file.remove(f)
+    expect_false(file.exists(f))
+  }
 })
 
 test_that("hex logo works", {
