@@ -330,7 +330,7 @@ transform_data <- function(data,
              "_",
              index,
              transformation)
-    compare_hist(data, transformed, feature, prefix, xlab)
+    MetaPipe::compare_hist(data, transformed, feature, prefix, xlab)
     record$values <- transformed
     record$transf <- "log"
     record$transf_val <- base
@@ -348,7 +348,7 @@ transform_data <- function(data,
              "_",
              index,
              transformation)
-    compare_hist(data, transformed, feature, prefix, xlab)
+    MetaPipe::compare_hist(data, transformed, feature, prefix, xlab)
     record$values <- transformed
     record$transf <- "power"
     record$transf_val <- power
@@ -366,7 +366,7 @@ transform_data <- function(data,
              "_",
              index,
              transformation)
-    compare_hist(data, transformed, feature, prefix, xlab)
+    MetaPipe::compare_hist(data, transformed, feature, prefix, xlab)
     record$values <- transformed
     record$transf <- "root"
     record$transf_val <- root
