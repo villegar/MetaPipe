@@ -530,9 +530,16 @@
 </tr>
 </tbody>
 </table>
-<p>As expected both tables show the same entries; however, the latter indicates that <code>T2</code> was transformed using <span class="math inline">$`\log_2`$</span>.</p>
-<p>The figures below show the original data (<code>T1</code>) and the transfomed data (<code>T2</code>):</p>
-<p><img src="reference/figures/README-assess-normality-example-data-after-1.png" width="60%" style="display: block; margin: auto;"><img src="reference/figures/README-assess-normality-example-data-after-2.png" width="60%" style="display: block; margin: auto;"></p>
+<p>As expected both tables show the same entries; however, the latter indicates that <code>T2</code> was transformed using <span class="math inline">$`\log_2`$</span>. The function will generate histograms for all the traits, the naming convention used is:</p>
+<ul>
+<li>
+<code>HIST_[index]_[transf]_[transf_val]_[feature].png</code> for transformed traits</li>
+<li>
+<code>HIST_[index]_NORM_[feature].png</code> for those that were not transformed.</li>
+</ul>
+<p>For the previous data set <code>HIST_1_NORM_T1.png</code> and <code>HIST_2_LOG_2_T2.png</code>:</p>
+<p><img src="reference/figures/HIST_1_NORM_T1.png" width="45%"><img src="reference/figures/HIST_2_LOG_2_T2.png" width="45%"></p>
+<!-- The figures below show the original data (`T1`) and the transfomed data (`T2`): -->
 </div>
 </div>
 </div>
