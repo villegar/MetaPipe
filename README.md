@@ -793,9 +793,19 @@ log
 </table>
 
 As expected both tables show the same entries; however, the latter
-indicates that `T2` was transformed using \(`\log_2`\).
+indicates that `T2` was transformed using \(`\log_2`\). The function
+will generate histograms for all the traits, the naming convention used
+is:
 
-The figures below show the original data (`T1`) and the transfomed data
-(`T2`):
+  - `HIST_[index]_[transf]_[transf_val]_[feature].png` for transformed
+    traits
+  - `HIST_[index]_NORM_[feature].png` for those that were not
+    transformed.
 
-<img src="man/figures/README-assess-normality-example-data-after-1.png" width="60%" style="display: block; margin: auto;" /><img src="man/figures/README-assess-normality-example-data-after-2.png" width="60%" style="display: block; margin: auto;" />
+For the previous data set `HIST_1_NORM_T1.png` and
+`HIST_2_LOG_2_T2.png`:
+
+<img src="man/figures/HIST_1_NORM_T1.png" width="45%" />
+<img src="man/figures/HIST_2_LOG_2_T2.png" width="45%" />
+
+<!-- The figures below show the original data (`T1`) and the transfomed data (`T2`): -->
