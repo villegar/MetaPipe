@@ -116,6 +116,7 @@ transform_pseudo_marker <- function(x_data, marker, chr, pos) {
 #' 
 #' @seealso \code{\link{qtl_perm_test}}
 effect_plots <- function(x_data_sim, qtl_data, cpus = 1, plots_dir = getwd()) {
+  i <- NULL # Local binding
   # Start parallel backend
   cl <- parallel::makeCluster(cpus, setup_strategy = "sequential")
   doParallel::registerDoParallel(cl)

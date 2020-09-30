@@ -114,7 +114,8 @@ ggplot_save <- function(myPlot, name, width = 6, height = 6){
 #' norm_dist <- rnorm(100)
 #' norm_dist_transformed <- norm_dist^2
 #' compare_hist(norm_dist, norm_dist_transformed, "XYZ", "xyz_hist", "x")
-compare_hist <- function(original, transformed, feature, prefix, xlab){
+compare_hist <- function(original, transformed, feature, prefix, xlab) {
+  `..count..` <- NULL # Local binding
   ALPHA <- 1
   BINS <- 20
   histogram <- data.frame(
@@ -185,6 +186,7 @@ generate_hist <- function(data,
                           hjust = 1,
                           fill = "#7FCDBB",
                           is_trait = FALSE) {
+  original <- `..count..` <- NULL
   histogram <- data.frame(original = data)
   # Create tmp title if title != NULL and is_trait = TRUE
   tmp_title <- title

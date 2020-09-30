@@ -131,6 +131,7 @@ assess_normality <- function(raw_data,
                              out_prefix = "metapipe", 
                              plots_dir = getwd(), 
                              transf_vals = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10)) {
+  i <- NULL # Local binding
   # Start parallel backend
   cl <- parallel::makeCluster(cpus)# , setup_strategy = "sequential")
   doParallel::registerDoParallel(cl)
@@ -230,6 +231,7 @@ assess_normality_postprocessing <- function(raw_data,
                                             raw_data_normalised,
                                             out_prefix = "metapipe", 
                                             pareto_scaling = FALSE) {
+  feature <- transf_val <- NULL # Local binding
   # Verify the raw_data_normalised object has the right structure
   expected_columns <- c("index", "feature", "values", "flag", "transf", "transf_val")
   if (!all(expected_columns %in% colnames(raw_data_normalised)))
@@ -467,6 +469,7 @@ random_map <- function(genotypes = c("A", "H", "B"), lg = 1:10, markers = 10, po
 #' 
 #' @seealso \code{\link{qtl_perm_test}}
 qtl_scone <- function(x_data, cpus = 1, ...) {
+  i <- NULL # Local binding
   # Start parallel backend
   cl <- parallel::makeCluster(cpus)# , setup_strategy = "sequential")
   doParallel::registerDoParallel(cl)
@@ -566,6 +569,7 @@ qtl_perm_test <- function(x_data,
                           n_perm = 1000, 
                           plots_dir = getwd(), 
                           ...) {
+  i <- NULL # Local bindings
   # Start parallel backend
   cl <- parallel::makeCluster(cpus)# , setup_strategy = "sequential")
   doParallel::registerDoParallel(cl)
