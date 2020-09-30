@@ -5,17 +5,18 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MetaPipe: A High-Performance Computing Pipeline for QTL Mapping of Large
-        Ionomic and Metabolomic Datasets • MetaPipe</title>
+<title>A High-Performance Computing Pipeline for QTL Mapping of Large Ionomic 
+           and Metabolomic Datasets • MetaPipe</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="MetaPipe: A High-Performance Computing Pipeline for QTL Mapping of Large
-        Ionomic and Metabolomic Datasets">
+<script src="pkgdown.js"></script><meta property="og:title" content="A High-Performance Computing Pipeline for QTL Mapping of Large Ionomic 
+           and Metabolomic Datasets">
 <meta property="og:description" content="Pipeline for QTL mapping of large ionomic and metabolomic datasets. 
-                It uses an HPC approach to speed up the computations performed.">
+                 It uses an High-Performance Computing approach to speed up the 
+                 computations performed.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -34,7 +35,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">MetaPipe</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -94,7 +95,7 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#metapipe-" class="anchor"></a>MetaPipe <img src="https://raw.githubusercontent.com/villegar/MetaPipe/master/inst/images/metapipe.png" alt="metapipe-logo" align="right" height="200px/">
 </h1></div>
-<p>MetaPipe: A High-Performance Computing pipeline for QTL mapping of large metabolomic datasets <!-- badges: start --> <!-- [![Build Status](https://travis-ci.com/villegar/MetaPipe.svg?branch=master)](https://travis-ci.com/villegar/MetaPipe) --> <a href="https://travis-ci.com/villegar/MetaPipe"><img src="https://travis-ci.com/villegar/MetaPipe.svg?branch=master"></a> <a href="https://github.com/villegar/MetaPipe"><img src="https://img.shields.io/badge/devel%20version-0.0.1-blue.svg"></a> <a href="https://github.com/villegar/MetaPipe"><img src="https://img.shields.io/github/languages/code-size/villegar/MetaPipe.svg"></a><!-- [![](https://www.r-pkg.org/badges/version/MetaPipe?color=red)](https://cran.r-project.org/package=MetaPipe) --> <a href="https://codecov.io/gh/villegar/MetaPipe"><img src="https://codecov.io/gh/villegar/MetaPipe/branch/master/graph/badge.svg"></a> <a href="https://github.com/villegar/MetaPipe/actions"><img src="https://github.com/villegar/MetaPipe/workflows/R-CMD-check/badge.svg" alt="R build status"></a> <!-- [![Dependencies](https://tinyverse.netlify.com/badge/MetaPipe)](https://cran.r-project.org/package=MetaPipe) --> <!-- [![CRAN checks](https://cranchecks.info/badges/summary/MetaPipe)](https://cran.r-project.org/web/checks/check_results_MetaPipe.html) --> <!-- [![R build status](https://github.com/villegar/MetaPipe/workflows/R-CMD-check/badge.svg)](https://github.com/villegar/MetaPipe/actions) --></p>
+<p>MetaPipe: A High-Performance Computing pipeline for QTL mapping of large metabolomic datasets <!-- badges: start --> <!-- [![Build Status](https://travis-ci.com/villegar/MetaPipe.svg?branch=master)](https://travis-ci.com/villegar/MetaPipe) --> <a href="https://travis-ci.com/villegar/MetaPipe"><img src="https://travis-ci.com/villegar/MetaPipe.svg?branch=master"></a> <a href="https://github.com/villegar/MetaPipe"><img src="https://img.shields.io/badge/devel%20version-1.0.0-blue.svg"></a> <a href="https://github.com/villegar/MetaPipe"><img src="https://img.shields.io/github/languages/code-size/villegar/MetaPipe.svg"></a><!-- [![](https://www.r-pkg.org/badges/version/MetaPipe?color=red)](https://cran.r-project.org/package=MetaPipe) --> <a href="https://codecov.io/gh/villegar/MetaPipe"><img src="https://codecov.io/gh/villegar/MetaPipe/branch/master/graph/badge.svg"></a> <a href="https://github.com/villegar/MetaPipe/actions"><img src="https://github.com/villegar/MetaPipe/workflows/R-CMD-check/badge.svg" alt="R build status"></a> <!-- [![Dependencies](https://tinyverse.netlify.com/badge/MetaPipe)](https://cran.r-project.org/package=MetaPipe) --> <!-- [![CRAN checks](https://cranchecks.info/badges/summary/MetaPipe)](https://cran.r-project.org/web/checks/check_results_MetaPipe.html) --> <!-- [![R build status](https://github.com/villegar/MetaPipe/workflows/R-CMD-check/badge.svg)](https://github.com/villegar/MetaPipe/actions) --></p>
 <!-- badges: end -->
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
@@ -112,8 +113,7 @@
 <p>You can install the development version from <a href="https://github.com/">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
 <span class="co"># install.packages(c("hexSticker", "kableExtra", "qpdf", remotes")</span>
-<span class="kw">remotes</span>::<span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"villegar/MetaPipe"</span>, build_vignettes = <span class="fl">TRUE</span>)
-</pre></div>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"villegar/MetaPipe"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></pre></div>
 </div>
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
@@ -121,44 +121,40 @@
 <!-- This is a basic example which shows you how to solve a common problem: -->
 <p>You should start by loading <code>MetaPipe</code> on your session.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/villegar/MetaPipe">MetaPipe</a></span>)
-</pre></div>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/villegar/MetaPipe">MetaPipe</a></span><span class="op">)</span></pre></div>
 <div id="load-raw-data" class="section level3">
 <h3 class="hasAnchor">
 <a href="#load-raw-data" class="anchor"></a>Load raw data</h3>
 <p>For details about the data structure and extended documentation, see the vignette <a href="https://villegar.github.io/MetaPipe/articles/load-raw-data">Load Raw Data</a>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span>(<span class="st">"load-raw-data"</span>, package = <span class="st">"MetaPipe"</span>)
-</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span><span class="op">(</span><span class="st">"load-raw-data"</span>, package <span class="op">=</span> <span class="st">"MetaPipe"</span><span class="op">)</span></pre></div>
 <div id="function-call" class="section level4">
 <h4 class="hasAnchor">
 <a href="#function-call" class="anchor"></a>Function call</h4>
 <div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="fu"><a href="reference/load_raw.html">load_raw</a></span>(raw_data_filename = <span class="st">"FILE.CSV"</span>, excluded_columns = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">...</span>))
-</pre></div>
-<p>where <code>raw_data_filename</code> is the filename containg the raw data, both absolute and relative paths are accepted. Next, the argument <code>excluded_columns</code> is a vector containing the indices of the properties, e.g. <code><a href="https://rdrr.io/r/base/c.html">c(2, 3, ..., M)</a></code>.</p>
+<span class="fu"><a href="reference/load_raw.html">load_raw</a></span><span class="op">(</span>raw_data_filename <span class="op">=</span> <span class="st">"FILE.CSV"</span>, excluded_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span><span class="op">)</span></pre></div>
+<p>where <code>raw_data_filename</code> is the filename containing the raw data, both absolute and relative paths are accepted. Next, the argument <code>excluded_columns</code> is a vector containing the indices of the properties, e.g. <code><a href="https://rdrr.io/r/base/c.html">c(2, 3, ..., M)</a></code>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit">
 <span class="co"># Toy dataset</span>
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">123</span>)
-<span class="kw">example_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(ID = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>),
-                           P1 = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"one"</span>, <span class="st">"two"</span>, <span class="st">"three"</span>, <span class="st">"four"</span>, <span class="st">"five"</span>), 
-                           T1 = <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="fl">5</span>), 
-                           T2 = <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="fl">5</span>),
-                           T3 = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">NA</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="fl">4</span>)),                     <span class="co">#  20 % NAs</span>
-                           T4 = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">NA</span>, <span class="fl">1.2</span>, <span class="op">-</span><span class="fl">0.5</span>, <span class="fl">NA</span>, <span class="fl">0.87</span>),          <span class="co">#  40 % NAs</span>
-                           T5 = <span class="fl">NA</span>)                                  <span class="co"># 100 % NAs</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span>
+<span class="va">example_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>ID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span><span class="op">)</span>,
+                           P1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"one"</span>, <span class="st">"two"</span>, <span class="st">"three"</span>, <span class="st">"four"</span>, <span class="st">"five"</span><span class="op">)</span>, 
+                           T1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>, 
+                           T2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>,
+                           T3 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span>,                     <span class="co">#  20 % NAs</span>
+                           T4 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">1.2</span>, <span class="op">-</span><span class="fl">0.5</span>, <span class="cn">NA</span>, <span class="fl">0.87</span><span class="op">)</span>,          <span class="co">#  40 % NAs</span>
+                           T5 <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>                                  <span class="co"># 100 % NAs</span>
 <span class="co">## Write to disk</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span>(<span class="kw">example_data</span>, <span class="st">"example_data.csv"</span>, row.names = <span class="fl">FALSE</span>)
+<span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span><span class="op">(</span><span class="va">example_data</span>, <span class="st">"example_data.csv"</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 
 <span class="co"># Load the data</span>
-<span class="fu"><a href="reference/load_raw.html">load_raw</a></span>(<span class="st">"example_data.csv"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>))
+<span class="fu"><a href="reference/load_raw.html">load_raw</a></span><span class="op">(</span><span class="st">"example_data.csv"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt;   ID    P1          T1         T2        T3    T4 T5</span>
 <span class="co">#&gt; 1  1   one -0.56047565  1.7150650        NA    NA NA</span>
 <span class="co">#&gt; 2  2   two -0.23017749  0.4609162 1.2240818  1.20 NA</span>
 <span class="co">#&gt; 3  3 three  1.55870831 -1.2650612 0.3598138 -0.50 NA</span>
 <span class="co">#&gt; 4  4  four  0.07050839 -0.6868529 0.4007715    NA NA</span>
-<span class="co">#&gt; 5  5  five  0.12928774 -0.4456620 0.1106827  0.87 NA</span>
-</pre></div>
+<span class="co">#&gt; 5  5  five  0.12928774 -0.4456620 0.1106827  0.87 NA</span></pre></div>
 </div>
 </div>
 <div id="replace-missing-data" class="section level3">
@@ -166,25 +162,23 @@
 <a href="#replace-missing-data" class="anchor"></a>Replace missing data</h3>
 <p>For extended documentation, see the vignette <a href="https://villegar.github.io/MetaPipe/articles/replace-missing-data">Replace Missing Data</a>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span>(<span class="st">"replace-missing-data"</span>, package = <span class="st">"MetaPipe"</span>)
-</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span><span class="op">(</span><span class="st">"replace-missing-data"</span>, package <span class="op">=</span> <span class="st">"MetaPipe"</span><span class="op">)</span></pre></div>
 <div id="function-call-1" class="section level4">
 <h4 class="hasAnchor">
 <a href="#function-call-1" class="anchor"></a>Function call</h4>
 <div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="fu"><a href="reference/replace_missing.html">replace_missing</a></span>(raw_data = <span class="kw">example_data</span>, 
-                excluded_columns = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>), 
+<span class="fu"><a href="reference/replace_missing.html">replace_missing</a></span><span class="op">(</span>raw_data <span class="op">=</span> <span class="va">example_data</span>, 
+                excluded_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>, 
                 <span class="co"># Optional</span>
-                out_prefix = <span class="st">"metapipe"</span>, prop_na = <span class="fl">0.5</span>, replace_na = <span class="fl">FALSE</span>)
-</pre></div>
+                out_prefix <span class="op">=</span> <span class="st">"metapipe"</span>, prop_na <span class="op">=</span> <span class="fl">0.5</span>, replace_na <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></pre></div>
 <p>where <code>raw_data</code> is a data frame containing the raw data, as described in <a href="#load-raw-data">Load Raw Data</a> and <code>excluded_columns</code> is a vector containing the indices of the properties, e.g. <code><a href="https://rdrr.io/r/base/c.html">c(2, 3, ..., M)</a></code>. The other arguments are optional, <code>out_prefix</code> is the prefix for output files, <code>prop_na</code> is the proportion of NA values (used to drop traits), and <code>replace_na</code> is a logical flag to indicate whether or not NAs should be replace by half of the minimum value.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit">
 <span class="co"># Inserting missing values manually</span>
-<span class="kw">example_data</span><span class="op">$</span><span class="kw">T1</span>[<span class="fl">2</span><span class="op">:</span><span class="fl">3</span>] <span class="op">&lt;-</span> <span class="fl">NA</span>
-<span class="kw">example_data</span><span class="op">$</span><span class="kw">T2</span>[<span class="fl">4</span>] <span class="op">&lt;-</span> <span class="fl">NA</span>
+<span class="va">example_data</span><span class="op">$</span><span class="va">T1</span><span class="op">[</span><span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span>
+<span class="va">example_data</span><span class="op">$</span><span class="va">T2</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span>
 
 <span class="co"># No changes expected</span>
-<span class="fu"><a href="reference/replace_missing.html">replace_missing</a></span>(<span class="kw">example_data</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>))
+<span class="fu"><a href="reference/replace_missing.html">replace_missing</a></span><span class="op">(</span><span class="va">example_data</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; The following traits were dropped because they have 50% or more missing values: </span>
 <span class="co">#&gt; T5</span>
 <span class="co">#&gt;   ID    P1          T1         T2        T3    T4</span>
@@ -195,7 +189,7 @@
 <span class="co">#&gt; 5  5  five  0.12928774 -0.4456620 0.1106827  0.87</span>
 
 <span class="co"># Traits with 25% of NA should be dropped</span>
-<span class="fu"><a href="reference/replace_missing.html">replace_missing</a></span>(<span class="kw">example_data</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>), prop_na =  <span class="fl">0.25</span>)
+<span class="fu"><a href="reference/replace_missing.html">replace_missing</a></span><span class="op">(</span><span class="va">example_data</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>, prop_na <span class="op">=</span>  <span class="fl">0.25</span><span class="op">)</span>
 <span class="co">#&gt; The following traits were dropped because they have 25% or more missing values: </span>
 <span class="co">#&gt; T1, T4, T5</span>
 <span class="co">#&gt;   ID    P1         T2        T3</span>
@@ -206,7 +200,7 @@
 <span class="co">#&gt; 5  5  five -0.4456620 0.1106827</span>
 
 <span class="co"># NAs should be replaced by half of the minimum value</span>
-<span class="fu"><a href="reference/replace_missing.html">replace_missing</a></span>(<span class="kw">example_data</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>), replace_na =  <span class="fl">TRUE</span>)
+<span class="fu"><a href="reference/replace_missing.html">replace_missing</a></span><span class="op">(</span><span class="va">example_data</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>, replace_na <span class="op">=</span>  <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">#&gt; The following traits were dropped because they have 100% missing values: </span>
 <span class="co">#&gt; T5</span>
 <span class="co">#&gt;   ID    P1          T1         T2         T3    T4</span>
@@ -214,8 +208,7 @@
 <span class="co">#&gt; 2  2   two -0.28023782  0.4609162 1.22408180  1.20</span>
 <span class="co">#&gt; 3  3 three -0.28023782 -1.2650612 0.35981383 -0.50</span>
 <span class="co">#&gt; 4  4  four  0.07050839 -0.6325306 0.40077145 -0.25</span>
-<span class="co">#&gt; 5  5  five  0.12928774 -0.4456620 0.11068272  0.87</span>
-</pre></div>
+<span class="co">#&gt; 5  5  five  0.12928774 -0.4456620 0.11068272  0.87</span></pre></div>
 </div>
 </div>
 <div id="assess-normality" class="section level3">
@@ -223,21 +216,19 @@
 <a href="#assess-normality" class="anchor"></a>Assess normality</h3>
 <p>For extended documentation, see the vignette <a href="https://villegar.github.io/MetaPipe/articles/assess-normality">Assess Normality</a>.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span>(<span class="st">"assess-normality"</span>, package = <span class="st">"MetaPipe"</span>)
-</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span><span class="op">(</span><span class="st">"assess-normality"</span>, package <span class="op">=</span> <span class="st">"MetaPipe"</span><span class="op">)</span></pre></div>
 <p><code>MetaPipe</code> assesses the normality of variables (traits) by performing a Shapiro-Wilk test on the raw data (see <a href="load-raw-data.html">Load Raw Data</a> and <a href="replace-missing-data.html">Replace Missing Data</a>). Based on whether or not the data approximates a normal distribution, an array of transformations will be computed, and the normality assessed one more time.</p>
 <div id="function-call-2" class="section level4">
 <h4 class="hasAnchor">
 <a href="#function-call-2" class="anchor"></a>Function call</h4>
 <div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="fu"><a href="reference/assess_normality.html">assess_normality</a></span>(raw_data = <span class="kw">raw_data</span>, 
-                 excluded_columns = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>, <span class="fl">3</span>, <span class="kw">...</span>, <span class="kw">M</span>), 
+<span class="fu"><a href="reference/assess_normality.html">assess_normality</a></span><span class="op">(</span>raw_data <span class="op">=</span> <span class="va">raw_data</span>, 
+                 excluded_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span>, <span class="va">...</span>, <span class="va">M</span><span class="op">)</span>, 
                  <span class="co"># Optional</span>
-                 cpus = <span class="fl">1</span>, 
-                 out_prefix = <span class="st">"metapipe"</span>, 
-                 plots_dir = <span class="fu"><a href="https://rdrr.io/r/base/getwd.html">getwd</a></span>(), 
-                 transf_vals = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>, <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(<span class="fl">1</span>), <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span>, <span class="fl">7</span>, <span class="fl">8</span>, <span class="fl">9</span>, <span class="fl">10</span>))
-</pre></div>
+                 cpus <span class="op">=</span> <span class="fl">1</span>, 
+                 out_prefix <span class="op">=</span> <span class="st">"metapipe"</span>, 
+                 plots_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html">getwd</a></span><span class="op">(</span><span class="op">)</span>, 
+                 transf_vals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span>, <span class="fl">7</span>, <span class="fl">8</span>, <span class="fl">9</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></pre></div>
 <p>where <code>raw_data</code> is a data frame containing the raw data, as described in <a href="load-raw-data.html">Load Raw Data</a> and <code>excluded_columns</code> is a vector containing the indices of the properties, e.g. <code><a href="https://rdrr.io/r/base/c.html">c(2, 3, ..., M)</a></code>. The other arguments are optional, <code>cpus</code> is the number of cores to use, in other words, the number of concurrent traits to process, <code>out_prefix</code> is the prefix for output files, <code>plots_dir</code> is the output directory where the plots will be stored, and <code>transf_vals</code> is a vector containing the transformation values to be used when transforming the original data.</p>
 </div>
 <div id="example-1" class="section level4">
@@ -247,11 +238,10 @@
 <p><img src="reference/figures/README-assess-normality-example-data-before-1.png" width="60%" style="display: block; margin: auto;"></p>
 <p>Using <code>MetaPipe</code> we can find an optimal transformation that “normalises” this data set:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit">
-<span class="kw">example_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(ID = <span class="fl">1</span><span class="op">:</span><span class="fl">500</span>,
-                           T1 = <span class="kw">test_data</span>,
-                           T2 = <span class="fl">2</span><span class="op">^</span><span class="kw">test_data</span>)
-<span class="kw">transformed_data</span> <span class="op">&lt;-</span> <span class="kw">MetaPipe</span>::<span class="fu"><a href="reference/assess_normality.html">assess_normality</a></span>(<span class="kw">example_data</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>))
-</pre></div>
+<span class="va">example_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>ID <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">500</span>,
+                           T1 <span class="op">=</span> <span class="va">test_data</span>,
+                           T2 <span class="op">=</span> <span class="fl">2</span><span class="op">^</span><span class="va">test_data</span><span class="op">)</span>
+<span class="va">transformed_data</span> <span class="op">&lt;-</span> <span class="fu">MetaPipe</span><span class="fu">::</span><span class="fu"><a href="reference/assess_normality.html">assess_normality</a></span><span class="op">(</span><span class="va">example_data</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></pre></div>
 <p>The top 5 entries for the trait <code>T1</code> are:</p>
 <table class="table table table-striped table-hover">
 <thead><tr>

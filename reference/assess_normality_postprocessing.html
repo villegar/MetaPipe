@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Postprocessing for the normality assessmment of the features — assess_normality_postprocessing • MetaPipe</title>
+<title>Postprocessing for the normality assessment of the features — assess_normality_postprocessing • MetaPipe</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Postprocessing for the normality assessmment of the features — assess_normality_postprocessing" />
-<meta property="og:description" content="Postprocessing for the normality assessmment of the features" />
+<meta property="og:title" content="Postprocessing for the normality assessment of the features — assess_normality_postprocessing" />
+<meta property="og:description" content="Postprocessing for the normality assessment of the features" />
 
 
 
@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MetaPipe</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -129,22 +129,22 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Postprocessing for the normality assessmment of the features</h1>
+    <h1>Postprocessing for the normality assessment of the features</h1>
     <small class="dont-index">Source: <a href='https://github.com/villegar/MetaPipe/blob/master/R/metapipe.R'><code>R/metapipe.R</code></a></small>
     <div class="hidden name"><code>assess_normality_postprocessing.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Postprocessing for the normality assessmment of the features</p>
+    <p>Postprocessing for the normality assessment of the features</p>
     </div>
 
-    <pre class="usage"><span class='fu'>assess_normality_postprocessing</span>(
-  <span class='kw'>raw_data</span>,
-  <span class='kw'>excluded_columns</span>,
-  <span class='kw'>raw_data_normalised</span>,
-  out_prefix = <span class='st'>"metapipe"</span>,
-  pareto_scaling = <span class='fl'>FALSE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>assess_normality_postprocessing</span><span class='op'>(</span>
+  <span class='va'>raw_data</span>,
+  <span class='va'>excluded_columns</span>,
+  <span class='va'>raw_data_normalised</span>,
+  out_prefix <span class='op'>=</span> <span class='st'>"metapipe"</span>,
+  pareto_scaling <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -163,11 +163,11 @@
     </tr>
     <tr>
       <th>out_prefix</th>
-      <td><p>prefix for output files, plots, etc.</p></td>
+      <td><p>prefix for output files and plots</p></td>
     </tr>
     <tr>
       <th>pareto_scaling</th>
-      <td><p>booolean flag to indicate whether or not perform a pareto scaling on the normalised data</p></td>
+      <td><p>boolean flag to indicate whether or not perform a pareto scaling on the normalised data</p></td>
     </tr>
     </table>
 
@@ -179,12 +179,12 @@
     <div class='dont-index'><p><code><a href='assess_normality.html'>assess_normality</a></code> and <code><a href='assess_normality_stats.html'>assess_normality_stats</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>example_data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(ID = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>4</span>,<span class='fl'>5</span>), 
-                           P1 = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"one"</span>, <span class='st'>"two"</span>, <span class='st'>"three"</span>, <span class='st'>"four"</span>, <span class='st'>"five"</span>), 
-                           T1 = <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>5</span>), 
-                           T2 = <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>5</span>))
-<span class='kw'>example_data_normalised</span> <span class='op'>&lt;-</span> <span class='fu'><a href='assess_normality.html'>assess_normality</a></span>(<span class='kw'>example_data</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>))
-<span class='fu'>assess_normality_postprocessing</span>(<span class='kw'>example_data</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>), <span class='kw'>example_data_normalised</span>)
+    <pre class="examples"><div class='input'><span class='va'>example_data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>ID <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>4</span>,<span class='fl'>5</span><span class='op'>)</span>, 
+                           P1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"one"</span>, <span class='st'>"two"</span>, <span class='st'>"three"</span>, <span class='st'>"four"</span>, <span class='st'>"five"</span><span class='op'>)</span>, 
+                           T1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>5</span><span class='op'>)</span>, 
+                           T2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>example_data_normalised</span> <span class='op'>&lt;-</span> <span class='fu'><a href='assess_normality.html'>assess_normality</a></span><span class='op'>(</span><span class='va'>example_data</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>assess_normality_postprocessing</span><span class='op'>(</span><span class='va'>example_data</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>, <span class='va'>example_data_normalised</span><span class='op'>)</span>
 
 </div></pre>
   </div>

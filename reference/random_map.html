@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MetaPipe</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -138,13 +138,13 @@
     <p>Generate a pseudo-random genetic map. Particularly useful for testing.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>random_map</span>(
-  genotypes = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"A"</span>, <span class='st'>"H"</span>, <span class='st'>"B"</span>),
-  lg = <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>,
-  markers = <span class='fl'>10</span>,
-  population = <span class='fl'>100</span>,
-  seed = <span class='kw'>NULL</span>
-)</pre>
+    <pre class="usage"><span class='fu'>random_map</span><span class='op'>(</span>
+  genotypes <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"H"</span>, <span class='st'>"B"</span><span class='op'>)</span>,
+  lg <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>,
+  markers <span class='op'>=</span> <span class='fl'>10</span>,
+  population <span class='op'>=</span> <span class='fl'>100</span>,
+  seed <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -176,9 +176,9 @@
     <p>data frame containing the pseudo-random genetic map.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>gmap_1</span> <span class='op'>&lt;-</span> <span class='fu'>random_map</span>()
-<span class='kw'>gmap_2</span> <span class='op'>&lt;-</span> <span class='fu'>random_map</span>(genotypes = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"nn"</span>, <span class='st'>"np"</span>))
-<span class='kw'>gmap_3</span> <span class='op'>&lt;-</span> <span class='fu'>random_map</span>(population = <span class='fl'>3</span>)
+    <pre class="examples"><div class='input'><span class='va'>gmap_1</span> <span class='op'>&lt;-</span> <span class='fu'>random_map</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>gmap_2</span> <span class='op'>&lt;-</span> <span class='fu'>random_map</span><span class='op'>(</span>genotypes <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"nn"</span>, <span class='st'>"np"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>gmap_3</span> <span class='op'>&lt;-</span> <span class='fu'>random_map</span><span class='op'>(</span>population <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
