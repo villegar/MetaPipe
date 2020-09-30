@@ -2,7 +2,7 @@
 % Please edit documentation in R/metapipe.R
 \name{assess_normality_postprocessing}
 \alias{assess_normality_postprocessing}
-\title{Postprocessing for the normality assessmment of the features}
+\title{Postprocessing for the normality assessment of the features}
 \usage{
 assess_normality_postprocessing(
   raw_data,
@@ -19,15 +19,15 @@ assess_normality_postprocessing(
 
 \item{raw_data_normalised}{data frame containing the normalised raw data, created with \code{\link{assess_normality}}}
 
-\item{out_prefix}{prefix for output files, plots, etc.}
+\item{out_prefix}{prefix for output files and plots}
 
-\item{pareto_scaling}{booolean flag to indicate whether or not perform a pareto scaling on the normalised data}
+\item{pareto_scaling}{boolean flag to indicate whether or not perform a pareto scaling on the normalised data}
 }
 \value{
 Files containing the normal and non-paramatric normalised data are stored on disk
 }
 \description{
-Postprocessing for the normality assessmment of the features
+Postprocessing for the normality assessment of the features
 }
 \examples{
 example_data <- data.frame(ID = c(1,2,3,4,5), 

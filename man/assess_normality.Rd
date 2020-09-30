@@ -20,7 +20,7 @@ assess_normality(
 
 \item{cpus}{number of CPUS to be used}
 
-\item{out_prefix}{prefix for output files, plots, etc.}
+\item{out_prefix}{prefix for output files and plots}
 
 \item{plots_dir}{path to the directory where plots should be stored}
 

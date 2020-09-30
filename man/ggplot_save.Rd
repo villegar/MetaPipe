@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot-utils.R
 \name{ggplot_save}
 \alias{ggplot_save}
-\title{Function to save a graphical object generated with GGPLOT2 to disk in 
+\title{Function to save a graphical object generated with \code{ggplot2} to disk in 
 Portable Network Graphics (PNG) format.}
 \usage{
 ggplot_save(myPlot, name, width = 6, height = 6)
@@ -17,7 +17,7 @@ ggplot_save(myPlot, name, width = 6, height = 6)
 \item{height}{height in inches}
 }
 \description{
-Function to save a graphical object generated with GGPLOT2 to disk in 
+Function to save a graphical object generated with \code{ggplot2} to disk in 
 Portable Network Graphics (PNG) format.
 }
 \examples{

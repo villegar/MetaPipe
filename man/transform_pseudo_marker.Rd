@@ -2,7 +2,7 @@
 % Please edit documentation in R/qtl-utils.R
 \name{transform_pseudo_marker}
 \alias{transform_pseudo_marker}
-\title{Transforms a pseudo-marker to a standar marker by looking for the nearest one}
+\title{Transforms a pseudo-marker to a standard marker by looking for the nearest one}
 \usage{
 transform_pseudo_marker(x_data, marker, chr, pos)
 }
@@ -19,7 +19,7 @@ transform_pseudo_marker(x_data, marker, chr, pos)
 a prime marker and position
 }
 \description{
-Transforms a pseudo-marker to a standar marker by looking for the nearest one
+Transforms a pseudo-marker to a standard marker by looking for the nearest one
 }
 \examples{
 # Create toy dataset

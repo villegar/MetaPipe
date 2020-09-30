@@ -24,25 +24,25 @@ generate_hist(
 
 \item{title}{plot title}
 
-\item{prefix}{file prefix [default: metapipe]}
+\item{prefix}{file prefix [default: \code{metapipe}]}
 
-\item{xlab}{x-axis label [default: NULL]}
+\item{xlab}{x-axis label [default: \code{NULL}]}
 
-\item{save}{boolean flag to indicate if that plot should be save to disk [default: TRUE]}
+\item{save}{boolean flag to indicate if that plot should be save to disk [default: \code{TRUE}]}
 
-\item{alpha}{value to set the transparency of the bins [default: 1]}
+\item{alpha}{value to set the transparency of the bins [default: \code{1}]}
 
-\item{angle}{rotation angle for labels [default: 60]}
+\item{angle}{rotation angle for labels [default: \code{60}]}
 
-\item{bins}{number of bins to plot [default: 20]}
+\item{bins}{number of bins to plot [default: \code{20}]}
 
-\item{col}{color for bins border [default: "black"]}
+\item{col}{colour for bins border [default: \code{"black"}]}
 
-\item{hjust}{horizontal adjustment of labels [default: 1]}
+\item{hjust}{horizontal adjustment of labels [default: \code{1}]}
 
-\item{fill}{filling color [default: "#7FCDBB"]}
+\item{fill}{filling colour [default: \code{"#7FCDBB"}]}
 
-\item{is_trait}{if TRUE then prepends "Trait" to title [default: FALSE]}
+\item{is_trait}{if TRUE then prepends "Trait" to title [default: \code{FALSE}]}
 }
 \description{
 This function generates a single histogram

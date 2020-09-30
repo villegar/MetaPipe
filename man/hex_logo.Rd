@@ -18,13 +18,13 @@ hex_logo(
 
 \item{dpi}{dots per inch}
 
-\item{h_color}{hexagon edge color}
+\item{h_color}{hexagon edge colour}
 
-\item{h_fill}{hexagon filling color}
+\item{h_fill}{hexagon filling colour}
 
 \item{output}{output filename and path}
 
-\item{p_color}{package name color}
+\item{p_color}{package name colour}
 }
 \description{
 Create Hexagonal logo for MetaPipe

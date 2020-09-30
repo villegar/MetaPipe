@@ -17,7 +17,7 @@ replace_missing(
 
 \item{excluded_columns}{vector containing the indices of the data set properties, excluded columns}
 
-\item{out_prefix}{prefix for output files, plots, etc.}
+\item{out_prefix}{prefix for output files and plots}
 
 \item{prop_na}{proportion of missing values, if a feature exceeds this threshold, then it is dropped out}
 

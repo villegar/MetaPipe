@@ -3,7 +3,7 @@
 \name{is_pseudo_marker}
 \alias{is_pseudo_marker}
 \title{Verifies whether or not a string is a pseudo-marker, contains the substring
-'loc'}
+    \code{'loc'}}
 \usage{
 is_pseudo_marker(marker)
 }
@@ -15,7 +15,7 @@ TRUE or FALSE
 }
 \description{
 Verifies whether or not a string is a pseudo-marker, contains the substring
-'loc'
+    \code{'loc'}
 }
 \examples{
 is_pseudo_marker('c1.loc1')
