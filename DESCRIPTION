@@ -2,7 +2,7 @@ Package: MetaPipe
 Type: Package
 Title: MetaPipe: A High-Performance Computing Pipeline for QTL Mapping of Large
         Ionomic and Metabolomic Datasets
-Version: 0.0.1
+Version: 1.0.0
 Authors@R: c(
     person(given = "Roberto",
            family = "Villegas-Diaz",
@@ -22,36 +22,37 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1
 Imports: 
-    Amelia,
     DiagrammeR,
     doParallel, 
-    dplyr, 
-    factoextra, 
-    FactoMineR, 
+    dplyr,
     foreach, 
-    ggplot2, 
-    gplots, 
+    ggplot2,
     grDevices, 
-    grid, 
-    gridExtra, 
+    grid,
     here, 
-    latex2exp, 
-    MASS, 
-    plyr, 
-    psych, 
+    latex2exp,
+    plyr,
     qtl, 
     R.devices, 
-    shiny,
-    tictoc, 
-    tidyverse, 
-    VIM
+    tictoc
 Suggests:
+    Amelia,
     badger,
+    factoextra, 
+    FactoMineR,
+    gplots,
+    gridExtra,
     hexSticker,
     knitr,
     kableExtra,
+    MASS, 
+    psych, 
     rmarkdown,
-    testthat
+    shiny,
+    testthat,
+    tidyverse,
+    VIM
 Depends: 
     R (>= 4.0)
 VignetteBuilder: knitr
+Language: en-GB
