@@ -1,8 +1,6 @@
-^\.Rproj$           # Automatically added by RStudio,
-^\.Rproj\.user$     # used for temporary files. 
-^LICENSE\.md$       # To exclude the LICENSE from CRAN
-^README\.Rmd$       # An Rmarkdown file used to generate README.md
-^\.travis\.yml$     # Used for continuous integration testing with travis
+^.*\.Rproj$
+^\.Rproj\.user$
+^LICENSE\.md$
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
@@ -10,4 +8,7 @@
 ^doc$
 ^Meta$
 ^R\.ignore$
-^get_openmpi\.sh$
+^LICENSE\.md$
+^README\.Rmd$
+^logo\.png$
+^\.travis\.yml$
