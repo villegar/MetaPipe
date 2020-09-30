@@ -34,7 +34,9 @@ transformation was performed
 Normalise data with a root transformation
 }
 \examples{
-set.seed(123)
-data <- rnorm(100, 5)
-root_transformation(data ^ 2, "EXP_2")
+\dontrun{
+    set.seed(123)
+    data <- rnorm(100, 5)
+    root_transformation(data ^ 2, "EXP_2")
+}
 }

@@ -21,8 +21,11 @@ Function to save a graphical object to disk in
 Portable Network Graphics (PNG) format.
 }
 \examples{
-save_plot(hist(rnorm(100), main = "Histogram of Normal Distribution"), 
-"hist")
+\dontrun{
+    save_plot(hist(rnorm(100), 
+              main = "Histogram of Normal Distribution"), 
+              "hist")
+}
 
 }
 \seealso{

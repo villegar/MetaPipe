@@ -21,7 +21,9 @@ compare_hist(original, transformed, feature, prefix, xlab)
 This function generates a two histograms to compare two datasets
 }
 \examples{
-norm_dist <- rnorm(100)
-norm_dist_transformed <- norm_dist^2
-compare_hist(norm_dist, norm_dist_transformed, "XYZ", "xyz_hist", "x")
+\dontrun{
+    norm_dist <- rnorm(100)
+    norm_dist_transformed <- norm_dist^2
+    compare_hist(norm_dist, norm_dist_transformed, "XYZ", "xyz_hist", "x")
+}
 }

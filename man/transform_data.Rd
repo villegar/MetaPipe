@@ -40,9 +40,11 @@ different number of parameters to find out which one transforms the data
 into a normal-ish set.
 }
 \examples{
-set.seed(123)
-data <- rnorm(100, 5)
-transform_data(2 ^ data, "EXP_2")
-transform_data(sqrt(data), "ROOT_2")
-transform_data(data ^ 2, "POW_2")
+\dontrun{
+    set.seed(123)
+    data <- rnorm(100, 5)
+    transform_data(2 ^ data, "EXP_2")
+    transform_data(sqrt(data), "ROOT_2")
+    transform_data(data ^ 2, "POW_2")
+}
 }

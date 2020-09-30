@@ -21,6 +21,8 @@ Function to save a graphical object generated with \code{ggplot2} to disk in
 Portable Network Graphics (PNG) format.
 }
 \examples{
-myplot <- ggplot2::qplot(rnorm(100))
-ggplot_save(myplot, "hist")
+\dontrun{
+    myplot <- ggplot2::qplot(rnorm(100))
+    ggplot_save(myplot, "hist")
+}
 }

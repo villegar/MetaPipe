@@ -33,4 +33,8 @@ Generate a pseudo-random genetic map. Particularly useful for testing.
 gmap_1 <- random_map()
 gmap_2 <- random_map(genotypes = c("nn", "np"))
 gmap_3 <- random_map(population = 3)
+
+}
+\seealso{
+\code{\link{random_genotypes}}
 }

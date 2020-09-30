@@ -34,7 +34,9 @@ transformation was performed
 Normalise data with a power transformation
 }
 \examples{
-set.seed(123)
-data <- rnorm(100, 5)
-power_transformation(sqrt(data), "ROOT_2")
+\dontrun{
+    set.seed(123)
+    data <- rnorm(100, 5)
+    power_transformation(sqrt(data), "ROOT_2")
+}
 }

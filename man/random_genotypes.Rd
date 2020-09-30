@@ -23,4 +23,8 @@ Generate a pseudo-random list of genotypes. Particularly useful for testing.
 random_genotypes()
 random_genotypes(genotypes = c("nn", "np"))
 random_genotypes(size = 3)
+
+}
+\seealso{
+\code{\link{random_map}}
 }

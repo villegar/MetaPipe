@@ -21,8 +21,11 @@ Function to save a graphical object to disk in
 Tagged Image File Format (TIFF) format.
 }
 \examples{
-save_plotTIFF(hist(rnorm(100), main = "Histogram of Normal Distribution"), 
-"hist")
+\dontrun{
+    save_plotTIFF(hist(rnorm(100), 
+                  main = "Histogram of Normal Distribution"), 
+                  "hist")
+}
 
 }
 \seealso{

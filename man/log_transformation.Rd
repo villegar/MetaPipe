@@ -34,7 +34,9 @@ transformation was performed
 Normalise data with a log transformation
 }
 \examples{
-set.seed(123)
-data <- rnorm(100, 5)
-log_transformation(2 ^ data, "EXP_2")
+\dontrun{
+    set.seed(123)
+    data <- rnorm(100, 5)
+    log_transformation(2 ^ data, "EXP_2")
+}
 }

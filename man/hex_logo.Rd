@@ -30,5 +30,7 @@ hex_logo(
 Create Hexagonal logo for MetaPipe
 }
 \examples{
-hex_logo()
+\dontrun{
+    hex_logo()
+}
 }
