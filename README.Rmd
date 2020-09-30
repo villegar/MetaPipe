@@ -228,5 +228,13 @@ For the previous data set `HIST_1_NORM_T1.png` and `HIST_2_LOG_2_T2.png`:
 ```{r assess-normality-example-data-after, echo = FALSE, fig.align = 'center', out.width = "60%", eval = FALSE}
 MetaPipe::generate_hist(test_data, NULL, xlab = latex2exp::TeX("T1"), save = FALSE, alpha = 1, fill = hcolor)
 
-MetaPipe::generate_hist(log(2^test_data), NULL, xlab = latex2exp::TeX("log_2(2^{T2})"), save = FALSE, alpha = 1, fill = hcolor) 
+MetaPipe::generate_hist(log(2^test_data), NULL, xlab = latex2exp::TeX("log_2(2^{T2})"), save = FALSE, alpha = 1, fill = hcolor)
+```
+
+```{r clean-readme-knitting, echo = FALSE}
+filenames <- c("example_data.csv", 
+               "HIST_1_NORM_T1.png", 
+               "HIST_2_LOG_2_T2.png", 
+               "metapipe_NA_raw_data.csv")
+output <- lapply(filenames, file.remove)
 ```
