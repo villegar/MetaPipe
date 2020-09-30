@@ -13,7 +13,7 @@ MetaPipe: A High-Performance Computing pipeline for QTL mapping of large
 metabolomic datasets <!-- badges: start -->
 <!-- [![Build Status](https://travis-ci.com/villegar/MetaPipe.svg?branch=master)](https://travis-ci.com/villegar/MetaPipe) -->
 [![](https://travis-ci.com/villegar/MetaPipe.svg?branch=master)](https://travis-ci.com/villegar/MetaPipe)
-[![](https://img.shields.io/badge/devel%20version-0.0.1-blue.svg)](https://github.com/villegar/MetaPipe)
+[![](https://img.shields.io/badge/devel%20version-1.0.0-blue.svg)](https://github.com/villegar/MetaPipe)
 [![](https://img.shields.io/github/languages/code-size/villegar/MetaPipe.svg)](https://github.com/villegar/MetaPipe)<!-- [![](https://www.r-pkg.org/badges/version/MetaPipe?color=red)](https://cran.r-project.org/package=MetaPipe) -->
 [![](https://codecov.io/gh/villegar/MetaPipe/branch/master/graph/badge.svg)](https://codecov.io/gh/villegar/MetaPipe)
 [![R build
@@ -76,7 +76,7 @@ vignette("load-raw-data", package = "MetaPipe")
 load_raw(raw_data_filename = "FILE.CSV", excluded_columns = c(...))
 ```
 
-where `raw_data_filename` is the filename containg the raw data, both
+where `raw_data_filename` is the filename containing the raw data, both
 absolute and relative paths are accepted. Next, the argument
 `excluded_columns` is a vector containing the indices of the properties,
 e.g. `c(2, 3, ..., M)`.

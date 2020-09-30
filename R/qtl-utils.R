@@ -1,5 +1,5 @@
 #' Verifies whether or not a string is a pseudo-marker, contains the substring
-#' 'loc'
+#'     \code{'loc'}
 #'
 #' @param marker string with the marker
 #'
@@ -13,7 +13,7 @@ is_pseudo_marker <- function(marker) {
   return(ifelse(grepl("loc", marker), TRUE, FALSE))
 }
 
-#' Transforms a pseudo-marker to a standar marker by looking for the nearest one
+#' Transforms a pseudo-marker to a standard marker by looking for the nearest one
 #'
 #' @param x_data cross-file containing genetic map data and features
 #' @param marker pseudo marker to be transformed

@@ -73,7 +73,7 @@ save_plotPDF <- function(myPlot, name, width = 6, height = 6) {
   grDevices::dev.off()
 }
 
-#' Function to save a graphical object generated with GGPLOT2 to disk in 
+#' Function to save a graphical object generated with \code{ggplot2} to disk in 
 #' Portable Network Graphics (PNG) format.
 #'
 #' @param myPlot graphical object
@@ -156,17 +156,16 @@ compare_hist <- function(original, transformed, feature, prefix, xlab) {
 #'
 #' @param data histogram data
 #' @param title plot title
-#' @param prefix file prefix [default: metapipe]
-#' @param xlab x-axis label [default: NULL]
-#' @param save boolean flag to indicate if that plot should be save to disk [default: TRUE]
-#' @param alpha value to set the transparency of the bins [default: 1]
-#' @param angle rotation angle for labels [default: 60]
-#' @param bins number of bins to plot [default: 20]
-#' @param col color for bins border [default: "black"]
-#' @param hjust horizontal adjustment of labels [default: 1]
-#' @param fill filling color [default: "#7FCDBB"]
-#' @param is_trait if TRUE then prepends "Trait" to title [default: FALSE]
-# @param ... S4 parameters for the ggplot2 library
+#' @param prefix file prefix [default: \code{metapipe}]
+#' @param xlab x-axis label [default: \code{NULL}]
+#' @param save boolean flag to indicate if that plot should be save to disk [default: \code{TRUE}]
+#' @param alpha value to set the transparency of the bins [default: \code{1}]
+#' @param angle rotation angle for labels [default: \code{60}]
+#' @param bins number of bins to plot [default: \code{20}]
+#' @param col colour for bins border [default: \code{"black"}]
+#' @param hjust horizontal adjustment of labels [default: \code{1}]
+#' @param fill filling colour [default: \code{"#7FCDBB"}]
+#' @param is_trait if TRUE then prepends "Trait" to title [default: \code{FALSE}]
 #'
 #' @export
 #'
@@ -217,10 +216,10 @@ generate_hist <- function(data,
 #'
 #' @param subplot subplot/image/icon to be used in the background
 #' @param dpi dots per inch
-#' @param h_color hexagon edge color
-#' @param h_fill hexagon filling color
+#' @param h_color hexagon edge colour
+#' @param h_fill hexagon filling colour
 #' @param output output filename and path
-#' @param p_color package name color
+#' @param p_color package name colour
 #'
 #' @export
 #'

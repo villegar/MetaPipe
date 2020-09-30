@@ -66,7 +66,7 @@ The function call is as follows:
 load_raw(raw_data_filename = "FILE.CSV", 
          excluded_columns = c(2, 3, ..., M))
 ```
-where `raw_data_filename` is the filename containg the raw data, either absolute or relative paths are accepted. The argument `excluded_columns` is a vector containing the indices of the properties, e.g. `c(2, 3, ..., M)`.
+where `raw_data_filename` is the filename containing the raw data, either absolute or relative paths are accepted. The argument `excluded_columns` is a vector containing the indices of the properties, e.g. `c(2, 3, ..., M)`.
 
 ```{r loading-raw-data}
 # Toy dataset
