@@ -11,14 +11,16 @@
 #' @export
 #'
 #' @examples
-#' example_data <- data.frame(ID = c(1,2,3,4,5), 
-#'                            P1 = c("one", "two", "three", "four", "five"), 
-#'                            T1 = rnorm(5), 
-#'                            T2 = rnorm(5))
-#' write.csv(example_data, "example_data.csv", row.names = FALSE)
-#' write.csv(example_data[c(1:5, 1, 2), ], "example_data_dup.csv", row.names = FALSE)
-#' load_raw("example_data.csv", c(1, 2))
-#' load_raw("example_data_dup.csv", c(1, 2))
+#' \dontrun{
+#'     example_data <- data.frame(ID = c(1,2,3,4,5), 
+#'                                P1 = c("one", "two", "three", "four", "five"), 
+#'                                T1 = rnorm(5), 
+#'                                T2 = rnorm(5))
+#'     write.csv(example_data, "example_data.csv", row.names = FALSE)
+#'     write.csv(example_data[c(1:5, 1, 2), ], "example_data_dup.csv", row.names = FALSE)
+#'     load_raw("example_data.csv", c(1, 2))
+#'     load_raw("example_data_dup.csv", c(1, 2))
+#' }
 load_raw <- function(raw_data_filename, excluded_columns) {
   # Load and clean raw data
   raw_data <- read.csv(raw_data_filename, stringsAsFactors = FALSE)
@@ -59,16 +61,18 @@ load_raw <- function(raw_data_filename, excluded_columns) {
 #' @export
 #'
 #' @examples
-#' example_data <- data.frame(ID = c(1,2,3,4,5), 
-#'                            P1 = c("one", "two", "three", "four", "five"), 
-#'                            T1 = rnorm(5), 
-#'                            T2 = rnorm(5),
-#'                            T3 = c(NA, rnorm(4)),                  #  20 % NAs
-#'                            T4 = c(NA, 1.2, -0.5, NA, 0.87),       #  40 % NAs
-#'                            T5 = NA)                               # 100 % NAs
-#' replace_missing(example_data, c(1, 2))
-#' replace_missing(example_data, c(1, 2), prop_na =  0.25)
-#' replace_missing(example_data, c(1, 2), replace_na =  TRUE)
+#' \dontrun{
+#'     example_data <- data.frame(ID = c(1,2,3,4,5), 
+#'                                P1 = c("one", "two", "three", "four", "five"), 
+#'                                T1 = rnorm(5), 
+#'                                T2 = rnorm(5),
+#'                                T3 = c(NA, rnorm(4)),                  #  20 % NAs
+#'                                T4 = c(NA, 1.2, -0.5, NA, 0.87),       #  40 % NAs
+#'                                T5 = NA)                               # 100 % NAs
+#'     replace_missing(example_data, c(1, 2))
+#'     replace_missing(example_data, c(1, 2), prop_na =  0.25)
+#'     replace_missing(example_data, c(1, 2), replace_na =  TRUE)
+#' }
 replace_missing <- function(raw_data, excluded_columns, out_prefix = "metapipe", prop_na = 0.5, replace_na = FALSE) {
   # Exclude column 1, ID
   excluded_columns <- unique(c(1, excluded_columns))
@@ -116,12 +120,12 @@ replace_missing <- function(raw_data, excluded_columns, out_prefix = "metapipe",
 #' @export
 #'
 #' @examples
-#' example_data <- data.frame(ID = c(1,2,3,4,5), 
-#'                            P1 = c("one", "two", "three", "four", "five"), 
-#'                            T1 = rnorm(5), 
-#'                            T2 = rnorm(5))
 #' \dontrun{
-#' assess_normality(example_data, c(1, 2))
+#'     example_data <- data.frame(ID = c(1,2,3,4,5), 
+#'                                P1 = c("one", "two", "three", "four", "five"), 
+#'                                T1 = rnorm(5), 
+#'                                T2 = rnorm(5))
+#'     assess_normality(example_data, c(1, 2))
 #' }
 #' 
 #' @seealso \code{\link{assess_normality_postprocessing}} and \code{\link{assess_normality_stats}}
@@ -218,12 +222,14 @@ assess_normality <- function(raw_data,
 #' @export
 #'
 #' @examples
-#' example_data <- data.frame(ID = c(1,2,3,4,5), 
-#'                            P1 = c("one", "two", "three", "four", "five"), 
-#'                            T1 = rnorm(5), 
-#'                            T2 = rnorm(5))
-#' example_data_normalised <- assess_normality(example_data, c(1, 2))
-#' assess_normality_postprocessing(example_data, c(1, 2), example_data_normalised)
+#' \dontrun{
+#'     example_data <- data.frame(ID = c(1,2,3,4,5), 
+#'                                P1 = c("one", "two", "three", "four", "five"), 
+#'                                T1 = rnorm(5), 
+#'                                T2 = rnorm(5))
+#'     example_data_normalised <- assess_normality(example_data, c(1, 2))
+#'     assess_normality_postprocessing(example_data, c(1, 2), example_data_normalised)
+#' }
 #' 
 #' @seealso \code{\link{assess_normality}} and \code{\link{assess_normality_stats}}
 assess_normality_postprocessing <- function(raw_data, 
@@ -330,13 +336,15 @@ assess_normality_postprocessing <- function(raw_data,
 #' @export
 #'
 #' @examples
-#' example_data <- data.frame(ID = c(1,2,3,4,5), 
-#'                            P1 = c("one", "two", "three", "four", "five"), 
-#'                            T1 = rnorm(5), 
-#'                            T2 = rnorm(5))
-#' example_data_normalised <- assess_normality(example_data, c(1, 2))
-#' assess_normality_postprocessing(example_data, c(1, 2), example_data_normalised)
-#' assess_normality_stats()
+#'     \dontrun{
+#'     example_data <- data.frame(ID = c(1,2,3,4,5), 
+#'                                P1 = c("one", "two", "three", "four", "five"), 
+#'                                T1 = rnorm(5), 
+#'                                T2 = rnorm(5))
+#'     example_data_normalised <- assess_normality(example_data, c(1, 2))
+#'     assess_normality_postprocessing(example_data, c(1, 2), example_data_normalised)
+#'     assess_normality_stats()
+#' }
 #' 
 #' @seealso \code{\link{assess_normality}} and \code{\link{assess_normality_postprocessing}}
 assess_normality_stats <- function(out_prefix = "metapipe") {
@@ -383,6 +391,8 @@ assess_normality_stats <- function(out_prefix = "metapipe") {
 #' random_genotypes()
 #' random_genotypes(genotypes = c("nn", "np"))
 #' random_genotypes(size = 3)
+#' 
+#' @seealso \code{\link{random_map}}
 random_genotypes <- function(genotypes = c("A", "H", "B"), size = 100, seed = NULL) {
   if (!is.null(seed))
     set.seed(seed)
@@ -404,6 +414,8 @@ random_genotypes <- function(genotypes = c("A", "H", "B"), size = 100, seed = NU
 #' gmap_1 <- random_map()
 #' gmap_2 <- random_map(genotypes = c("nn", "np"))
 #' gmap_3 <- random_map(population = 3)
+#' 
+#' @seealso \code{\link{random_genotypes}}
 random_map <- function(genotypes = c("A", "H", "B"), lg = 1:10, markers = 10, population = 100, seed = NULL) {
   marker_names <- paste0(rep(paste0("S", lg, "_"), each = markers), 1:markers)
   # Temporal vector for LG and positions
@@ -434,38 +446,40 @@ random_map <- function(genotypes = c("A", "H", "B"), lg = 1:10, markers = 10, po
 #' @export
 #'
 #' @examples
-#' # Create toy dataset
-#' excluded_columns <- c(2)
-#' population <- 5
-#' seed <- 1
-#' example_data <- data.frame(ID = 1:population,
-#'                            P1 = c("one", "two", "three", "four", "five"),
-#'                            T1 = rnorm(population),
-#'                            T2 = rnorm(population))
-#' example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
-#'                                       feature = rep(c("T1", "T2"), each = 5),
-#'                                       values = c(example_data$T1, example_data$T2),
-#'                                       flag = "Normal",
-#'                                       transf = "",
-#'                                       transf_val = NA,
-#'                                       stringsAsFactors = FALSE)
-#' assess_normality_postprocessing(example_data, excluded_columns, 
-#'                                 example_data_normalised, 
-#'                                 out_prefix = here::here("metapipe"))
-#' 
-#' # Create and store random genetic map [for testing only]
-#' genetic_map <- random_map(population = population, seed = seed)
-#' write.csv(genetic_map, here::here("metapipe_genetic_map.csv"), row.names = FALSE)
-#' 
-#' # Load cross file with genetic map and raw data for normal features
-#' x <- qtl::read.cross(format = "csvs", 
-#'                      dir = here::here(),
-#'                      genfile = "metapipe_genetic_map.csv",
-#'                      phefile = "metapipe_raw_data_norm.csv")
-#' set.seed(seed)
-#' x <- qtl::jittermap(x)
-#' x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
-#' x_scone <- qtl_scone(x, 1, model = "normal", method = "hk")
+#' \dontrun{
+#'     # Create toy dataset
+#'     excluded_columns <- c(2)
+#'     population <- 5
+#'     seed <- 1
+#'     example_data <- data.frame(ID = 1:population,
+#'                                P1 = c("one", "two", "three", "four", "five"),
+#'                                T1 = rnorm(population),
+#'                                T2 = rnorm(population))
+#'     example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
+#'                                           feature = rep(c("T1", "T2"), each = 5),
+#'                                           values = c(example_data$T1, example_data$T2),
+#'                                           flag = "Normal",
+#'                                           transf = "",
+#'                                           transf_val = NA,
+#'                                           stringsAsFactors = FALSE)
+#'     assess_normality_postprocessing(example_data, excluded_columns, 
+#'                                     example_data_normalised, 
+#'                                     out_prefix = here::here("metapipe"))
+#'     
+#'     # Create and store random genetic map [for testing only]
+#'     genetic_map <- random_map(population = population, seed = seed)
+#'     write.csv(genetic_map, here::here("metapipe_genetic_map.csv"), row.names = FALSE)
+#'     
+#'     # Load cross file with genetic map and raw data for normal features
+#'     x <- qtl::read.cross(format = "csvs", 
+#'                          dir = here::here(),
+#'                          genfile = "metapipe_genetic_map.csv",
+#'                          phefile = "metapipe_raw_data_norm.csv")
+#'     set.seed(seed)
+#'     x <- qtl::jittermap(x)
+#'     x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
+#'     x_scone <- qtl_scone(x, 1, model = "normal", method = "hk")
+#' }
 #' 
 #' @seealso \code{\link{qtl_perm_test}}
 qtl_scone <- function(x_data, cpus = 1, ...) {
@@ -526,38 +540,40 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
 #' @export
 #' 
 #' @examples
-#' # Create toy dataset
-#' excluded_columns <- c(2)
-#' population <- 5
-#' seed <- 1
-#' example_data <- data.frame(ID = 1:population,
-#'                            P1 = c("one", "two", "three", "four", "five"),
-#'                            T1 = rnorm(population),
-#'                            T2 = rnorm(population))
-#' example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
-#'                                       feature = rep(c("T1", "T2"), each = 5),
-#'                                       values = c(example_data$T1, example_data$T2),
-#'                                       flag = "Normal",
-#'                                       transf = "",
-#'                                       transf_val = NA,
-#'                                       stringsAsFactors = FALSE)
-#' assess_normality_postprocessing(example_data, excluded_columns, 
-#'                                 example_data_normalised, 
-#'                                 out_prefix = here::here("metapipe"))
-#' 
-#' # Create and store random genetic map [for testing only]
-#' genetic_map <- random_map(population = population, seed = seed)
-#' write.csv(genetic_map, here::here("metapipe_genetic_map.csv"), row.names = FALSE)
-#' 
-#' # Load cross file with genetic map and raw data for normal features
-#' x <- qtl::read.cross(format = "csvs", 
-#'                      dir = here::here(),
-#'                      genfile = "metapipe_genetic_map.csv",
-#'                      phefile = "metapipe_raw_data_norm.csv")
-#' set.seed(seed)
-#' x <- qtl::jittermap(x)
-#' x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
-#' x_qtl_perm <- qtl_perm_test(x, n_perm = 5, model = "normal", method = "hk")
+#' \dontrun{
+#'     # Create toy dataset
+#'     excluded_columns <- c(2)
+#'     population <- 5
+#'     seed <- 1
+#'     example_data <- data.frame(ID = 1:population,
+#'                                P1 = c("one", "two", "three", "four", "five"),
+#'                                T1 = rnorm(population),
+#'                                T2 = rnorm(population))
+#'     example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
+#'                                           feature = rep(c("T1", "T2"), each = 5),
+#'                                           values = c(example_data$T1, example_data$T2),
+#'                                           flag = "Normal",
+#'                                           transf = "",
+#'                                           transf_val = NA,
+#'                                           stringsAsFactors = FALSE)
+#'     assess_normality_postprocessing(example_data, excluded_columns, 
+#'                                     example_data_normalised, 
+#'                                     out_prefix = here::here("metapipe"))
+#'     
+#'     # Create and store random genetic map [for testing only]
+#'     genetic_map <- random_map(population = population, seed = seed)
+#'     write.csv(genetic_map, here::here("metapipe_genetic_map.csv"), row.names = FALSE)
+#'     
+#'     # Load cross file with genetic map and raw data for normal features
+#'     x <- qtl::read.cross(format = "csvs", 
+#'                          dir = here::here(),
+#'                          genfile = "metapipe_genetic_map.csv",
+#'                          phefile = "metapipe_raw_data_norm.csv")
+#'     set.seed(seed)
+#'     x <- qtl::jittermap(x)
+#'     x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
+#'     x_qtl_perm <- qtl_perm_test(x, n_perm = 5, model = "normal", method = "hk")
+#' }
 #' 
 #' @seealso \code{\link{assess_normality}} and \code{\link{qtl_scone}}
 qtl_perm_test <- function(x_data, 

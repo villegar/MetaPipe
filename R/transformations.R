@@ -30,9 +30,9 @@ paretoscale <- function(z) {
 #' @examples
 #' check_alpha(0.5)
 #' \dontrun{
-#' check_alpha(-0.5)
-#' check_alpha(1.5)
-#' check_alpha("1.5")
+#'     check_alpha(-0.5)
+#'     check_alpha(1.5)
+#'     check_alpha("1.5")
 #' }
 check_alpha <- function(alpha) {
   if (!is.numeric(alpha))
@@ -66,9 +66,11 @@ check_transformation <- function(ref, new, transf,
 #' @export
 #'
 #' @examples
-#' set.seed(123)
-#' data <- rnorm(100, 5)
-#' log_transformation(2 ^ data, "EXP_2")
+#' \dontrun{
+#'     set.seed(123)
+#'     data <- rnorm(100, 5)
+#'     log_transformation(2 ^ data, "EXP_2")
+#' }
 log_transformation <- function(data, 
                                feature = "DATA", 
                                alpha = 0.05,
@@ -131,9 +133,11 @@ log_transformation <- function(data,
 #' @export
 #'
 #' @examples
-#' set.seed(123)
-#' data <- rnorm(100, 5)
-#' power_transformation(sqrt(data), "ROOT_2")
+#' \dontrun{
+#'     set.seed(123)
+#'     data <- rnorm(100, 5)
+#'     power_transformation(sqrt(data), "ROOT_2")
+#' }
 power_transformation <- function(data, 
                                  feature = "DATA", 
                                  alpha = 0.05,
@@ -196,9 +200,11 @@ power_transformation <- function(data,
 #' @export
 #'
 #' @examples
-#' set.seed(123)
-#' data <- rnorm(100, 5)
-#' root_transformation(data ^ 2, "EXP_2")
+#' \dontrun{
+#'     set.seed(123)
+#'     data <- rnorm(100, 5)
+#'     root_transformation(data ^ 2, "EXP_2")
+#' }
 root_transformation <- function(data, 
                                 feature = "DATA", 
                                 alpha = 0.05,
@@ -264,11 +270,13 @@ root_transformation <- function(data,
 #' @export
 #'
 #' @examples
-#' set.seed(123)
-#' data <- rnorm(100, 5)
-#' transform_data(2 ^ data, "EXP_2")
-#' transform_data(sqrt(data), "ROOT_2")
-#' transform_data(data ^ 2, "POW_2")
+#' \dontrun{
+#'     set.seed(123)
+#'     data <- rnorm(100, 5)
+#'     transform_data(2 ^ data, "EXP_2")
+#'     transform_data(sqrt(data), "ROOT_2")
+#'     transform_data(data ^ 2, "POW_2")
+#' }
 transform_data <- function(data,
                            feature = "DATA",
                            alpha = 0.05,

@@ -9,8 +9,11 @@
 #' @export
 #'
 #' @examples
-#' save_plot(hist(rnorm(100), main = "Histogram of Normal Distribution"), 
-#' "hist")
+#' \dontrun{
+#'     save_plot(hist(rnorm(100), 
+#'               main = "Histogram of Normal Distribution"), 
+#'               "hist")
+#' }
 #' 
 #' @seealso \code{\link{save_plotPDF}} and \code{\link{save_plotTIFF}}
 save_plot <- function(myPlot, name, width = 6, height = 6) {
@@ -35,8 +38,11 @@ save_plot <- function(myPlot, name, width = 6, height = 6) {
 #' @export
 #'
 #' @examples
-#' save_plotTIFF(hist(rnorm(100), main = "Histogram of Normal Distribution"), 
-#' "hist")
+#' \dontrun{
+#'     save_plotTIFF(hist(rnorm(100), 
+#'                   main = "Histogram of Normal Distribution"), 
+#'                   "hist")
+#' }
 #' 
 #' @seealso \code{\link{save_plotPDF}} and \code{\link{save_plot}}
 save_plotTIFF <- function(myPlot, name, width = 6, height = 6) {
@@ -61,8 +67,11 @@ save_plotTIFF <- function(myPlot, name, width = 6, height = 6) {
 #' @export
 #'
 #' @examples
-#' save_plotPDF(hist(rnorm(100), main = "Histogram of Normal Distribution"), 
-#' "hist")
+#' \dontrun{
+#'     save_plotPDF(hist(rnorm(100), 
+#'                  main = "Histogram of Normal Distribution"), 
+#'                  "hist")
+#' }
 #' 
 #' @seealso \code{\link{save_plot}} and \code{\link{save_plotTIFF}}
 save_plotPDF <- function(myPlot, name, width = 6, height = 6) {
@@ -84,8 +93,10 @@ save_plotPDF <- function(myPlot, name, width = 6, height = 6) {
 #' @export
 #'
 #' @examples
-#' myplot <- ggplot2::qplot(rnorm(100))
-#' ggplot_save(myplot, "hist")
+#' \dontrun{
+#'     myplot <- ggplot2::qplot(rnorm(100))
+#'     ggplot_save(myplot, "hist")
+#' }
 ggplot_save <- function(myPlot, name, width = 6, height = 6){
   R.devices::suppressGraphics({
     ggplot2::ggsave(
@@ -111,9 +122,11 @@ ggplot_save <- function(myPlot, name, width = 6, height = 6){
 #' @export
 #'
 #' @examples
-#' norm_dist <- rnorm(100)
-#' norm_dist_transformed <- norm_dist^2
-#' compare_hist(norm_dist, norm_dist_transformed, "XYZ", "xyz_hist", "x")
+#' \dontrun{
+#'     norm_dist <- rnorm(100)
+#'     norm_dist_transformed <- norm_dist^2
+#'     compare_hist(norm_dist, norm_dist_transformed, "XYZ", "xyz_hist", "x")
+#' }
 compare_hist <- function(original, transformed, feature, prefix, xlab) {
   `..count..` <- NULL # Local binding
   ALPHA <- 1
@@ -170,9 +183,11 @@ compare_hist <- function(original, transformed, feature, prefix, xlab) {
 #' @export
 #'
 #' @examples
-#' norm_dist <- rnorm(100)
-#' generate_hist(norm_dist, "XYZ", "xyz_hist", "x")
-#' generate_hist(norm_dist, "XYZ", "xyz_hist", "x", is_trait = TRUE)
+#' \dontrun{
+#'     norm_dist <- rnorm(100)
+#'     generate_hist(norm_dist, "XYZ", "xyz_hist", "x")
+#'     generate_hist(norm_dist, "XYZ", "xyz_hist", "x", is_trait = TRUE)
+#' }
 generate_hist <- function(data, 
                           title, 
                           prefix = "metapipe", 
@@ -224,7 +239,9 @@ generate_hist <- function(data,
 #' @export
 #'
 #' @examples
-#' hex_logo()
+#' \dontrun{
+#'     hex_logo()
+#' }
 hex_logo <- function(subplot = system.file("images/lab-2.png", package = "MetaPipe"),
                      dpi = 800,
                      h_color = "#000000",

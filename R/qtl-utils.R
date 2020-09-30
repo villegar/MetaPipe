@@ -24,38 +24,40 @@ is_pseudo_marker <- function(marker) {
 #' @export
 #'
 #' @examples
-#' # Create toy dataset
-#' excluded_columns <- c(2)
-#' population <- 5
-#' seed <- 1
-#' example_data <- data.frame(ID = 1:population,
-#'                            P1 = c("one", "two", "three", "four", "five"),
-#'                            T1 = rnorm(population),
-#'                            T2 = rnorm(population))
-#' example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
-#'                                       feature = rep(c("T1", "T2"), each = 5),
-#'                                       values = c(example_data$T1, example_data$T2),
-#'                                       flag = "Normal",
-#'                                       transf = "",
-#'                                       transf_val = NA,
-#'                                       stringsAsFactors = FALSE)
-#' assess_normality_postprocessing(example_data, 
-#'                                 excluded_columns, 
-#'                                 example_data_normalised, 
-#'                                 out_prefix = here::here("metapipe"))
-#' 
-#' # Create and store random genetic map [for testing only]
-#' genetic_map <- random_map(population = population, seed = seed)
-#' write.csv(genetic_map, here::here("metapipe_genetic_map.csv"), row.names = FALSE)
-#' # Load cross file with genetic map and raw data for normal features
-#' x <- qtl::read.cross(format = "csvs", 
-#'                      dir = here::here(),
-#'                      genfile = "metapipe_genetic_map.csv",
-#'                      phefile = "metapipe_raw_data_norm.csv")
-#' set.seed(seed)
-#' x <- qtl::jittermap(x)
-#' x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
-#' transform_pseudo_marker(x, 'loc1', 1, 2.0)
+#' \dontrun{
+#'     # Create toy dataset
+#'     excluded_columns <- c(2)
+#'     population <- 5
+#'     seed <- 1
+#'     example_data <- data.frame(ID = 1:population,
+#'                                P1 = c("one", "two", "three", "four", "five"),
+#'                                T1 = rnorm(population),
+#'                                T2 = rnorm(population))
+#'     example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
+#'                                           feature = rep(c("T1", "T2"), each = 5),
+#'                                           values = c(example_data$T1, example_data$T2),
+#'                                           flag = "Normal",
+#'                                           transf = "",
+#'                                           transf_val = NA,
+#'                                           stringsAsFactors = FALSE)
+#'     assess_normality_postprocessing(example_data, 
+#'                                     excluded_columns, 
+#'                                     example_data_normalised, 
+#'                                     out_prefix = here::here("metapipe"))
+#'     
+#'     # Create and store random genetic map [for testing only]
+#'     genetic_map <- random_map(population = population, seed = seed)
+#'     write.csv(genetic_map, here::here("metapipe_genetic_map.csv"), row.names = FALSE)
+#'     # Load cross file with genetic map and raw data for normal features
+#'     x <- qtl::read.cross(format = "csvs", 
+#'                          dir = here::here(),
+#'                          genfile = "metapipe_genetic_map.csv",
+#'                          phefile = "metapipe_raw_data_norm.csv")
+#'     set.seed(seed)
+#'     x <- qtl::jittermap(x)
+#'     x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
+#'     transform_pseudo_marker(x, 'loc1', 1, 2.0)
+#' }
 transform_pseudo_marker <- function(x_data, marker, chr, pos) {
   markerp <- marker
   posp <- pos
@@ -79,40 +81,42 @@ transform_pseudo_marker <- function(x_data, marker, chr, pos) {
 #' @export
 #'
 #' @examples
-#' # Create toy dataset
-#' excluded_columns <- c(2)
-#' population <- 5
-#' seed <- 1
-#' example_data <- data.frame(ID = 1:population,
-#'                            P1 = c("one", "two", "three", "four", "five"),
-#'                            T1 = rnorm(population),
-#'                            T2 = rnorm(population))
-#' example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
-#'                                       feature = rep(c("T1", "T2"), each = 5),
-#'                                       values = c(example_data$T1, example_data$T2),
-#'                                       flag = "Normal",
-#'                                       transf = "",
-#'                                       transf_val = NA,
-#'                                       stringsAsFactors = FALSE)
-#' assess_normality_postprocessing(example_data, excluded_columns, 
-#'                                 example_data_normalised, 
-#'                                 out_prefix = here::here("metapipe"))
-#' 
-#' # Create and store random genetic map [for testing only]
-#' genetic_map <- random_map(population = population, seed = seed)
-#' write.csv(genetic_map, here::here("metapipe_genetic_map.csv"), row.names = FALSE)
-#' 
-#' # Load cross file with genetic map and raw data for normal features
-#' x <- qtl::read.cross(format = "csvs", 
-#'                      dir = here::here(),
-#'                      genfile = "metapipe_genetic_map.csv",
-#'                      phefile = "metapipe_raw_data_norm.csv")
-#' set.seed(seed)
-#' x <- qtl::jittermap(x)
-#' x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
-#' x_qtl_perm <- MetaPipe::qtl_perm_test(x, n_perm = 5, model = "normal", method = "hk")
-#' x_sim <- qtl::sim.geno(x)
-#' effect_plots(x_sim, x_qtl_perm)
+#' \dontrun{
+#'     # Create toy dataset
+#'     excluded_columns <- c(2)
+#'     population <- 5
+#'     seed <- 1
+#'     example_data <- data.frame(ID = 1:population,
+#'                                P1 = c("one", "two", "three", "four", "five"),
+#'                                T1 = rnorm(population),
+#'                                T2 = rnorm(population))
+#'     example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
+#'                                           feature = rep(c("T1", "T2"), each = 5),
+#'                                           values = c(example_data$T1, example_data$T2),
+#'                                           flag = "Normal",
+#'                                           transf = "",
+#'                                           transf_val = NA,
+#'                                           stringsAsFactors = FALSE)
+#'     assess_normality_postprocessing(example_data, excluded_columns, 
+#'                                     example_data_normalised, 
+#'                                     out_prefix = here::here("metapipe"))
+#'     
+#'     # Create and store random genetic map [for testing only]
+#'     genetic_map <- random_map(population = population, seed = seed)
+#'     write.csv(genetic_map, here::here("metapipe_genetic_map.csv"), row.names = FALSE)
+#'     
+#'     # Load cross file with genetic map and raw data for normal features
+#'     x <- qtl::read.cross(format = "csvs", 
+#'                          dir = here::here(),
+#'                          genfile = "metapipe_genetic_map.csv",
+#'                          phefile = "metapipe_raw_data_norm.csv")
+#'     set.seed(seed)
+#'     x <- qtl::jittermap(x)
+#'     x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
+#'     x_qtl_perm <- MetaPipe::qtl_perm_test(x, n_perm = 5, model = "normal", method = "hk")
+#'     x_sim <- qtl::sim.geno(x)
+#'     effect_plots(x_sim, x_qtl_perm)
+#' }
 #' 
 #' @seealso \code{\link{qtl_perm_test}}
 effect_plots <- function(x_data_sim, qtl_data, cpus = 1, plots_dir = getwd()) {
