@@ -54,6 +54,6 @@ Suggests:
     tidyverse,
     VIM
 Depends: 
-    R (>= 4.0)
+    R (>= 3.6)
 VignetteBuilder: knitr
 Language: en-GB
