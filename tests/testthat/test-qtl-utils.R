@@ -15,7 +15,7 @@ test_that("transform pseudo-marker works", {
                              T1 = rnorm(population),
                              T2 = rnorm(population))
   example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
-                                        feature = rep(c("T1", "T2"), each = 5),
+                                        trait = rep(c("T1", "T2"), each = 5),
                                         values = c(example_data$T1, example_data$T2),
                                         flag = "Normal",
                                         transf = "",
@@ -31,7 +31,7 @@ test_that("transform pseudo-marker works", {
   x <- qtl::read.cross("csvs", here::here(),
                        genfile = "metapipe_genetic_map.csv",
                        phefile = "metapipe_raw_data_norm.csv")
-  features <- colnames(x$pheno)
+  traits <- colnames(x$pheno)
   set.seed(seed)
   x <- qtl::jittermap(x)
   x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
@@ -62,7 +62,7 @@ test_that("effect plots work", {
                              T1 = rnorm(population),
                              T2 = rnorm(population))
   example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
-                                        feature = rep(c("T1", "T2"), each = 5),
+                                        trait = rep(c("T1", "T2"), each = 5),
                                         values = c(example_data$T1, example_data$T2),
                                         flag = "Normal",
                                         transf = "",
@@ -78,7 +78,7 @@ test_that("effect plots work", {
   x <- qtl::read.cross("csvs", here::here(),
                        genfile = "metapipe_genetic_map.csv",
                        phefile = "metapipe_raw_data_norm.csv")
-  features <- colnames(x$pheno)
+  traits <- colnames(x$pheno)
   set.seed(seed)
   x <- qtl::jittermap(x)
   x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)

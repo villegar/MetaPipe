@@ -115,7 +115,7 @@ ggplot_save <- function(myPlot, name, width = 6, height = 6){
 #'
 #' @param original Original data
 #' @param transformed Transformed data
-#' @param feature Feature name
+#' @param trait trait name
 #' @param prefix File prefix
 #' @param xlab x-axis label
 #'
@@ -127,7 +127,7 @@ ggplot_save <- function(myPlot, name, width = 6, height = 6){
 #'     norm_dist_transformed <- norm_dist^2
 #'     compare_hist(norm_dist, norm_dist_transformed, "XYZ", "xyz_hist", "x")
 #' }
-compare_hist <- function(original, transformed, feature, prefix, xlab) {
+compare_hist <- function(original, transformed, trait, prefix, xlab) {
   `..count..` <- NULL # Local binding
   ALPHA <- 1
   BINS <- 20
@@ -143,8 +143,8 @@ compare_hist <- function(original, transformed, feature, prefix, xlab) {
                             col = "black", 
                             fill = "#FFDF01") +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 60, hjust = 1)) + 
-    ggplot2::labs(title = paste("Trait", feature), x = "", y = "") +
-    ggplot2::xlab(paste0(feature))
+    ggplot2::labs(title = paste("Trait", trait), x = "", y = "") +
+    ggplot2::xlab(paste0(trait))
   
   transformed.plot <- ggplot2::ggplot(data = histogram, 
                                       ggplot2::aes(transformed)) +
@@ -162,7 +162,7 @@ compare_hist <- function(original, transformed, feature, prefix, xlab) {
                                     ggplot2::ggplotGrob(transformed.plot), 
                                     size = "last")
                               ),
-              paste0(prefix,"_",feature))
+              paste0(prefix,"_",trait))
 }
 
 #' This function generates a single histogram

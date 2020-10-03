@@ -93,7 +93,7 @@ test_that("data transform works", {
   ## Exponential data -> Log transformation
   expected_df_log_2 <- data.frame(
     index = "",
-    feature = "EXP_2",
+    trait  = "EXP_2",
     values = log(2 ^ data, 2),
     flag = "Normal",
     transf = "log",
@@ -104,7 +104,7 @@ test_that("data transform works", {
   ## Squared data -> Power transformation
   expected_df_power_2 <- data.frame(
     index = "",
-    feature = "ROOT_2",
+    trait = "ROOT_2",
     values = (sqrt(data)) ^ 2,
     flag = "Normal",
     transf = "power",
@@ -115,7 +115,7 @@ test_that("data transform works", {
   ## Powered data -> Root transformation
   expected_df_root_2 <- data.frame(
     index = "",
-    feature = "POW_2",
+    trait = "POW_2",
     values = (data ^ 2) ^ (1 / exp(1)),
     flag = "Normal",
     transf = "root",

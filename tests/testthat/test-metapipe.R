@@ -1,6 +1,6 @@
 test_that("load raw data works", {
   set.seed(123)
-  # Data frame with the raw data: 1 property and 2 features
+  # Data frame with the raw data: 1 property and 2 traits
   example_data <- data.frame(ID = c(1, 2, 3, 4, 5), 
                              P1 = c("one", "two", "three", "four", "five"), 
                              T1 = rnorm(5), 
@@ -36,7 +36,7 @@ test_that("load raw data works", {
 
 test_that("replace missing data works", {
   set.seed(123)
-  # Data frame with the raw data: 1 property and 2 features
+  # Data frame with the raw data: 1 property and 2 traits
   example_data <- data.frame(ID = c(1, 2, 3, 4, 5), 
                              P1 = c("one", "two", "three", "four", "five"), 
                              T1 = rnorm(5), 
@@ -79,7 +79,7 @@ test_that("normality assessment works", {
                              T1 = rnorm(5), 
                              T2 = rnorm(5))
   expected_output <- data.frame(index = rep(c(1, 2), each = 5),
-                                feature = rep(c("T1", "T2"), each = 5),
+                                trait = rep(c("T1", "T2"), each = 5),
                                 values = c(example_data$T1, example_data$T2),
                                 flag = "Normal",
                                 transf = "",
@@ -117,7 +117,7 @@ test_that("normality assessment postprocessing works", {
                              T1 = rnorm(5), 
                              T2 = rnorm(5))
   expected_output <- data.frame(index = rep(c(1, 2), each = 5),
-                                feature = rep(c("T1", "T2"), each = 5),
+                                trait = rep(c("T1", "T2"), each = 5),
                                 values = c(example_data$T1, example_data$T2),
                                 flag = "Normal",
                                 transf = "",
@@ -133,7 +133,7 @@ test_that("normality assessment postprocessing works", {
   expected_output_exp2$transf <- rep(c("log", ""), each = 5)
   expected_output_exp2$transf_val <- rep(c(2, NA), each = 5)
   
-  # Adding noise to feature to make it non-parametric
+  # Adding noise to trait to make it non-parametric
   example_data_non_par <- example_data[,]
   example_data_non_par$T1 <- c(0, 15000, 0, 17, 0)
   
@@ -198,7 +198,7 @@ test_that("normality assessment statistics work", {
                              T1 = rnorm(5), 
                              T2 = rnorm(5))
   expected_output <- data.frame(index = rep(c(1, 2), each = 5),
-                                feature = rep(c("T1", "T2"), each = 5),
+                                trait = rep(c("T1", "T2"), each = 5),
                                 values = c(example_data$T1, example_data$T2),
                                 flag = "Normal",
                                 transf = "",
@@ -276,7 +276,7 @@ test_that("qtl mapping scanone works", {
                              T1 = rnorm(population),
                              T2 = rnorm(population))
   example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
-                                        feature = rep(c("T1", "T2"), each = 5),
+                                        trait = rep(c("T1", "T2"), each = 5),
                                         values = c(example_data$T1, example_data$T2),
                                         flag = "Normal",
                                         transf = "",
@@ -292,7 +292,7 @@ test_that("qtl mapping scanone works", {
   x <- qtl::read.cross("csvs", here::here(),
                        genfile = "metapipe_genetic_map.csv",
                        phefile = "metapipe_raw_data_norm.csv")
-  features <- colnames(x$pheno)
+  traits <- colnames(x$pheno)
   set.seed(seed)
   x <- qtl::jittermap(x)
   x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
@@ -323,7 +323,7 @@ test_that("qtl mapping permutation test with scanone works", {
                              T1 = rnorm(population),
                              T2 = rnorm(population))
   example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
-                                        feature = rep(c("T1", "T2"), each = 5),
+                                        trait = rep(c("T1", "T2"), each = 5),
                                         values = c(example_data$T1, example_data$T2),
                                         flag = "Normal",
                                         transf = "",
@@ -339,7 +339,7 @@ test_that("qtl mapping permutation test with scanone works", {
   x <- qtl::read.cross("csvs", here::here(),
                        genfile = "metapipe_genetic_map.csv",
                        phefile = "metapipe_raw_data_norm.csv")
-  features <- colnames(x$pheno)
+  traits <- colnames(x$pheno)
   set.seed(seed)
   x <- qtl::jittermap(x)
   x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)

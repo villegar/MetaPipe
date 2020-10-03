@@ -55,7 +55,7 @@ check_transformation <- function(ref, new, transf,
 #' Normalise data with a log transformation
 #'
 #' @param data original data
-#' @param feature feature name
+#' @param trait trait name
 #' @param alpha significance level
 #' @param transf transformation values
 #' @param plots_prefix prefix for plots with or without path
@@ -72,7 +72,7 @@ check_transformation <- function(ref, new, transf,
 #'     log_transformation(2 ^ data, "EXP_2")
 #' }
 log_transformation <- function(data, 
-                               feature = "DATA", 
+                               trait = "DATA", 
                                alpha = 0.05,
                                transf = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10),
                                plots_prefix = "HIST",
@@ -109,10 +109,10 @@ log_transformation <- function(data,
   
   base <- ifelse(base == exp(1), "e", base)
   
-  xlab <- paste0("$\\log_{", base, "}(", feature, ")$")
+  xlab <- paste0("$\\log_{", base, "}(", trait, ")$")
   transformation <- paste0("LOG_", base)
   prefix <- paste0(plots_prefix, "_", transformation)
-  compare_hist(data, transformed, feature, prefix, xlab)
+  compare_hist(data, transformed, trait, prefix, xlab)
   record$flag = "Normal"
   record$transf <- "log"
   record$transf_val <- base
@@ -122,7 +122,7 @@ log_transformation <- function(data,
 #' Normalise data with a power transformation
 #'
 #' @param data original data
-#' @param feature feature name
+#' @param trait trait name
 #' @param alpha significance level
 #' @param transf transformation values
 #' @param plots_prefix prefix for plots with or without path
@@ -139,7 +139,7 @@ log_transformation <- function(data,
 #'     power_transformation(sqrt(data), "ROOT_2")
 #' }
 power_transformation <- function(data, 
-                                 feature = "DATA", 
+                                 trait = "DATA", 
                                  alpha = 0.05,
                                  transf = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10),
                                  plots_prefix = "HIST",
@@ -176,10 +176,10 @@ power_transformation <- function(data,
   
   power <- ifelse(power == exp(1), "e", power)
   
-  xlab <- paste0("$(", feature, ")^", power, "$")
+  xlab <- paste0("$(", trait, ")^", power, "$")
   transformation <- paste0("POW_", power)
   prefix <- paste0(plots_prefix, "_", transformation)
-  compare_hist(data, transformed, feature, prefix, xlab)
+  compare_hist(data, transformed, trait, prefix, xlab)
   record$flag = "Normal"
   record$transf <- "power"
   record$transf_val <- power
@@ -189,7 +189,7 @@ power_transformation <- function(data,
 #' Normalise data with a root transformation
 #'
 #' @param data original data
-#' @param feature feature name
+#' @param trait trait name
 #' @param alpha significance level
 #' @param transf transformation values
 #' @param plots_prefix prefix for plots with or without path
@@ -206,7 +206,7 @@ power_transformation <- function(data,
 #'     root_transformation(data ^ 2, "EXP_2")
 #' }
 root_transformation <- function(data, 
-                                feature = "DATA", 
+                                trait = "DATA", 
                                 alpha = 0.05,
                                 transf = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10),
                                 plots_prefix = "HIST",
@@ -244,10 +244,10 @@ root_transformation <- function(data,
   
   root <- ifelse(root == exp(1), "e", root)
   
-  xlab <- paste0("$\\sqrt[", root, "]{", feature, "}$")
+  xlab <- paste0("$\\sqrt[", root, "]{", trait, "}$")
   transformation <- paste0("ROOT_", root)
   prefix <- paste0(plots_prefix, "_", transformation)
-  compare_hist(data, transformed, feature, prefix, xlab)
+  compare_hist(data, transformed, trait, prefix, xlab)
   record$flag = "Normal"
   record$transf <- "root"
   record$transf_val <- root
@@ -259,9 +259,9 @@ root_transformation <- function(data,
 #' into a normal-ish set. 
 #'
 #' @param data original data
-#' @param feature feature name
+#' @param trait trait name
 #' @param alpha significance level
-#' @param index index of the current feature
+#' @param index index of the current trait
 #' @param transf_vals transformation values
 #' @param plots_prefix prefix for plots with or without path
 #' @param digits significant digits to compare p-values of transformations
@@ -278,7 +278,7 @@ root_transformation <- function(data,
 #'     transform_data(data ^ 2, "POW_2")
 #' }
 transform_data <- function(data,
-                           feature = "DATA",
+                           trait = "DATA",
                            alpha = 0.05,
                            index = NULL,
                            transf_vals = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10),
@@ -289,12 +289,12 @@ transform_data <- function(data,
   
   ref_pval <- shapiro.test(data)[[2]] # Obtain reference p-value
   
-  feature <- ifelse(is.null(feature), "", feature)
+  trait <- ifelse(is.null(trait), "", trait)
   index <- ifelse(is.null(index), "", paste0(index, "_"))
   
   record <- data.frame(
     index = index,
-    feature = feature,
+    trait = trait,
     values = data,
     flag = "Non-normal",
     transf = "",
@@ -331,14 +331,14 @@ transform_data <- function(data,
     transformed <- log(data, base)
     base <- ifelse(base == exp(1), "e", base)
 
-    xlab <- paste0("$\\log_{", base, "}(", feature, ")$")
+    xlab <- paste0("$\\log_{", base, "}(", trait, ")$")
     transformation <- paste0("LOG_", base)
     prefix <-
       paste0(plots_prefix,
              "_",
              index,
              transformation)
-    MetaPipe::compare_hist(data, transformed, feature, prefix, xlab)
+    MetaPipe::compare_hist(data, transformed, trait, prefix, xlab)
     record$values <- transformed
     record$transf <- "log"
     record$transf_val <- base
@@ -349,14 +349,14 @@ transform_data <- function(data,
     transformed <- data ^ power
     power <- ifelse(power == exp(1), "e", power)
 
-    xlab <- paste0("$(", feature, ")^", power, "$")
+    xlab <- paste0("$(", trait, ")^", power, "$")
     transformation <- paste0("POW_", power)
     prefix <-
       paste0(plots_prefix,
              "_",
              index,
              transformation)
-    MetaPipe::compare_hist(data, transformed, feature, prefix, xlab)
+    MetaPipe::compare_hist(data, transformed, trait, prefix, xlab)
     record$values <- transformed
     record$transf <- "power"
     record$transf_val <- power
@@ -367,14 +367,14 @@ transform_data <- function(data,
     transformed <- data ^ (1 / root)
     root <- ifelse(root == exp(1), "e", root)
     
-    xlab <- paste0("$\\sqrt[", root, "]{", feature, "}$")
+    xlab <- paste0("$\\sqrt[", root, "]{", trait, "}$")
     transformation <- paste0("ROOT_", root)
     prefix <-
       paste0(plots_prefix,
              "_",
              index,
              transformation)
-    MetaPipe::compare_hist(data, transformed, feature, prefix, xlab)
+    MetaPipe::compare_hist(data, transformed, trait, prefix, xlab)
     record$values <- transformed
     record$transf <- "root"
     record$transf_val <- root

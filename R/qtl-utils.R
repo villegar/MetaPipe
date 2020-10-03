@@ -15,7 +15,7 @@ is_pseudo_marker <- function(marker) {
 
 #' Transforms a pseudo-marker to a standard marker by looking for the nearest one
 #'
-#' @param x_data cross-file containing genetic map data and features
+#' @param x_data cross-file containing genetic map data and traits
 #' @param marker pseudo marker to be transformed
 #' @param chr pseudo-marker's chromosome 
 #' @param pos pseudo-marker's position
@@ -34,7 +34,7 @@ is_pseudo_marker <- function(marker) {
 #'                                T1 = rnorm(population),
 #'                                T2 = rnorm(population))
 #'     example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
-#'                                           feature = rep(c("T1", "T2"), each = 5),
+#'                                           trait = rep(c("T1", "T2"), each = 5),
 #'                                           values = c(example_data$T1, example_data$T2),
 #'                                           flag = "Normal",
 #'                                           transf = "",
@@ -48,7 +48,7 @@ is_pseudo_marker <- function(marker) {
 #'     # Create and store random genetic map [for testing only]
 #'     genetic_map <- random_map(population = population, seed = seed)
 #'     write.csv(genetic_map, here::here("metapipe_genetic_map.csv"), row.names = FALSE)
-#'     # Load cross file with genetic map and raw data for normal features
+#'     # Load cross file with genetic map and raw data for normal traits
 #'     x <- qtl::read.cross(format = "csvs", 
 #'                          dir = here::here(),
 #'                          genfile = "metapipe_genetic_map.csv",
@@ -91,7 +91,7 @@ transform_pseudo_marker <- function(x_data, marker, chr, pos) {
 #'                                T1 = rnorm(population),
 #'                                T2 = rnorm(population))
 #'     example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
-#'                                           feature = rep(c("T1", "T2"), each = 5),
+#'                                           trait = rep(c("T1", "T2"), each = 5),
 #'                                           values = c(example_data$T1, example_data$T2),
 #'                                           flag = "Normal",
 #'                                           transf = "",
@@ -105,7 +105,7 @@ transform_pseudo_marker <- function(x_data, marker, chr, pos) {
 #'     genetic_map <- random_map(population = population, seed = seed)
 #'     write.csv(genetic_map, here::here("metapipe_genetic_map.csv"), row.names = FALSE)
 #'     
-#'     # Load cross file with genetic map and raw data for normal features
+#'     # Load cross file with genetic map and raw data for normal traits
 #'     x <- qtl::read.cross(format = "csvs", 
 #'                          dir = here::here(),
 #'                          genfile = "metapipe_genetic_map.csv",
@@ -128,8 +128,8 @@ effect_plots <- function(x_data_sim, qtl_data, cpus = 1, plots_dir = getwd()) {
   # Load binary operator for backend
   `%dopar%` <- foreach::`%dopar%`
   
-  # Extract feature names
-  features <- as.character(qtl_data$trait)
+  # Extract trait names
+  traits <- as.character(qtl_data$trait)
   
   # Extract markers
   markers <- as.character(qtl_data$marker)
@@ -140,36 +140,36 @@ effect_plots <- function(x_data_sim, qtl_data, cpus = 1, plots_dir = getwd()) {
         ifelse(is.na(qtl_data[i, ]$transf), "", qtl_data[i, ]$transf)
       if(qtl_data[i, ]$transf == "log") {
         ylab <-
-          paste0("$\\log_{", qtl_data[i, ]$transf_val, "}(", features[i], ")$")
+          paste0("$\\log_{", qtl_data[i, ]$transf_val, "}(", traits[i], ")$")
       } else if (qtl_data[i, ]$transf == "root") {
         ylab <-
-          paste0("$\\sqrt[", qtl_data[i, ]$transf_val, "]{", features[i], "}$")
+          paste0("$\\sqrt[", qtl_data[i, ]$transf_val, "]{", traits[i], "}$")
       } else if (qtl_data[i, ]$transf == "power") {
-        ylab <- paste0("$(", features[i], ")^", qtl_data[i, ]$transf_val, "$")
+        ylab <- paste0("$(", traits[i], ")^", qtl_data[i, ]$transf_val, "$")
       } else {
-        ylab <- features[i]
+        ylab <- traits[i]
       }
       MetaPipe::save_plot(
         qtl::effectplot(
           x_data_sim,
-          pheno.col = features[i],
+          pheno.col = traits[i],
           mname1 = markers[i],
           main = NULL,
           ylab = latex2exp::TeX(ylab)
         ),
-        paste0(plots_dir, "/EFF-", features[i], "-", markers[i])
+        paste0(plots_dir, "/EFF-", traits[i], "-", markers[i])
       )
     } else {
-      ylab <- features[i]
+      ylab <- traits[i]
       MetaPipe::save_plot(
         qtl::effectplot(
           x_data_sim,
-          pheno.col = as.character(features[i]),
+          pheno.col = as.character(traits[i]),
           mname1 = markers[i],
           main = NULL,
           ylab = latex2exp::TeX(ylab)
         ),
-        paste0(plots_dir, "/EFF-NP-", features[i], "-", markers[i])
+        paste0(plots_dir, "/EFF-NP-", traits[i], "-", markers[i])
       )
     }
   }

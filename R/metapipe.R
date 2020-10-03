@@ -54,7 +54,7 @@ load_raw <- function(raw_data_filename, excluded_columns) {
 #' @param raw_data data frame containing the raw data
 #' @param excluded_columns vector containing the indices of the data set properties, excluded columns
 #' @param out_prefix prefix for output files and plots
-#' @param prop_na proportion of missing values, if a feature exceeds this threshold, then it is dropped out
+#' @param prop_na proportion of missing values, if a trait exceeds this threshold, then it is dropped out
 #' @param replace_na boolean flag to indicate whether or not missing values should be replaced by half of the minimum value
 #'
 #' @return data frame containing the raw data without missing values
@@ -77,7 +77,7 @@ replace_missing <- function(raw_data, excluded_columns, out_prefix = "metapipe",
   # Exclude column 1, ID
   excluded_columns <- unique(c(1, excluded_columns))
   
-  # Missing values are replaced by half of the minimum non-zero value for each feature.
+  # Missing values are replaced by half of the minimum non-zero value for each trait.
   if(replace_na) {
     NA2halfmin <- function(x) suppressWarnings(replace(x, is.na(x), ifelse(all(is.na(x)), NA, (min(x, na.rm = TRUE)/2))))
     raw_data[,-excluded_columns] <- lapply(raw_data[,-excluded_columns], NA2halfmin)
@@ -106,7 +106,7 @@ replace_missing <- function(raw_data, excluded_columns, out_prefix = "metapipe",
   return(raw_data)
 }
 
-#' Assess normality of features
+#' Assess normality of traits
 #' @importFrom foreach %dopar%
 #' @importFrom stats shapiro.test
 #' @param raw_data data frame containing the raw data
@@ -153,17 +153,17 @@ assess_normality <- function(raw_data,
   # Ignore ID and properties
   raw_data <- raw_data[, -excluded_columns]
   
-  # Compute feature indices, accounting for the offset of ID and properties
-  feature_indices <- 1:ncol(raw_data) 
+  # Compute trait indices, accounting for the offset of ID and properties
+  trait_indices <- 1:ncol(raw_data) 
   
-  # Extract features (column names)
-  features <- colnames(raw_data)
-  raw_data_normalised <- foreach::foreach(i = feature_indices, 
+  # Extract traits (column names)
+  traits <- colnames(raw_data)
+  raw_data_normalised <- foreach::foreach(i = trait_indices, 
                                   .combine = rbind) %dopar% {
-                                    # Create and populate entry for current feature
+                                    # Create and populate entry for current trait
                                     record <- data.frame(
                                       index = i,
-                                      feature = features[i],
+                                      trait = traits[i],
                                       values = raw_data[, i],
                                       flag = "Non-normal",
                                       transf = "",
@@ -171,15 +171,15 @@ assess_normality <- function(raw_data,
                                       stringsAsFactors = FALSE
                                     )
                                     
-                                    # Verify the current feature has at least 3 non-NA rows
+                                    # Verify the current trait has at least 3 non-NA rows
                                     if(sum(is.finite(raw_data[, i]), na.rm = TRUE) > 2) {
-                                      # Assess normality of feature before transforming it
+                                      # Assess normality of trait before transforming it
                                       # if (is.na(i) || is.na(raw_data) || length(raw_data) < 3 || length(raw_data) > 5000)
-                                      #  warning(paste0("Could not processed the feature ", i))
+                                      #  warning(paste0("Could not processed the trait ", i))
                                       pvalue <- shapiro.test(raw_data[, i])[[2]]
                                       if(pvalue <= 0.05) { # Data must be transformed
                                         tmp <- MetaPipe::transform_data(data = raw_data[, i], 
-                                                              feature = features[i], 
+                                                              trait = traits[i], 
                                                               alpha = 0.05, 
                                                               index = i, 
                                                               transf_vals = transf_vals, 
@@ -193,11 +193,11 @@ assess_normality <- function(raw_data,
                                         }
                                       }
                                       else { # Normal data
-                                        xlab <- features[i]
+                                        xlab <- traits[i]
                                         transformation <- "NORM"
                                         prefix <- paste0(plots_dir,"/HIST_", i, "_", transformation)
                                         MetaPipe::generate_hist(data = raw_data[, i], 
-                                                                title = features[i], 
+                                                                title = traits[i], 
                                                                 prefix = prefix, 
                                                                 xlab = xlab, 
                                                                 is_trait = TRUE)
@@ -211,7 +211,7 @@ assess_normality <- function(raw_data,
   return(raw_data_normalised)
 }
 
-#' Postprocessing for the normality assessment of the features
+#' Postprocessing for the normality assessment of the traits
 #' @param raw_data data frame containing the raw data
 #' @param excluded_columns vector containing the indices of the data set properties, excluded columns
 #' @param raw_data_normalised data frame containing the normalised raw data, created with \code{\link{assess_normality}}
@@ -237,9 +237,9 @@ assess_normality_postprocessing <- function(raw_data,
                                             raw_data_normalised,
                                             out_prefix = "metapipe", 
                                             pareto_scaling = FALSE) {
-  feature <- transf_val <- NULL # Local binding
+  trait <- transf_val <- NULL # Local binding
   # Verify the raw_data_normalised object has the right structure
-  expected_columns <- c("index", "feature", "values", "flag", "transf", "transf_val")
+  expected_columns <- c("index", "trait", "values", "flag", "transf", "transf_val")
   if (!all(expected_columns %in% colnames(raw_data_normalised)))
     stop("raw_data_normalised must be the output of the function assess_normality")
   
@@ -250,32 +250,32 @@ assess_normality_postprocessing <- function(raw_data,
   raw_data_normalised_norm <- raw_data_normalised[raw_data_normalised$flag == "Normal", ]
   raw_data_normalised_non_par <- raw_data_normalised[raw_data_normalised$flag == "Non-normal", ]
   
-  # Extract feature names for both normal and non-parametric data
-  features_non_par <- unique(as.character(raw_data_normalised_non_par$feature))
-  features_norm <- unique(as.character(raw_data_normalised_norm$feature))
-  features_non_par_len <- length(features_non_par)
-  features_norm_len <- length(features_norm)
+  # Extract trait names for both normal and non-parametric data
+  traits_non_par <- unique(as.character(raw_data_normalised_non_par$trait))
+  traits_norm <- unique(as.character(raw_data_normalised_norm$trait))
+  traits_non_par_len <- length(traits_non_par)
+  traits_norm_len <- length(traits_norm)
   
-  # Create new objects with the normalised data for normal features and original
-  # raw data for non-parametric features
+  # Create new objects with the normalised data for normal traits and original
+  # raw data for non-parametric traits
   raw_data_non_par <- NULL
   raw_data_norm <- NULL
-  if (features_non_par_len > 0)
-    raw_data_non_par <- raw_data[, features_non_par]
-  if (features_norm_len > 0 ) {
+  if (traits_non_par_len > 0)
+    raw_data_non_par <- raw_data[, traits_non_par]
+  if (traits_norm_len > 0 ) {
     raw_data_norm <- data.frame(matrix(vector(), 
-                                       nrow(raw_data_normalised_norm) / features_norm_len, 
-                                       features_norm_len,
-                                       dimnames = list(c(), features_norm)),
+                                       nrow(raw_data_normalised_norm) / traits_norm_len, 
+                                       traits_norm_len,
+                                       dimnames = list(c(), traits_norm)),
                                 stringsAsFactors = FALSE)
     
-    for (i in 1:features_norm_len) {
-      raw_data_norm[i] <- subset(raw_data_normalised_norm, feature == features_norm[i])$values
+    for (i in 1:traits_norm_len) {
+      raw_data_norm[i] <- subset(raw_data_normalised_norm, trait == traits_norm[i])$values
     }
   }
   
   # Append excluded columns for scaling, if pareto_scaling == TRUE
-  ## Normal features
+  ## Normal traits
   if (!is.null(raw_data_norm)) {
     raw_data_norm <-
       cbind(raw_data[, 1, drop = FALSE],
@@ -285,7 +285,7 @@ assess_normality_postprocessing <- function(raw_data,
               raw_data_norm)
   }
   
-  ## Skewed features
+  ## Skewed traits
   if (!is.null(raw_data_non_par)) {
     raw_data_non_par <-
       cbind(raw_data[, 1, drop = FALSE],
@@ -298,17 +298,17 @@ assess_normality_postprocessing <- function(raw_data,
   
   # Generate basic stats from the normalisation process
   raw_data_rows <- nrow(raw_data)
-  norm_features_normalised_count <- nrow(raw_data_normalised_norm[raw_data_normalised_norm$transf != "", ]) / raw_data_rows
-  norm_features_count <- nrow(raw_data_normalised_norm) / raw_data_rows
-  total_features <- nrow(raw_data_normalised)/raw_data_rows
+  norm_traits_normalised_count <- nrow(raw_data_normalised_norm[raw_data_normalised_norm$transf != "", ]) / raw_data_rows
+  norm_traits_count <- nrow(raw_data_normalised_norm) / raw_data_rows
+  total_traits <- nrow(raw_data_normalised)/raw_data_rows
   transformations <- unique(raw_data_normalised[c("transf", "transf_val")])
   transformations <- transformations[nrow(transformations), ] # Drop blank transformation, NULL transformation
   sorting <- order(transformations$transf, decreasing = TRUE)
   transformations <- transformations[sorting, ]
   
   # Create data frame containing the stats
-  normalisation_stats <- data.frame(key = c("total", "norm_features", "norm_features_normalised"),
-                                    values = c(total_features, norm_features_count, norm_features_normalised_count),
+  normalisation_stats <- data.frame(key = c("total", "norm_traits", "norm_traits_normalised"),
+                                    values = c(total_traits, norm_traits_count, norm_traits_normalised_count),
                                     stringsAsFactors = FALSE)
   if (nrow(transformations) > 0){
     for(i in 1:nrow(transformations)){
@@ -327,7 +327,7 @@ assess_normality_postprocessing <- function(raw_data,
   write.csv(normalisation_stats, file = paste0(out_prefix,"_normalisation_stats.csv"), row.names = FALSE)
 }
 
-#' Statistics for the normality assessment of the features. 
+#' Statistics for the normality assessment of the traits. 
 #' @description This function uses an output file generated by \code{\link{assess_normality_postprocessing}}, 
 #' therefore, it cannot be executed without previously running the postprocessing function.
 #'
@@ -354,21 +354,21 @@ assess_normality_stats <- function(out_prefix = "metapipe") {
   
   # Loading stats for the normality assessment process
   normalisation_stats <- read.csv(stats_filename)
-  total_features <- normalisation_stats[1, 2]
-  norm_features_count <- normalisation_stats[2, 2]
-  norm_features_normalised_count <- normalisation_stats[3, 2]
+  total_traits <- normalisation_stats[1, 2]
+  norm_traits_count <- normalisation_stats[2, 2]
+  norm_traits_normalised_count <- normalisation_stats[3, 2]
   transformations <- normalisation_stats[-c(1:3), ]
   
   # Create message for user with the summary
-  msg <- paste0("Total features (excluding all NAs features): \t", total_features)
-  msg <- paste0(msg, "\nNormal features (without transformation): \t", (norm_features_count - norm_features_normalised_count))
-  msg <- paste0(msg, "\nNormal features (transformed): \t\t\t", norm_features_normalised_count)
-  msg <- paste0(msg, "\nTotal Normal features: \t\t\t\t", norm_features_count)
-  msg <- paste0(msg, "\nNon-parametric features: \t\t\t", (total_features - norm_features_count),"\n")
+  msg <- paste0("Total traits (excluding all NAs traits): \t", total_traits)
+  msg <- paste0(msg, "\nNormal traits (without transformation): \t", (norm_traits_count - norm_traits_normalised_count))
+  msg <- paste0(msg, "\nNormal traits (transformed): \t\t\t", norm_traits_normalised_count)
+  msg <- paste0(msg, "\nTotal Normal traits: \t\t\t\t", norm_traits_count)
+  msg <- paste0(msg, "\nNon-parametric traits: \t\t\t", (total_traits - norm_traits_count),"\n")
   
   if (nrow(transformations) > 0) {
     msg <- paste0(msg, "\nTransformations summary:")
-    msg <- paste0(msg, "\n\tf(x)\tValue \t# Features")
+    msg <- paste0(msg, "\n\tf(x)\tValue \t# traits")
     for (i in 1:nrow(transformations)) {
       tmp <- strsplit(as.character(transformations[i, 1]), '\t')[[1]]
       msg <- paste0(msg, "\n\t", tmp[1], "\t", tmp[2],"\t", transformations[i, 2])
@@ -436,9 +436,9 @@ random_map <- function(genotypes = c("A", "H", "B"), lg = 1:10, markers = 10, po
   return(map)
 }
 
-#' Perform QTL mapping scanone to obtain LOD scores for all features and markers
+#' Perform QTL mapping scanone to obtain LOD scores for all traits and markers
 #' @importFrom foreach %dopar%
-#' @param x_data cross-data containing genetic map data and features
+#' @param x_data cross-data containing genetic map data and traits
 #' @param cpus number of CPUS to be used
 #' @param ... S4 parameters for R/qtl library
 #'
@@ -456,7 +456,7 @@ random_map <- function(genotypes = c("A", "H", "B"), lg = 1:10, markers = 10, po
 #'                                T1 = rnorm(population),
 #'                                T2 = rnorm(population))
 #'     example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
-#'                                           feature = rep(c("T1", "T2"), each = 5),
+#'                                           trait = rep(c("T1", "T2"), each = 5),
 #'                                           values = c(example_data$T1, example_data$T2),
 #'                                           flag = "Normal",
 #'                                           transf = "",
@@ -470,7 +470,7 @@ random_map <- function(genotypes = c("A", "H", "B"), lg = 1:10, markers = 10, po
 #'     genetic_map <- random_map(population = population, seed = seed)
 #'     write.csv(genetic_map, here::here("metapipe_genetic_map.csv"), row.names = FALSE)
 #'     
-#'     # Load cross file with genetic map and raw data for normal features
+#'     # Load cross file with genetic map and raw data for normal traits
 #'     x <- qtl::read.cross(format = "csvs", 
 #'                          dir = here::here(),
 #'                          genfile = "metapipe_genetic_map.csv",
@@ -491,13 +491,13 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
   # Load binary operator for backend
   # `%dopar%` <- foreach::`%dopar%`
   
-  # Compute feature indices, accounting for the offset of ID and properties
-  feature_indices <- 2:ncol(x_data$pheno)
+  # Compute trait indices, accounting for the offset of ID and properties
+  trait_indices <- 2:ncol(x_data$pheno)
   
-  # Extract feature names
-  features <- colnames(x_data$pheno)
+  # Extract trait names
+  traits <- colnames(x_data$pheno)
   
-  x_scone <- foreach::foreach(i = feature_indices,
+  x_scone <- foreach::foreach(i = trait_indices,
                      .combine = cbind) %dopar% {
                        # Run single scan
                        scone <- qtl::scanone(x_data, pheno.col = i, ...)
@@ -508,11 +508,11 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
                            lod = scone$lod,
                            row.names = rownames(scone)
                          )
-                         colnames(record)[3] <- features[i]
+                         colnames(record)[3] <- traits[i]
                        }
                        else {
                          record <- data.frame(data = scone$lod)
-                         colnames(record) <- features[i]
+                         colnames(record) <- traits[i]
                        }
                        record
                      }
@@ -526,7 +526,7 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
 #' @importFrom graphics legend
 #' @importFrom stats as.formula
 #' 
-#' @param x_data cross-data containing genetic map data and features
+#' @param x_data cross-data containing genetic map data and traits
 #' @param cpus number of CPUS to be used
 #' @param qtl_method QTL mapping method [default: scanone]
 #' @param raw_data_normalised normalised raw data, see \code{\link{assess_normality}}
@@ -550,7 +550,7 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
 #'                                T1 = rnorm(population),
 #'                                T2 = rnorm(population))
 #'     example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
-#'                                           feature = rep(c("T1", "T2"), each = 5),
+#'                                           trait = rep(c("T1", "T2"), each = 5),
 #'                                           values = c(example_data$T1, example_data$T2),
 #'                                           flag = "Normal",
 #'                                           transf = "",
@@ -564,7 +564,7 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
 #'     genetic_map <- random_map(population = population, seed = seed)
 #'     write.csv(genetic_map, here::here("metapipe_genetic_map.csv"), row.names = FALSE)
 #'     
-#'     # Load cross file with genetic map and raw data for normal features
+#'     # Load cross file with genetic map and raw data for normal traits
 #'     x <- qtl::read.cross(format = "csvs", 
 #'                          dir = here::here(),
 #'                          genfile = "metapipe_genetic_map.csv",
@@ -593,20 +593,20 @@ qtl_perm_test <- function(x_data,
   # Load binary operator for backend
   # `%dopar%` <- foreach::`%dopar%`
   
-  # Compute feature indices, accounting for the offset of ID and properties
-  feature_indices <- 2:ncol(x_data$pheno)
+  # Compute trait indices, accounting for the offset of ID and properties
+  trait_indices <- 2:ncol(x_data$pheno)
   
-  # Extract feature names
-  features <- colnames(x_data$pheno)
+  # Extract trait names
+  traits <- colnames(x_data$pheno)
   
   # Obtain number of individuals (population)
   num_indv <- nrow(x_data$pheno) #summary(x_data)[[2]]
   
   x_sum_map <- 
-    foreach::foreach(i = feature_indices,
+    foreach::foreach(i = trait_indices,
                      .combine = rbind) %dopar% {
                        if (!is.null(raw_data_normalised)) {
-                         transf_info <- raw_data_normalised$feature == features[i]
+                         transf_info <- raw_data_normalised$trait == traits[i]
                          transf_info <- raw_data_normalised[transf_info, c("transf", "transf_val")][1, ]
                        }
                        else {
@@ -617,7 +617,7 @@ qtl_perm_test <- function(x_data,
                        record <- data.frame(
                          # ID = i - 1,
                          qtl_ID = NA,
-                         trait = features[i],
+                         trait = traits[i],
                          ind = num_indv,
                          lg = NA,
                          lod_peak = NA,
@@ -661,9 +661,9 @@ qtl_perm_test <- function(x_data,
                            nrecord$marker <- marker_info[1]
                            nrecord$pos_peak <- as.numeric(marker_info[2])
                            
-                           # Create QTL ID: feature:LG@position
+                           # Create QTL ID: trait:LG@position
                            if(!is.na(nrecord$lg)) {
-                             nrecord$qtl_ID <- with(nrecord, sprintf("%s:%s@%f", features[i], lg, pos_peak))
+                             nrecord$qtl_ID <- with(nrecord, sprintf("%s:%s@%f", traits[i], lg, pos_peak))
                            }
                            
                            # Compute the 95% Bayes' CI
@@ -717,7 +717,7 @@ qtl_perm_test <- function(x_data,
                                     lwd = 2
                                    )
                            },
-                           paste0(plots_dir, "/LOD-", features[i]),
+                           paste0(plots_dir, "/LOD-", traits[i]),
                            width = 18
                          )
                          
@@ -769,7 +769,7 @@ qtl_preprocessing <- function(genetic_map, out_prefix = "metapipe") {
 # #   colnames(genetic_map)[1] <- "ID"
 # #   genetic_map$ID <- as.character(genetic_map$ID)
 # #   
-#   ## Normal features
+#   ## Normal traits
 #   raw_data_norm <- read.csv(paste0(out_prefix,"_raw_data_norm.csv"), stringsAsFactors = FALSE)
 # #   colnames(raw_data_norm)[1] <- "ID"
 # #   raw_data_norm$GenoID <- with(raw_data_norm,
@@ -785,7 +785,7 @@ qtl_preprocessing <- function(genetic_map, out_prefix = "metapipe") {
 #                      dplyr::inner_join(pheno_norm, genetic_map, by = "ID")[, colnames(genetic_map)]
 #                     )
 #   
-#   ## Non-parametric features
+#   ## Non-parametric traits
 #   raw_data_non_par <- read.csv(paste0(out_prefix, "_raw_data_non_par.csv"), stringsAsFactors = FALSE)
 #   colnames(raw_data_non_par)[1] <- "ID"
 #   raw_data_non_par$GenoID <- with(raw_data_non_par,
@@ -802,28 +802,28 @@ qtl_preprocessing <- function(genetic_map, out_prefix = "metapipe") {
 #                              )
 #   
 #   # Clean phenotypic data
-#   empty_features_non_par <- sapply(pheno_non_par, function(x) all(is.na(x)) || all(is.infinite(x)))
-#   empty_features_norm <- sapply(pheno_norm, function(x) all(is.na(x)) || all(is.infinite(x)))
+#   empty_traits_non_par <- sapply(pheno_non_par, function(x) all(is.na(x)) || all(is.infinite(x)))
+#   empty_traits_norm <- sapply(pheno_norm, function(x) all(is.na(x)) || all(is.infinite(x)))
 #   #pheno_non_par.ncols <- ncol(pheno_non_par)
 #   #pheno_norm.ncols <- ncol(pheno_norm)
-#   pheno_non_par[empty_features_non_par] <- NULL
-#   pheno_norm[empty_features_norm] <- NULL
+#   pheno_non_par[empty_traits_non_par] <- NULL
+#   pheno_norm[empty_traits_norm] <- NULL
 #   
-#   if(any(empty_features_non_par)) {
-#     print(paste0("The following non-parametric features were removed (NAs):"))
-#     print(names(empty_features_non_par)[empty_features_non_par])
+#   if(any(empty_traits_non_par)) {
+#     print(paste0("The following non-parametric traits were removed (NAs):"))
+#     print(names(empty_traits_non_par)[empty_traits_non_par])
 #   }
 #   
-#   if(any(empty_features_norm)) {
-#     print(paste0("The following normal features were removed (NAs):"))
-#     print(names(empty_features_norm)[empty_features_norm])
+#   if(any(empty_traits_norm)) {
+#     print(paste0("The following normal traits were removed (NAs):"))
+#     print(names(empty_traits_norm)[empty_traits_norm])
 #   }
 #   
 #   # Write genotypic and phenotypic dataset
-#   ## Normal features
+#   ## Normal traits
 #   write.csv(geno_norm, file = paste0(OUT_PREFIX,".geno_norm.csv"), row.names=FALSE)
 #   write.csv(pheno_norm, file = paste0(OUT_PREFIX,".pheno_norm.csv"), row.names=FALSE)
-#   ## Non-parametric features
+#   ## Non-parametric traits
 #   write.csv(non.parametric.gen, file = paste0(OUT_PREFIX,".non.parametric.gen.csv"), row.names=FALSE)
 #   write.csv(pheno_non_par, file = paste0(OUT_PREFIX,".pheno_non_par.csv"), row.names=FALSE)
 }

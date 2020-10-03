@@ -95,7 +95,7 @@ raw_df <- data.frame(A = rep("&nbsp;", nrows),
                      D = rep(NA, nrows),
                      E = rep(NA, nrows),
                      G = rep(NA, nrows))
-colnames(raw_df) <- c("index", "feature", "values", "flag", "transf", "transf_val")
+colnames(raw_df) <- c("index", "trait", "values", "flag", "transf", "transf_val")
 
 `%>%` <- dplyr::`%>%`
 knitr::kable(raw_df, format = "html", escape = FALSE, table.attr = "style='width:100%;'", align = 'c') %>%
@@ -105,7 +105,7 @@ knitr::kable(raw_df, format = "html", escape = FALSE, table.attr = "style='width
 ```
 
 where `index` is a simple numeric value to uniquely identify each trait, 
-`feature` is the trait/variable name, `values` is the actual entry, `flag` 
+`trait` is the trait/variable name, `values` is the actual entry, `flag` 
 indicates whether the entry is parametric (Normal) or skewed (Non-normal), 
 `transf` is the transformationfunction (empty for untransformed traits), and 
 `transf_val` is the transformation value used.
@@ -132,8 +132,8 @@ As expected both tables show the same entries; however, the latter indicates tha
 `T2` was transformed using $\log_2$. The function will generate histograms for
 all the traits, the naming convention used is:
 
-- `HIST_[index]_[transf]_[transf_val]_[feature].png` for transformed traits
-- `HIST_[index]_NORM_[feature].png` for those that were not transformed. 
+- `HIST_[index]_[transf]_[transf_val]_[trait].png` for transformed traits
+- `HIST_[index]_NORM_[trait].png` for those that were not transformed. 
 
 For the previous data set `HIST_1_NORM_T1.png` and `HIST_2_LOG_2_T2.png`:
 
