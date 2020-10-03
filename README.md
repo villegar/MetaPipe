@@ -180,10 +180,12 @@ vignette("assess-normality", package = "MetaPipe")
 
 `MetaPipe` assesses the normality of variables (traits) by performing a
 Shapiro-Wilk test on the raw data (see [Load Raw
-Data](load-raw-data.html) and [Replace Missing
-Data](replace-missing-data.html)). Based on whether or not the data
-approximates a normal distribution, an array of transformations will be
-computed, and the normality assessed one more time.
+Data](https://villegar.github.io/MetaPipe/article/load-raw-data.html)
+and [Replace Missing
+Data](https://villegar.github.io/MetaPipe/article/replace-missing-data.html).
+Based on whether or not the data approximates a normal distribution, an
+array of transformations will be computed, and the normality assessed
+one more time.
 
 #### Function call
 
@@ -198,14 +200,15 @@ assess_normality(raw_data = raw_data,
 ```
 
 where `raw_data` is a data frame containing the raw data, as described
-in [Load Raw Data](load-raw-data.html) and `excluded_columns` is a
-vector containing the indices of the properties, e.g. `c(2, 3, ..., M)`.
-The other arguments are optional, `cpus` is the number of cores to use,
-in other words, the number of concurrent traits to process, `out_prefix`
-is the prefix for output files, `plots_dir` is the output directory
-where the plots will be stored, and `transf_vals` is a vector containing
-the transformation values to be used when transforming the original
-data.
+in [Load Raw
+Data](https://villegar.github.io/MetaPipe/article/load-raw-data.html)
+and `excluded_columns` is a vector containing the indices of the
+properties, e.g. `c(2, 3, ..., M)`. The other arguments are optional,
+`cpus` is the number of cores to use, in other words, the number of
+concurrent traits to process, `out_prefix` is the prefix for output
+files, `plots_dir` is the output directory where the plots will be
+stored, and `transf_vals` is a vector containing the transformation
+values to be used when transforming the original data.
 
 #### Example
 
@@ -243,7 +246,7 @@ index
 
 <th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
 
-feature
+trait
 
 </th>
 
@@ -514,7 +517,7 @@ index
 
 <th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
 
-feature
+trait
 
 </th>
 
@@ -797,10 +800,9 @@ indicates that `T2` was transformed using \(`\log_2`\). The function
 will generate histograms for all the traits, the naming convention used
 is:
 
-  - `HIST_[index]_[transf]_[transf_val]_[feature].png` for transformed
+  - `HIST_[index]_[transf]_[transf_val]_[trait].png` for transformed
     traits
-  - `HIST_[index]_NORM_[feature].png` for those that were not
-    transformed.
+  - `HIST_[index]_NORM_[trait].png` for those that were not transformed.
 
 For the previous data set `HIST_1_NORM_T1.png` and
 `HIST_2_LOG_2_T2.png`:
