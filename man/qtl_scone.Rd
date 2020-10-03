@@ -2,12 +2,12 @@
 % Please edit documentation in R/metapipe.R
 \name{qtl_scone}
 \alias{qtl_scone}
-\title{Perform QTL mapping scanone to obtain LOD scores for all features and markers}
+\title{Perform QTL mapping scanone to obtain LOD scores for all traits and markers}
 \usage{
 qtl_scone(x_data, cpus = 1, ...)
 }
 \arguments{
-\item{x_data}{cross-data containing genetic map data and features}
+\item{x_data}{cross-data containing genetic map data and traits}
 
 \item{cpus}{number of CPUS to be used}
 
@@ -17,7 +17,7 @@ qtl_scone(x_data, cpus = 1, ...)
 data frame containing the LOD scores
 }
 \description{
-Perform QTL mapping scanone to obtain LOD scores for all features and markers
+Perform QTL mapping scanone to obtain LOD scores for all traits and markers
 }
 \examples{
 \dontrun{
@@ -30,7 +30,7 @@ Perform QTL mapping scanone to obtain LOD scores for all features and markers
                                T1 = rnorm(population),
                                T2 = rnorm(population))
     example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
-                                          feature = rep(c("T1", "T2"), each = 5),
+                                          trait = rep(c("T1", "T2"), each = 5),
                                           values = c(example_data$T1, example_data$T2),
                                           flag = "Normal",
                                           transf = "",
@@ -44,7 +44,7 @@ Perform QTL mapping scanone to obtain LOD scores for all features and markers
     genetic_map <- random_map(population = population, seed = seed)
     write.csv(genetic_map, here::here("metapipe_genetic_map.csv"), row.names = FALSE)
     
-    # Load cross file with genetic map and raw data for normal features
+    # Load cross file with genetic map and raw data for normal traits
     x <- qtl::read.cross(format = "csvs", 
                          dir = here::here(),
                          genfile = "metapipe_genetic_map.csv",

@@ -4,14 +4,14 @@
 \alias{compare_hist}
 \title{This function generates a two histograms to compare two datasets}
 \usage{
-compare_hist(original, transformed, feature, prefix, xlab)
+compare_hist(original, transformed, trait, prefix, xlab)
 }
 \arguments{
 \item{original}{Original data}
 
 \item{transformed}{Transformed data}
 
-\item{feature}{Feature name}
+\item{trait}{trait name}
 
 \item{prefix}{File prefix}
 

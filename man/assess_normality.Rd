@@ -2,7 +2,7 @@
 % Please edit documentation in R/metapipe.R
 \name{assess_normality}
 \alias{assess_normality}
-\title{Assess normality of features}
+\title{Assess normality of traits}
 \usage{
 assess_normality(
   raw_data,
@@ -30,7 +30,7 @@ assess_normality(
 Structure containing the normalised data, if a suitable transformation was found
 }
 \description{
-Assess normality of features
+Assess normality of traits
 }
 \examples{
 \dontrun{

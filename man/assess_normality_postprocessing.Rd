@@ -2,7 +2,7 @@
 % Please edit documentation in R/metapipe.R
 \name{assess_normality_postprocessing}
 \alias{assess_normality_postprocessing}
-\title{Postprocessing for the normality assessment of the features}
+\title{Postprocessing for the normality assessment of the traits}
 \usage{
 assess_normality_postprocessing(
   raw_data,
@@ -27,7 +27,7 @@ assess_normality_postprocessing(
 Files containing the normal and non-paramatric normalised data are stored on disk
 }
 \description{
-Postprocessing for the normality assessment of the features
+Postprocessing for the normality assessment of the traits
 }
 \examples{
 \dontrun{

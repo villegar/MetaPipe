@@ -6,7 +6,7 @@
 \usage{
 power_transformation(
   data,
-  feature = "DATA",
+  trait = "DATA",
   alpha = 0.05,
   transf = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10),
   plots_prefix = "HIST",
@@ -16,7 +16,7 @@ power_transformation(
 \arguments{
 \item{data}{original data}
 
-\item{feature}{feature name}
+\item{trait}{trait name}
 
 \item{alpha}{significance level}
 

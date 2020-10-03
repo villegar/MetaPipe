@@ -7,7 +7,7 @@
 transform_pseudo_marker(x_data, marker, chr, pos)
 }
 \arguments{
-\item{x_data}{cross-file containing genetic map data and features}
+\item{x_data}{cross-file containing genetic map data and traits}
 
 \item{marker}{pseudo marker to be transformed}
 
@@ -32,7 +32,7 @@ Transforms a pseudo-marker to a standard marker by looking for the nearest one
                                T1 = rnorm(population),
                                T2 = rnorm(population))
     example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
-                                          feature = rep(c("T1", "T2"), each = 5),
+                                          trait = rep(c("T1", "T2"), each = 5),
                                           values = c(example_data$T1, example_data$T2),
                                           flag = "Normal",
                                           transf = "",
@@ -46,7 +46,7 @@ Transforms a pseudo-marker to a standard marker by looking for the nearest one
     # Create and store random genetic map [for testing only]
     genetic_map <- random_map(population = population, seed = seed)
     write.csv(genetic_map, here::here("metapipe_genetic_map.csv"), row.names = FALSE)
-    # Load cross file with genetic map and raw data for normal features
+    # Load cross file with genetic map and raw data for normal traits
     x <- qtl::read.cross(format = "csvs", 
                          dir = here::here(),
                          genfile = "metapipe_genetic_map.csv",

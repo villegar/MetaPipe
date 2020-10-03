@@ -19,7 +19,7 @@ replace_missing(
 
 \item{out_prefix}{prefix for output files and plots}
 
-\item{prop_na}{proportion of missing values, if a feature exceeds this threshold, then it is dropped out}
+\item{prop_na}{proportion of missing values, if a trait exceeds this threshold, then it is dropped out}
 
 \item{replace_na}{boolean flag to indicate whether or not missing values should be replaced by half of the minimum value}
 }

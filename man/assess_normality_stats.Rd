@@ -2,7 +2,7 @@
 % Please edit documentation in R/metapipe.R
 \name{assess_normality_stats}
 \alias{assess_normality_stats}
-\title{Statistics for the normality assessment of the features.}
+\title{Statistics for the normality assessment of the traits.}
 \usage{
 assess_normality_stats(out_prefix = "metapipe")
 }

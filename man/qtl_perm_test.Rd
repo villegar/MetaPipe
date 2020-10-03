@@ -17,7 +17,7 @@ qtl_perm_test(
 )
 }
 \arguments{
-\item{x_data}{cross-data containing genetic map data and features}
+\item{x_data}{cross-data containing genetic map data and traits}
 
 \item{cpus}{number of CPUS to be used}
 
@@ -52,7 +52,7 @@ Perform QTL mapping permutation test using scanone to obtain significant QTLs
                                T1 = rnorm(population),
                                T2 = rnorm(population))
     example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
-                                          feature = rep(c("T1", "T2"), each = 5),
+                                          trait = rep(c("T1", "T2"), each = 5),
                                           values = c(example_data$T1, example_data$T2),
                                           flag = "Normal",
                                           transf = "",
@@ -66,7 +66,7 @@ Perform QTL mapping permutation test using scanone to obtain significant QTLs
     genetic_map <- random_map(population = population, seed = seed)
     write.csv(genetic_map, here::here("metapipe_genetic_map.csv"), row.names = FALSE)
     
-    # Load cross file with genetic map and raw data for normal features
+    # Load cross file with genetic map and raw data for normal traits
     x <- qtl::read.cross(format = "csvs", 
                          dir = here::here(),
                          genfile = "metapipe_genetic_map.csv",

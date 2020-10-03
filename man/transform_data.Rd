@@ -8,7 +8,7 @@ into a normal-ish set.}
 \usage{
 transform_data(
   data,
-  feature = "DATA",
+  trait = "DATA",
   alpha = 0.05,
   index = NULL,
   transf_vals = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10),
@@ -19,11 +19,11 @@ transform_data(
 \arguments{
 \item{data}{original data}
 
-\item{feature}{feature name}
+\item{trait}{trait name}
 
 \item{alpha}{significance level}
 
-\item{index}{index of the current feature}
+\item{index}{index of the current trait}
 
 \item{transf_vals}{transformation values}
 
