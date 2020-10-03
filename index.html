@@ -217,7 +217,7 @@
 <p>For extended documentation, see the vignette <a href="https://villegar.github.io/MetaPipe/articles/assess-normality">Assess Normality</a>.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span><span class="op">(</span><span class="st">"assess-normality"</span>, package <span class="op">=</span> <span class="st">"MetaPipe"</span><span class="op">)</span></pre></div>
-<p><code>MetaPipe</code> assesses the normality of variables (traits) by performing a Shapiro-Wilk test on the raw data (see <a href="load-raw-data.html">Load Raw Data</a> and <a href="replace-missing-data.html">Replace Missing Data</a>). Based on whether or not the data approximates a normal distribution, an array of transformations will be computed, and the normality assessed one more time.</p>
+<p><code>MetaPipe</code> assesses the normality of variables (traits) by performing a Shapiro-Wilk test on the raw data (see <a href="https://villegar.github.io/MetaPipe/article/load-raw-data.html">Load Raw Data</a> and <a href="https://villegar.github.io/MetaPipe/article/replace-missing-data.html">Replace Missing Data</a>. Based on whether or not the data approximates a normal distribution, an array of transformations will be computed, and the normality assessed one more time.</p>
 <div id="function-call-2" class="section level4">
 <h4 class="hasAnchor">
 <a href="#function-call-2" class="anchor"></a>Function call</h4>
@@ -229,7 +229,7 @@
                  out_prefix <span class="op">=</span> <span class="st">"metapipe"</span>, 
                  plots_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html">getwd</a></span><span class="op">(</span><span class="op">)</span>, 
                  transf_vals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span>, <span class="fl">7</span>, <span class="fl">8</span>, <span class="fl">9</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></pre></div>
-<p>where <code>raw_data</code> is a data frame containing the raw data, as described in <a href="load-raw-data.html">Load Raw Data</a> and <code>excluded_columns</code> is a vector containing the indices of the properties, e.g. <code><a href="https://rdrr.io/r/base/c.html">c(2, 3, ..., M)</a></code>. The other arguments are optional, <code>cpus</code> is the number of cores to use, in other words, the number of concurrent traits to process, <code>out_prefix</code> is the prefix for output files, <code>plots_dir</code> is the output directory where the plots will be stored, and <code>transf_vals</code> is a vector containing the transformation values to be used when transforming the original data.</p>
+<p>where <code>raw_data</code> is a data frame containing the raw data, as described in <a href="https://villegar.github.io/MetaPipe/article/load-raw-data.html">Load Raw Data</a> and <code>excluded_columns</code> is a vector containing the indices of the properties, e.g. <code><a href="https://rdrr.io/r/base/c.html">c(2, 3, ..., M)</a></code>. The other arguments are optional, <code>cpus</code> is the number of cores to use, in other words, the number of concurrent traits to process, <code>out_prefix</code> is the prefix for output files, <code>plots_dir</code> is the output directory where the plots will be stored, and <code>transf_vals</code> is a vector containing the transformation values to be used when transforming the original data.</p>
 </div>
 <div id="example-1" class="section level4">
 <h4 class="hasAnchor">
@@ -249,7 +249,7 @@
 <p>index</p>
 </th>
 <th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
-<p>feature</p>
+<p>trait</p>
 </th>
 <th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
 <p>values</p>
@@ -382,7 +382,7 @@
 <p>index</p>
 </th>
 <th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
-<p>feature</p>
+<p>trait</p>
 </th>
 <th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
 <p>values</p>
@@ -523,9 +523,9 @@
 <p>As expected both tables show the same entries; however, the latter indicates that <code>T2</code> was transformed using <span class="math inline">$`\log_2`$</span>. The function will generate histograms for all the traits, the naming convention used is:</p>
 <ul>
 <li>
-<code>HIST_[index]_[transf]_[transf_val]_[feature].png</code> for transformed traits</li>
+<code>HIST_[index]_[transf]_[transf_val]_[trait].png</code> for transformed traits</li>
 <li>
-<code>HIST_[index]_NORM_[feature].png</code> for those that were not transformed.</li>
+<code>HIST_[index]_NORM_[trait].png</code> for those that were not transformed.</li>
 </ul>
 <p>For the previous data set <code>HIST_1_NORM_T1.png</code> and <code>HIST_2_LOG_2_T2.png</code>:</p>
 <p><img src="reference/figures/HIST_1_NORM_T1.png" width="45%"><img src="reference/figures/HIST_2_LOG_2_T2.png" width="45%"></p>
