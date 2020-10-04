@@ -14,7 +14,7 @@ Authors@R: c(
            role = c("aut"),
            email = "dilmini.alahakoon@sdstate.edu"))
 Description: Pipeline for QTL mapping of large ionomic and metabolomic datasets. 
-                 It uses an High-Performance Computing approach to speed up the 
+                 It uses a High-Performance Computing approach to speed up the 
                  computations performed.
 URL: https://github.com/villegar/MetaPipe
 BugReports: https://github.com/villegar/MetaPipe/issues
