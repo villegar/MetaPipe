@@ -18,7 +18,7 @@ tcolor <- "#EEEEEE"
 `%>%` <- dplyr::`%>%`
 base_url <- "https://villegar.github.io/MetaPipe/"
 web <- function(page, is.vignette = TRUE) {
-  return(paste0(base_url, ifelse(is.vignette, "article/", ""), page))
+  return(paste0(base_url, ifelse(is.vignette, "articles/", ""), page))
 }
 ```
 

@@ -180,9 +180,9 @@ vignette("assess-normality", package = "MetaPipe")
 
 `MetaPipe` assesses the normality of variables (traits) by performing a
 Shapiro-Wilk test on the raw data (see [Load Raw
-Data](https://villegar.github.io/MetaPipe/article/load-raw-data.html)
+Data](https://villegar.github.io/MetaPipe/articles/load-raw-data.html)
 and [Replace Missing
-Data](https://villegar.github.io/MetaPipe/article/replace-missing-data.html).
+Data](https://villegar.github.io/MetaPipe/articles/replace-missing-data.html).
 Based on whether or not the data approximates a normal distribution, an
 array of transformations will be computed, and the normality assessed
 one more time.
@@ -201,7 +201,7 @@ assess_normality(raw_data = raw_data,
 
 where `raw_data` is a data frame containing the raw data, as described
 in [Load Raw
-Data](https://villegar.github.io/MetaPipe/article/load-raw-data.html)
+Data](https://villegar.github.io/MetaPipe/articles/load-raw-data.html)
 and `excluded_columns` is a vector containing the indices of the
 properties, e.g. `c(2, 3, ..., M)`. The other arguments are optional,
 `cpus` is the number of cores to use, in other words, the number of
