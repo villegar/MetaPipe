@@ -12,7 +12,11 @@ Authors@R: c(
     person(given = "Dilmini",
            family = "Alahakoon",
            role = c("aut"),
-           email = "dilmini.alahakoon@sdstate.edu"))
+           email = "dilmini.alahakoon@sdstate.edu"),
+    person(given = "Anne",
+           family = "Fennell",
+           role = c("ths"),
+           email = "anne.fennell@sdstate.edu"))
 Description: Pipeline for QTL mapping of large ionomic and metabolomic datasets. 
                  It uses a High-Performance Computing approach to speed up the 
                  computations performed.
