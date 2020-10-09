@@ -217,7 +217,7 @@
 <p>For extended documentation, see the vignette <a href="https://villegar.github.io/MetaPipe/articles/assess-normality">Assess Normality</a>.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span><span class="op">(</span><span class="st">"assess-normality"</span>, package <span class="op">=</span> <span class="st">"MetaPipe"</span><span class="op">)</span></pre></div>
-<p><code>MetaPipe</code> assesses the normality of variables (traits) by performing a Shapiro-Wilk test on the raw data (see <a href="https://villegar.github.io/MetaPipe/article/load-raw-data.html">Load Raw Data</a> and <a href="https://villegar.github.io/MetaPipe/article/replace-missing-data.html">Replace Missing Data</a>. Based on whether or not the data approximates a normal distribution, an array of transformations will be computed, and the normality assessed one more time.</p>
+<p><code>MetaPipe</code> assesses the normality of variables (traits) by performing a Shapiro-Wilk test on the raw data (see <a href="https://villegar.github.io/MetaPipe/articles/load-raw-data.html">Load Raw Data</a> and <a href="https://villegar.github.io/MetaPipe/articles/replace-missing-data.html">Replace Missing Data</a>. Based on whether or not the data approximates a normal distribution, an array of transformations will be computed, and the normality assessed one more time.</p>
 <div id="function-call-2" class="section level4">
 <h4 class="hasAnchor">
 <a href="#function-call-2" class="anchor"></a>Function call</h4>
@@ -229,7 +229,7 @@
                  out_prefix <span class="op">=</span> <span class="st">"metapipe"</span>, 
                  plots_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html">getwd</a></span><span class="op">(</span><span class="op">)</span>, 
                  transf_vals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span>, <span class="fl">7</span>, <span class="fl">8</span>, <span class="fl">9</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></pre></div>
-<p>where <code>raw_data</code> is a data frame containing the raw data, as described in <a href="https://villegar.github.io/MetaPipe/article/load-raw-data.html">Load Raw Data</a> and <code>excluded_columns</code> is a vector containing the indices of the properties, e.g. <code><a href="https://rdrr.io/r/base/c.html">c(2, 3, ..., M)</a></code>. The other arguments are optional, <code>cpus</code> is the number of cores to use, in other words, the number of concurrent traits to process, <code>out_prefix</code> is the prefix for output files, <code>plots_dir</code> is the output directory where the plots will be stored, and <code>transf_vals</code> is a vector containing the transformation values to be used when transforming the original data.</p>
+<p>where <code>raw_data</code> is a data frame containing the raw data, as described in <a href="https://villegar.github.io/MetaPipe/articles/load-raw-data.html">Load Raw Data</a> and <code>excluded_columns</code> is a vector containing the indices of the properties, e.g. <code><a href="https://rdrr.io/r/base/c.html">c(2, 3, ..., M)</a></code>. The other arguments are optional, <code>cpus</code> is the number of cores to use, in other words, the number of concurrent traits to process, <code>out_prefix</code> is the prefix for output files, <code>plots_dir</code> is the output directory where the plots will be stored, and <code>transf_vals</code> is a vector containing the transformation values to be used when transforming the original data.</p>
 </div>
 <div id="example-1" class="section level4">
 <h4 class="hasAnchor">
@@ -558,6 +558,7 @@
 <ul class="list-unstyled">
 <li>Roberto Villegas-Diaz <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0001-5036-8661" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>Dilmini Alahakoon <br><small class="roles"> Author </small>  </li>
+<li><a href="authors.html">All authors...</a></li>
 </ul>
 </div>
 
