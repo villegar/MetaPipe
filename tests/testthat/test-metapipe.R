@@ -55,13 +55,17 @@ test_that("replace missing data works", {
   
   # Testing the function with different parameters
   expect_message(results_1 <- replace_missing(example_data, c(2)))
-  expect_message(results_2 <- replace_missing(example_data, c(1, 2), prop_na =  0.25))
-  expect_message(results_3 <- replace_missing(example_data, c(1, 2), replace_na =  TRUE))
+  expect_message(results_2 <- replace_missing(example_data, 
+                                              c(1, 2), 
+                                              prop_na =  0.25))
+  expect_message(results_3 <- replace_missing(example_data, 
+                                              c(1, 2), 
+                                              replace_na =  TRUE))
   
   # Comparing results
-  expect_equal(example_data[, -5], results_1) # Drop T3
-  expect_equal(example_data[, -c(3, 5)], results_2) # Drop T1 and T3
-  expect_equal(example_data_alt, results_3)
+  expect_equivalent(example_data[, -5], results_1)       # Drop T3
+  expect_equivalent(example_data[, -c(3, 5)], results_2) # Drop T1 and T3
+  expect_equivalent(example_data_alt, results_3)  
   
   # Checking for file generated in the test where prop_na =  0.25
   filename <- "metapipe_NA_raw_data.csv"
@@ -96,11 +100,15 @@ test_that("normality assessment works", {
   expected_output_exp2$transf_val <- rep(c(2, NA), each = 5)
   
   # Testing for both data sets
-  expect_equal(expected_output, assess_normality(example_data, c(1, 2)))
-  expect_equal(expected_output_exp2, assess_normality(example_data_exp2, c(1, 2)))
+  expect_equal(expected_output, 
+               assess_normality(example_data, c(1, 2)))
+  expect_equal(expected_output_exp2, 
+               assess_normality(example_data_exp2, c(1, 2)))
   
   # Check for generated histograms
-  filenames <- c("HIST_1_LOG_2_T1.png", "HIST_1_NORM_T1.png", "HIST_2_NORM_T2.png")
+  filenames <- c("HIST_1_LOG_2_T1.png", 
+                 "HIST_1_NORM_T1.png", 
+                 "HIST_2_NORM_T2.png")
   for (f in filenames) {
     expect_true(file.exists(f))
     expect_false(dir.exists(f))
@@ -162,7 +170,9 @@ test_that("normality assessment postprocessing works", {
     expect_false(file.exists(f))
   }
   
-  assess_normality_postprocessing(example_data_exp2, c(1, 2), expected_output_exp2)
+  assess_normality_postprocessing(example_data_exp2, 
+                                  c(1, 2), 
+                                  expected_output_exp2)
   filenames <- c("metapipe_normalisation_stats.csv", 
                  "metapipe_raw_data_non_par.csv", 
                  "metapipe_raw_data_norm.csv", 
@@ -176,7 +186,9 @@ test_that("normality assessment postprocessing works", {
     expect_false(file.exists(f))
   }
   
-  assess_normality_postprocessing(example_data_non_par, c(1, 2), expected_output_non_par)
+  assess_normality_postprocessing(example_data_non_par, 
+                                  c(1, 2), 
+                                  expected_output_non_par)
   filenames <- c("metapipe_normalisation_stats.csv", 
                  "metapipe_raw_data_non_par.csv", 
                  "metapipe_raw_data_norm.csv", 
@@ -234,7 +246,9 @@ test_that("normality assessment statistics work", {
     expect_false(file.exists(f))
   }
   
-  assess_normality_postprocessing(example_data_exp2, c(1, 2), expected_output_exp2)
+  assess_normality_postprocessing(example_data_exp2, 
+                                  c(1, 2), 
+                                  expected_output_exp2)
   filenames <- c("metapipe_normalisation_stats.csv", 
                  "metapipe_raw_data_non_par.csv", 
                  "metapipe_raw_data_norm.csv", 
@@ -261,7 +275,10 @@ test_that("random map works", {
                              S1_2 = c(1, 2, "H", "H"),
                              S2_1 = c(2, 1, "A", "H"),
                              S2_2 = c(2, 2, "A", "H"))
-  expect_equal(expected_map, random_map(lg = 1:2, markers = 2, population = 2, seed = 123))
+  expect_equal(expected_map, random_map(lg = 1:2, 
+                                        markers = 2, 
+                                        population = 2, 
+                                        seed = 123))
 })
 
 test_that("qtl mapping scanone works", {
@@ -277,12 +294,15 @@ test_that("qtl mapping scanone works", {
                              T2 = rnorm(population))
   example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
                                         trait = rep(c("T1", "T2"), each = 5),
-                                        values = c(example_data$T1, example_data$T2),
+                                        values = c(example_data$T1, 
+                                                   example_data$T2),
                                         flag = "Normal",
                                         transf = "",
                                         transf_val = NA,
                                         stringsAsFactors = FALSE)
-  assess_normality_postprocessing(example_data, excluded_columns, example_data_normalised)
+  assess_normality_postprocessing(example_data, 
+                                  excluded_columns, 
+                                  example_data_normalised)
   
   # Create and store random genetic map [for testing only]
   genetic_map <- random_map(population = population, seed = seed)
@@ -324,12 +344,15 @@ test_that("qtl mapping permutation test with scanone works", {
                              T2 = rnorm(population))
   example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
                                         trait = rep(c("T1", "T2"), each = 5),
-                                        values = c(example_data$T1, example_data$T2),
+                                        values = c(example_data$T1, 
+                                                   example_data$T2),
                                         flag = "Normal",
                                         transf = "",
                                         transf_val = NA,
                                         stringsAsFactors = FALSE)
-  assess_normality_postprocessing(example_data, excluded_columns, example_data_normalised)
+  assess_normality_postprocessing(example_data, 
+                                  excluded_columns, 
+                                  example_data_normalised)
   
   # Create and store random genetic map [for testing only]
   genetic_map <- random_map(population = population, seed = seed)

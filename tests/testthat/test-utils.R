@@ -5,6 +5,6 @@ test_that("check data types works", {
   expect_equal(check_types(example_data), 2)
   expect_equal(check_types(example_data, numeric = FALSE), c(1, 3))
   expect_equal(check_types(example_data, excluded_columns = 1, numeric = FALSE),
-               c(1, 2))
+               c(1, 3))
   expect_warning(check_types(example_data, quiet = FALSE))
 })
