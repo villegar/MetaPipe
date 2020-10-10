@@ -2,7 +2,7 @@
 % Please edit documentation in R/metapipe.R
 \name{random_map}
 \alias{random_map}
-\title{Generate a pseudo-random genetic map. Particularly useful for testing.}
+\title{Generate a pseudo-random genetic map}
 \usage{
 random_map(
   genotypes = c("A", "H", "B"),
@@ -13,26 +13,26 @@ random_map(
 )
 }
 \arguments{
-\item{genotypes}{vector containing the base genotypes}
+\item{genotypes}{Character vector containing the base genotypes.}
 
-\item{lg}{vector containing the linkage groups}
+\item{lg}{Numeric vector containing the linkage groups.}
 
-\item{markers}{number of markers per linkage group}
+\item{markers}{Number of markers per linkage group.}
 
-\item{population}{population size (rows)}
+\item{population}{Population size (rows).}
 
-\item{seed}{seed for reproducibility}
+\item{seed}{Seed for reproducibility.}
 }
 \value{
-data frame containing the pseudo-random genetic map.
+Data frame containing the pseudo-random genetic map.
 }
 \description{
 Generate a pseudo-random genetic map. Particularly useful for testing.
 }
 \examples{
-gmap_1 <- random_map()
-gmap_2 <- random_map(genotypes = c("nn", "np"))
-gmap_3 <- random_map(population = 3)
+gmap_1 <- MetaPipe::random_map()
+gmap_2 <- MetaPipe::random_map(genotypes = c("nn", "np"))
+gmap_3 <- MetaPipe::random_map(population = 3)
 
 }
 \seealso{

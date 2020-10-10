@@ -13,21 +13,21 @@ replace_missing(
 )
 }
 \arguments{
-\item{raw_data}{data frame containing the raw data}
+\item{raw_data}{Data frame containing the raw data.}
 
-\item{excluded_columns}{vector containing the indices of the dataset 
-properties that are non-numeric, excluded columns}
+\item{excluded_columns}{Numeric vector containing the indices of the dataset 
+properties that are non-numeric, excluded columns.}
 
-\item{out_prefix}{prefix for output files and plots}
+\item{out_prefix}{Prefix for output files and plots.}
 
-\item{prop_na}{proportion of missing values, if a trait exceeds this 
-threshold, then it is dropped out}
+\item{prop_na}{Proportion of missing/total observations, if a trait exceeds 
+this threshold, then it is dropped out}
 
-\item{replace_na}{boolean flag to indicate whether or not missing values 
-should be replaced by half of the minimum value}
+\item{replace_na}{Boolean flag to indicate whether or not missing values 
+should be replaced by half of the minimum value.}
 }
 \value{
-data frame containing the raw data without missing values
+Data frame containing the raw data without missing values.
 }
 \description{
 Replace missing values (\code{NA}s) in a dataset, the user can choose 

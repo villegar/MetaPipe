@@ -2,27 +2,27 @@
 % Please edit documentation in R/metapipe.R
 \name{random_genotypes}
 \alias{random_genotypes}
-\title{Generate a pseudo-random list of genotypes. Particularly useful for testing.}
+\title{Generate a pseudo-random genotypes}
 \usage{
 random_genotypes(genotypes = c("A", "H", "B"), size = 100, seed = NULL)
 }
 \arguments{
-\item{genotypes}{vector containing the base genotypes}
+\item{genotypes}{Character vector containing the base genotypes.}
 
-\item{size}{output length}
+\item{size}{Output length.}
 
-\item{seed}{seed for reproducibility}
+\item{seed}{Seed for reproducibility.}
 }
 \value{
-vector containing the pseudo-random genotypes
+Character vector containing the pseudo-random genotypes.
 }
 \description{
 Generate a pseudo-random list of genotypes. Particularly useful for testing.
 }
 \examples{
-random_genotypes()
-random_genotypes(genotypes = c("nn", "np"))
-random_genotypes(size = 3)
+MetaPipe::random_genotypes()
+MetaPipe::random_genotypes(genotypes = c("nn", "np"))
+MetaPipe::random_genotypes(size = 3)
 
 }
 \seealso{

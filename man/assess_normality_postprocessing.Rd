@@ -2,7 +2,7 @@
 % Please edit documentation in R/metapipe.R
 \name{assess_normality_postprocessing}
 \alias{assess_normality_postprocessing}
-\title{Post-processing for the normality assessment of the traits}
+\title{Post-processing for \code{\link{assess_normality}}}
 \usage{
 assess_normality_postprocessing(
   raw_data,
@@ -13,22 +13,24 @@ assess_normality_postprocessing(
 )
 }
 \arguments{
-\item{raw_data}{data frame containing the raw data}
+\item{raw_data}{Data frame containing the raw data.}
 
-\item{excluded_columns}{vector containing the indices of the dataset 
-properties that are non-numeric, excluded columns}
+\item{excluded_columns}{Numeric vector containing the indices of the dataset 
+properties that are non-numeric, excluded columns.}
 
-\item{raw_data_normalised}{data frame containing the normalised raw data, created with \code{\link{assess_normality}}}
+\item{raw_data_normalised}{Data frame containing the normalised raw data, 
+created with \code{\link{assess_normality}}.}
 
-\item{out_prefix}{prefix for output files and plots}
+\item{out_prefix}{Prefix for output files and plots.}
 
-\item{pareto_scaling}{boolean flag to indicate whether or not perform a Pareto scaling on the normalised data}
+\item{pareto_scaling}{Boolean flag to indicate whether or not perform a 
+Pareto scaling on the normalised data.}
 }
 \value{
-Files containing the normal and non-parametric normalised data are stored on disk
+Files containing the normal and non-parametric normalised data
 }
 \description{
-Post-processing for the normality assessment of the traits
+Post-processing for the normality assessment of the traits.
 }
 \examples{
 \dontrun{

@@ -2,22 +2,23 @@
 % Please edit documentation in R/metapipe.R
 \name{qtl_scone}
 \alias{qtl_scone}
-\title{Perform QTL mapping \code{scanone} to obtain LOD scores for all traits and markers}
+\title{Perform QTL mapping}
 \usage{
 qtl_scone(x_data, cpus = 1, ...)
 }
 \arguments{
-\item{x_data}{cross-data containing genetic map data and traits}
+\item{x_data}{Cross-data frame containing genetic map data and traits.}
 
-\item{cpus}{number of CPUS to be used}
+\item{cpus}{Number of CPUS to be used in the computation.}
 
-\item{...}{optional parameters for \code{R/qtl} library}
+\item{...}{Optional parameters for \code{R/qtl} library.}
 }
 \value{
-data frame containing the LOD scores
+Data frame containing the LOD scores.
 }
 \description{
-Perform QTL mapping \code{scanone} to obtain LOD scores for all traits and markers
+Perform QTL mapping using the \code{\link[qtl:scanone]{qtl:scanone()}} 
+to obtain LOD scores for all traits, peak positions, and markers.
 }
 \examples{
 \dontrun{

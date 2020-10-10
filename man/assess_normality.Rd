@@ -14,21 +14,22 @@ assess_normality(
 )
 }
 \arguments{
-\item{raw_data}{data frame containing the raw data}
+\item{raw_data}{Data frame containing the raw data.}
 
-\item{excluded_columns}{vector containing the indices of the dataset 
-properties that are non-numeric, excluded columns}
+\item{excluded_columns}{Numeric vector containing the indices of the dataset 
+properties that are non-numeric, excluded columns.}
 
-\item{cpus}{number of CPUS to be used}
+\item{cpus}{Number of CPUS to be used in the computation.}
 
-\item{out_prefix}{prefix for output files and plots}
+\item{out_prefix}{Prefix for output files and plots.}
 
-\item{plots_dir}{path to the directory where plots should be stored}
+\item{plots_dir}{Path to the directory where plots should be stored.}
 
-\item{transf_vals}{transformation values}
+\item{transf_vals}{Numeric vector with the transformation values.}
 }
 \value{
-Structure containing the normalised data, if a suitable transformation was found
+Structure containing the normalised data, if a suitable 
+transformation was found, otherwise returns the original data.
 }
 \description{
 Assess normality of traits in a data frame.

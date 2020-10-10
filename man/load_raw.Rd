@@ -7,14 +7,14 @@
 load_raw(raw_data_filename, excluded_columns = NULL)
 }
 \arguments{
-\item{raw_data_filename}{filename containing the raw data, it can be a
+\item{raw_data_filename}{Filename containing the raw data, it can be a
 relative path or an absolute path.}
 
-\item{excluded_columns}{vector containing the indices of the dataset 
-properties that are non-numeric, excluded columns}
+\item{excluded_columns}{Numeric vector containing the indices of the dataset 
+properties that are non-numeric, excluded columns.}
 }
 \value{
-data frame with the pre-processed raw data
+Data frame with the pre-processed raw data.
 }
 \description{
 Load raw data from disk and aggregates using the \code{mean} function 
