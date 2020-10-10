@@ -2,7 +2,7 @@
 % Please edit documentation in R/metapipe.R
 \name{qtl_scone}
 \alias{qtl_scone}
-\title{Perform QTL mapping scanone to obtain LOD scores for all traits and markers}
+\title{Perform QTL mapping \code{scanone} to obtain LOD scores for all traits and markers}
 \usage{
 qtl_scone(x_data, cpus = 1, ...)
 }
@@ -11,13 +11,13 @@ qtl_scone(x_data, cpus = 1, ...)
 
 \item{cpus}{number of CPUS to be used}
 
-\item{...}{S4 parameters for R/qtl library}
+\item{...}{optional parameters for \code{R/qtl} library}
 }
 \value{
 data frame containing the LOD scores
 }
 \description{
-Perform QTL mapping scanone to obtain LOD scores for all traits and markers
+Perform QTL mapping \code{scanone} to obtain LOD scores for all traits and markers
 }
 \examples{
 \dontrun{

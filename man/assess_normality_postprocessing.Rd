@@ -2,7 +2,7 @@
 % Please edit documentation in R/metapipe.R
 \name{assess_normality_postprocessing}
 \alias{assess_normality_postprocessing}
-\title{Postprocessing for the normality assessment of the traits}
+\title{Post-processing for the normality assessment of the traits}
 \usage{
 assess_normality_postprocessing(
   raw_data,
@@ -21,13 +21,13 @@ assess_normality_postprocessing(
 
 \item{out_prefix}{prefix for output files and plots}
 
-\item{pareto_scaling}{boolean flag to indicate whether or not perform a pareto scaling on the normalised data}
+\item{pareto_scaling}{boolean flag to indicate whether or not perform a Pareto scaling on the normalised data}
 }
 \value{
-Files containing the normal and non-paramatric normalised data are stored on disk
+Files containing the normal and non-parametric normalised data are stored on disk
 }
 \description{
-Postprocessing for the normality assessment of the traits
+Post-processing for the normality assessment of the traits
 }
 \examples{
 \dontrun{

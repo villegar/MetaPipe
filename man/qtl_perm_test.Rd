@@ -2,7 +2,7 @@
 % Please edit documentation in R/metapipe.R
 \name{qtl_perm_test}
 \alias{qtl_perm_test}
-\title{Perform QTL mapping permutation test using scanone to obtain significant QTLs}
+\title{Perform QTL mapping permutation test using \code{scanone} to obtain significant QTLs}
 \usage{
 qtl_perm_test(
   x_data,
@@ -21,25 +21,25 @@ qtl_perm_test(
 
 \item{cpus}{number of CPUS to be used}
 
-\item{qtl_method}{QTL mapping method [default: scanone]}
+\item{qtl_method}{QTL mapping method [default: \code{scanone}]}
 
 \item{raw_data_normalised}{normalised raw data, see \code{\link{assess_normality}}}
 
 \item{lod_threshold}{LOD score threshold to look up for significant QTLs}
 
-\item{parametric}{boolean flag to indicate whether or not x_data is parametric}
+\item{parametric}{boolean flag to indicate whether or not \code{x_data} is parametric}
 
 \item{n_perm}{number of permutations}
 
 \item{plots_dir}{output directory for plots}
 
-\item{...}{S4 parameters for R/qtl library}
+\item{...}{optional parameters for \code{R/qtl} library}
 }
 \value{
 data frame containing the significant QTLs information
 }
 \description{
-Perform QTL mapping permutation test using scanone to obtain significant QTLs
+Perform QTL mapping permutation test using \code{scanone} to obtain significant QTLs
 }
 \examples{
 \dontrun{
