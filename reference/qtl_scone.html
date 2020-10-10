@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Perform QTL mapping scanone to obtain LOD scores for all traits and markers — qtl_scone • MetaPipe</title>
+<title>Perform QTL mapping — qtl_scone • MetaPipe</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,9 @@
 
 
 
-<meta property="og:title" content="Perform QTL mapping scanone to obtain LOD scores for all traits and markers — qtl_scone" />
-<meta property="og:description" content="Perform QTL mapping scanone to obtain LOD scores for all traits and markers" />
+<meta property="og:title" content="Perform QTL mapping — qtl_scone" />
+<meta property="og:description" content="Perform QTL mapping using the qtl:scanone() 
+to obtain LOD scores for all traits, peak positions, and markers." />
 
 
 
@@ -129,13 +130,14 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Perform QTL mapping <code>scanone</code> to obtain LOD scores for all traits and markers</h1>
+    <h1>Perform QTL mapping</h1>
     <small class="dont-index">Source: <a href='https://github.com/villegar/MetaPipe/blob/master/R/metapipe.R'><code>R/metapipe.R</code></a></small>
     <div class="hidden name"><code>qtl_scone.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Perform QTL mapping <code>scanone</code> to obtain LOD scores for all traits and markers</p>
+    <p>Perform QTL mapping using the <code><a href='https://rdrr.io/pkg/qtl/man/scanone.html'>qtl:scanone()</a></code> 
+to obtain LOD scores for all traits, peak positions, and markers.</p>
     </div>
 
     <pre class="usage"><span class='fu'>qtl_scone</span><span class='op'>(</span><span class='va'>x_data</span>, cpus <span class='op'>=</span> <span class='fl'>1</span>, <span class='va'>...</span><span class='op'>)</span></pre>
@@ -145,21 +147,21 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x_data</th>
-      <td><p>cross-data containing genetic map data and traits</p></td>
+      <td><p>Cross-data frame containing genetic map data and traits.</p></td>
     </tr>
     <tr>
       <th>cpus</th>
-      <td><p>number of CPUS to be used</p></td>
+      <td><p>Number of CPUS to be used in the computation.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>optional parameters for <code>R/qtl</code> library</p></td>
+      <td><p>Optional parameters for <code>R/qtl</code> library.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>data frame containing the LOD scores</p>
+    <p>Data frame containing the LOD scores.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='qtl_perm_test.html'>qtl_perm_test</a></code></p></div>

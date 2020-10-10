@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Post-processing for the normality assessment of the traits — assess_normality_postprocessing • MetaPipe</title>
+<title>Post-processing for assess_normality — assess_normality_postprocessing • MetaPipe</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Post-processing for the normality assessment of the traits — assess_normality_postprocessing" />
-<meta property="og:description" content="Post-processing for the normality assessment of the traits" />
+<meta property="og:title" content="Post-processing for assess_normality — assess_normality_postprocessing" />
+<meta property="og:description" content="Post-processing for the normality assessment of the traits." />
 
 
 
@@ -129,13 +129,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Post-processing for the normality assessment of the traits</h1>
+    <h1>Post-processing for <code><a href='assess_normality.html'>assess_normality</a></code></h1>
     <small class="dont-index">Source: <a href='https://github.com/villegar/MetaPipe/blob/master/R/metapipe.R'><code>R/metapipe.R</code></a></small>
     <div class="hidden name"><code>assess_normality_postprocessing.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Post-processing for the normality assessment of the traits</p>
+    <p>Post-processing for the normality assessment of the traits.</p>
     </div>
 
     <pre class="usage"><span class='fu'>assess_normality_postprocessing</span><span class='op'>(</span>
@@ -151,30 +151,32 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>raw_data</th>
-      <td><p>data frame containing the raw data</p></td>
+      <td><p>Data frame containing the raw data.</p></td>
     </tr>
     <tr>
       <th>excluded_columns</th>
-      <td><p>vector containing the indices of the dataset 
-properties that are non-numeric, excluded columns</p></td>
+      <td><p>Numeric vector containing the indices of the dataset 
+properties that are non-numeric, excluded columns.</p></td>
     </tr>
     <tr>
       <th>raw_data_normalised</th>
-      <td><p>data frame containing the normalised raw data, created with <code><a href='assess_normality.html'>assess_normality</a></code></p></td>
+      <td><p>Data frame containing the normalised raw data, 
+created with <code><a href='assess_normality.html'>assess_normality</a></code>.</p></td>
     </tr>
     <tr>
       <th>out_prefix</th>
-      <td><p>prefix for output files and plots</p></td>
+      <td><p>Prefix for output files and plots.</p></td>
     </tr>
     <tr>
       <th>pareto_scaling</th>
-      <td><p>boolean flag to indicate whether or not perform a Pareto scaling on the normalised data</p></td>
+      <td><p>Boolean flag to indicate whether or not perform a 
+Pareto scaling on the normalised data.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Files containing the normal and non-parametric normalised data are stored on disk</p>
+    <p>Files containing the normal and non-parametric normalised data</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='assess_normality.html'>assess_normality</a></code> and <code><a href='assess_normality_stats.html'>assess_normality_stats</a></code></p></div>

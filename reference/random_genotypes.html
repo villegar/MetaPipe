@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Generate a pseudo-random list of genotypes. Particularly useful for testing. — random_genotypes • MetaPipe</title>
+<title>Generate a pseudo-random genotypes — random_genotypes • MetaPipe</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Generate a pseudo-random list of genotypes. Particularly useful for testing. — random_genotypes" />
+<meta property="og:title" content="Generate a pseudo-random genotypes — random_genotypes" />
 <meta property="og:description" content="Generate a pseudo-random list of genotypes. Particularly useful for testing." />
 
 
@@ -129,7 +129,7 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Generate a pseudo-random list of genotypes. Particularly useful for testing.</h1>
+    <h1>Generate a pseudo-random genotypes</h1>
     <small class="dont-index">Source: <a href='https://github.com/villegar/MetaPipe/blob/master/R/metapipe.R'><code>R/metapipe.R</code></a></small>
     <div class="hidden name"><code>random_genotypes.Rd</code></div>
     </div>
@@ -145,40 +145,40 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>genotypes</th>
-      <td><p>vector containing the base genotypes</p></td>
+      <td><p>Character vector containing the base genotypes.</p></td>
     </tr>
     <tr>
       <th>size</th>
-      <td><p>output length</p></td>
+      <td><p>Output length.</p></td>
     </tr>
     <tr>
       <th>seed</th>
-      <td><p>seed for reproducibility</p></td>
+      <td><p>Seed for reproducibility.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>vector containing the pseudo-random genotypes</p>
+    <p>Character vector containing the pseudo-random genotypes.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='random_map.html'>random_map</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>random_genotypes</span><span class='op'>(</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>random_genotypes</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;   [1] "H" "H" "A" "H" "B" "B" "A" "H" "A" "H" "B" "B" "A" "B" "H" "A" "A" "H"
 #&gt;  [19] "B" "A" "H" "H" "A" "H" "A" "A" "H" "A" "B" "A" "A" "H" "A" "H" "A" "A"
 #&gt;  [37] "A" "B" "B" "H" "A" "H" "B" "H" "B" "H" "B" "A" "A" "A" "A" "B" "H" "A"
 #&gt;  [55] "H" "A" "B" "B" "A" "H" "B" "A" "B" "H" "A" "A" "A" "A" "A" "B" "H" "H"
 #&gt;  [73] "H" "B" "A" "H" "H" "A" "H" "A" "A" "H" "B" "A" "B" "A" "H" "A" "H" "H"
-#&gt;  [91] "H" "B" "A" "A" "A" "A" "B" "A" "H" "A"</div><div class='input'><span class='fu'>random_genotypes</span><span class='op'>(</span>genotypes <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"nn"</span>, <span class='st'>"np"</span><span class='op'>)</span><span class='op'>)</span>
+#&gt;  [91] "H" "B" "A" "A" "A" "A" "B" "A" "H" "A"</div><div class='input'><span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>random_genotypes</span><span class='op'>(</span>genotypes <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"nn"</span>, <span class='st'>"np"</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;   [1] "np" "np" "np" "nn" "nn" "nn" "nn" "np" "nn" "nn" "nn" "nn" "np" "np" "nn"
 #&gt;  [16] "np" "nn" "nn" "nn" "np" "nn" "nn" "nn" "np" "nn" "nn" "np" "nn" "nn" "nn"
 #&gt;  [31] "np" "np" "nn" "nn" "nn" "np" "nn" "np" "nn" "np" "nn" "nn" "nn" "np" "np"
 #&gt;  [46] "nn" "nn" "np" "nn" "nn" "np" "nn" "np" "np" "np" "np" "np" "np" "np" "np"
 #&gt;  [61] "nn" "np" "nn" "nn" "nn" "nn" "nn" "nn" "nn" "np" "np" "nn" "nn" "nn" "nn"
 #&gt;  [76] "nn" "nn" "np" "nn" "np" "nn" "np" "np" "np" "np" "np" "nn" "np" "nn" "nn"
-#&gt;  [91] "nn" "nn" "nn" "nn" "nn" "nn" "nn" "np" "np" "nn"</div><div class='input'><span class='fu'>random_genotypes</span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
+#&gt;  [91] "nn" "nn" "nn" "nn" "nn" "nn" "nn" "np" "np" "nn"</div><div class='input'><span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>random_genotypes</span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "A" "B" "H"</div><div class='input'>
 </div></pre>
   </div>
