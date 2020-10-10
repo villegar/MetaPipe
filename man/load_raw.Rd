@@ -22,9 +22,23 @@ observations with duplicated IDs (first column). Non-numeric columns must
 be excluded using the \code{excluded_columns} parameter.
 }
 \examples{
+# Toy dataset
+example_data <- data.frame(ID = c(1,2,3,4,5), 
+                           P1 = c("one", "two", "three", "four", "five"), 
+                           T1 = rnorm(5), 
+                           T2 = rnorm(5))
+write.csv(example_data, "example_data.csv", row.names = FALSE)
+write.csv(example_data[c(1:5, 1, 2), ], 
+          "example_data_dup.csv", 
+          row.names = FALSE)
+MetaPipe::load_raw("example_data.csv", c(1, 2))
+MetaPipe::load_raw("example_data_dup.csv", c(1, 2))
+
+# F1 Seedling Ionomics dataset
 ionomics_path <- system.file("extdata", 
                              "ionomics.csv", 
                              package = "MetaPipe", 
                              mustWork = TRUE)
 ionomics <- MetaPipe::load_raw(ionomics_path)
+knitr::kable(ionomics[1:5, 1:10])
 }

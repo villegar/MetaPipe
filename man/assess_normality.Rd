@@ -16,7 +16,8 @@ assess_normality(
 \arguments{
 \item{raw_data}{data frame containing the raw data}
 
-\item{excluded_columns}{vector containing the indices of the data set properties, excluded columns}
+\item{excluded_columns}{vector containing the indices of the dataset 
+properties that are non-numeric, excluded columns}
 
 \item{cpus}{number of CPUS to be used}
 
@@ -30,16 +31,33 @@ assess_normality(
 Structure containing the normalised data, if a suitable transformation was found
 }
 \description{
-Assess normality of traits
+Assess normality of traits in a data frame.
+}
+\details{
+The normality of each trait is checked using a \emph{Shapiro-Wilk} test, 
+under the following hypotheses:
+
+\itemize{
+  \item \eqn{H_0: } the sample comes from a normally distributed population
+  \item \eqn{H_1: } the sample does not come from a normally distributed 
+  population
+}
+
+Using a significance level of \eqn{\alpha = 0.05}. If the conclusion is that 
+the sample does not come from a normally distributed population, then a 
+number of transformations are performed, based on the transformation values 
+passed with \code{transf_vals}. By default, the following transformation 
+values are used \code{c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10)} with the 
+logarithmic (\code{log_a(x)}), power (\code{x^a}), and 
+radical/root (\code{x^(1/a)}) functions.
 }
 \examples{
-\dontrun{
-    example_data <- data.frame(ID = c(1,2,3,4,5), 
-                               P1 = c("one", "two", "three", "four", "five"), 
-                               T1 = rnorm(5), 
-                               T2 = rnorm(5))
-    assess_normality(example_data, c(1, 2))
-}
+# Toy dataset
+example_data <- data.frame(ID = c(1,2,3,4,5), 
+                           P1 = c("one", "two", "three", "four", "five"), 
+                           T1 = rnorm(5), 
+                           T2 = rnorm(5))
+assess_normality(example_data, c(1, 2))
 
 }
 \seealso{

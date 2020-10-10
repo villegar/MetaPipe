@@ -15,7 +15,8 @@ assess_normality_postprocessing(
 \arguments{
 \item{raw_data}{data frame containing the raw data}
 
-\item{excluded_columns}{vector containing the indices of the data set properties, excluded columns}
+\item{excluded_columns}{vector containing the indices of the dataset 
+properties that are non-numeric, excluded columns}
 
 \item{raw_data_normalised}{data frame containing the normalised raw data, created with \code{\link{assess_normality}}}
 

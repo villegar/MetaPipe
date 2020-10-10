@@ -2,11 +2,11 @@
 % Please edit documentation in R/metapipe.R
 \name{replace_missing}
 \alias{replace_missing}
-\title{Replace missing values (NAs)}
+\title{Replace missing values (\code{NA}s)}
 \usage{
 replace_missing(
   raw_data,
-  excluded_columns,
+  excluded_columns = NULL,
   out_prefix = "metapipe",
   prop_na = 0.5,
   replace_na = FALSE
@@ -15,31 +15,57 @@ replace_missing(
 \arguments{
 \item{raw_data}{data frame containing the raw data}
 
-\item{excluded_columns}{vector containing the indices of the data set properties, excluded columns}
+\item{excluded_columns}{vector containing the indices of the dataset 
+properties that are non-numeric, excluded columns}
 
 \item{out_prefix}{prefix for output files and plots}
 
-\item{prop_na}{proportion of missing values, if a trait exceeds this threshold, then it is dropped out}
+\item{prop_na}{proportion of missing values, if a trait exceeds this 
+threshold, then it is dropped out}
 
-\item{replace_na}{boolean flag to indicate whether or not missing values should be replaced by half of the minimum value}
+\item{replace_na}{boolean flag to indicate whether or not missing values 
+should be replaced by half of the minimum value}
 }
 \value{
 data frame containing the raw data without missing values
 }
 \description{
-Replace missing values (NAs)
+Replace missing values (\code{NA}s) in a dataset, the user can choose 
+between two actions to handle missing data:
+\enumerate{
+  \item Drop traits (variables) that exceed a given threshold, 
+  \code{prop_na}, a rate of missing (\code{NA}) and total observations.
+
+  \item Replace missing values by half of the minimum of each trait.
+}
+
+Finally, if all entries are missing for a particular trait, this will be 
+removed from the dataset and stored in a external CSV file.
 }
 \examples{
-\dontrun{
-    example_data <- data.frame(ID = c(1,2,3,4,5), 
-                               P1 = c("one", "two", "three", "four", "five"), 
-                               T1 = rnorm(5), 
-                               T2 = rnorm(5),
-                               T3 = c(NA, rnorm(4)),                  #  20 \% NAs
-                               T4 = c(NA, 1.2, -0.5, NA, 0.87),       #  40 \% NAs
-                               T5 = NA)                               # 100 \% NAs
-    replace_missing(example_data, c(1, 2))
-    replace_missing(example_data, c(1, 2), prop_na =  0.25)
-    replace_missing(example_data, c(1, 2), replace_na =  TRUE)
+                                        
+# Toy dataset                                        
+example_data <- data.frame(ID = c(1,2,3,4,5), 
+                           P1 = c("one", "two", "three", "four", "five"), 
+                           T1 = rnorm(5), 
+                           T2 = rnorm(5),
+                           T3 = c(NA, rnorm(4)),                  #  20 \% NAs
+                           T4 = c(NA, 1.2, -0.5, NA, 0.87),       #  40 \% NAs
+                           T5 = NA)                               # 100 \% NAs
+MetaPipe::replace_missing(example_data, c(1, 2))
+MetaPipe::replace_missing(example_data, c(1, 2), prop_na =  0.25)
+MetaPipe::replace_missing(example_data, c(1, 2), replace_na =  TRUE)
+
+# F1 Seedling Ionomics dataset
+data(ionomics) # Includes some missing data
+ionomics_rev <- MetaPipe::replace_missing(ionomics, c(1, 2))
+ionomics_rev <- MetaPipe::replace_missing(ionomics, 
+                                          excluded_columns = c(1, 2), 
+                                          prop_na =  0.025)
+ionomics_rev <- MetaPipe::replace_missing(ionomics, 
+                                          excluded_columns = c(1, 2),
+                                          replace_na =  TRUE)
 }
+\seealso{
+\code{\link{rplc_na}}
 }

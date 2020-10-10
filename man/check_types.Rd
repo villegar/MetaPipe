@@ -14,20 +14,21 @@ check_types(raw_data, excluded_columns = NULL, numeric = TRUE, quiet = TRUE)
 \item{numeric}{boolean to indicate the operation mode. If \code{TRUE} will
 look up for non-numeric variables and exclude them, otherwise it will
 filter numeric variables, including those with the following classes:
-- \code{complex} e.g. \code{1+i}
-- \code{integer} e.g. \code{1L}
-- \code{numeric} e.g. \code{1}, \code{1.01}}
+\code{complex} (e.g. \code{1+i})
+\code{integer} (e.g. \code{1L})
+\code{numeric} (e.g. \code{1}, \code{1.01})}
 
 \item{quiet}{boolean to hide warning messages}
 }
 \value{
-vector with column indices not meeting the checking mode, if 
-\code{excluded_columns != NULL}, returns a vector with both originally 
+vector with the column indices that don't meet the checking criteria, 
+only numeric (\code{numeric = TRUE}) or non-numeric (\code{numeric = FALSE}),  
+if \code{excluded_columns != NULL}, returns a vector with both originally 
 excluded and newly found column indices
 }
 \description{
 Check variable types in a data frame. Useful whenever the data must be 
-filter prior some numerical analysis or procwessing
+filtered prior some numerical analysis
 }
 \examples{
 example_data <- data.frame(ID = c(1,2,3,4,5), 
