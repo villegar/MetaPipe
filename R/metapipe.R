@@ -8,12 +8,13 @@
 #' @importFrom stats na.omit
 #' @importFrom utils read.csv
 #' @importFrom utils write.csv
-#' @param raw_data_filename filename containing the raw data, it can be a
+#' 
+#' @param raw_data_filename Filename containing the raw data, it can be a
 #'     relative path or an absolute path.
-#' @param excluded_columns vector containing the indices of the dataset 
-#'     properties that are non-numeric, excluded columns
+#' @param excluded_columns Numeric vector containing the indices of the dataset 
+#'     properties that are non-numeric, excluded columns.
 #'
-#' @return data frame with the pre-processed raw data
+#' @return Data frame with the pre-processed raw data.
 #' @export
 #'
 #' @examples
@@ -80,16 +81,16 @@ load_raw <- function(raw_data_filename, excluded_columns = NULL) {
 #' Finally, if all entries are missing for a particular trait, this will be 
 #' removed from the dataset and stored in a external CSV file.
 #' 
-#' @param raw_data data frame containing the raw data
-#' @param excluded_columns vector containing the indices of the dataset 
-#'     properties that are non-numeric, excluded columns
-#' @param out_prefix prefix for output files and plots
-#' @param prop_na proportion of missing values, if a trait exceeds this 
-#'     threshold, then it is dropped out
-#' @param replace_na boolean flag to indicate whether or not missing values 
-#'     should be replaced by half of the minimum value
+#' @param raw_data Data frame containing the raw data.
+#' @param excluded_columns Numeric vector containing the indices of the dataset 
+#'     properties that are non-numeric, excluded columns.
+#' @param out_prefix Prefix for output files and plots.
+#' @param prop_na Proportion of missing/total observations, if a trait exceeds 
+#'     this threshold, then it is dropped out
+#' @param replace_na Boolean flag to indicate whether or not missing values 
+#'     should be replaced by half of the minimum value.
 #'
-#' @return data frame containing the raw data without missing values
+#' @return Data frame containing the raw data without missing values.
 #' @export
 #'
 #' @examples                                         
@@ -191,15 +192,17 @@ replace_missing <- function(raw_data,
 #' 
 #' @importFrom foreach %dopar%
 #' @importFrom stats shapiro.test
-#' @param raw_data data frame containing the raw data
-#' @param excluded_columns vector containing the indices of the dataset 
-#'     properties that are non-numeric, excluded columns
-#' @param cpus number of CPUS to be used
-#' @param out_prefix prefix for output files and plots
-#' @param plots_dir path to the directory where plots should be stored
-#' @param transf_vals transformation values
+#' 
+#' @param raw_data Data frame containing the raw data.
+#' @param excluded_columns Numeric vector containing the indices of the dataset 
+#'     properties that are non-numeric, excluded columns.
+#' @param cpus Number of CPUS to be used in the computation.
+#' @param out_prefix Prefix for output files and plots.
+#' @param plots_dir Path to the directory where plots should be stored.
+#' @param transf_vals Numeric vector with the transformation values.
 #'
-#' @return Structure containing the normalised data, if a suitable transformation was found
+#' @return Structure containing the normalised data, if a suitable 
+#' transformation was found, otherwise returns the original data.
 #' @export
 #'
 #' @examples
@@ -293,15 +296,20 @@ assess_normality <- function(raw_data,
   return(raw_data_normalised)
 }
 
-#' Post-processing for the normality assessment of the traits
-#' @param raw_data data frame containing the raw data
-#' @param excluded_columns vector containing the indices of the dataset 
-#'     properties that are non-numeric, excluded columns
-#' @param raw_data_normalised data frame containing the normalised raw data, created with \code{\link{assess_normality}}
-#' @param out_prefix prefix for output files and plots
-#' @param pareto_scaling boolean flag to indicate whether or not perform a Pareto scaling on the normalised data
+#' Post-processing for \code{\link{assess_normality}}
+#' 
+#' Post-processing for the normality assessment of the traits.
+#' 
+#' @param raw_data Data frame containing the raw data.
+#' @param excluded_columns Numeric vector containing the indices of the dataset 
+#'     properties that are non-numeric, excluded columns.
+#' @param raw_data_normalised Data frame containing the normalised raw data, 
+#'     created with \code{\link{assess_normality}}.
+#' @param out_prefix Prefix for output files and plots.
+#' @param pareto_scaling Boolean flag to indicate whether or not perform a 
+#'     Pareto scaling on the normalised data.
 #'
-#' @return Files containing the normal and non-parametric normalised data are stored on disk
+#' @return Files containing the normal and non-parametric normalised data
 #' @export
 #'
 #' @examples
@@ -411,10 +419,11 @@ assess_normality_postprocessing <- function(raw_data,
 }
 
 #' Statistics for the normality assessment of the traits. 
-#' @description This function uses an output file generated by \code{\link{assess_normality_postprocessing}}, 
-#' therefore, it cannot be executed without previously running the post-processing function.
+#' @description This function uses an output file generated by 
+#' \code{\link{assess_normality_postprocessing}}, therefore, it cannot be 
+#' executed without previously running the post-processing function.
 #'
-#' @param out_prefix prefix for output files and plots
+#' @param out_prefix Prefix for output files and plots.
 #'
 #' @export
 #'
@@ -429,7 +438,8 @@ assess_normality_postprocessing <- function(raw_data,
 #'     assess_normality_stats()
 #' }
 #' 
-#' @seealso \code{\link{assess_normality}} and \code{\link{assess_normality_postprocessing}}
+#' @seealso \code{\link{assess_normality}} and 
+#' \code{\link{assess_normality_postprocessing}}
 assess_normality_stats <- function(out_prefix = "metapipe") {
   stats_filename <- paste0(out_prefix,"_normalisation_stats.csv")
   if (!file.exists(stats_filename))
@@ -461,19 +471,21 @@ assess_normality_stats <- function(out_prefix = "metapipe") {
   message(msg)
 }
 
+#' Generate a pseudo-random genotypes
+#' 
 #' Generate a pseudo-random list of genotypes. Particularly useful for testing.
 #'
-#' @param genotypes vector containing the base genotypes
-#' @param size output length
-#' @param seed seed for reproducibility
+#' @param genotypes Character vector containing the base genotypes.
+#' @param size Output length.
+#' @param seed Seed for reproducibility.
 #'
-#' @return vector containing the pseudo-random genotypes
+#' @return Character vector containing the pseudo-random genotypes.
 #' @export
 #'
 #' @examples
-#' random_genotypes()
-#' random_genotypes(genotypes = c("nn", "np"))
-#' random_genotypes(size = 3)
+#' MetaPipe::random_genotypes()
+#' MetaPipe::random_genotypes(genotypes = c("nn", "np"))
+#' MetaPipe::random_genotypes(size = 3)
 #' 
 #' @seealso \code{\link{random_map}}
 random_genotypes <- function(genotypes = c("A", "H", "B"), size = 100, seed = NULL) {
@@ -482,21 +494,23 @@ random_genotypes <- function(genotypes = c("A", "H", "B"), size = 100, seed = NU
   return(genotypes[sample(1:length(genotypes), size, replace = TRUE)])
 }
 
+#' Generate a pseudo-random genetic map
+#' 
 #' Generate a pseudo-random genetic map. Particularly useful for testing.
 #'
-#' @param genotypes vector containing the base genotypes
-#' @param lg vector containing the linkage groups
-#' @param markers number of markers per linkage group
-#' @param population population size (rows)
-#' @param seed seed for reproducibility
+#' @param genotypes Character vector containing the base genotypes.
+#' @param lg Numeric vector containing the linkage groups.
+#' @param markers Number of markers per linkage group.
+#' @param population Population size (rows).
+#' @param seed Seed for reproducibility.
 #'
-#' @return data frame containing the pseudo-random genetic map.
+#' @return Data frame containing the pseudo-random genetic map.
 #' @export
 #'
 #' @examples
-#' gmap_1 <- random_map()
-#' gmap_2 <- random_map(genotypes = c("nn", "np"))
-#' gmap_3 <- random_map(population = 3)
+#' gmap_1 <- MetaPipe::random_map()
+#' gmap_2 <- MetaPipe::random_map(genotypes = c("nn", "np"))
+#' gmap_3 <- MetaPipe::random_map(population = 3)
 #' 
 #' @seealso \code{\link{random_genotypes}}
 random_map <- function(genotypes = c("A", "H", "B"), lg = 1:10, markers = 10, population = 100, seed = NULL) {
@@ -509,7 +523,7 @@ random_map <- function(genotypes = c("A", "H", "B"), lg = 1:10, markers = 10, po
   for (k in 1:length(marker_names)) {
     if (!is.null(seed)) 
       seed <- seed + k
-    new_genotypes <- c(tmp[k, 1], tmp[k, 2], random_genotypes(genotypes, population, seed))
+    new_genotypes <- c(tmp[k, 1], tmp[k, 2], MetaPipe::random_genotypes(genotypes, population, seed))
     map <- cbind(map, new_genotypes)
   }
   
@@ -519,13 +533,18 @@ random_map <- function(genotypes = c("A", "H", "B"), lg = 1:10, markers = 10, po
   return(map)
 }
 
-#' Perform QTL mapping \code{scanone} to obtain LOD scores for all traits and markers
+#' Perform QTL mapping
+#' 
+#' Perform QTL mapping using the \code{\link[qtl:scanone]{qtl:scanone()}} 
+#' to obtain LOD scores for all traits, peak positions, and markers.
+#' 
 #' @importFrom foreach %dopar%
-#' @param x_data cross-data containing genetic map data and traits
-#' @param cpus number of CPUS to be used
-#' @param ... optional parameters for \code{R/qtl} library
+#' 
+#' @param x_data Cross-data frame containing genetic map data and traits.
+#' @param cpus Number of CPUS to be used in the computation.
+#' @param ... Optional parameters for \code{R/qtl} library.
 #'
-#' @return data frame containing the LOD scores
+#' @return Data frame containing the LOD scores.
 #' @export
 #'
 #' @examples
