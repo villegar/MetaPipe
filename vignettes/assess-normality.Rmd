@@ -27,7 +27,7 @@ library(MetaPipe)
 ```
 
 `MetaPipe` assesses the normality of variables (traits) by performing a 
-Shapiro-Wilk test on the raw data (see [Load Raw Data](load-raw-data.html) and 
+_Shapiro-Wilk_ test on the raw data (see [Load Raw Data](load-raw-data.html) and 
 [Replace Missing Data](replace-missing-data.html)). Based on whether or not the
 data approximates a normal distribution, an array of transformations will be 
 computed, and the normality assessed one more time.
