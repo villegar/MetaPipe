@@ -17,11 +17,25 @@
 #' @export
 #'
 #' @examples
+#' # Toy dataset
+#' example_data <- data.frame(ID = c(1,2,3,4,5), 
+#'                            P1 = c("one", "two", "three", "four", "five"), 
+#'                            T1 = rnorm(5), 
+#'                            T2 = rnorm(5))
+#' write.csv(example_data, "example_data.csv", row.names = FALSE)
+#' write.csv(example_data[c(1:5, 1, 2), ], 
+#'           "example_data_dup.csv", 
+#'           row.names = FALSE)
+#' MetaPipe::load_raw("example_data.csv", c(1, 2))
+#' MetaPipe::load_raw("example_data_dup.csv", c(1, 2))
+#' 
+#' # F1 Seedling Ionomics dataset
 #' ionomics_path <- system.file("extdata", 
 #'                              "ionomics.csv", 
 #'                              package = "MetaPipe", 
 #'                              mustWork = TRUE)
 #' ionomics <- MetaPipe::load_raw(ionomics_path)
+#' knitr::kable(ionomics[1:5, 1:10])
 load_raw <- function(raw_data_filename, excluded_columns = NULL) {
   # Load and clean raw data
   raw_data <- read.csv(raw_data_filename, stringsAsFactors = FALSE)
@@ -51,68 +65,135 @@ load_raw <- function(raw_data_filename, excluded_columns = NULL) {
   return(mean_raw_data)
 }
 
-#' Replace missing values (NAs)
-#'
+#' Replace missing values (\code{NA}s)
+#' 
+#' @description 
+#' Replace missing values (\code{NA}s) in a dataset, the user can choose 
+#' between two actions to handle missing data:
+#' \enumerate{
+#'   \item Drop traits (variables) that exceed a given threshold, 
+#'   \code{prop_na}, a rate of missing (\code{NA}) and total observations.
+#' 
+#'   \item Replace missing values by half of the minimum of each trait.
+#' }
+#' 
+#' Finally, if all entries are missing for a particular trait, this will be 
+#' removed from the dataset and stored in a external CSV file.
+#' 
 #' @param raw_data data frame containing the raw data
-#' @param excluded_columns vector containing the indices of the data set properties, excluded columns
+#' @param excluded_columns vector containing the indices of the dataset 
+#'     properties that are non-numeric, excluded columns
 #' @param out_prefix prefix for output files and plots
-#' @param prop_na proportion of missing values, if a trait exceeds this threshold, then it is dropped out
-#' @param replace_na boolean flag to indicate whether or not missing values should be replaced by half of the minimum value
+#' @param prop_na proportion of missing values, if a trait exceeds this 
+#'     threshold, then it is dropped out
+#' @param replace_na boolean flag to indicate whether or not missing values 
+#'     should be replaced by half of the minimum value
 #'
 #' @return data frame containing the raw data without missing values
 #' @export
 #'
-#' @examples
-#' \dontrun{
-#'     example_data <- data.frame(ID = c(1,2,3,4,5), 
-#'                                P1 = c("one", "two", "three", "four", "five"), 
-#'                                T1 = rnorm(5), 
-#'                                T2 = rnorm(5),
-#'                                T3 = c(NA, rnorm(4)),                  #  20 % NAs
-#'                                T4 = c(NA, 1.2, -0.5, NA, 0.87),       #  40 % NAs
-#'                                T5 = NA)                               # 100 % NAs
-#'     replace_missing(example_data, c(1, 2))
-#'     replace_missing(example_data, c(1, 2), prop_na =  0.25)
-#'     replace_missing(example_data, c(1, 2), replace_na =  TRUE)
-#' }
-replace_missing <- function(raw_data, excluded_columns, out_prefix = "metapipe", prop_na = 0.5, replace_na = FALSE) {
+#' @examples                                         
+#' # Toy dataset                                        
+#' example_data <- data.frame(ID = c(1,2,3,4,5), 
+#'                            P1 = c("one", "two", "three", "four", "five"), 
+#'                            T1 = rnorm(5), 
+#'                            T2 = rnorm(5),
+#'                            T3 = c(NA, rnorm(4)),                  #  20 % NAs
+#'                            T4 = c(NA, 1.2, -0.5, NA, 0.87),       #  40 % NAs
+#'                            T5 = NA)                               # 100 % NAs
+#' MetaPipe::replace_missing(example_data, c(1, 2))
+#' MetaPipe::replace_missing(example_data, c(1, 2), prop_na =  0.25)
+#' MetaPipe::replace_missing(example_data, c(1, 2), replace_na =  TRUE)
+#' 
+#' # F1 Seedling Ionomics dataset
+#' data(ionomics) # Includes some missing data
+#' ionomics_rev <- MetaPipe::replace_missing(ionomics, c(1, 2))
+#' ionomics_rev <- MetaPipe::replace_missing(ionomics, 
+#'                                           excluded_columns = c(1, 2), 
+#'                                           prop_na =  0.025)
+#' ionomics_rev <- MetaPipe::replace_missing(ionomics, 
+#'                                           excluded_columns = c(1, 2),
+#'                                           replace_na =  TRUE)
+#' @seealso \code{\link{rplc_na}}
+replace_missing <- function(raw_data,
+                            excluded_columns = NULL,
+                            out_prefix = "metapipe",
+                            prop_na = 0.5,
+                            replace_na = FALSE) {
   # Exclude column 1, ID
   excluded_columns <- unique(c(1, excluded_columns))
+  # excluded_columns <- MetaPipe::check_types(raw_data, 
+  #                                           unique(c(1, excluded_columns)))
   
-  # Missing values are replaced by half of the minimum non-zero value for each trait.
-  if(replace_na) {
-    NA2halfmin <- function(x) suppressWarnings(replace(x, is.na(x), ifelse(all(is.na(x)), NA, (min(x, na.rm = TRUE)/2))))
-    raw_data[,-excluded_columns] <- lapply(raw_data[,-excluded_columns], NA2halfmin)
+  # Replace missing values by half of the minimum non-zero value for each trait.
+  if (replace_na) {
+    raw_data[, -excluded_columns] <- sapply(raw_data[, -excluded_columns], 
+                                            MetaPipe::rplc_na)
   } else {
-    NACount <- which(colMeans(is.na(raw_data[,-excluded_columns])) >= prop_na) + length(excluded_columns)
-    if(length(NACount)) {
-      write.csv(raw_data[, c(excluded_columns, NACount)], file = paste0(out_prefix,"_NA_raw_data.csv"), row.names = FALSE)
-      msg <- "The following traits were dropped because they have "
-      msg <- paste0(msg, (prop_na*100), "% or more missing values: \n")
-      msg <- paste0(msg, paste(colnames(raw_data)[NACount], collapse = ", "), "\n")
+    # Find which variables exceed the proportion of NAs threshold, prop_na
+    idx <- which(colMeans(is.na(raw_data[, -excluded_columns])) >= prop_na)
+    # Extract the indices from the original data
+    idx <- colnames(raw_data) %in% names(idx)
+    if(sum(idx) > 0) {
+      # Store the dropped traits in a CSV file
+      write.csv(raw_data[, c(excluded_columns, idx)],
+                file = paste0(out_prefix, "_NA_raw_data.csv"),
+                row.names = FALSE)
+      msg <- paste0("The following trait",
+                    ifelse(sum(idx) > 1, "s were ", " was "),
+                    "dropped because ",
+                    ifelse(sum(idx) > 1, "they have ", "it has "),
+                    (prop_na*100), "% or more missing values: ",
+                    paste0("\n - ", colnames(raw_data)[idx], collapse = ""))
       message(msg)
-      raw_data[, NACount] <- NULL
+      raw_data <- raw_data[, !idx]
     }
   }
   
   # Check if there are columns with all NAs
-  NACount <- which(lapply(raw_data, function(x) all(is.na(x))) == TRUE)
-  NACount <- unname(NACount[!(NACount %in% excluded_columns)])
-  if(length(NACount) > 0){
-    msg <- "The following traits were dropped because they have "
-    msg <- paste0(msg, "100% missing values: \n")
-    msg <- paste0(msg, paste(colnames(raw_data)[NACount], collapse = ", "), "\n")
+  idx <- lapply(raw_data, function(x) all(is.na(x))) == TRUE
+  # idx <- unname(idx[!(idx %in% excluded_columns)])
+  if (sum(idx) > 0) {
+    msg <- paste0("The following trait",
+                  ifelse(sum(idx) > 1, "s were ", " was "),
+                  "dropped because ",
+                  ifelse(sum(idx) > 1, "they have ", "it has "),
+                  "100% missing values: ",
+                  paste0("\n - ", colnames(raw_data)[idx], collapse = ""))
     message(msg)
-    raw_data[, NACount] <- NULL
+    raw_data <- raw_data[, !idx]
   }
   return(raw_data)
 }
 
 #' Assess normality of traits
+#' 
+#' @description 
+#' Assess normality of traits in a data frame. 
+#' 
+#' @details 
+#' The normality of each trait is checked using a \emph{Shapiro-Wilk} test, 
+#' under the following hypotheses:
+#' 
+#' \itemize{
+#'   \item \eqn{H_0: } the sample comes from a normally distributed population
+#'   \item \eqn{H_1: } the sample does not come from a normally distributed 
+#'   population
+#' }
+#' 
+#' Using a significance level of \eqn{\alpha = 0.05}. If the conclusion is that 
+#' the sample does not come from a normally distributed population, then a 
+#' number of transformations are performed, based on the transformation values 
+#' passed with \code{transf_vals}. By default, the following transformation 
+#' values are used \code{c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10)} with the 
+#' logarithmic (\code{log_a(x)}), power (\code{x^a}), and 
+#' radical/root (\code{x^(1/a)}) functions.
+#' 
 #' @importFrom foreach %dopar%
 #' @importFrom stats shapiro.test
 #' @param raw_data data frame containing the raw data
-#' @param excluded_columns vector containing the indices of the data set properties, excluded columns
+#' @param excluded_columns vector containing the indices of the dataset 
+#'     properties that are non-numeric, excluded columns
 #' @param cpus number of CPUS to be used
 #' @param out_prefix prefix for output files and plots
 #' @param plots_dir path to the directory where plots should be stored
@@ -122,13 +203,12 @@ replace_missing <- function(raw_data, excluded_columns, out_prefix = "metapipe",
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#'     example_data <- data.frame(ID = c(1,2,3,4,5), 
-#'                                P1 = c("one", "two", "three", "four", "five"), 
-#'                                T1 = rnorm(5), 
-#'                                T2 = rnorm(5))
-#'     assess_normality(example_data, c(1, 2))
-#' }
+#' # Toy dataset
+#' example_data <- data.frame(ID = c(1,2,3,4,5), 
+#'                            P1 = c("one", "two", "three", "four", "five"), 
+#'                            T1 = rnorm(5), 
+#'                            T2 = rnorm(5))
+#' assess_normality(example_data, c(1, 2))
 #' 
 #' @seealso \code{\link{assess_normality_postprocessing}} and \code{\link{assess_normality_stats}}
 assess_normality <- function(raw_data, 
@@ -215,7 +295,8 @@ assess_normality <- function(raw_data,
 
 #' Post-processing for the normality assessment of the traits
 #' @param raw_data data frame containing the raw data
-#' @param excluded_columns vector containing the indices of the data set properties, excluded columns
+#' @param excluded_columns vector containing the indices of the dataset 
+#'     properties that are non-numeric, excluded columns
 #' @param raw_data_normalised data frame containing the normalised raw data, created with \code{\link{assess_normality}}
 #' @param out_prefix prefix for output files and plots
 #' @param pareto_scaling boolean flag to indicate whether or not perform a Pareto scaling on the normalised data
