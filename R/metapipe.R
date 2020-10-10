@@ -1,32 +1,34 @@
 #' Load raw data
 #' 
+#' Load raw data from disk and aggregates using the \code{mean} function 
+#' observations with duplicated IDs (first column). Non-numeric columns must
+#' be excluded using the \code{excluded_columns} parameter.
+#' 
 #' @importFrom stats aggregate
 #' @importFrom stats na.omit
 #' @importFrom utils read.csv
 #' @importFrom utils write.csv
-#' @param raw_data_filename filename containing the raw data, with or without full path
-#' @param excluded_columns vector containing the indices of the data set properties, excluded columns
+#' @param raw_data_filename filename containing the raw data, it can be a
+#'     relative path or an absolute path.
+#' @param excluded_columns vector containing the indices of the dataset 
+#'     properties that are non-numeric, excluded columns
 #'
-#' @return pre-processed raw data [data frame]
+#' @return data frame with the pre-processed raw data
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#'     example_data <- data.frame(ID = c(1,2,3,4,5), 
-#'                                P1 = c("one", "two", "three", "four", "five"), 
-#'                                T1 = rnorm(5), 
-#'                                T2 = rnorm(5))
-#'     write.csv(example_data, "example_data.csv", row.names = FALSE)
-#'     write.csv(example_data[c(1:5, 1, 2), ], "example_data_dup.csv", row.names = FALSE)
-#'     load_raw("example_data.csv", c(1, 2))
-#'     load_raw("example_data_dup.csv", c(1, 2))
-#' }
-load_raw <- function(raw_data_filename, excluded_columns) {
+#' ionomics_path <- system.file("extdata", 
+#'                              "ionomics.csv", 
+#'                              package = "MetaPipe", 
+#'                              mustWork = TRUE)
+#' ionomics <- MetaPipe::load_raw(ionomics_path)
+load_raw <- function(raw_data_filename, excluded_columns = NULL) {
   # Load and clean raw data
   raw_data <- read.csv(raw_data_filename, stringsAsFactors = FALSE)
   
   # Exclude first column, ID
-  excluded_columns <- unique(c(1, excluded_columns))
+  excluded_columns <- MetaPipe::check_types(raw_data, 
+                                            unique(c(1, excluded_columns)))
   
   # Enforce first column name, ID
   colnames(raw_data)[1] <- "ID"
