@@ -1,9 +1,9 @@
 #' F1 Seedling Ionomics dataset
 #' 
 #' A dataset containing information of 21 different isotopes and sample weights  
-#' of 218 samples.
+#' of 217 samples.
 #' 
-#' @format A data frame with 218 rows and 23 variables:
+#' @format A data frame with 217 rows and 23 variables:
 #' \describe{
 #'     \item{ID}{Sample ID}
 #'     \item{SampleWeight}{Sample weight, in X}
@@ -15,7 +15,7 @@
 #'     \item{Na23}{Sodium 23, in atom \%}
 #'     \item{Mg26}{Magnesium 26, in atom \%}
 #'     \item{Al27}{Aluminium 27, in atom \%}
-#'     \item{S34}{Sulfur 34, in atom \%}
+#'     \item{S34}{Sulphur 34, in atom \%}
 #'     \item{Fe54}{Iron 54, in atom \%}
 #'     \item{Mn55}{Manganese 55, in atom \%}
 #'     \item{Co59}{Cobalt 59, in atom \%}
