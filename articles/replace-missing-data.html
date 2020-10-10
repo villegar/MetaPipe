@@ -133,8 +133,8 @@
 
 <span class="co"># Default parameters: NA proportion = 50%</span>
 <span class="fu"><a href="../reference/replace_missing.html">replace_missing</a></span><span class="op">(</span><span class="va">example_data</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; The following traits were dropped because they have 50% or more missing values: </span>
-<span class="co">#&gt; T5</span>
+<span class="co">#&gt; The following trait was dropped because it has 50% or more missing values: </span>
+<span class="co">#&gt;  - T5</span>
 <span class="co">#&gt;   ID    P1          T1         T2        T3    T4</span>
 <span class="co">#&gt; 1  1   one -0.56047565  1.7150650        NA    NA</span>
 <span class="co">#&gt; 2  2   two -0.23017749  0.4609162 1.2240818  1.20</span>
@@ -145,7 +145,8 @@
 <span class="co"># NA proportion = 30%</span>
 <span class="fu"><a href="../reference/replace_missing.html">replace_missing</a></span><span class="op">(</span><span class="va">example_data</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>, prop_na <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span>
 <span class="co">#&gt; The following traits were dropped because they have 30% or more missing values: </span>
-<span class="co">#&gt; T4, T5</span>
+<span class="co">#&gt;  - T4</span>
+<span class="co">#&gt;  - T5</span>
 <span class="co">#&gt;   ID    P1          T1         T2        T3</span>
 <span class="co">#&gt; 1  1   one -0.56047565  1.7150650        NA</span>
 <span class="co">#&gt; 2  2   two -0.23017749  0.4609162 1.2240818</span>
@@ -169,8 +170,8 @@
 
 <span class="co"># Default parameters: NA proportion = 50%</span>
 <span class="fu"><a href="../reference/replace_missing.html">replace_missing</a></span><span class="op">(</span><span class="va">example_data</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>, replace_na <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">#&gt; The following traits were dropped because they have 100% missing values: </span>
-<span class="co">#&gt; T5</span>
+<span class="co">#&gt; The following trait was dropped because it has 100% missing values: </span>
+<span class="co">#&gt;  - T5</span>
 <span class="co">#&gt;   ID    P1          T1         T2         T3    T4</span>
 <span class="co">#&gt; 1  1   one -0.56047565  1.7150650 0.05534136 -0.25</span>
 <span class="co">#&gt; 2  2   two -0.23017749  0.4609162 1.22408180  1.20</span>
@@ -180,8 +181,8 @@
 
 <span class="co"># NA proportion = 30%</span>
 <span class="fu"><a href="../reference/replace_missing.html">replace_missing</a></span><span class="op">(</span><span class="va">example_data</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>, prop_na <span class="op">=</span> <span class="fl">0.3</span>, replace_na <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">#&gt; The following traits were dropped because they have 100% missing values: </span>
-<span class="co">#&gt; T5</span>
+<span class="co">#&gt; The following trait was dropped because it has 100% missing values: </span>
+<span class="co">#&gt;  - T5</span>
 <span class="co">#&gt;   ID    P1          T1         T2         T3    T4</span>
 <span class="co">#&gt; 1  1   one -0.56047565  1.7150650 0.05534136 -0.25</span>
 <span class="co">#&gt; 2  2   two -0.23017749  0.4609162 1.22408180  1.20</span>

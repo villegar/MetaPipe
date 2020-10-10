@@ -40,7 +40,15 @@
 
 
 <meta property="og:title" content="Replace missing values (NAs) — replace_missing" />
-<meta property="og:description" content="Replace missing values (NAs)" />
+<meta property="og:description" content="Replace missing values (NAs) in a dataset, the user can choose 
+between two actions to handle missing data:
+Drop traits (variables) that exceed a given threshold, 
+  prop_na, a rate of missing (NA) and total observations.
+Replace missing values by half of the minimum of each trait.
+
+
+Finally, if all entries are missing for a particular trait, this will be 
+removed from the dataset and stored in a external CSV file." />
 
 
 
@@ -129,18 +137,26 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Replace missing values (NAs)</h1>
+    <h1>Replace missing values (<code>NA</code>s)</h1>
     <small class="dont-index">Source: <a href='https://github.com/villegar/MetaPipe/blob/master/R/metapipe.R'><code>R/metapipe.R</code></a></small>
     <div class="hidden name"><code>replace_missing.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Replace missing values (NAs)</p>
+    <p>Replace missing values (<code>NA</code>s) in a dataset, the user can choose 
+between two actions to handle missing data:</p><ol>
+<li><p>Drop traits (variables) that exceed a given threshold, 
+  <code>prop_na</code>, a rate of missing (<code>NA</code>) and total observations.</p></li>
+<li><p>Replace missing values by half of the minimum of each trait.</p></li>
+</ol>
+
+<p>Finally, if all entries are missing for a particular trait, this will be 
+removed from the dataset and stored in a external CSV file.</p>
     </div>
 
     <pre class="usage"><span class='fu'>replace_missing</span><span class='op'>(</span>
   <span class='va'>raw_data</span>,
-  <span class='va'>excluded_columns</span>,
+  excluded_columns <span class='op'>=</span> <span class='cn'>NULL</span>,
   out_prefix <span class='op'>=</span> <span class='st'>"metapipe"</span>,
   prop_na <span class='op'>=</span> <span class='fl'>0.5</span>,
   replace_na <span class='op'>=</span> <span class='cn'>FALSE</span>
@@ -155,7 +171,8 @@
     </tr>
     <tr>
       <th>excluded_columns</th>
-      <td><p>vector containing the indices of the data set properties, excluded columns</p></td>
+      <td><p>vector containing the indices of the dataset 
+properties that are non-numeric, excluded columns</p></td>
     </tr>
     <tr>
       <th>out_prefix</th>
@@ -163,31 +180,66 @@
     </tr>
     <tr>
       <th>prop_na</th>
-      <td><p>proportion of missing values, if a trait exceeds this threshold, then it is dropped out</p></td>
+      <td><p>proportion of missing values, if a trait exceeds this 
+threshold, then it is dropped out</p></td>
     </tr>
     <tr>
       <th>replace_na</th>
-      <td><p>boolean flag to indicate whether or not missing values should be replaced by half of the minimum value</p></td>
+      <td><p>boolean flag to indicate whether or not missing values 
+should be replaced by half of the minimum value</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>data frame containing the raw data without missing values</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='rplc_na.html'>rplc_na</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-    <span class='va'>example_data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>ID <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>4</span>,<span class='fl'>5</span><span class='op'>)</span>, 
-                               P1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"one"</span>, <span class='st'>"two"</span>, <span class='st'>"three"</span>, <span class='st'>"four"</span>, <span class='st'>"five"</span><span class='op'>)</span>, 
-                               T1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>5</span><span class='op'>)</span>, 
-                               T2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>5</span><span class='op'>)</span>,
-                               T3 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>, <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>4</span><span class='op'>)</span><span class='op'>)</span>,                  <span class='co'>#  20 % NAs</span>
-                               T4 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>, <span class='fl'>1.2</span>, <span class='op'>-</span><span class='fl'>0.5</span>, <span class='cn'>NA</span>, <span class='fl'>0.87</span><span class='op'>)</span>,       <span class='co'>#  40 % NAs</span>
-                               T5 <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span>                               <span class='co'># 100 % NAs</span>
-    <span class='fu'>replace_missing</span><span class='op'>(</span><span class='va'>example_data</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
-    <span class='fu'>replace_missing</span><span class='op'>(</span><span class='va'>example_data</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>, prop_na <span class='op'>=</span>  <span class='fl'>0.25</span><span class='op'>)</span>
-    <span class='fu'>replace_missing</span><span class='op'>(</span><span class='va'>example_data</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>, replace_na <span class='op'>=</span>  <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='op'>}</span>
+    <pre class="examples"><div class='input'>                                        
+<span class='co'># Toy dataset                                        </span>
+<span class='va'>example_data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>ID <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>4</span>,<span class='fl'>5</span><span class='op'>)</span>, 
+                           P1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"one"</span>, <span class='st'>"two"</span>, <span class='st'>"three"</span>, <span class='st'>"four"</span>, <span class='st'>"five"</span><span class='op'>)</span>, 
+                           T1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>5</span><span class='op'>)</span>, 
+                           T2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>5</span><span class='op'>)</span>,
+                           T3 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>, <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>4</span><span class='op'>)</span><span class='op'>)</span>,                  <span class='co'>#  20 % NAs</span>
+                           T4 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>, <span class='fl'>1.2</span>, <span class='op'>-</span><span class='fl'>0.5</span>, <span class='cn'>NA</span>, <span class='fl'>0.87</span><span class='op'>)</span>,       <span class='co'>#  40 % NAs</span>
+                           T5 <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span>                               <span class='co'># 100 % NAs</span>
+<span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>replace_missing</span><span class='op'>(</span><span class='va'>example_data</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>The following trait was dropped because it has 50% or more missing values: </span>
+#&gt; <span class='message'> - T5</span></div><div class='output co'>#&gt;   ID    P1         T1          T2         T3    T4
+#&gt; 1  1   one -0.3921322  0.47196543         NA    NA
+#&gt; 2  2   two -0.8144648  0.10191708  0.9946227  1.20
+#&gt; 3  3 three -1.0489688  1.38851610 -0.4464265 -0.50
+#&gt; 4  4  four -1.4980031 -1.02062905 -1.2895295    NA
+#&gt; 5  5  five  1.8754450  0.03185385 -0.5803433  0.87</div><div class='input'><span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>replace_missing</span><span class='op'>(</span><span class='va'>example_data</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>, prop_na <span class='op'>=</span>  <span class='fl'>0.25</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>The following traits were dropped because they have 25% or more missing values: </span>
+#&gt; <span class='message'> - T4</span>
+#&gt; <span class='message'> - T5</span></div><div class='output co'>#&gt;   ID    P1         T1          T2         T3
+#&gt; 1  1   one -0.3921322  0.47196543         NA
+#&gt; 2  2   two -0.8144648  0.10191708  0.9946227
+#&gt; 3  3 three -1.0489688  1.38851610 -0.4464265
+#&gt; 4  4  four -1.4980031 -1.02062905 -1.2895295
+#&gt; 5  5  five  1.8754450  0.03185385 -0.5803433</div><div class='input'><span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>replace_missing</span><span class='op'>(</span><span class='va'>example_data</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>, replace_na <span class='op'>=</span>  <span class='cn'>TRUE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>The following trait was dropped because it has 100% missing values: </span>
+#&gt; <span class='message'> - T5</span></div><div class='output co'>#&gt;   ID    P1         T1          T2         T3    T4
+#&gt; 1  1   one -0.3921322  0.47196543 -0.6447647 -0.25
+#&gt; 2  2   two -0.8144648  0.10191708  0.9946227  1.20
+#&gt; 3  3 three -1.0489688  1.38851610 -0.4464265 -0.50
+#&gt; 4  4  four -1.4980031 -1.02062905 -1.2895295 -0.25
+#&gt; 5  5  five  1.8754450  0.03185385 -0.5803433  0.87</div><div class='input'>
+<span class='co'># F1 Seedling Ionomics dataset</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>ionomics</span><span class='op'>)</span> <span class='co'># Includes some missing data</span>
+<span class='va'>ionomics_rev</span> <span class='op'>&lt;-</span> <span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>replace_missing</span><span class='op'>(</span><span class='va'>ionomics</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>ionomics_rev</span> <span class='op'>&lt;-</span> <span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>replace_missing</span><span class='op'>(</span><span class='va'>ionomics</span>, 
+                                          excluded_columns <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>, 
+                                          prop_na <span class='op'>=</span>  <span class='fl'>0.025</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>The following trait was dropped because it has 2.5% or more missing values: </span>
+#&gt; <span class='message'> - Se78</span></div><div class='input'><span class='va'>ionomics_rev</span> <span class='op'>&lt;-</span> <span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>replace_missing</span><span class='op'>(</span><span class='va'>ionomics</span>, 
+                                          excluded_columns <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>,
+                                          replace_na <span class='op'>=</span>  <span class='cn'>TRUE</span><span class='op'>)</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

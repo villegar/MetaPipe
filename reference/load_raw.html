@@ -164,12 +164,44 @@ properties that are non-numeric, excluded columns</p></td>
     <p>data frame with the pre-processed raw data</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>ionomics_path</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, 
+    <pre class="examples"><div class='input'><span class='co'># Toy dataset</span>
+<span class='va'>example_data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>ID <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>4</span>,<span class='fl'>5</span><span class='op'>)</span>, 
+                           P1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"one"</span>, <span class='st'>"two"</span>, <span class='st'>"three"</span>, <span class='st'>"four"</span>, <span class='st'>"five"</span><span class='op'>)</span>, 
+                           T1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>5</span><span class='op'>)</span>, 
+                           T2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/write.table.html'>write.csv</a></span><span class='op'>(</span><span class='va'>example_data</span>, <span class='st'>"example_data.csv"</span>, row.names <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/write.table.html'>write.csv</a></span><span class='op'>(</span><span class='va'>example_data</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>, <span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>, <span class='op'>]</span>, 
+          <span class='st'>"example_data_dup.csv"</span>, 
+          row.names <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+<span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>load_raw</span><span class='op'>(</span><span class='st'>"example_data.csv"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;   ID    P1         T1         T2
+#&gt; 1  1   one -0.8396835 -0.4844113
+#&gt; 2  2   two  0.4461303 -1.0111405
+#&gt; 3  3 three -0.3654167  0.1191242
+#&gt; 4  4  four  0.5391799 -1.6952331
+#&gt; 5  5  five -0.8085769  0.1718083</div><div class='input'><span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>load_raw</span><span class='op'>(</span><span class='st'>"example_data_dup.csv"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;   ID    P1         T1         T2
+#&gt; 1  1   one -0.8396835 -0.4844113
+#&gt; 2  2   two  0.4461303 -1.0111405
+#&gt; 3  3 three -0.3654167  0.1191242
+#&gt; 4  4  four  0.5391799 -1.6952331
+#&gt; 5  5  five -0.8085769  0.1718083</div><div class='input'>
+<span class='co'># F1 Seedling Ionomics dataset</span>
+<span class='va'>ionomics_path</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, 
                              <span class='st'>"ionomics.csv"</span>, 
                              package <span class='op'>=</span> <span class='st'>"MetaPipe"</span>, 
                              mustWork <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='va'>ionomics</span> <span class='op'>&lt;-</span> <span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>load_raw</span><span class='op'>(</span><span class='va'>ionomics_path</span><span class='op'>)</span>
-</div></pre>
+<span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span><span class='va'>ionomics</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>]</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 
+#&gt; 
+#&gt; |ID    | SampleWeight|     Ca44|      K39|      P31|       Li7|      B11|      Na23|     Mg26|      Al27|
+#&gt; |:-----|------------:|--------:|--------:|--------:|---------:|--------:|---------:|--------:|---------:|
+#&gt; |E_199 |           79| 32675.79| 6051.023| 2679.338| 0.1159068| 23.32975|  9.372606| 3762.315| 51.070994|
+#&gt; |E_209 |           81| 28467.95| 5642.651| 2075.403| 0.0104801| 27.31206|  8.787553| 2664.515|  4.392790|
+#&gt; |E_035 |           81| 27901.35| 7357.856| 2632.343| 0.0561879| 16.87480| 14.369062| 3132.550| 23.402754|
+#&gt; |E_197 |           79| 27855.36| 5225.275| 1761.725| 0.0104453| 25.34740| 11.009597| 3939.654|  4.440987|
+#&gt; |E_016 |           79| 27377.40| 6141.001| 2145.715| 0.0172996| 24.64500|  6.999958| 3195.310|  6.766471|</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
