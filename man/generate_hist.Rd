@@ -48,9 +48,7 @@ generate_hist(
 This function generates a single histogram
 }
 \examples{
-\dontrun{
-    norm_dist <- rnorm(100)
-    generate_hist(norm_dist, "XYZ", "xyz_hist", "x")
-    generate_hist(norm_dist, "XYZ", "xyz_hist", "x", is_trait = TRUE)
-}
+norm_dist <- rnorm(100)
+generate_hist(norm_dist, "XYZ", "xyz_hist", "x")
+generate_hist(norm_dist, "XYZ", "xyz_hist", "x", is_trait = TRUE)
 }

@@ -21,11 +21,9 @@ Function to save a graphical object to disk in
 Portable Document Format (PDF) format.
 }
 \examples{
-\dontrun{
-    save_plotPDF(hist(rnorm(100), 
-                 main = "Histogram of Normal Distribution"), 
-                 "hist")
-}
+save_plotPDF(hist(rnorm(100), 
+             main = "Histogram of Normal Distribution"), 
+             "hist")
 
 }
 \seealso{
