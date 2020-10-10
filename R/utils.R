@@ -1,20 +1,21 @@
 #' Check variable types
 #'
 #' Check variable types in a data frame. Useful whenever the data must be 
-#' filter prior some numerical analysis or procwessing
+#' filtered prior some numerical analysis
 #' 
 #' @param raw_data data frame containing the raw data 
 #' @param excluded_columns list of excluded columns (won't be check)
 #' @param numeric boolean to indicate the operation mode. If \code{TRUE} will
 #'     look up for non-numeric variables and exclude them, otherwise it will
 #'     filter numeric variables, including those with the following classes:
-#'     - \code{complex} e.g. \code{1+i}
-#'     - \code{integer} e.g. \code{1L}
-#'     - \code{numeric} e.g. \code{1}, \code{1.01}
+#'     \code{complex} (e.g. \code{1+i})
+#'     \code{integer} (e.g. \code{1L})
+#'     \code{numeric} (e.g. \code{1}, \code{1.01})
 #' @param quiet boolean to hide warning messages
 #'     
-#' @return vector with column indices not meeting the checking mode, if 
-#' \code{excluded_columns != NULL}, returns a vector with both originally 
+#' @return vector with the column indices that don't meet the checking criteria, 
+#' only numeric (\code{numeric = TRUE}) or non-numeric (\code{numeric = FALSE}),  
+#' if \code{excluded_columns != NULL}, returns a vector with both originally 
 #' excluded and newly found column indices
 #' @export
 #'
@@ -51,8 +52,31 @@ check_types <- function(raw_data,
                      "numeric: ",
                      paste0("\n - ", names(var_types)[idx], collapse = "")))
     }
+    # Ammend indices to entire dataset
+    idx <- colnames(raw_data) %in% names(var_types)[idx]
     # Append to the original list
     excluded_columns <- unique(c(excluded_columns, which(idx)))
   }
   return(excluded_columns)
+}
+
+#' Replace NAs
+#' 
+#' Replace missing values (\code{NA}s) by half of the minimum value. If all the 
+#' data points are missing, then returns the original input
+#'
+#' @param x original data points containing missing values (\code{NA}s)
+#'
+#' @return new data without missing entries, unless all of the original data
+#' points were \code{NA}
+#' @export
+#'
+#' @examples
+#' MetaPipe::rplc_na(NA)
+#' MetaPipe::rplc_na(c(1, NA, 3, NA))
+rplc_na <- function(x) {
+  replace(x, 
+          is.na(x), 
+          ifelse(all(is.na(x)), NA, (min(x, na.rm = TRUE) / 2))
+  )
 }
