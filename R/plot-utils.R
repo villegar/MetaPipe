@@ -1,99 +1,104 @@
-#' Function to save a graphical object to disk in 
-#' Portable Network Graphics (PNG) format.
+#' Save plot as PNG
+#' 
+#' Save a graphical object to disk in Portable Network Graphics (PNG) format.
 #'
-#' @param myPlot graphical object
-#' @param name output name with or without path
-#' @param width width in inches
-#' @param height height in inches
+#' @param plt_obj Graphical object.
+#' @param name Output name with or without path.
+#' @param width Width in inches.
+#' @param height Height in inches.
 #'
 #' @export
 #'
 #' @examples
-#' save_plot(hist(rnorm(100), 
-#'           main = "Histogram of Normal Distribution"), 
-#'           "hist")
+#' MetaPipe::save_plot(hist(rnorm(100), 
+#'                     main = "Histogram of Normal Distribution"), 
+#'                     "hist")
 #' 
 #' @seealso \code{\link{save_plotPDF}} and \code{\link{save_plotTIFF}}
-save_plot <- function(myPlot, name, width = 6, height = 6) {
+save_plot <- function(plt_obj, name, width = 6, height = 6) {
   grDevices::png(paste0(name, ".png"), 
                  width = width, 
                  height = height, 
                  units = "in", 
                  res = 300, 
                  type = "cairo")
-  print(myPlot)
+  print(plt_obj)
   grDevices::dev.off()
 }
 
-#' Function to save a graphical object to disk in 
-#' Tagged Image File Format (TIFF) format.
+#' Save plot as TIFF
+#' 
+#' Save a graphical object to disk in Tagged Image File Format (TIFF) format.
 #'
-#' @param myPlot graphical object
-#' @param name output name with or without path
-#' @param width width in inches
-#' @param height height in inches
+#' @param plt_obj Graphical object.
+#' @param name Output name with or without path.
+#' @param width Width in inches.
+#' @param height Height in inches.
 #'
 #' @export
 #'
 #' @examples
-#' save_plotTIFF(hist(rnorm(100), 
-#'               main = "Histogram of Normal Distribution"), 
-#'               "hist")
+#' MetaPipe::save_plotTIFF(hist(rnorm(100), 
+#'                         main = "Histogram of Normal Distribution"), 
+#'                         "hist")
 #' 
 #' @seealso \code{\link{save_plotPDF}} and \code{\link{save_plot}}
-save_plotTIFF <- function(myPlot, name, width = 6, height = 6) {
+save_plotTIFF <- function(plt_obj, name, width = 6, height = 6) {
   grDevices::tiff(paste0(name, ".tiff"), 
                   width = width, 
                   height = height, 
                   units = "in", 
                   res = 300, 
                   type = "cairo")
-  print(myPlot)
+  print(plt_obj)
   grDevices::dev.off()
 }
 
-#' Function to save a graphical object to disk in 
-#' Portable Document Format (PDF) format.
+#' Save plot as PDF
+#' 
+#' Save a graphical object to disk in Portable Document Format (PDF) format.
 #'
-#' @param myPlot graphical object
-#' @param name output name with or without path
-#' @param width width in inches
-#' @param height height in inches
+#' @param plt_obj Graphical object.
+#' @param name Output name with or without path.
+#' @param width Width in inches.
+#' @param height Height in inches.
 #'
 #' @export
 #'
 #' @examples
-#' save_plotPDF(hist(rnorm(100), 
-#'              main = "Histogram of Normal Distribution"), 
-#'              "hist")
+#' MetaPipe::save_plotPDF(hist(rnorm(100), 
+#'                        main = "Histogram of Normal Distribution"), 
+#'                        "hist")
 #' 
 #' @seealso \code{\link{save_plot}} and \code{\link{save_plotTIFF}}
-save_plotPDF <- function(myPlot, name, width = 6, height = 6) {
+save_plotPDF <- function(plt_obj, name, width = 6, height = 6) {
   grDevices::pdf(paste0(name, ".pdf"),
                  width = width,
                  height = height)
-  print(myPlot)
+  print(plt_obj)
   grDevices::dev.off()
 }
 
-#' Function to save a graphical object generated with \code{ggplot2} to disk in 
+#' Save \code{gpplot2} plot as PNG
+#' 
+#' Save a graphical object generated with \code{ggplot2} to disk in 
 #' Portable Network Graphics (PNG) format.
 #'
-#' @param myPlot graphical object
-#' @param name output name with or without path
-#' @param width width in inches
-#' @param height height in inches
+#' @param plt_obj Graphical object.
+#' @param name Output name with or without path.
+#' @param width Width in inches.
+#' @param height Height in inches.
 #'
 #' @export
 #'
 #' @examples
-#' myplot <- ggplot2::qplot(rnorm(100))
-#' ggplot_save(myplot, "hist")
-ggplot_save <- function(myPlot, name, width = 6, height = 6){
+#' plt_obj <- ggplot2::qplot(rnorm(100))
+#' MetaPipe::ggplot_save(plt_obj, "hist")
+ggplot_save <- function(plt_obj, name, width = 6, height = 6){
   R.devices::suppressGraphics({
     ggplot2::ggsave(
       paste0(name, ".png"),
-      plot   = myPlot,
+      plot   = plt_obj,
       device = "png",
       width  = width,
       height = height,
@@ -103,20 +108,27 @@ ggplot_save <- function(myPlot, name, width = 6, height = 6){
   })
 }
 
-#' This function generates a two histograms to compare two datasets
+#' Compare histograms
+#' 
+#' Compare two histograms from two different sources. For example original data 
+#' and transformed data.
 #'
-#' @param original Original data
-#' @param transformed Transformed data
-#' @param trait trait name
-#' @param prefix File prefix
-#' @param xlab x-axis label
+#' @param original Original data.
+#' @param transformed Transformed data.
+#' @param trait Trait name.
+#' @param prefix File prefix.
+#' @param xlab X-axis label.
 #'
 #' @export
 #'
 #' @examples
 #' norm_dist <- rnorm(100)
 #' norm_dist_transformed <- norm_dist^2
-#' compare_hist(norm_dist, norm_dist_transformed, "XYZ", "xyz_hist", "x")
+#' MetaPipe::compare_hist(norm_dist, 
+#'                        norm_dist_transformed, 
+#'                        "XYZ", 
+#'                        "xyz_hist", 
+#'                        "x")
 compare_hist <- function(original, transformed, trait, prefix, xlab) {
   `..count..` <- NULL # Local binding
   ALPHA <- 1
@@ -155,27 +167,27 @@ compare_hist <- function(original, transformed, trait, prefix, xlab) {
               paste0(prefix,"_",trait))
 }
 
-#' This function generates a single histogram
+#' Generate histogram
 #'
-#' @param data histogram data
-#' @param title plot title
-#' @param prefix file prefix [default: \code{metapipe}]
-#' @param xlab x-axis label [default: \code{NULL}]
-#' @param save boolean flag to indicate if that plot should be save to disk [default: \code{TRUE}]
-#' @param alpha value to set the transparency of the bins [default: \code{1}]
-#' @param angle rotation angle for labels [default: \code{60}]
-#' @param bins number of bins to plot [default: \code{20}]
-#' @param col colour for bins border [default: \code{"black"}]
-#' @param hjust horizontal adjustment of labels [default: \code{1}]
-#' @param fill filling colour [default: \code{"#7FCDBB"}]
-#' @param is_trait if TRUE then prepends "Trait" to title [default: \code{FALSE}]
+#' @param data Histogram data.
+#' @param title Plot title.
+#' @param prefix File prefix.
+#' @param xlab X-axis label.
+#' @param save Boolean flag to indicate if that plot should be save to disk.
+#' @param alpha Numeric value to set the transparency of the bins.
+#' @param angle Rotation angle for labels.
+#' @param bins Number of bins to plot.
+#' @param col Colour for bins border.
+#' @param hjust Horizontal adjustment of labels.
+#' @param fill Filling colour.
+#' @param is_trait Boolean flag to prepend "Trait" to \code{title}.
 #'
 #' @export
 #'
 #' @examples
 #' norm_dist <- rnorm(100)
-#' generate_hist(norm_dist, "XYZ", "xyz_hist", "x")
-#' generate_hist(norm_dist, "XYZ", "xyz_hist", "x", is_trait = TRUE)
+#' MetaPipe::generate_hist(norm_dist, "XYZ", "xyz_hist", "x")
+#' MetaPipe::generate_hist(norm_dist, "XYZ", "xyz_hist", "x", is_trait = TRUE)
 generate_hist <- function(data, 
                           title, 
                           prefix = "metapipe", 
@@ -196,7 +208,7 @@ generate_hist <- function(data,
     tmp_title <- ifelse(is_trait, paste("Trait", title), title)
   }
   
-  myPlot <- ggplot2::ggplot(data = histogram, ggplot2::aes(original)) +
+  plt_obj <- ggplot2::ggplot(data = histogram, ggplot2::aes(original)) +
     ggplot2::geom_histogram(alpha = alpha, 
                             ggplot2::aes(y = ..count..), 
                             position = "identity", 
@@ -208,26 +220,28 @@ generate_hist <- function(data,
     ggplot2::labs(title = tmp_title, x = xlab, y = NULL)
 
   if (!save)
-    return(myPlot)
+    return(plt_obj)
   filename <- gsub("[[:punct:]]", "", title)
   filename <-  paste0(prefix, "_", gsub(" ", "-", filename))
-  ggplot_save(myPlot, filename)
+  ggplot_save(plt_obj, filename)
   return(NULL)
 }
 
+#' Hexagonal logo
+#' 
 #' Create Hexagonal logo for MetaPipe
 #'
-#' @param subplot subplot/image/icon to be used in the background
-#' @param dpi dots per inch
-#' @param h_color hexagon edge colour
-#' @param h_fill hexagon filling colour
-#' @param output output filename and path
-#' @param p_color package name colour
+#' @param subplot Subplot/image/icon to be used in the background.
+#' @param dpi Dots per inch.
+#' @param h_color Hexagon edge colour.
+#' @param h_fill Hexagon filling colour.
+#' @param output Output filename and path.
+#' @param p_color Package name colour.
 #'
 #' @export
 #'
 #' @examples
-#' hex_logo()
+#' MetaPipe::hex_logo()
 hex_logo <- function(subplot = system.file("images/lab-2.png", 
                                            package = "MetaPipe"),
                      dpi = 800,
