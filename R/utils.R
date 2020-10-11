@@ -17,16 +17,18 @@
 #' only numeric (\code{numeric = TRUE}) or non-numeric (\code{numeric = FALSE}),  
 #' if \code{excluded_columns != NULL}, returns a vector with both originally 
 #' excluded and newly found column indices
-#' @export
 #'
 #' @examples
 #' example_data <- data.frame(ID = c(1,2,3,4,5), 
 #'                            P1 = c("one", "two", "three", "four", "five"), 
 #'                            T1 = rnorm(5))
-#' MetaPipe::check_types(example_data)
-#' MetaPipe::check_types(example_data, numeric = FALSE)
-#' MetaPipe::check_types(example_data, excluded_columns = 1, numeric = FALSE)
-#' MetaPipe::check_types(example_data, quiet = FALSE)
+#' MetaPipe:::check_types(example_data)
+#' MetaPipe:::check_types(example_data, numeric = FALSE)
+#' MetaPipe:::check_types(example_data, excluded_columns = 1, numeric = FALSE)
+#' MetaPipe:::check_types(example_data, quiet = FALSE)
+#' 
+#' @keywords internal
+#' @noRd
 check_types <- function(raw_data,
                         excluded_columns = NULL,
                         numeric = TRUE,
@@ -60,6 +62,81 @@ check_types <- function(raw_data,
   return(excluded_columns)
 }
 
+#' Generate a pseudo-random genotypes
+#' 
+#' Generate a pseudo-random list of genotypes. Particularly useful for testing.
+#'
+#' @param genotypes Character vector containing the base genotypes.
+#' @param size Output length.
+#' @param seed Seed for reproducibility.
+#'
+#' @return Character vector containing the pseudo-random genotypes.
+#'
+#' @examples
+#' MetaPipe:::random_genotypes()
+#' MetaPipe:::random_genotypes(genotypes = c("nn", "np"))
+#' MetaPipe:::random_genotypes(size = 3)
+#' 
+#' @seealso \code{\link{random_map}}
+#' 
+#' @keywords internal
+#' @noRd
+random_genotypes <- function(genotypes = c("A", "H", "B"),
+                             size = 100,
+                             seed = NULL) {
+  if (!is.null(seed))
+    set.seed(seed)
+  return(genotypes[sample(1:length(genotypes), size, replace = TRUE)])
+}
+
+#' Generate a pseudo-random genetic map
+#' 
+#' Generate a pseudo-random genetic map. Particularly useful for testing.
+#'
+#' @param genotypes Character vector containing the base genotypes.
+#' @param lg Numeric vector containing the linkage groups.
+#' @param markers Number of markers per linkage group.
+#' @param population Population size (rows).
+#' @param seed Seed for reproducibility.
+#'
+#' @return Data frame containing the pseudo-random genetic map.
+#'
+#' @examples
+#' gmap_1 <- MetaPipe:::random_map()
+#' gmap_2 <- MetaPipe:::random_map(genotypes = c("nn", "np"))
+#' gmap_3 <- MetaPipe:::random_map(population = 3)
+#' 
+#' @seealso \code{\link{random_genotypes}}
+#'  
+#' @keywords internal
+#' @noRd
+random_map <- function(genotypes = c("A", "H", "B"),
+                       lg = 1:10,
+                       markers = 10,
+                       population = 100,
+                       seed = NULL) {
+  marker_names <- paste0(rep(paste0("S", lg, "_"), each = markers), 1:markers)
+  # Temporal vector for LG and positions
+  tmp <- data.frame(lg = rep(lg, each = markers), 
+                    pos = rep(1:markers))
+  
+  # Empty map
+  map <- data.frame(ID = c("", "", 1:population))
+  for (k in 1:length(marker_names)) {
+    if (!is.null(seed))
+      seed <- seed + k
+    new_genotypes <- c(tmp[k, 1],
+                       tmp[k, 2],
+                       random_genotypes(genotypes, population, seed))
+    map <- cbind(map, new_genotypes)
+  }
+  
+  # Add marker names (columns)
+  colnames(map) <- c("ID", marker_names)
+  
+  return(map)
+}
+
 #' Replace NAs
 #' 
 #' Replace missing values (\code{NA}s) by half of the minimum value. If all the 
@@ -69,11 +146,13 @@ check_types <- function(raw_data,
 #'
 #' @return new data without missing entries, unless all of the original data
 #' points were \code{NA}
-#' @export
 #'
 #' @examples
-#' MetaPipe::rplc_na(NA)
-#' MetaPipe::rplc_na(c(1, NA, 3, NA))
+#' MetaPipe:::rplc_na(NA)
+#' MetaPipe:::rplc_na(c(1, NA, 3, NA))
+#' 
+#' @keywords internal
+#' @noRd
 rplc_na <- function(x) {
   replace(x, 
           is.na(x), 
