@@ -2,28 +2,26 @@
 % Please edit documentation in R/plot-utils.R
 \name{save_plotTIFF}
 \alias{save_plotTIFF}
-\title{Function to save a graphical object to disk in 
-Tagged Image File Format (TIFF) format.}
+\title{Save plot as TIFF}
 \usage{
-save_plotTIFF(myPlot, name, width = 6, height = 6)
+save_plotTIFF(plt_obj, name, width = 6, height = 6)
 }
 \arguments{
-\item{myPlot}{graphical object}
+\item{plt_obj}{Graphical object.}
 
-\item{name}{output name with or without path}
+\item{name}{Output name with or without path.}
 
-\item{width}{width in inches}
+\item{width}{Width in inches.}
 
-\item{height}{height in inches}
+\item{height}{Height in inches.}
 }
 \description{
-Function to save a graphical object to disk in 
-Tagged Image File Format (TIFF) format.
+Save a graphical object to disk in Tagged Image File Format (TIFF) format.
 }
 \examples{
-save_plotTIFF(hist(rnorm(100), 
-              main = "Histogram of Normal Distribution"), 
-              "hist")
+MetaPipe::save_plotTIFF(hist(rnorm(100), 
+                        main = "Histogram of Normal Distribution"), 
+                        "hist")
 
 }
 \seealso{

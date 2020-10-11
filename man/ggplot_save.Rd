@@ -2,25 +2,24 @@
 % Please edit documentation in R/plot-utils.R
 \name{ggplot_save}
 \alias{ggplot_save}
-\title{Function to save a graphical object generated with \code{ggplot2} to disk in 
-Portable Network Graphics (PNG) format.}
+\title{Save \code{gpplot2} plot as PNG}
 \usage{
-ggplot_save(myPlot, name, width = 6, height = 6)
+ggplot_save(plt_obj, name, width = 6, height = 6)
 }
 \arguments{
-\item{myPlot}{graphical object}
+\item{plt_obj}{Graphical object.}
 
-\item{name}{output name with or without path}
+\item{name}{Output name with or without path.}
 
-\item{width}{width in inches}
+\item{width}{Width in inches.}
 
-\item{height}{height in inches}
+\item{height}{Height in inches.}
 }
 \description{
-Function to save a graphical object generated with \code{ggplot2} to disk in 
+Save a graphical object generated with \code{ggplot2} to disk in 
 Portable Network Graphics (PNG) format.
 }
 \examples{
-myplot <- ggplot2::qplot(rnorm(100))
-ggplot_save(myplot, "hist")
+plt_obj <- ggplot2::qplot(rnorm(100))
+MetaPipe::ggplot_save(plt_obj, "hist")
 }

@@ -10,7 +10,8 @@ assess_normality(
   cpus = 1,
   out_prefix = "metapipe",
   plots_dir = getwd(),
-  transf_vals = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10)
+  transf_vals = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10),
+  alpha = 0.05
 )
 }
 \arguments{
@@ -26,6 +27,8 @@ properties that are non-numeric, excluded columns.}
 \item{plots_dir}{Path to the directory where plots should be stored.}
 
 \item{transf_vals}{Numeric vector with the transformation values.}
+
+\item{alpha}{Significance level.}
 }
 \value{
 Structure containing the normalised data, if a suitable 
@@ -58,9 +61,25 @@ example_data <- data.frame(ID = c(1,2,3,4,5),
                            P1 = c("one", "two", "three", "four", "five"), 
                            T1 = rnorm(5), 
                            T2 = rnorm(5))
-assess_normality(example_data, c(1, 2))
+example_data_normalised <- MetaPipe::assess_normality(example_data, c(1, 2))
+knitr::kable(example_data_normalised)
+
+
+# F1 Seedling Ionomics dataset
+data(ionomics) # Includes some missing data
+ionomics_rev <- MetaPipe::replace_missing(ionomics, 
+                                          excluded_columns = c(1, 2),
+                                          replace_na =  TRUE)
+ionomics_normalised <- 
+  MetaPipe::assess_normality(ionomics_rev,
+                             excluded_columns = c(1, 2),
+                             out_prefix = "ionomics",
+                             transf_vals = c(2, exp(1)))
+# Show one entry for each of the first ten traits (left to right)
+knitr::kable(ionomics_normalised[nrow(ionomics) * c(1:10), ])
 
 }
 \seealso{
-\code{\link{assess_normality_postprocessing}} and \code{\link{assess_normality_stats}}
+\code{\link{assess_normality_postprocessing}} and 
+\code{\link{assess_normality_stats}}
 }

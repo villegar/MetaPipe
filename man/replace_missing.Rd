@@ -56,6 +56,7 @@ MetaPipe::replace_missing(example_data, c(1, 2))
 MetaPipe::replace_missing(example_data, c(1, 2), prop_na =  0.25)
 MetaPipe::replace_missing(example_data, c(1, 2), replace_na =  TRUE)
 
+
 # F1 Seedling Ionomics dataset
 data(ionomics) # Includes some missing data
 ionomics_rev <- MetaPipe::replace_missing(ionomics, c(1, 2))
@@ -65,6 +66,7 @@ ionomics_rev <- MetaPipe::replace_missing(ionomics,
 ionomics_rev <- MetaPipe::replace_missing(ionomics, 
                                           excluded_columns = c(1, 2),
                                           replace_na =  TRUE)
+knitr::kable(ionomics_rev[1:5, 1:8])
 }
 \seealso{
 \code{\link{rplc_na}}

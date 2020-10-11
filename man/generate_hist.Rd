@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot-utils.R
 \name{generate_hist}
 \alias{generate_hist}
-\title{This function generates a single histogram}
+\title{Generate histogram}
 \usage{
 generate_hist(
   data,
@@ -20,35 +20,35 @@ generate_hist(
 )
 }
 \arguments{
-\item{data}{histogram data}
+\item{data}{Histogram data.}
 
-\item{title}{plot title}
+\item{title}{Plot title.}
 
-\item{prefix}{file prefix [default: \code{metapipe}]}
+\item{prefix}{File prefix.}
 
-\item{xlab}{x-axis label [default: \code{NULL}]}
+\item{xlab}{X-axis label.}
 
-\item{save}{boolean flag to indicate if that plot should be save to disk [default: \code{TRUE}]}
+\item{save}{Boolean flag to indicate if that plot should be save to disk.}
 
-\item{alpha}{value to set the transparency of the bins [default: \code{1}]}
+\item{alpha}{Numeric value to set the transparency of the bins.}
 
-\item{angle}{rotation angle for labels [default: \code{60}]}
+\item{angle}{Rotation angle for labels.}
 
-\item{bins}{number of bins to plot [default: \code{20}]}
+\item{bins}{Number of bins to plot.}
 
-\item{col}{colour for bins border [default: \code{"black"}]}
+\item{col}{Colour for bins border.}
 
-\item{hjust}{horizontal adjustment of labels [default: \code{1}]}
+\item{hjust}{Horizontal adjustment of labels.}
 
-\item{fill}{filling colour [default: \code{"#7FCDBB"}]}
+\item{fill}{Filling colour.}
 
-\item{is_trait}{if TRUE then prepends "Trait" to title [default: \code{FALSE}]}
+\item{is_trait}{Boolean flag to prepend "Trait" to \code{title}.}
 }
 \description{
-This function generates a single histogram
+Generate histogram
 }
 \examples{
 norm_dist <- rnorm(100)
-generate_hist(norm_dist, "XYZ", "xyz_hist", "x")
-generate_hist(norm_dist, "XYZ", "xyz_hist", "x", is_trait = TRUE)
+MetaPipe::generate_hist(norm_dist, "XYZ", "xyz_hist", "x")
+MetaPipe::generate_hist(norm_dist, "XYZ", "xyz_hist", "x", is_trait = TRUE)
 }

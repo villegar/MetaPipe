@@ -2,26 +2,31 @@
 % Please edit documentation in R/plot-utils.R
 \name{compare_hist}
 \alias{compare_hist}
-\title{This function generates a two histograms to compare two datasets}
+\title{Compare histograms}
 \usage{
 compare_hist(original, transformed, trait, prefix, xlab)
 }
 \arguments{
-\item{original}{Original data}
+\item{original}{Original data.}
 
-\item{transformed}{Transformed data}
+\item{transformed}{Transformed data.}
 
-\item{trait}{trait name}
+\item{trait}{Trait name.}
 
-\item{prefix}{File prefix}
+\item{prefix}{File prefix.}
 
-\item{xlab}{x-axis label}
+\item{xlab}{X-axis label.}
 }
 \description{
-This function generates a two histograms to compare two datasets
+Compare two histograms from two different sources. For example original data 
+and transformed data.
 }
 \examples{
 norm_dist <- rnorm(100)
 norm_dist_transformed <- norm_dist^2
-compare_hist(norm_dist, norm_dist_transformed, "XYZ", "xyz_hist", "x")
+MetaPipe::compare_hist(norm_dist, 
+                       norm_dist_transformed, 
+                       "XYZ", 
+                       "xyz_hist", 
+                       "x")
 }

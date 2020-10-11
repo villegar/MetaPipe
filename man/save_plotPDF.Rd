@@ -2,28 +2,26 @@
 % Please edit documentation in R/plot-utils.R
 \name{save_plotPDF}
 \alias{save_plotPDF}
-\title{Function to save a graphical object to disk in 
-Portable Document Format (PDF) format.}
+\title{Save plot as PDF}
 \usage{
-save_plotPDF(myPlot, name, width = 6, height = 6)
+save_plotPDF(plt_obj, name, width = 6, height = 6)
 }
 \arguments{
-\item{myPlot}{graphical object}
+\item{plt_obj}{Graphical object.}
 
-\item{name}{output name with or without path}
+\item{name}{Output name with or without path.}
 
-\item{width}{width in inches}
+\item{width}{Width in inches.}
 
-\item{height}{height in inches}
+\item{height}{Height in inches.}
 }
 \description{
-Function to save a graphical object to disk in 
-Portable Document Format (PDF) format.
+Save a graphical object to disk in Portable Document Format (PDF) format.
 }
 \examples{
-save_plotPDF(hist(rnorm(100), 
-             main = "Histogram of Normal Distribution"), 
-             "hist")
+MetaPipe::save_plotPDF(hist(rnorm(100), 
+                       main = "Histogram of Normal Distribution"), 
+                       "hist")
 
 }
 \seealso{

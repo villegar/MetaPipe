@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot-utils.R
 \name{hex_logo}
 \alias{hex_logo}
-\title{Create Hexagonal logo for MetaPipe}
+\title{Hexagonal logo}
 \usage{
 hex_logo(
   subplot = system.file("images/lab-2.png", package = "MetaPipe"),
@@ -14,21 +14,21 @@ hex_logo(
 )
 }
 \arguments{
-\item{subplot}{subplot/image/icon to be used in the background}
+\item{subplot}{Subplot/image/icon to be used in the background.}
 
-\item{dpi}{dots per inch}
+\item{dpi}{Dots per inch.}
 
-\item{h_color}{hexagon edge colour}
+\item{h_color}{Hexagon edge colour.}
 
-\item{h_fill}{hexagon filling colour}
+\item{h_fill}{Hexagon filling colour.}
 
-\item{output}{output filename and path}
+\item{output}{Output filename and path.}
 
-\item{p_color}{package name colour}
+\item{p_color}{Package name colour.}
 }
 \description{
 Create Hexagonal logo for MetaPipe
 }
 \examples{
-hex_logo()
+MetaPipe::hex_logo()
 }
