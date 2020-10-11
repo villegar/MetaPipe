@@ -200,6 +200,7 @@ replace_missing <- function(raw_data,
 #' @param out_prefix Prefix for output files and plots.
 #' @param plots_dir Path to the directory where plots should be stored.
 #' @param transf_vals Numeric vector with the transformation values.
+#' @param alpha Significance level.
 #'
 #' @return Structure containing the normalised data, if a suitable 
 #' transformation was found, otherwise returns the original data.
@@ -213,13 +214,24 @@ replace_missing <- function(raw_data,
 #'                            T2 = rnorm(5))
 #' assess_normality(example_data, c(1, 2))
 #' 
-#' @seealso \code{\link{assess_normality_postprocessing}} and \code{\link{assess_normality_stats}}
+#' @seealso \code{\link{assess_normality_postprocessing}} and 
+#' \code{\link{assess_normality_stats}}
 assess_normality <- function(raw_data, 
                              excluded_columns, 
                              cpus = 1, 
                              out_prefix = "metapipe", 
                              plots_dir = getwd(), 
-                             transf_vals = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10)) {
+                             transf_vals = c(2, 
+                                             exp(1), 
+                                             3, 
+                                             4, 
+                                             5, 
+                                             6, 
+                                             7, 
+                                             8, 
+                                             9, 
+                                             10),
+                             alpha = 0.05) {
   i <- NULL # Local binding
   # Start parallel backend
   cl <- parallel::makeCluster(cpus)# , setup_strategy = "sequential")
@@ -243,54 +255,57 @@ assess_normality <- function(raw_data,
   
   # Extract traits (column names)
   traits <- colnames(raw_data)
-  raw_data_normalised <- foreach::foreach(i = trait_indices, 
-                                  .combine = rbind) %dopar% {
-                                    # Create and populate entry for current trait
-                                    record <- data.frame(
-                                      index = i,
-                                      trait = traits[i],
-                                      values = raw_data[, i],
-                                      flag = "Non-normal",
-                                      transf = "",
-                                      transf_val = NA,
-                                      stringsAsFactors = FALSE
-                                    )
-                                    
-                                    # Verify the current trait has at least 3 non-NA rows
-                                    if(sum(is.finite(raw_data[, i]), na.rm = TRUE) > 2) {
-                                      # Assess normality of trait before transforming it
-                                      # if (is.na(i) || is.na(raw_data) || length(raw_data) < 3 || length(raw_data) > 5000)
-                                      #  warning(paste0("Could not processed the trait ", i))
-                                      pvalue <- shapiro.test(raw_data[, i])[[2]]
-                                      if(pvalue <= 0.05) { # Data must be transformed
-                                        tmp <- MetaPipe::transform_data(data = raw_data[, i], 
-                                                              trait = traits[i], 
-                                                              alpha = 0.05, 
-                                                              index = i, 
-                                                              transf_vals = transf_vals, 
-                                                              plots_prefix = paste0(plots_dir, "/HIST")
-                                        )
-                                        
-                                        if(length(tmp)) {
-                                          tmp$index <- i
-                                          tmp$flag <- "Normal"
-                                          record <- tmp
-                                        }
-                                      }
-                                      else { # Normal data
-                                        xlab <- traits[i]
-                                        transformation <- "NORM"
-                                        prefix <- paste0(plots_dir,"/HIST_", i, "_", transformation)
-                                        MetaPipe::generate_hist(data = raw_data[, i], 
-                                                                title = traits[i], 
-                                                                prefix = prefix, 
-                                                                xlab = xlab, 
-                                                                is_trait = TRUE)
-                                        record$flag <- "Normal"
-                                      }
-                                    }
-                                    record
-                                  }
+  raw_data_normalised <- 
+    foreach::foreach(i = trait_indices, 
+                     .combine = rbind) %dopar% {
+                       # Create en empty entry for current trait
+                       record <- data.frame(
+                         index = i,
+                         trait = traits[i],
+                         values = raw_data[, i],
+                         flag = "Non-normal",
+                         transf = "",
+                         transf_val = NA,
+                         stringsAsFactors = FALSE
+                       )
+                       
+                       # Verify the current trait has at least 3 non-NA rows
+                       if (sum(is.finite(raw_data[, i]), na.rm = TRUE) > 2) {
+                         # Assess normality of trait before transforming it
+                         pvalue <- shapiro.test(raw_data[, i])[[2]]
+                         if(pvalue <= alpha) { # Data must be transformed
+                           tmp <- MetaPipe::transform_data(
+                             data = raw_data[, i],
+                             trait = traits[i],
+                             alpha = alpha,
+                             index = i,
+                             transf_vals = transf_vals,
+                             plots_prefix = paste0(plots_dir, "/HIST")
+                           )
+                           
+                           if (length(tmp)) {
+                             tmp$index <- i
+                             tmp$flag <- "Normal"
+                             record <- tmp
+                           }
+                         } else { # Normal data
+                           xlab <- traits[i]
+                           transformation <- "NORM"
+                           prefix <- paste0(plots_dir, 
+                                            "/HIST_", 
+                                            i, 
+                                            "_", 
+                                            transformation)
+                           MetaPipe::generate_hist(data = raw_data[, i], 
+                                                   title = traits[i], 
+                                                   prefix = prefix, 
+                                                   xlab = xlab, 
+                                                   is_trait = TRUE)
+                           record$flag <- "Normal"
+                         }
+                       }
+                       record
+                     }
   
   parallel::stopCluster(cl) # Stop cluster
   return(raw_data_normalised)
