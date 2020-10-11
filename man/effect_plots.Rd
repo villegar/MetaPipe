@@ -46,7 +46,7 @@ example_data_normalised_post <-
 
 # Create and store random genetic map (for testing only)
 genetic_map <- 
-  MetaPipe::random_map(population = population, seed = seed)
+  MetaPipe:::random_map(population = population, seed = seed)
 write.csv(genetic_map, 
           here::here("metapipe_genetic_map.csv"), 
           row.names = FALSE)

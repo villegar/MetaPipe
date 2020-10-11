@@ -43,7 +43,7 @@ function to obtain LOD scores for all traits, peak positions, and markers.
                                     out_prefix = here::here("metapipe"))
     
     # Create and store random genetic map [for testing only]
-    genetic_map <- random_map(population = population, seed = seed)
+    genetic_map <- MetaPipe:::random_map(population = population, seed = seed)
     write.csv(genetic_map, here::here("metapipe_genetic_map.csv"), row.names = FALSE)
     
     # Load cross file with genetic map and raw data for normal traits

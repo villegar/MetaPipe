@@ -82,7 +82,8 @@ ionomics_normalised <-
 ionomics_normalised_post <- 
   MetaPipe::assess_normality_postprocessing(ionomics_rev, 
                                             c(1, 2), 
-                                            ionomics_normalised)
+                                            ionomics_normalised,
+                                            out_prefix = "ionomics")
 ionomics_norm <- ionomics_normalised_post$norm
 ionomics_skew <- ionomics_normalised_post$skew
 # Normal traits

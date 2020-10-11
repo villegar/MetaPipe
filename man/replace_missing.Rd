@@ -68,6 +68,3 @@ ionomics_rev <- MetaPipe::replace_missing(ionomics,
                                           replace_na =  TRUE)
 knitr::kable(ionomics_rev[1:5, 1:8])
 }
-\seealso{
-\code{\link{rplc_na}}
-}

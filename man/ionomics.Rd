@@ -40,7 +40,7 @@ data(ionomics)
 }
 \description{
 A dataset containing information of 21 different isotopes and sample weights  
-of 217 samples.
+for 217 samples.
 }
 \author{
 Jason P. Londo \email{jason.londo@usda.gov}
