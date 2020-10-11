@@ -2,9 +2,7 @@
 % Please edit documentation in R/transformations.R
 \name{transform_data}
 \alias{transform_data}
-\title{Normalise data using different methods: log, power, and root, with a 
-different number of parameters to find out which one transforms the data
-into a normal-ish set.}
+\title{Normalise data}
 \usage{
 transform_data(
   data,
@@ -17,22 +15,22 @@ transform_data(
 )
 }
 \arguments{
-\item{data}{original data}
+\item{data}{Original data.}
 
-\item{trait}{trait name}
+\item{trait}{Trait name.}
 
-\item{alpha}{significance level}
+\item{alpha}{Significance level.}
 
-\item{index}{index of the current trait}
+\item{index}{Index of the current trait.}
 
-\item{transf_vals}{transformation values}
+\item{transf_vals}{Transformation values.}
 
-\item{plots_prefix}{prefix for plots with or without path}
+\item{plots_prefix}{Prefix for plots with or without path.}
 
-\item{digits}{significant digits to compare p-values of transformations}
+\item{digits}{Significant digits to compare p-values of transformations.}
 }
 \value{
-transformed record
+Transformed record.
 }
 \description{
 Normalise data using different methods: log, power, and root, with a 
@@ -40,11 +38,13 @@ different number of parameters to find out which one transforms the data
 into a normal-ish set.
 }
 \examples{
-\dontrun{
-    set.seed(123)
-    data <- rnorm(100, 5)
-    transform_data(2 ^ data, "EXP_2")
-    transform_data(sqrt(data), "ROOT_2")
-    transform_data(data ^ 2, "POW_2")
-}
+set.seed(123)
+data <- rnorm(100, 5)
+out_exp2 <- MetaPipe::transform_data(2 ^ data, "EXP_2")
+out_root2 <- MetaPipe::transform_data(sqrt(data), "ROOT_2")
+out_pow2 <- MetaPipe::transform_data(data ^ 2, "POW_2")
+
+knitr::kable(head(out_exp2))
+knitr::kable(head(out_root2))
+knitr::kable(head(out_pow2))
 }

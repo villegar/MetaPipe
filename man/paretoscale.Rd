@@ -2,23 +2,22 @@
 % Please edit documentation in R/transformations.R
 \name{paretoscale}
 \alias{paretoscale}
-\title{Pareto scaling function
-This function is adapted from Stephen C. Grace and Dane A. Hudson}
+\title{Pareto scaling}
 \usage{
 paretoscale(z)
 }
 \arguments{
-\item{z}{original 2-dimensional data}
+\item{z}{Original 2-dimensional data.}
 }
 \value{
-normalised data
+Scaled data.
 }
 \description{
-Pareto scaling function
-This function is adapted from Stephen C. Grace and Dane A. Hudson
+Perform a pareto scaling.
+This function is adapted from Stephen C. Grace and Dane A. Hudson.
 }
 \examples{
 set.seed(123)
 data <- matrix(rnorm(100, 5), ncol = 2)
-data_new <- paretoscale(data)
+data_new <- MetaPipe::paretoscale(data)
 }

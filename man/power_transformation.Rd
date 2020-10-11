@@ -2,41 +2,44 @@
 % Please edit documentation in R/transformations.R
 \name{power_transformation}
 \alias{power_transformation}
-\title{Normalise data with a power transformation}
+\title{Power transformation}
 \usage{
 power_transformation(
   data,
   trait = "DATA",
   alpha = 0.05,
-  transf = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10),
+  transf_vals = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10),
   plots_prefix = "HIST",
   digits = 6
 )
 }
 \arguments{
-\item{data}{original data}
+\item{data}{Original data.}
 
-\item{trait}{trait name}
+\item{trait}{Trait name.}
 
-\item{alpha}{significance level}
+\item{alpha}{Significance level.}
 
-\item{transf}{transformation values}
+\item{transf_vals}{Transformation values.}
 
-\item{plots_prefix}{prefix for plots with or without path}
+\item{plots_prefix}{Prefix for plots with or without path.}
 
-\item{digits}{significant digits to compare p-values of transformations}
+\item{digits}{Significant digits to compare p-values of transformations.}
 }
 \value{
-data structure containing the normalised data, NULL if no 
-transformation was performed
+Data structure containing the normalised data, \code{NULL} if no 
+transformation was performed.
 }
 \description{
-Normalise data with a power transformation
+Normalise data with a power transformation.
 }
 \examples{
-\dontrun{
-    set.seed(123)
-    data <- rnorm(100, 5)
-    power_transformation(sqrt(data), "ROOT_2")
+set.seed(123)
+data <- rnorm(100, 5)
+MetaPipe::power_transformation(sqrt(data), "ROOT_2")
+
 }
+\seealso{
+\code{\link{log_transformation}} and 
+\code{\link{root_transformation}}
 }

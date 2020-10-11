@@ -2,49 +2,54 @@
 % Please edit documentation in R/qtl-utils.R
 \name{effect_plots}
 \alias{effect_plots}
-\title{Create effect plots for significant QTLS found with  
-\code{\link{qtl_perm_test}}.}
+\title{Create effect plots}
 \usage{
 effect_plots(x_data_sim, qtl_data, cpus = 1, plots_dir = getwd())
 }
 \arguments{
-\item{x_data_sim}{Cross-data simulated with \code{qtl::sim.geno}}
+\item{x_data_sim}{Cross-data frame simulated with \code{qtl::sim.geno}.}
 
-\item{qtl_data}{Significant QTL data}
+\item{qtl_data}{Significant QTL data.}
 
-\item{cpus}{number of CPUS to be used}
+\item{cpus}{Number of CPUs to be used in the computation.}
 
-\item{plots_dir}{output directory for plots}
+\item{plots_dir}{Output directory for plots.}
 }
 \description{
-Create effect plots for significant QTLS found with  
+Create effect plots for significant QTLs found with  
 \code{\link{qtl_perm_test}}.
 }
 \examples{
-\donttest{
-# Create toy dataset
-excluded_columns <- c(2)
+# Toy dataset
+excluded_columns <- c(1, 2)
 population <- 5
 seed <- 1
 example_data <- data.frame(ID = 1:population,
                            P1 = c("one", "two", "three", "four", "five"),
                            T1 = rnorm(population),
                            T2 = rnorm(population))
-example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
-                                      trait = rep(c("T1", "T2"), each = 5),
-                                      values = c(example_data$T1, example_data$T2),
-                                      flag = "Normal",
-                                      transf = "",
-                                      transf_val = NA,
-                                      stringsAsFactors = FALSE)
-assess_normality_postprocessing(example_data, excluded_columns, 
-                                example_data_normalised, 
-                                out_prefix = here::here("metapipe"))
+example_data_normalised <- 
+  data.frame(index = rep(c(1, 2), each = 5),
+             trait = rep(c("T1", "T2"), each = 5),
+             values = c(example_data$T1, example_data$T2),
+             flag = "Normal",
+             transf = "",
+             transf_val = NA,
+             stringsAsFactors = FALSE)
 
-# Create and store random genetic map [for testing only]
-genetic_map <- random_map(population = population, seed = seed)
-write.csv(genetic_map, here::here("metapipe_genetic_map.csv"), row.names = FALSE)
+out_prefix <- here::here("metapipe")
+example_data_normalised_post <- 
+  MetaPipe::assess_normality_postprocessing(example_data, 
+                                            excluded_columns, 
+                                            example_data_normalised,
+                                            out_prefix = out_prefix)
 
+# Create and store random genetic map (for testing only)
+genetic_map <- 
+  MetaPipe::random_map(population = population, seed = seed)
+write.csv(genetic_map, 
+          here::here("metapipe_genetic_map.csv"), 
+          row.names = FALSE)
 # Load cross file with genetic map and raw data for normal traits
 x <- qtl::read.cross(format = "csvs", 
                      dir = here::here(),
@@ -53,10 +58,10 @@ x <- qtl::read.cross(format = "csvs",
 set.seed(seed)
 x <- qtl::jittermap(x)
 x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
-x_qtl_perm <- MetaPipe::qtl_perm_test(x, n_perm = 5, model = "normal", method = "hk")
+x_qtl_perm <- 
+  MetaPipe::qtl_perm_test(x, n_perm = 5, model = "normal", method = "hk")
 x_sim <- qtl::sim.geno(x)
-effect_plots(x_sim, x_qtl_perm)
-}
+MetaPipe::effect_plots(x_sim, x_qtl_perm)
 
 }
 \seealso{

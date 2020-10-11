@@ -20,7 +20,7 @@ assess_normality(
 \item{excluded_columns}{Numeric vector containing the indices of the dataset 
 properties that are non-numeric, excluded columns.}
 
-\item{cpus}{Number of CPUS to be used in the computation.}
+\item{cpus}{Number of CPUs to be used in the computation.}
 
 \item{out_prefix}{Prefix for output files and plots.}
 

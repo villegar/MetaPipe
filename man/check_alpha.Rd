@@ -2,18 +2,18 @@
 % Please edit documentation in R/transformations.R
 \name{check_alpha}
 \alias{check_alpha}
-\title{Check significance level (alpha) validity}
+\title{Check significance level}
 \usage{
 check_alpha(alpha)
 }
 \arguments{
-\item{alpha}{significance level}
+\item{alpha}{Significance level.}
 }
 \value{
-Nothing if alpha is valid, otherwise stop execution
+Nothing if alpha is valid, otherwise stop execution.
 }
 \description{
-Check significance level (alpha) validity
+Check significance level (alpha) validity.
 }
 \examples{
 check_alpha(0.5)

@@ -9,7 +9,7 @@ qtl_scone(x_data, cpus = 1, ...)
 \arguments{
 \item{x_data}{Cross-data frame containing genetic map data and traits.}
 
-\item{cpus}{Number of CPUS to be used in the computation.}
+\item{cpus}{Number of CPUs to be used in the computation.}
 
 \item{...}{Optional parameters for 
 \code{\link[qtl:scanone]{qtl:scanone(...)}}.}

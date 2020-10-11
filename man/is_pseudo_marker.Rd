@@ -2,20 +2,19 @@
 % Please edit documentation in R/qtl-utils.R
 \name{is_pseudo_marker}
 \alias{is_pseudo_marker}
-\title{Verifies whether or not a string is a pseudo-marker, contains the substring
-    \code{'loc'}}
+\title{Detect pseudo-markers}
 \usage{
 is_pseudo_marker(marker)
 }
 \arguments{
-\item{marker}{string with the marker}
+\item{marker}{String with the marker.}
 }
 \value{
-TRUE or FALSE
+\code{TRUE} or \code{FALSE}
 }
 \description{
-Verifies whether or not a string is a pseudo-marker, contains the substring
-    \code{'loc'}
+Verifies whether or not a string is a pseudo-marker, these contain the 
+substring \code{'loc'}.
 }
 \examples{
 is_pseudo_marker('c1.loc1')

@@ -19,7 +19,7 @@ qtl_perm_test(
 \arguments{
 \item{x_data}{Cross-data frame containing genetic map data and traits.}
 
-\item{cpus}{Number of CPUS to be used in the computation.}
+\item{cpus}{Number of CPUs to be used in the computation.}
 
 \item{qtl_method}{QTL mapping method.}
 

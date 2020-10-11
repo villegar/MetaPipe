@@ -2,50 +2,57 @@
 % Please edit documentation in R/qtl-utils.R
 \name{transform_pseudo_marker}
 \alias{transform_pseudo_marker}
-\title{Transforms a pseudo-marker to a standard marker by looking for the nearest one}
+\title{Transform pseudo-marker}
 \usage{
 transform_pseudo_marker(x_data, marker, chr, pos)
 }
 \arguments{
-\item{x_data}{cross-file containing genetic map data and traits}
+\item{x_data}{Cross-data frame containing genetic map data and traits.}
 
-\item{marker}{pseudo marker to be transformed}
+\item{marker}{Pseudo-marker to be transformed.}
 
-\item{chr}{pseudo-marker's chromosome}
+\item{chr}{Pseudo-marker's chromosome.}
 
-\item{pos}{pseudo-marker's position}
+\item{pos}{Pseudo-marker's position.}
 }
 \value{
-a prime marker and position
+A prime marker and its position.
 }
 \description{
-Transforms a pseudo-marker to a standard marker by looking for the nearest one
+Transform a pseudo-marker to a standard marker by looking for the nearest 
+markers in a genetic map.
 }
 \examples{
-\donttest{
-# Create toy dataset
-excluded_columns <- c(2)
+# Toy dataset
+excluded_columns <- c(1, 2)
 population <- 5
 seed <- 1
 example_data <- data.frame(ID = 1:population,
                            P1 = c("one", "two", "three", "four", "five"),
                            T1 = rnorm(population),
                            T2 = rnorm(population))
-example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
-                                      trait = rep(c("T1", "T2"), each = 5),
-                                      values = c(example_data$T1, example_data$T2),
-                                      flag = "Normal",
-                                      transf = "",
-                                      transf_val = NA,
-                                      stringsAsFactors = FALSE)
-assess_normality_postprocessing(example_data, 
-                                excluded_columns, 
-                                example_data_normalised, 
-                                out_prefix = here::here("metapipe"))
+example_data_normalised <- 
+  data.frame(index = rep(c(1, 2), each = 5),
+             trait = rep(c("T1", "T2"), each = 5),
+             values = c(example_data$T1, example_data$T2),
+             flag = "Normal",
+             transf = "",
+             transf_val = NA,
+             stringsAsFactors = FALSE)
 
-# Create and store random genetic map [for testing only]
-genetic_map <- random_map(population = population, seed = seed)
-write.csv(genetic_map, here::here("metapipe_genetic_map.csv"), row.names = FALSE)
+out_prefix <- here::here("metapipe")
+example_data_normalised_post <- 
+  MetaPipe::assess_normality_postprocessing(example_data, 
+                                            excluded_columns, 
+                                            example_data_normalised,
+                                            out_prefix = out_prefix)
+
+# Create and store random genetic map (for testing only)
+genetic_map <- 
+  MetaPipe::random_map(population = population, seed = seed)
+write.csv(genetic_map, 
+          here::here("metapipe_genetic_map.csv"), 
+          row.names = FALSE)
 # Load cross file with genetic map and raw data for normal traits
 x <- qtl::read.cross(format = "csvs", 
                      dir = here::here(),
@@ -54,6 +61,5 @@ x <- qtl::read.cross(format = "csvs",
 set.seed(seed)
 x <- qtl::jittermap(x)
 x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
-transform_pseudo_marker(x, 'loc1', 1, 2.0)
-}
+MetaPipe::transform_pseudo_marker(x, 'loc1', 1, 2.0)
 }
