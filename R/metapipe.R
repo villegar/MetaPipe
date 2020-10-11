@@ -312,11 +312,11 @@ assess_normality <- function(raw_data,
                                             i, 
                                             "_", 
                                             transformation)
-                           MetaPipe::generate_hist(data = raw_data[, i], 
-                                                   title = traits[i], 
-                                                   prefix = prefix, 
-                                                   xlab = xlab, 
-                                                   is_trait = TRUE)
+                           generate_hist(data = raw_data[, i], 
+                                         title = traits[i], 
+                                         prefix = prefix, 
+                                         xlab = xlab, 
+                                         is_trait = TRUE)
                            record$flag <- "Normal"
                          }
                        }
@@ -882,7 +882,7 @@ qtl_perm_test <- function(x_data,
                          p5 <- summary(x_scone_perm)[[1]]  #  5% percent
                          p10 <- summary(x_scone_perm)[[2]] # 10% percent
                          
-                         lod_plot <- MetaPipe::save_plot(
+                         lod_plot <- save_plot(
                            {
                              plot(x_scone, ylab = "LOD Score")
                              abline(h = p5, 

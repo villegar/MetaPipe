@@ -7,14 +7,13 @@
 #' @param width Width in inches.
 #' @param height Height in inches.
 #'
-#' @export
-#'
 #' @examples
-#' MetaPipe::save_plot(hist(rnorm(100), 
-#'                     main = "Histogram of Normal Distribution"), 
-#'                     "hist")
+#' MetaPipe:::save_plot(hist(rnorm(100), 
+#'                      main = "Histogram of Normal Distribution"), 
+#'                      "hist")
 #' 
-#' @seealso \code{\link{save_plotPDF}} and \code{\link{save_plotTIFF}}
+#' @keywords internal
+#' @noRd
 save_plot <- function(plt_obj, name, width = 6, height = 6) {
   grDevices::png(paste0(name, ".png"), 
                  width = width, 
@@ -35,14 +34,13 @@ save_plot <- function(plt_obj, name, width = 6, height = 6) {
 #' @param width Width in inches.
 #' @param height Height in inches.
 #'
-#' @export
-#'
 #' @examples
-#' MetaPipe::save_plotTIFF(hist(rnorm(100), 
-#'                         main = "Histogram of Normal Distribution"), 
-#'                         "hist")
+#' MetaPipe:::save_plotTIFF(hist(rnorm(100), 
+#'                          main = "Histogram of Normal Distribution"), 
+#'                          "hist")
 #' 
-#' @seealso \code{\link{save_plotPDF}} and \code{\link{save_plot}}
+#' @keywords internal
+#' @noRd
 save_plotTIFF <- function(plt_obj, name, width = 6, height = 6) {
   grDevices::tiff(paste0(name, ".tiff"), 
                   width = width, 
@@ -63,14 +61,13 @@ save_plotTIFF <- function(plt_obj, name, width = 6, height = 6) {
 #' @param width Width in inches.
 #' @param height Height in inches.
 #'
-#' @export
-#'
 #' @examples
-#' MetaPipe::save_plotPDF(hist(rnorm(100), 
-#'                        main = "Histogram of Normal Distribution"), 
-#'                        "hist")
+#' MetaPipe:::save_plotPDF(hist(rnorm(100), 
+#'                         main = "Histogram of Normal Distribution"), 
+#'                         "hist")
 #' 
-#' @seealso \code{\link{save_plot}} and \code{\link{save_plotTIFF}}
+#' @keywords internal
+#' @noRd
 save_plotPDF <- function(plt_obj, name, width = 6, height = 6) {
   grDevices::pdf(paste0(name, ".pdf"),
                  width = width,
@@ -89,11 +86,12 @@ save_plotPDF <- function(plt_obj, name, width = 6, height = 6) {
 #' @param width Width in inches.
 #' @param height Height in inches.
 #'
-#' @export
-#'
 #' @examples
 #' plt_obj <- ggplot2::qplot(rnorm(100))
-#' MetaPipe::ggplot_save(plt_obj, "hist")
+#' MetaPipe:::ggplot_save(plt_obj, "hist")
+#' 
+#' @keywords internal
+#' @noRd
 ggplot_save <- function(plt_obj, name, width = 6, height = 6){
   R.devices::suppressGraphics({
     ggplot2::ggsave(
@@ -119,16 +117,17 @@ ggplot_save <- function(plt_obj, name, width = 6, height = 6){
 #' @param prefix File prefix.
 #' @param xlab X-axis label.
 #'
-#' @export
-#'
 #' @examples
 #' norm_dist <- rnorm(100)
 #' norm_dist_transformed <- norm_dist^2
-#' MetaPipe::compare_hist(norm_dist, 
-#'                        norm_dist_transformed, 
-#'                        "XYZ", 
-#'                        "xyz_hist", 
-#'                        "x")
+#' MetaPipe:::compare_hist(norm_dist, 
+#'                         norm_dist_transformed, 
+#'                         "XYZ", 
+#'                         "xyz_hist", 
+#'                         "x")
+#'
+#' @keywords internal
+#' @noRd
 compare_hist <- function(original, transformed, trait, prefix, xlab) {
   `..count..` <- NULL # Local binding
   ALPHA <- 1
@@ -182,12 +181,13 @@ compare_hist <- function(original, transformed, trait, prefix, xlab) {
 #' @param fill Filling colour.
 #' @param is_trait Boolean flag to prepend "Trait" to \code{title}.
 #'
-#' @export
-#'
 #' @examples
 #' norm_dist <- rnorm(100)
-#' MetaPipe::generate_hist(norm_dist, "XYZ", "xyz_hist", "x")
-#' MetaPipe::generate_hist(norm_dist, "XYZ", "xyz_hist", "x", is_trait = TRUE)
+#' MetaPipe:::generate_hist(norm_dist, "XYZ", "xyz_hist", "x")
+#' MetaPipe:::generate_hist(norm_dist, "XYZ", "xyz_hist", "x", is_trait = TRUE)
+#' 
+#' @keywords internal
+#' @noRd
 generate_hist <- function(data, 
                           title, 
                           prefix = "metapipe", 
@@ -238,10 +238,11 @@ generate_hist <- function(data,
 #' @param output Output filename and path.
 #' @param p_color Package name colour.
 #'
-#' @export
-#'
 #' @examples
-#' MetaPipe::hex_logo()
+#' MetaPipe:::hex_logo()
+#' 
+#' @keywords internal
+#' @noRd
 hex_logo <- function(subplot = system.file("images/lab-2.png", 
                                            package = "MetaPipe"),
                      dpi = 800,

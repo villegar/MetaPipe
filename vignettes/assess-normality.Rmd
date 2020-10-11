@@ -70,7 +70,7 @@ function; thus, the data seems to be skewed:
 ```{r assess-normality-example-data-before, echo = FALSE, fig.align = 'center', out.width = "60%"}
 set.seed(123)
 test_data <- rnorm(500)
-MetaPipe::generate_hist(2^test_data, NULL, xlab = latex2exp::TeX("2^{data}"), save = FALSE, alpha = 1, fill = hcolor)
+MetaPipe:::generate_hist(2^test_data, NULL, xlab = latex2exp::TeX("2^{data}"), save = FALSE, alpha = 1, fill = hcolor)
 ```
 
 Using `MetaPipe` we can find an optimal transformation that "normalises" this 
@@ -143,7 +143,7 @@ For the previous data set `HIST_1_NORM_T1.png` and `HIST_2_LOG_2_T2.png`:
 <!-- The figures below show the original data (`T1`) and the transfomed data (`T2`): -->
 
 ```{r assess-normality-example-data-after, echo = FALSE, fig.align = 'center', out.width = "60%", eval = FALSE}
-MetaPipe::generate_hist(test_data, NULL, xlab = latex2exp::TeX("data"), save = FALSE, alpha = 1, fill = hcolor)
+MetaPipe:::generate_hist(test_data, NULL, xlab = latex2exp::TeX("data"), save = FALSE, alpha = 1, fill = hcolor)
 
-MetaPipe::generate_hist(log(2^test_data), NULL, xlab = latex2exp::TeX("log_2(2^{data})"), save = FALSE, alpha = 1, fill = hcolor) 
+MetaPipe:::generate_hist(log(2^test_data), NULL, xlab = latex2exp::TeX("log_2(2^{data})"), save = FALSE, alpha = 1, fill = hcolor) 
 ```

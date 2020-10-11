@@ -167,7 +167,7 @@ effect_plots <- function(x_data_sim, qtl_data, cpus = 1, plots_dir = getwd()) {
       } else {
         ylab <- traits[i]
       }
-      MetaPipe::save_plot(
+      save_plot(
         qtl::effectplot(
           x_data_sim,
           pheno.col = traits[i],
@@ -179,7 +179,7 @@ effect_plots <- function(x_data_sim, qtl_data, cpus = 1, plots_dir = getwd()) {
       )
     } else {
       ylab <- traits[i]
-      MetaPipe::save_plot(
+      save_plot(
         qtl::effectplot(
           x_data_sim,
           pheno.col = as.character(traits[i]),
