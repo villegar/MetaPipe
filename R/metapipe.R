@@ -27,8 +27,9 @@
 #' write.csv(example_data[c(1:5, 1, 2), ], 
 #'           "example_data_dup.csv", 
 #'           row.names = FALSE)
-#' MetaPipe::load_raw("example_data.csv", c(1, 2))
-#' MetaPipe::load_raw("example_data_dup.csv", c(1, 2))
+#' knitr::kable(MetaPipe::load_raw("example_data.csv", c(1, 2)))
+#' knitr::kable(MetaPipe::load_raw("example_data_dup.csv", c(1, 2)))
+#' 
 #' 
 #' # F1 Seedling Ionomics dataset
 #' ionomics_path <- system.file("extdata", 
@@ -36,7 +37,7 @@
 #'                              package = "MetaPipe", 
 #'                              mustWork = TRUE)
 #' ionomics <- MetaPipe::load_raw(ionomics_path)
-#' knitr::kable(ionomics[1:5, 1:10])
+#' knitr::kable(ionomics[1:5, 1:8])
 load_raw <- function(raw_data_filename, excluded_columns = NULL) {
   # Load and clean raw data
   raw_data <- read.csv(raw_data_filename, stringsAsFactors = FALSE)
@@ -106,6 +107,7 @@ load_raw <- function(raw_data_filename, excluded_columns = NULL) {
 #' MetaPipe::replace_missing(example_data, c(1, 2), prop_na =  0.25)
 #' MetaPipe::replace_missing(example_data, c(1, 2), replace_na =  TRUE)
 #' 
+#' 
 #' # F1 Seedling Ionomics dataset
 #' data(ionomics) # Includes some missing data
 #' ionomics_rev <- MetaPipe::replace_missing(ionomics, c(1, 2))
@@ -115,6 +117,7 @@ load_raw <- function(raw_data_filename, excluded_columns = NULL) {
 #' ionomics_rev <- MetaPipe::replace_missing(ionomics, 
 #'                                           excluded_columns = c(1, 2),
 #'                                           replace_na =  TRUE)
+#' knitr::kable(ionomics_rev[1:5, 1:8])
 #' @seealso \code{\link{rplc_na}}
 replace_missing <- function(raw_data,
                             excluded_columns = NULL,
@@ -212,7 +215,22 @@ replace_missing <- function(raw_data,
 #'                            P1 = c("one", "two", "three", "four", "five"), 
 #'                            T1 = rnorm(5), 
 #'                            T2 = rnorm(5))
-#' assess_normality(example_data, c(1, 2))
+#' example_data_normalised <- MetaPipe::assess_normality(example_data, c(1, 2))
+#' knitr::kable(example_data_normalised)
+#' 
+#' 
+#' # F1 Seedling Ionomics dataset
+#' data(ionomics) # Includes some missing data
+#' ionomics_rev <- MetaPipe::replace_missing(ionomics, 
+#'                                           excluded_columns = c(1, 2),
+#'                                           replace_na =  TRUE)
+#' ionomics_normalised <- 
+#'   MetaPipe::assess_normality(ionomics_rev,
+#'                              excluded_columns = c(1, 2),
+#'                              out_prefix = "ionomics",
+#'                              transf_vals = c(2, exp(1)))
+#' # Show one entry for each of the first ten traits (left to right)
+#' knitr::kable(ionomics_normalised[nrow(ionomics) * c(1:10), ])
 #' 
 #' @seealso \code{\link{assess_normality_postprocessing}} and 
 #' \code{\link{assess_normality_stats}}
@@ -263,7 +281,7 @@ assess_normality <- function(raw_data,
                          index = i,
                          trait = traits[i],
                          values = raw_data[, i],
-                         flag = "Non-normal",
+                         flag = "Skewed",
                          transf = "",
                          transf_val = NA,
                          stringsAsFactors = FALSE
@@ -324,20 +342,53 @@ assess_normality <- function(raw_data,
 #' @param pareto_scaling Boolean flag to indicate whether or not perform a 
 #'     Pareto scaling on the normalised data.
 #'
-#' @return Files containing the normal and non-parametric normalised data
+#' @return Files containing the normal and non-parametric normalised data.
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#'     example_data <- data.frame(ID = c(1,2,3,4,5), 
-#'                                P1 = c("one", "two", "three", "four", "five"), 
-#'                                T1 = rnorm(5), 
-#'                                T2 = rnorm(5))
-#'     example_data_normalised <- assess_normality(example_data, c(1, 2))
-#'     assess_normality_postprocessing(example_data, c(1, 2), example_data_normalised)
-#' }
+#' # Toy dataset
+#' example_data <- data.frame(ID = c(1,2,3,4,5), 
+#'                            P1 = c("one", "two", "three", "four", "five"), 
+#'                            T1 = rnorm(5), 
+#'                            T2 = rnorm(5))
+#' example_data_normalised <- MetaPipe::assess_normality(example_data, c(1, 2))
+#' example_data_normalised_post <- 
+#'  MetaPipe::assess_normality_postprocessing(example_data, 
+#'                                            c(1, 2), 
+#'                                            example_data_normalised)
+#' example_data_norm <- example_data_normalised_post$norm
+#' example_data_skew <- example_data_normalised_post$skew
+#' # Normal traits
+#' knitr::kable(example_data_norm)
 #' 
-#' @seealso \code{\link{assess_normality}} and \code{\link{assess_normality_stats}}
+#' # Skewed traits (empty)
+#' # knitr::kable(example_data_skew)
+#' 
+#' 
+#' # F1 Seedling Ionomics dataset
+#' data(ionomics) # Includes some missing data
+#' ionomics_rev <- MetaPipe::replace_missing(ionomics, 
+#'                                           excluded_columns = c(1, 2),
+#'                                           replace_na =  TRUE)
+#' ionomics_normalised <- 
+#'   MetaPipe::assess_normality(ionomics_rev,
+#'                              excluded_columns = c(1, 2),
+#'                              out_prefix = "ionomics",
+#'                              transf_vals = c(2, exp(1)))
+#' ionomics_normalised_post <- 
+#'   MetaPipe::assess_normality_postprocessing(ionomics_rev, 
+#'                                             c(1, 2), 
+#'                                             ionomics_normalised)
+#' ionomics_norm <- ionomics_normalised_post$norm
+#' ionomics_skew <- ionomics_normalised_post$skew
+#' # Normal traits
+#' knitr::kable(ionomics_norm[1:5, ])
+#' 
+#' # Skewed traits (partial output)
+#' knitr::kable(ionomics_skew[1:5, 1:10])
+#' 
+#' @seealso \code{\link{assess_normality}} and 
+#' \code{\link{assess_normality_stats}}
 assess_normality_postprocessing <- function(raw_data, 
                                             excluded_columns,
                                             raw_data_normalised,
@@ -345,16 +396,23 @@ assess_normality_postprocessing <- function(raw_data,
                                             pareto_scaling = FALSE) {
   trait <- transf_val <- NULL # Local binding
   # Verify the raw_data_normalised object has the right structure
-  expected_columns <- c("index", "trait", "values", "flag", "transf", "transf_val")
+  expected_columns <- c("index", 
+                        "trait", 
+                        "values", 
+                        "flag", 
+                        "transf", 
+                        "transf_val")
   if (!all(expected_columns %in% colnames(raw_data_normalised)))
-    stop("raw_data_normalised must be the output of the function assess_normality")
+    stop("raw_data must be the output of the function assess_normality")
   
   # Exclude column 1, ID
   excluded_columns <- unique(c(1, excluded_columns))
   
   # Separate normal and non-parametric entries from the normalised data
-  raw_data_normalised_norm <- raw_data_normalised[raw_data_normalised$flag == "Normal", ]
-  raw_data_normalised_non_par <- raw_data_normalised[raw_data_normalised$flag == "Non-normal", ]
+  raw_data_normalised_norm <- 
+    raw_data_normalised[raw_data_normalised$flag == "Normal", ]
+  raw_data_normalised_non_par <- 
+    raw_data_normalised[raw_data_normalised$flag == "Skewed", ]
   
   # Extract trait names for both normal and non-parametric data
   traits_non_par <- unique(as.character(raw_data_normalised_non_par$trait))
@@ -369,14 +427,16 @@ assess_normality_postprocessing <- function(raw_data,
   if (traits_non_par_len > 0)
     raw_data_non_par <- raw_data[, traits_non_par]
   if (traits_norm_len > 0 ) {
-    raw_data_norm <- data.frame(matrix(vector(), 
-                                       nrow(raw_data_normalised_norm) / traits_norm_len, 
-                                       traits_norm_len,
-                                       dimnames = list(c(), traits_norm)),
-                                stringsAsFactors = FALSE)
+    raw_data_norm <- 
+      data.frame(matrix(vector(), 
+                        nrow(raw_data_normalised_norm) / traits_norm_len, 
+                        traits_norm_len,
+                        dimnames = list(c(), traits_norm)),
+                 stringsAsFactors = FALSE)
     
     for (i in 1:traits_norm_len) {
-      raw_data_norm[i] <- subset(raw_data_normalised_norm, trait == traits_norm[i])$values
+      raw_data_norm[i] <- 
+        subset(raw_data_normalised_norm, trait == traits_norm[i])$values
     }
   }
   
@@ -404,22 +464,31 @@ assess_normality_postprocessing <- function(raw_data,
   
   # Generate basic stats from the normalisation process
   raw_data_rows <- nrow(raw_data)
-  norm_traits_normalised_count <- nrow(raw_data_normalised_norm[raw_data_normalised_norm$transf != "", ]) / raw_data_rows
+  norm_traits_normalised_count <-
+    nrow(raw_data_normalised_norm[raw_data_normalised_norm$transf != "",])
+  norm_traits_normalised_count <- norm_traits_normalised_count / raw_data_rows
   norm_traits_count <- nrow(raw_data_normalised_norm) / raw_data_rows
   total_traits <- nrow(raw_data_normalised)/raw_data_rows
   transformations <- unique(raw_data_normalised[c("transf", "transf_val")])
-  transformations <- transformations[nrow(transformations), ] # Drop blank transformation, NULL transformation
+  # Drop blank transformation, NULL transformation
+  transformations <- transformations[nrow(transformations), ]
   sorting <- order(transformations$transf, decreasing = TRUE)
   transformations <- transformations[sorting, ]
   
   # Create data frame containing the stats
-  normalisation_stats <- data.frame(key = c("total", "norm_traits", "norm_traits_normalised"),
-                                    values = c(total_traits, norm_traits_count, norm_traits_normalised_count),
-                                    stringsAsFactors = FALSE)
+  normalisation_stats <- 
+    data.frame(key = c("total", "norm_traits", "norm_traits_normalised"),
+               values = c(total_traits, 
+                          norm_traits_count, 
+                          norm_traits_normalised_count),
+               stringsAsFactors = FALSE)
   if (nrow(transformations) > 0){
-    for(i in 1:nrow(transformations)){
-      key <- paste0(transformations$transf[i],"\t",transformations$transf_val[i])
-      tmp <- subset(raw_data_normalised_norm, raw_data_normalised_norm$transf == transformations$transf[i])
+    for (i in 1:nrow(transformations)) {
+      key <-
+        paste0(transformations$transf[i], "\t", transformations$transf_val[i])
+      tmp <- 
+        subset(raw_data_normalised_norm,
+               raw_data_normalised_norm$transf == transformations$transf[i])
       tmp <- subset(tmp, transf_val == transformations$transf_val[i])
       value <- nrow(tmp) / raw_data_rows
       normalisation_stats <- rbind(normalisation_stats, c(key, value))
@@ -427,10 +496,20 @@ assess_normality_postprocessing <- function(raw_data,
   }
   
   # Write to disk new data structures
-  write.csv(raw_data_normalised, file = paste0(out_prefix,"_raw_data_normalised_all.csv"), row.names = FALSE)
-  write.csv(raw_data_norm, file = paste0(out_prefix,"_raw_data_norm.csv"), row.names = FALSE)
-  write.csv(raw_data_non_par, file = paste0(out_prefix,"_raw_data_non_par.csv"), row.names = FALSE)
-  write.csv(normalisation_stats, file = paste0(out_prefix,"_normalisation_stats.csv"), row.names = FALSE)
+  write.csv(raw_data_normalised,
+            file = paste0(out_prefix, "_raw_data_normalised_all.csv"),
+            row.names = FALSE)
+  write.csv(raw_data_norm,
+            file = paste0(out_prefix, "_raw_data_norm.csv"),
+            row.names = FALSE)
+  write.csv(raw_data_non_par,
+            file = paste0(out_prefix, "_raw_data_non_par.csv"),
+            row.names = FALSE)
+  write.csv(normalisation_stats,
+            file = paste0(out_prefix, "_normalisation_stats.csv"),
+            row.names = FALSE)
+  
+  return(list(norm = raw_data_norm, skew = raw_data_non_par))
 }
 
 #' Statistics for the normality assessment of the traits. 
