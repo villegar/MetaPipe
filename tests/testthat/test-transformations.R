@@ -20,7 +20,7 @@ test_that("log transformation works", {
   
   result_df <- log_transformation(2 ^ data, "EXP_2")
   expect_identical(expected_df, result_df)
-  expect_warning(result_df <- log_transformation(data, "EXP_2"))
+  expect_message(result_df <- log_transformation(data, "EXP_2"))
   expect_null(result_df)
   filename <- "HIST_LOG_2_EXP_2.png"
   expect_true(file.exists(filename))
@@ -44,7 +44,7 @@ test_that("power transformation works", {
   
   result_df <- power_transformation(sqrt(data), "ROOT_2")
   expect_identical(expected_df, result_df)
-  expect_warning(result_df <- power_transformation(data, "ROOT_2"))
+  expect_message(result_df <- power_transformation(data, "ROOT_2"))
   expect_null(result_df)
   filename <- "HIST_POW_2_ROOT_2.png"
   expect_true(file.exists(filename))
@@ -68,7 +68,7 @@ test_that("root transformation works", {
   
   result_df <- root_transformation(data ^ 2, "POW_2")
   expect_identical(expected_df, result_df)
-  expect_warning(result_df <- root_transformation(data, "POW_2"))
+  expect_message(result_df <- root_transformation(data, "POW_2"))
   expect_null(result_df)
   filename <- "HIST_ROOT_e_POW_2.png"
   expect_true(file.exists(filename))
@@ -123,7 +123,7 @@ test_that("data transform works", {
     stringsAsFactors = FALSE
   )
   
-  expect_warning(result_df <- transform_data(data))
+  expect_message(result_df <- transform_data(data))
   expect_null(result_df)
   
   result_df_log_2 <- transform_data(2 ^ data, "EXP_2")
