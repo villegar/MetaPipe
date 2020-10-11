@@ -83,7 +83,7 @@ log_transformation <- function(data,
   
   # Data frame to hold the outcome of the transformation
   record <- data.frame(
-    flag = "Non-normal",
+    flag = "Skewed",
     transf = "",
     transf_val = 0
   )
@@ -150,7 +150,7 @@ power_transformation <- function(data,
   
   # Data frame to hold the outcome of the transformation
   record <- data.frame(
-    flag = "Non-normal",
+    flag = "Skewed",
     transf = "",
     transf_val = 0
   )
@@ -218,7 +218,7 @@ root_transformation <- function(data,
   
   # Data frame to hold the outcome of the transformation
   record <- data.frame(
-    flag = "Non-normal",
+    flag = "Skewed",
     transf = "",
     transf_val = 0
   )
@@ -296,7 +296,7 @@ transform_data <- function(data,
     index = index,
     trait = trait,
     values = data,
-    flag = "Non-normal",
+    flag = "Skewed",
     transf = "",
     transf_val = 0,
     stringsAsFactors = FALSE

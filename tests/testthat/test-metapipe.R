@@ -147,13 +147,13 @@ test_that("normality assessment postprocessing works", {
   
   # Expected output for log_2 normalisation
   expected_output_non_par <- expected_output[,]
-  expected_output_non_par$flag <- rep(c("Non-normal", "Normal"), each = 5)
+  expected_output_non_par$flag <- rep(c("Skewed", "Normal"), each = 5)
   
   # Test format of normalised data
   expect_error(assess_normality_postprocessing(example_data, 
                                                c(1, 2), 
                                                expected_output[, -1]), 
-               "raw_data_normalised must be the output*")
+               "raw_data must be the output*")
   
   # Testing for all data sets
   assess_normality_postprocessing(example_data, c(1, 2), expected_output)
