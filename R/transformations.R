@@ -7,12 +7,14 @@
 #' @param z Original 2-dimensional data.
 #'
 #' @return Scaled data.
-#' @export
 #'
 #' @examples
 #' set.seed(123)
 #' data <- matrix(rnorm(100, 5), ncol = 2)
-#' data_new <- MetaPipe::paretoscale(data)
+#' data_new <- MetaPipe:::paretoscale(data)
+#' 
+#' @keywords internal
+#' @noRd
 paretoscale <- function(z) {
   colmean <- apply(z, 2, mean)
   colsd <- apply(z, 2, sd)
@@ -29,15 +31,17 @@ paretoscale <- function(z) {
 #' @param alpha Significance level.
 #'
 #' @return Nothing if alpha is valid, otherwise stop execution.
-#' @export
 #'
 #' @examples
-#' check_alpha(0.5)
+#' MetaPipe:::check_alpha(0.5)
 #' \dontrun{
-#'     check_alpha(-0.5)
-#'     check_alpha(1.5)
-#'     check_alpha("1.5")
+#'     MetaPipe:::check_alpha(-0.5)
+#'     MetaPipe:::check_alpha(1.5)
+#'     MetaPipe:::check_alpha("1.5")
 #' }
+#' 
+#' @keywords internal
+#' @noRd
 check_alpha <- function(alpha) {
   if (!is.numeric(alpha))
     stop("alpha must be a numeric value")
@@ -60,8 +64,11 @@ check_alpha <- function(alpha) {
 #' otherwise.
 #'
 #' @examples
-#' check_transformation(0.05, 0.045, "Log")
-#' check_transformation(0.05, 0.1, "Log")
+#' MetaPipe:::check_transformation(0.05, 0.045, "Log")
+#' MetaPipe:::check_transformation(0.05, 0.1, "Log")
+#' 
+#' @keywords internal
+#' @noRd
 check_transformation <- 
   function(ref, 
            new, 

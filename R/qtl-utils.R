@@ -55,7 +55,7 @@ is_pseudo_marker <- function(marker) {
 #' 
 #' # Create and store random genetic map (for testing only)
 #' genetic_map <- 
-#'   MetaPipe::random_map(population = population, seed = seed)
+#'   MetaPipe:::random_map(population = population, seed = seed)
 #' write.csv(genetic_map, 
 #'           here::here("metapipe_genetic_map.csv"), 
 #'           row.names = FALSE)
@@ -119,7 +119,7 @@ transform_pseudo_marker <- function(x_data, marker, chr, pos) {
 #' 
 #' # Create and store random genetic map (for testing only)
 #' genetic_map <- 
-#'   MetaPipe::random_map(population = population, seed = seed)
+#'   MetaPipe:::random_map(population = population, seed = seed)
 #' write.csv(genetic_map, 
 #'           here::here("metapipe_genetic_map.csv"), 
 #'           row.names = FALSE)
