@@ -16,7 +16,19 @@ Authors@R: c(
     person(given = "Anne",
            family = "Fennell",
            role = c("ths"),
-           email = "anne.fennell@sdstate.edu"))
+           email = "anne.fennell@sdstate.edu",
+           comment = c(ORCID = "0000-0002-4234-6419")),
+    person(given = "Jason P.",
+           family = "Londo",
+           role = c("ctb"),
+           email = "jason.londo@usda.gov",
+           comment = c(ORCID = "0000-0003-0535-4820")),
+    person(given = "Gaurab",
+           family = "Bhattarai",
+           role = c("ctb"),
+           email = "gbhattarai@uga.edu",
+           comment = c(ORCID = "0000-0002-2899-7725"))
+    )
 Description: Pipeline for Quantitative Trait Locus (QTL) mapping of large 
     ionomic and metabolomic datasets. It uses a High-Performance Computing 
     (HPC) approach to speed up the computations performed.
