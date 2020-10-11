@@ -11,14 +11,15 @@ qtl_scone(x_data, cpus = 1, ...)
 
 \item{cpus}{Number of CPUS to be used in the computation.}
 
-\item{...}{Optional parameters for \code{R/qtl} library.}
+\item{...}{Optional parameters for 
+\code{\link[qtl:scanone]{qtl:scanone(...)}}.}
 }
 \value{
 Data frame containing the LOD scores.
 }
 \description{
-Perform QTL mapping using the \code{\link[qtl:scanone]{qtl:scanone()}} 
-to obtain LOD scores for all traits, peak positions, and markers.
+Perform QTL mapping using the \code{\link[qtl:scanone]{qtl:scanone(...)}} 
+function to obtain LOD scores for all traits, peak positions, and markers.
 }
 \examples{
 \dontrun{

@@ -2,7 +2,7 @@
 % Please edit documentation in R/metapipe.R
 \name{qtl_perm_test}
 \alias{qtl_perm_test}
-\title{Perform QTL mapping permutation test using \code{scanone} to obtain significant QTLs}
+\title{QTL mapping permutation test}
 \usage{
 qtl_perm_test(
   x_data,
@@ -17,29 +17,33 @@ qtl_perm_test(
 )
 }
 \arguments{
-\item{x_data}{cross-data containing genetic map data and traits}
+\item{x_data}{Cross-data frame containing genetic map data and traits.}
 
-\item{cpus}{number of CPUS to be used}
+\item{cpus}{Number of CPUS to be used in the computation.}
 
-\item{qtl_method}{QTL mapping method [default: \code{scanone}]}
+\item{qtl_method}{QTL mapping method.}
 
-\item{raw_data_normalised}{normalised raw data, see \code{\link{assess_normality}}}
+\item{raw_data_normalised}{Normalised raw data, see 
+\code{\link{assess_normality}}.}
 
 \item{lod_threshold}{LOD score threshold to look up for significant QTLs}
 
-\item{parametric}{boolean flag to indicate whether or not \code{x_data} is parametric}
+\item{parametric}{Boolean flag to indicate whether or not \code{x_data} 
+contains parametric (normal) traits.}
 
-\item{n_perm}{number of permutations}
+\item{n_perm}{Number of permutations.}
 
-\item{plots_dir}{output directory for plots}
+\item{plots_dir}{Output directory for plots.}
 
-\item{...}{optional parameters for \code{R/qtl} library}
+\item{...}{Optional parameters for 
+\code{\link[qtl:scanone]{qtl:scanone(...)}}.}
 }
 \value{
-data frame containing the significant QTLs information
+Data frame containing the significant QTLs information.
 }
 \description{
-Perform QTL mapping permutation test using \code{scanone} to obtain significant QTLs
+Perform QTL mapping permutation test using the 
+\code{\link[qtl:scanone]{qtl:scanone(...)}} function to find significant QTL.
 }
 \examples{
 \dontrun{
