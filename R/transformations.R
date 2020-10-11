@@ -1,16 +1,18 @@
-#' Pareto scaling function
-#' This function is adapted from Stephen C. Grace and Dane A. Hudson 
+#' Pareto scaling
+#' 
+#' Perform a pareto scaling.
+#' This function is adapted from Stephen C. Grace and Dane A. Hudson.
 #' 
 #' @importFrom stats sd
-#' @param z original 2-dimensional data
+#' @param z Original 2-dimensional data.
 #'
-#' @return normalised data
+#' @return Scaled data.
 #' @export
 #'
 #' @examples
 #' set.seed(123)
 #' data <- matrix(rnorm(100, 5), ncol = 2)
-#' data_new <- paretoscale(data)
+#' data_new <- MetaPipe::paretoscale(data)
 paretoscale <- function(z) {
   colmean <- apply(z, 2, mean)
   colsd <- apply(z, 2, sd)
@@ -20,11 +22,13 @@ paretoscale <- function(z) {
   return(rv)
 }
 
-#' Check significance level (alpha) validity 
+#' Check significance level
+#' 
+#' Check significance level (alpha) validity.
 #'
-#' @param alpha significance level
+#' @param alpha Significance level.
 #'
-#' @return Nothing if alpha is valid, otherwise stop execution
+#' @return Nothing if alpha is valid, otherwise stop execution.
 #' @export
 #'
 #' @examples
@@ -43,38 +47,68 @@ check_alpha <- function(alpha) {
     stop("alpha must be a numeric value between 0 and 1")
 }
 
-check_transformation <- function(ref, new, transf, 
-                                 msg = " transformation does not normalise the data.") {
+#' Check transformation
+#' 
+#' Check whether or not the transformation normalises the data.
+#'
+#' @param ref Reference p-value.
+#' @param new New p-value.
+#' @param transf Transformation name (e.g. Log).
+#' @param msg Message template.
+#'
+#' @return \code{TRUE} if the transformation normalised the data, \code{FALSE} 
+#' otherwise.
+#'
+#' @examples
+#' check_transformation(0.05, 0.045, "Log")
+#' check_transformation(0.05, 0.1, "Log")
+check_transformation <- 
+  function(ref, 
+           new, 
+           transf, 
+           msg = " transformation does not normalise the data.") {
   if (new < ref) { # Compare a new p-value with a reference (original).
-    warning(paste0(transf, msg))
+    message(paste0("\n", transf, msg))
     return(TRUE)
   }
   return(FALSE)
 }
 
-#' Normalise data with a log transformation
+#' Logarithmic transformation
+#' 
+#' Normalise data with a log transformation.
+#' 
+#' @param data Original data.
+#' @param trait Trait name.
+#' @param alpha Significance level.
+#' @param transf_vals Transformation values.
+#' @param plots_prefix Prefix for plots with or without path.
+#' @param digits Significant digits to compare p-values of transformations.
 #'
-#' @param data original data
-#' @param trait trait name
-#' @param alpha significance level
-#' @param transf transformation values
-#' @param plots_prefix prefix for plots with or without path
-#' @param digits significant digits to compare p-values of transformations
-#'
-#' @return data structure containing the normalised data, NULL if no 
-#' transformation was performed
+#' @return Data structure containing the normalised data, \code{NULL} if no 
+#' transformation was performed.
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#'     set.seed(123)
-#'     data <- rnorm(100, 5)
-#'     log_transformation(2 ^ data, "EXP_2")
-#' }
+#' set.seed(123)
+#' data <- rnorm(100, 5)
+#' MetaPipe::log_transformation(2 ^ data, "EXP_2")
+#' 
+#' @seealso \code{\link{power_transformation}} and
+#' \code{\link{root_transformation}}
 log_transformation <- function(data, 
                                trait = "DATA", 
                                alpha = 0.05,
-                               transf = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10),
+                               transf_vals = c(2, 
+                                               exp(1), 
+                                               3, 
+                                               4, 
+                                               5, 
+                                               6, 
+                                               7, 
+                                               8, 
+                                               9, 
+                                               10),
                                plots_prefix = "HIST",
                                digits = 6) {
   check_alpha(alpha = alpha) # Check the significance level
@@ -88,10 +122,10 @@ log_transformation <- function(data,
     transf_val = 0
   )
   
-  pvals <- data.frame(matrix(vector(), 1, length(transf)))
+  pvals <- data.frame(matrix(vector(), 1, length(transf_vals)))
   for (k in 1:ncol(pvals)) {
     suppressWarnings({
-      pvals[1, k] <- shapiro.test(log(data, transf[k]))[[2]]
+      pvals[1, k] <- shapiro.test(log(data, transf_vals[k]))[[2]]
     })
   }
   
@@ -104,7 +138,7 @@ log_transformation <- function(data,
       check_transformation(ref_pval, max_pval, "Log"))
     return(NULL)
   
-  base <- transf[max_pval_idx]
+  base <- transf_vals[max_pval_idx]
   transformed <- log(data, base)
   
   base <- ifelse(base == exp(1), "e", base)
@@ -119,29 +153,41 @@ log_transformation <- function(data,
   return(record)
 }
 
-#' Normalise data with a power transformation
+#' Power transformation
+#' 
+#' Normalise data with a power transformation.
 #'
-#' @param data original data
-#' @param trait trait name
-#' @param alpha significance level
-#' @param transf transformation values
-#' @param plots_prefix prefix for plots with or without path
-#' @param digits significant digits to compare p-values of transformations
+#' @param data Original data.
+#' @param trait Trait name.
+#' @param alpha Significance level.
+#' @param transf_vals Transformation values.
+#' @param plots_prefix Prefix for plots with or without path.
+#' @param digits Significant digits to compare p-values of transformations.
 #'
-#' @return data structure containing the normalised data, NULL if no 
-#' transformation was performed
+#' @return Data structure containing the normalised data, \code{NULL} if no 
+#' transformation was performed.
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#'     set.seed(123)
-#'     data <- rnorm(100, 5)
-#'     power_transformation(sqrt(data), "ROOT_2")
-#' }
+#' set.seed(123)
+#' data <- rnorm(100, 5)
+#' MetaPipe::power_transformation(sqrt(data), "ROOT_2")
+#' 
+#' @seealso \code{\link{log_transformation}} and 
+#' \code{\link{root_transformation}}
 power_transformation <- function(data, 
                                  trait = "DATA", 
                                  alpha = 0.05,
-                                 transf = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10),
+                                 transf_vals = c(2, 
+                                                 exp(1), 
+                                                 3, 
+                                                 4, 
+                                                 5, 
+                                                 6, 
+                                                 7, 
+                                                 8, 
+                                                 9, 
+                                                 10),
                                  plots_prefix = "HIST",
                                  digits = 6) {
   check_alpha(alpha = alpha) # Check the significance level
@@ -155,10 +201,10 @@ power_transformation <- function(data,
     transf_val = 0
   )
   
-  pvals <- data.frame(matrix(vector(), 1, length(transf)))
+  pvals <- data.frame(matrix(vector(), 1, length(transf_vals)))
   for (k in 1:ncol(pvals)) {
     suppressWarnings({
-      pvals[1, k] <- shapiro.test(data ^ transf[k])[[2]]
+      pvals[1, k] <- shapiro.test(data ^ transf_vals[k])[[2]]
     })
   }
   
@@ -171,7 +217,7 @@ power_transformation <- function(data,
       check_transformation(ref_pval, max_pval, "Power"))
     return(NULL)
   
-  power <- transf[max_pval_idx]
+  power <- transf_vals[max_pval_idx]
   transformed <- data ^ power
   
   power <- ifelse(power == exp(1), "e", power)
@@ -186,29 +232,41 @@ power_transformation <- function(data,
   return(record)
 }
 
-#' Normalise data with a root transformation
+#' Root transformation
+#' 
+#' Normalise data with a root transformation.
 #'
-#' @param data original data
-#' @param trait trait name
-#' @param alpha significance level
-#' @param transf transformation values
-#' @param plots_prefix prefix for plots with or without path
-#' @param digits significant digits to compare p-values of transformations
+#' @param data Original data.
+#' @param trait Trait name.
+#' @param alpha Significance level.
+#' @param transf_vals Transformation values.
+#' @param plots_prefix Prefix for plots with or without path.
+#' @param digits Significant digits to compare p-values of transformations.
 #'
-#' @return data structure containing the normalised data, NULL if no 
-#' transformation was performed
+#' @return Data structure containing the normalised data, \code{NULL} if no 
+#' transformation was performed.
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#'     set.seed(123)
-#'     data <- rnorm(100, 5)
-#'     root_transformation(data ^ 2, "EXP_2")
-#' }
+#' set.seed(123)
+#' data <- rnorm(100, 5)
+#' MetaPipe::root_transformation(data ^ 2, "EXP_2")
+#' 
+#' @seealso \code{\link{log_transformation}} and 
+#' \code{\link{power_transformation}}
 root_transformation <- function(data, 
                                 trait = "DATA", 
                                 alpha = 0.05,
-                                transf = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10),
+                                transf_vals = c(2, 
+                                                exp(1), 
+                                                3, 
+                                                4, 
+                                                5, 
+                                                6, 
+                                                7, 
+                                                8, 
+                                                9, 
+                                                10),
                                 plots_prefix = "HIST",
                                 digits = 6) {
   
@@ -223,10 +281,10 @@ root_transformation <- function(data,
     transf_val = 0
   )
   
-  pvals <- data.frame(matrix(vector(), 1, length(transf)))
+  pvals <- data.frame(matrix(vector(), 1, length(transf_vals)))
   for (k in 1:ncol(pvals)) {
     suppressWarnings({
-      pvals[1, k] <- shapiro.test(data ^ (1 / transf[k]))[[2]]
+      pvals[1, k] <- shapiro.test(data ^ (1 / transf_vals[k]))[[2]]
     })
   }
   
@@ -239,7 +297,7 @@ root_transformation <- function(data,
       check_transformation(ref_pval, max_pval, "Root"))
     return(NULL)
   
-  root <- transf[max_pval_idx]
+  root <- transf_vals[max_pval_idx]
   transformed <- data ^ (1 / root)
   
   root <- ifelse(root == exp(1), "e", root)
@@ -254,29 +312,33 @@ root_transformation <- function(data,
   return(record)
 }
 
+#' Normalise data
+#' 
 #' Normalise data using different methods: log, power, and root, with a 
 #' different number of parameters to find out which one transforms the data
 #' into a normal-ish set. 
 #'
-#' @param data original data
-#' @param trait trait name
-#' @param alpha significance level
-#' @param index index of the current trait
-#' @param transf_vals transformation values
-#' @param plots_prefix prefix for plots with or without path
-#' @param digits significant digits to compare p-values of transformations
+#' @param data Original data.
+#' @param trait Trait name.
+#' @param alpha Significance level.
+#' @param index Index of the current trait.
+#' @param transf_vals Transformation values.
+#' @param plots_prefix Prefix for plots with or without path.
+#' @param digits Significant digits to compare p-values of transformations.
 #'
-#' @return transformed record
+#' @return Transformed record.
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#'     set.seed(123)
-#'     data <- rnorm(100, 5)
-#'     transform_data(2 ^ data, "EXP_2")
-#'     transform_data(sqrt(data), "ROOT_2")
-#'     transform_data(data ^ 2, "POW_2")
-#' }
+#' set.seed(123)
+#' data <- rnorm(100, 5)
+#' out_exp2 <- MetaPipe::transform_data(2 ^ data, "EXP_2")
+#' out_root2 <- MetaPipe::transform_data(sqrt(data), "ROOT_2")
+#' out_pow2 <- MetaPipe::transform_data(data ^ 2, "POW_2")
+#' 
+#' knitr::kable(head(out_exp2))
+#' knitr::kable(head(out_root2))
+#' knitr::kable(head(out_pow2))
 transform_data <- function(data,
                            trait = "DATA",
                            alpha = 0.05,
@@ -305,9 +367,12 @@ transform_data <- function(data,
   pvals <- data.frame(matrix(vector(), 3, length(transf_vals)))
   for (k in 1:ncol(pvals)) {
     suppressWarnings({
-      pvals[1, k] <- round(shapiro.test(log(data, transf_vals[k]))[[2]], digits)
-      pvals[2, k] <- round(shapiro.test(data ^ transf_vals[k])[[2]], digits)
-      pvals[3, k] <- round(shapiro.test(data ^ (1 / transf_vals[k]))[[2]], digits)
+      pvals[1, k] <- round(shapiro.test(log(data, transf_vals[k]))[[2]], 
+                           digits)
+      pvals[2, k] <- round(shapiro.test(data ^ transf_vals[k])[[2]], 
+                           digits)
+      pvals[3, k] <- round(shapiro.test(data ^ (1 / transf_vals[k]))[[2]], 
+                           digits)
     })
   }
   
@@ -321,8 +386,14 @@ transform_data <- function(data,
   transf_val_idx <- max_pval_idx[2]
   
   # Verify if a transformation normalised the data
-  if (check_transformation(alpha, max_pval, "", "No transformation normalised the data.") || 
-      check_transformation(ref_pval, max_pval, "", "No transformation normalised the data."))
+  if (check_transformation(alpha, 
+                           max_pval, 
+                           "", 
+                           "No transformation normalised the data.") || 
+      check_transformation(ref_pval, 
+                           max_pval, 
+                           "", 
+                           "No transformation normalised the data."))
     return(NULL)
   
   record$flag <- "Normal"
@@ -381,4 +452,3 @@ transform_data <- function(data,
     return(record)
   }
 }
-

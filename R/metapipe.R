@@ -199,7 +199,7 @@ replace_missing <- function(raw_data,
 #' @param raw_data Data frame containing the raw data.
 #' @param excluded_columns Numeric vector containing the indices of the dataset 
 #'     properties that are non-numeric, excluded columns.
-#' @param cpus Number of CPUS to be used in the computation.
+#' @param cpus Number of CPUs to be used in the computation.
 #' @param out_prefix Prefix for output files and plots.
 #' @param plots_dir Path to the directory where plots should be stored.
 #' @param transf_vals Numeric vector with the transformation values.
@@ -660,7 +660,7 @@ random_map <- function(genotypes = c("A", "H", "B"),
 #' @importFrom foreach %dopar%
 #' 
 #' @param x_data Cross-data frame containing genetic map data and traits.
-#' @param cpus Number of CPUS to be used in the computation.
+#' @param cpus Number of CPUs to be used in the computation.
 #' @param ... Optional parameters for 
 #'     \code{\link[qtl:scanone]{qtl:scanone(...)}}.
 #'
@@ -753,7 +753,7 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
 #' @importFrom stats as.formula
 #' 
 #' @param x_data Cross-data frame containing genetic map data and traits.
-#' @param cpus Number of CPUS to be used in the computation.
+#' @param cpus Number of CPUs to be used in the computation.
 #' @param qtl_method QTL mapping method.
 #' @param raw_data_normalised Normalised raw data, see 
 #'     \code{\link{assess_normality}}.
