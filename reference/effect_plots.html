@@ -6,8 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create effect plots for significant QTLS found with  
-qtl_perm_test. — effect_plots • MetaPipe</title>
+<title>Create effect plots — effect_plots • MetaPipe</title>
 
 
 <!-- jquery -->
@@ -40,9 +39,8 @@ qtl_perm_test. — effect_plots • MetaPipe</title>
 
 
 
-<meta property="og:title" content="Create effect plots for significant QTLS found with  
-qtl_perm_test. — effect_plots" />
-<meta property="og:description" content="Create effect plots for significant QTLS found with  
+<meta property="og:title" content="Create effect plots — effect_plots" />
+<meta property="og:description" content="Create effect plots for significant QTLs found with  
 qtl_perm_test." />
 
 
@@ -132,14 +130,13 @@ qtl_perm_test." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create effect plots for significant QTLS found with  
-<code><a href='qtl_perm_test.html'>qtl_perm_test</a></code>.</h1>
+    <h1>Create effect plots</h1>
     <small class="dont-index">Source: <a href='https://github.com/villegar/MetaPipe/blob/master/R/qtl-utils.R'><code>R/qtl-utils.R</code></a></small>
     <div class="hidden name"><code>effect_plots.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Create effect plots for significant QTLS found with  
+    <p>Create effect plots for significant QTLs found with  
 <code><a href='qtl_perm_test.html'>qtl_perm_test</a></code>.</p>
     </div>
 
@@ -150,19 +147,19 @@ qtl_perm_test." />
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x_data_sim</th>
-      <td><p>Cross-data simulated with <code><a href='https://rdrr.io/pkg/qtl/man/sim.geno.html'>qtl::sim.geno</a></code></p></td>
+      <td><p>Cross-data frame simulated with <code><a href='https://rdrr.io/pkg/qtl/man/sim.geno.html'>qtl::sim.geno</a></code>.</p></td>
     </tr>
     <tr>
       <th>qtl_data</th>
-      <td><p>Significant QTL data</p></td>
+      <td><p>Significant QTL data.</p></td>
     </tr>
     <tr>
       <th>cpus</th>
-      <td><p>number of CPUS to be used</p></td>
+      <td><p>Number of CPUs to be used in the computation.</p></td>
     </tr>
     <tr>
       <th>plots_dir</th>
-      <td><p>output directory for plots</p></td>
+      <td><p>Output directory for plots.</p></td>
     </tr>
     </table>
 
@@ -171,40 +168,36 @@ qtl_perm_test." />
     <div class='dont-index'><p><code><a href='qtl_perm_test.html'>qtl_perm_test</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
-<span class='co'># Create toy dataset</span>
-<span class='va'>excluded_columns</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='co'># Toy dataset</span>
+<span class='va'>excluded_columns</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>
 <span class='va'>population</span> <span class='op'>&lt;-</span> <span class='fl'>5</span>
 <span class='va'>seed</span> <span class='op'>&lt;-</span> <span class='fl'>1</span>
 <span class='va'>example_data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>ID <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='va'>population</span>,
                            P1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"one"</span>, <span class='st'>"two"</span>, <span class='st'>"three"</span>, <span class='st'>"four"</span>, <span class='st'>"five"</span><span class='op'>)</span>,
                            T1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='va'>population</span><span class='op'>)</span>,
                            T2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='va'>population</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>example_data_normalised</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>index <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>, each <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>,
-                                      trait <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"T1"</span>, <span class='st'>"T2"</span><span class='op'>)</span>, each <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>,
-                                      values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>example_data</span><span class='op'>$</span><span class='va'>T1</span>, <span class='va'>example_data</span><span class='op'>$</span><span class='va'>T2</span><span class='op'>)</span>,
-                                      flag <span class='op'>=</span> <span class='st'>"Normal"</span>,
-                                      transf <span class='op'>=</span> <span class='st'>""</span>,
-                                      transf_val <span class='op'>=</span> <span class='cn'>NA</span>,
-                                      stringsAsFactors <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-<span class='fu'><a href='assess_normality_postprocessing.html'>assess_normality_postprocessing</a></span><span class='op'>(</span><span class='va'>example_data</span>, <span class='va'>excluded_columns</span>, 
-                                <span class='va'>example_data_normalised</span>, 
-                                out_prefix <span class='op'>=</span> <span class='fu'>here</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/here/man/here.html'>here</a></span><span class='op'>(</span><span class='st'>"metapipe"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $norm
-#&gt;   ID          T1          T2
-#&gt; 1  1  0.02229473 -1.14619967
-#&gt; 2  2  0.60361101  0.84618466
-#&gt; 3  3 -0.26265057  0.08171963
-#&gt; 4  4 -0.52826408 -1.30511701
-#&gt; 5  5  0.19214942 -0.94491206
-#&gt; 
-#&gt; $skew
-#&gt; NULL
-#&gt; </div><div class='input'>
-<span class='co'># Create and store random genetic map [for testing only]</span>
-<span class='va'>genetic_map</span> <span class='op'>&lt;-</span> <span class='fu'><a href='random_map.html'>random_map</a></span><span class='op'>(</span>population <span class='op'>=</span> <span class='va'>population</span>, seed <span class='op'>=</span> <span class='va'>seed</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/write.table.html'>write.csv</a></span><span class='op'>(</span><span class='va'>genetic_map</span>, <span class='fu'>here</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/here/man/here.html'>here</a></span><span class='op'>(</span><span class='st'>"metapipe_genetic_map.csv"</span><span class='op'>)</span>, row.names <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+<span class='va'>example_data_normalised</span> <span class='op'>&lt;-</span> 
+  <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>index <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>, each <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>,
+             trait <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"T1"</span>, <span class='st'>"T2"</span><span class='op'>)</span>, each <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>,
+             values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>example_data</span><span class='op'>$</span><span class='va'>T1</span>, <span class='va'>example_data</span><span class='op'>$</span><span class='va'>T2</span><span class='op'>)</span>,
+             flag <span class='op'>=</span> <span class='st'>"Normal"</span>,
+             transf <span class='op'>=</span> <span class='st'>""</span>,
+             transf_val <span class='op'>=</span> <span class='cn'>NA</span>,
+             stringsAsFactors <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 
+<span class='va'>out_prefix</span> <span class='op'>&lt;-</span> <span class='fu'>here</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/here/man/here.html'>here</a></span><span class='op'>(</span><span class='st'>"metapipe"</span><span class='op'>)</span>
+<span class='va'>example_data_normalised_post</span> <span class='op'>&lt;-</span> 
+  <span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'><a href='assess_normality_postprocessing.html'>assess_normality_postprocessing</a></span><span class='op'>(</span><span class='va'>example_data</span>, 
+                                            <span class='va'>excluded_columns</span>, 
+                                            <span class='va'>example_data_normalised</span>,
+                                            out_prefix <span class='op'>=</span> <span class='va'>out_prefix</span><span class='op'>)</span>
+
+<span class='co'># Create and store random genetic map (for testing only)</span>
+<span class='va'>genetic_map</span> <span class='op'>&lt;-</span> 
+  <span class='fu'>MetaPipe</span><span class='fu'>:::</span><span class='fu'>random_map</span><span class='op'>(</span>population <span class='op'>=</span> <span class='va'>population</span>, seed <span class='op'>=</span> <span class='va'>seed</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/write.table.html'>write.csv</a></span><span class='op'>(</span><span class='va'>genetic_map</span>, 
+          <span class='fu'>here</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/here/man/here.html'>here</a></span><span class='op'>(</span><span class='st'>"metapipe_genetic_map.csv"</span><span class='op'>)</span>, 
+          row.names <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 <span class='co'># Load cross file with genetic map and raw data for normal traits</span>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>qtl</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/qtl/man/read.cross.html'>read.cross</a></span><span class='op'>(</span>format <span class='op'>=</span> <span class='st'>"csvs"</span>, 
                      dir <span class='op'>=</span> <span class='fu'>here</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/here/man/here.html'>here</a></span><span class='op'>(</span><span class='op'>)</span>,
@@ -217,10 +210,10 @@ qtl_perm_test." />
 #&gt;  --Cross type: f2 </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='va'>seed</span><span class='op'>)</span>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>qtl</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/qtl/man/jittermap.html'>jittermap</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>qtl</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/qtl/man/calc.genoprob.html'>calc.genoprob</a></span><span class='op'>(</span><span class='va'>x</span>, step <span class='op'>=</span> <span class='fl'>1</span>, error.prob <span class='op'>=</span> <span class='fl'>0.001</span><span class='op'>)</span>
-<span class='va'>x_qtl_perm</span> <span class='op'>&lt;-</span> <span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'><a href='qtl_perm_test.html'>qtl_perm_test</a></span><span class='op'>(</span><span class='va'>x</span>, n_perm <span class='op'>=</span> <span class='fl'>5</span>, model <span class='op'>=</span> <span class='st'>"normal"</span>, method <span class='op'>=</span> <span class='st'>"hk"</span><span class='op'>)</span>
+<span class='va'>x_qtl_perm</span> <span class='op'>&lt;-</span> 
+  <span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'><a href='qtl_perm_test.html'>qtl_perm_test</a></span><span class='op'>(</span><span class='va'>x</span>, n_perm <span class='op'>=</span> <span class='fl'>5</span>, model <span class='op'>=</span> <span class='st'>"normal"</span>, method <span class='op'>=</span> <span class='st'>"hk"</span><span class='op'>)</span>
 <span class='va'>x_sim</span> <span class='op'>&lt;-</span> <span class='fu'>qtl</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/qtl/man/sim.geno.html'>sim.geno</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-<span class='fu'>effect_plots</span><span class='op'>(</span><span class='va'>x_sim</span>, <span class='va'>x_qtl_perm</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in {    if (qtl_data[i, ]$method == "par-scanone") {        qtl_data[i, ]$transf &lt;- ifelse(is.na(qtl_data[i, ]$transf),             "", qtl_data[i, ]$transf)        if (qtl_data[i, ]$transf == "log") {            ylab &lt;- paste0("$\\log_{", qtl_data[i, ]$transf_val,                 "}(", traits[i], ")$")        }        else if (qtl_data[i, ]$transf == "root") {            ylab &lt;- paste0("$\\sqrt[", qtl_data[i, ]$transf_val,                 "]{", traits[i], "}$")        }        else if (qtl_data[i, ]$transf == "power") {            ylab &lt;- paste0("$(", traits[i], ")^", qtl_data[i,                 ]$transf_val, "$")        }        else {            ylab &lt;- traits[i]        }        MetaPipe::save_plot(qtl::effectplot(x_data_sim, pheno.col = traits[i],             mname1 = markers[i], main = NULL, ylab = latex2exp::TeX(ylab)),             paste0(plots_dir, "/EFF-", traits[i], "-", markers[i]))    }    else {        ylab &lt;- traits[i]        MetaPipe::save_plot(qtl::effectplot(x_data_sim, pheno.col = as.character(traits[i]),             mname1 = markers[i], main = NULL, ylab = latex2exp::TeX(ylab)),             paste0(plots_dir, "/EFF-NP-", traits[i], "-", markers[i]))    }}: task 2 failed - "contrasts can be applied only to factors with 2 or more levels"</span></div><div class='input'><span class='co'># }</span>
+<span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>effect_plots</span><span class='op'>(</span><span class='va'>x_sim</span>, <span class='va'>x_qtl_perm</span><span class='op'>)</span>
 
 </div></pre>
   </div>

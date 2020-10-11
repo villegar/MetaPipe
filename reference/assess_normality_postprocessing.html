@@ -240,7 +240,8 @@ Pareto scaling on the normalised data.</p></td>
 <span class='va'>ionomics_normalised_post</span> <span class='op'>&lt;-</span> 
   <span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>assess_normality_postprocessing</span><span class='op'>(</span><span class='va'>ionomics_rev</span>, 
                                             <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>, 
-                                            <span class='va'>ionomics_normalised</span><span class='op'>)</span>
+                                            <span class='va'>ionomics_normalised</span>,
+                                            out_prefix <span class='op'>=</span> <span class='st'>"ionomics"</span><span class='op'>)</span>
 <span class='va'>ionomics_norm</span> <span class='op'>&lt;-</span> <span class='va'>ionomics_normalised_post</span><span class='op'>$</span><span class='va'>norm</span>
 <span class='va'>ionomics_skew</span> <span class='op'>&lt;-</span> <span class='va'>ionomics_normalised_post</span><span class='op'>$</span><span class='va'>skew</span>
 <span class='co'># Normal traits</span>

@@ -151,7 +151,7 @@ function to obtain LOD scores for all traits, peak positions, and markers.</p>
     </tr>
     <tr>
       <th>cpus</th>
-      <td><p>Number of CPUS to be used in the computation.</p></td>
+      <td><p>Number of CPUs to be used in the computation.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -189,7 +189,7 @@ function to obtain LOD scores for all traits, peak positions, and markers.</p>
                                     out_prefix <span class='op'>=</span> <span class='fu'>here</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/here/man/here.html'>here</a></span><span class='op'>(</span><span class='st'>"metapipe"</span><span class='op'>)</span><span class='op'>)</span>
     
     <span class='co'># Create and store random genetic map [for testing only]</span>
-    <span class='va'>genetic_map</span> <span class='op'>&lt;-</span> <span class='fu'><a href='random_map.html'>random_map</a></span><span class='op'>(</span>population <span class='op'>=</span> <span class='va'>population</span>, seed <span class='op'>=</span> <span class='va'>seed</span><span class='op'>)</span>
+    <span class='va'>genetic_map</span> <span class='op'>&lt;-</span> <span class='fu'>MetaPipe</span><span class='fu'>:::</span><span class='fu'>random_map</span><span class='op'>(</span>population <span class='op'>=</span> <span class='va'>population</span>, seed <span class='op'>=</span> <span class='va'>seed</span><span class='op'>)</span>
     <span class='fu'><a href='https://rdrr.io/r/utils/write.table.html'>write.csv</a></span><span class='op'>(</span><span class='va'>genetic_map</span>, <span class='fu'>here</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/here/man/here.html'>here</a></span><span class='op'>(</span><span class='st'>"metapipe_genetic_map.csv"</span><span class='op'>)</span>, row.names <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
     
     <span class='co'># Load cross file with genetic map and raw data for normal traits</span>

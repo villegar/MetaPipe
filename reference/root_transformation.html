@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Normalise data with a root transformation — root_transformation • MetaPipe</title>
+<title>Root transformation — root_transformation • MetaPipe</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Normalise data with a root transformation — root_transformation" />
-<meta property="og:description" content="Normalise data with a root transformation" />
+<meta property="og:title" content="Root transformation — root_transformation" />
+<meta property="og:description" content="Normalise data with a root transformation." />
 
 
 
@@ -129,20 +129,20 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Normalise data with a root transformation</h1>
+    <h1>Root transformation</h1>
     <small class="dont-index">Source: <a href='https://github.com/villegar/MetaPipe/blob/master/R/transformations.R'><code>R/transformations.R</code></a></small>
     <div class="hidden name"><code>root_transformation.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Normalise data with a root transformation</p>
+    <p>Normalise data with a root transformation.</p>
     </div>
 
     <pre class="usage"><span class='fu'>root_transformation</span><span class='op'>(</span>
   <span class='va'>data</span>,
   trait <span class='op'>=</span> <span class='st'>"DATA"</span>,
   alpha <span class='op'>=</span> <span class='fl'>0.05</span>,
-  transf <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>, <span class='fl'>7</span>, <span class='fl'>8</span>, <span class='fl'>9</span>, <span class='fl'>10</span><span class='op'>)</span>,
+  transf_vals <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>, <span class='fl'>7</span>, <span class='fl'>8</span>, <span class='fl'>9</span>, <span class='fl'>10</span><span class='op'>)</span>,
   plots_prefix <span class='op'>=</span> <span class='st'>"HIST"</span>,
   digits <span class='op'>=</span> <span class='fl'>6</span>
 <span class='op'>)</span></pre>
@@ -152,41 +152,45 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>original data</p></td>
+      <td><p>Original data.</p></td>
     </tr>
     <tr>
       <th>trait</th>
-      <td><p>trait name</p></td>
+      <td><p>Trait name.</p></td>
     </tr>
     <tr>
       <th>alpha</th>
-      <td><p>significance level</p></td>
+      <td><p>Significance level.</p></td>
     </tr>
     <tr>
-      <th>transf</th>
-      <td><p>transformation values</p></td>
+      <th>transf_vals</th>
+      <td><p>Transformation values.</p></td>
     </tr>
     <tr>
       <th>plots_prefix</th>
-      <td><p>prefix for plots with or without path</p></td>
+      <td><p>Prefix for plots with or without path.</p></td>
     </tr>
     <tr>
       <th>digits</th>
-      <td><p>significant digits to compare p-values of transformations</p></td>
+      <td><p>Significant digits to compare p-values of transformations.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>data structure containing the normalised data, NULL if no 
-transformation was performed</p>
+    <p>Data structure containing the normalised data, <code>NULL</code> if no 
+transformation was performed.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='log_transformation.html'>log_transformation</a></code> and 
+<code><a href='power_transformation.html'>power_transformation</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-    <span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>123</span><span class='op'>)</span>
-    <span class='va'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>100</span>, <span class='fl'>5</span><span class='op'>)</span>
-    <span class='fu'>root_transformation</span><span class='op'>(</span><span class='va'>data</span> <span class='op'>^</span> <span class='fl'>2</span>, <span class='st'>"EXP_2"</span><span class='op'>)</span>
-<span class='op'>}</span>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>123</span><span class='op'>)</span>
+<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>100</span>, <span class='fl'>5</span><span class='op'>)</span>
+<span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>root_transformation</span><span class='op'>(</span><span class='va'>data</span> <span class='op'>^</span> <span class='fl'>2</span>, <span class='st'>"EXP_2"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: failed to load cairo DLL</span></div><div class='output co'>#&gt;     flag transf transf_val
+#&gt; 1 Normal   root          e</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
