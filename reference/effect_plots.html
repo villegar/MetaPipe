@@ -190,7 +190,17 @@ qtl_perm_test." />
 <span class='fu'><a href='assess_normality_postprocessing.html'>assess_normality_postprocessing</a></span><span class='op'>(</span><span class='va'>example_data</span>, <span class='va'>excluded_columns</span>, 
                                 <span class='va'>example_data_normalised</span>, 
                                 out_prefix <span class='op'>=</span> <span class='fu'>here</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/here/man/here.html'>here</a></span><span class='op'>(</span><span class='st'>"metapipe"</span><span class='op'>)</span><span class='op'>)</span>
-
+</div><div class='output co'>#&gt; $norm
+#&gt;   ID          T1          T2
+#&gt; 1  1  0.02229473 -1.14619967
+#&gt; 2  2  0.60361101  0.84618466
+#&gt; 3  3 -0.26265057  0.08171963
+#&gt; 4  4 -0.52826408 -1.30511701
+#&gt; 5  5  0.19214942 -0.94491206
+#&gt; 
+#&gt; $skew
+#&gt; NULL
+#&gt; </div><div class='input'>
 <span class='co'># Create and store random genetic map [for testing only]</span>
 <span class='va'>genetic_map</span> <span class='op'>&lt;-</span> <span class='fu'><a href='random_map.html'>random_map</a></span><span class='op'>(</span>population <span class='op'>=</span> <span class='va'>population</span>, seed <span class='op'>=</span> <span class='va'>seed</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/write.table.html'>write.csv</a></span><span class='op'>(</span><span class='va'>genetic_map</span>, <span class='fu'>here</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/here/man/here.html'>here</a></span><span class='op'>(</span><span class='st'>"metapipe_genetic_map.csv"</span><span class='op'>)</span>, row.names <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
@@ -210,7 +220,7 @@ qtl_perm_test." />
 <span class='va'>x_qtl_perm</span> <span class='op'>&lt;-</span> <span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'><a href='qtl_perm_test.html'>qtl_perm_test</a></span><span class='op'>(</span><span class='va'>x</span>, n_perm <span class='op'>=</span> <span class='fl'>5</span>, model <span class='op'>=</span> <span class='st'>"normal"</span>, method <span class='op'>=</span> <span class='st'>"hk"</span><span class='op'>)</span>
 <span class='va'>x_sim</span> <span class='op'>&lt;-</span> <span class='fu'>qtl</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/qtl/man/sim.geno.html'>sim.geno</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 <span class='fu'>effect_plots</span><span class='op'>(</span><span class='va'>x_sim</span>, <span class='va'>x_qtl_perm</span><span class='op'>)</span>
-<span class='co'># }</span>
+</div><div class='output co'>#&gt; <span class='error'>Error in {    if (qtl_data[i, ]$method == "par-scanone") {        qtl_data[i, ]$transf &lt;- ifelse(is.na(qtl_data[i, ]$transf),             "", qtl_data[i, ]$transf)        if (qtl_data[i, ]$transf == "log") {            ylab &lt;- paste0("$\\log_{", qtl_data[i, ]$transf_val,                 "}(", traits[i], ")$")        }        else if (qtl_data[i, ]$transf == "root") {            ylab &lt;- paste0("$\\sqrt[", qtl_data[i, ]$transf_val,                 "]{", traits[i], "}$")        }        else if (qtl_data[i, ]$transf == "power") {            ylab &lt;- paste0("$(", traits[i], ")^", qtl_data[i,                 ]$transf_val, "$")        }        else {            ylab &lt;- traits[i]        }        MetaPipe::save_plot(qtl::effectplot(x_data_sim, pheno.col = traits[i],             mname1 = markers[i], main = NULL, ylab = latex2exp::TeX(ylab)),             paste0(plots_dir, "/EFF-", traits[i], "-", markers[i]))    }    else {        ylab &lt;- traits[i]        MetaPipe::save_plot(qtl::effectplot(x_data_sim, pheno.col = as.character(traits[i]),             mname1 = markers[i], main = NULL, ylab = latex2exp::TeX(ylab)),             paste0(plots_dir, "/EFF-NP-", traits[i], "-", markers[i]))    }}: task 2 failed - "contrasts can be applied only to factors with 2 or more levels"</span></div><div class='input'><span class='co'># }</span>
 
 </div></pre>
   </div>

@@ -186,7 +186,17 @@
                                 <span class='va'>excluded_columns</span>, 
                                 <span class='va'>example_data_normalised</span>, 
                                 out_prefix <span class='op'>=</span> <span class='fu'>here</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/here/man/here.html'>here</a></span><span class='op'>(</span><span class='st'>"metapipe"</span><span class='op'>)</span><span class='op'>)</span>
-
+</div><div class='output co'>#&gt; $norm
+#&gt;   ID          T1         T2
+#&gt; 1  1 -1.42305713 -0.2063562
+#&gt; 2  2 -0.58337411 -0.1831426
+#&gt; 3  3  1.02037253  1.4271275
+#&gt; 4  4 -0.39384190  1.9371371
+#&gt; 5  5 -0.08153266 -1.0805000
+#&gt; 
+#&gt; $skew
+#&gt; NULL
+#&gt; </div><div class='input'>
 <span class='co'># Create and store random genetic map [for testing only]</span>
 <span class='va'>genetic_map</span> <span class='op'>&lt;-</span> <span class='fu'><a href='random_map.html'>random_map</a></span><span class='op'>(</span>population <span class='op'>=</span> <span class='va'>population</span>, seed <span class='op'>=</span> <span class='va'>seed</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/write.table.html'>write.csv</a></span><span class='op'>(</span><span class='va'>genetic_map</span>, <span class='fu'>here</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/here/man/here.html'>here</a></span><span class='op'>(</span><span class='st'>"metapipe_genetic_map.csv"</span><span class='op'>)</span>, row.names <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>

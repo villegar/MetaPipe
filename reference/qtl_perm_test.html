@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Perform QTL mapping permutation test using scanone to obtain significant QTLs — qtl_perm_test • MetaPipe</title>
+<title>QTL mapping permutation test — qtl_perm_test • MetaPipe</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,9 @@
 
 
 
-<meta property="og:title" content="Perform QTL mapping permutation test using scanone to obtain significant QTLs — qtl_perm_test" />
-<meta property="og:description" content="Perform QTL mapping permutation test using scanone to obtain significant QTLs" />
+<meta property="og:title" content="QTL mapping permutation test — qtl_perm_test" />
+<meta property="og:description" content="Perform QTL mapping permutation test using the 
+qtl:scanone(...) function to find significant QTL." />
 
 
 
@@ -129,13 +130,14 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Perform QTL mapping permutation test using <code>scanone</code> to obtain significant QTLs</h1>
+    <h1>QTL mapping permutation test</h1>
     <small class="dont-index">Source: <a href='https://github.com/villegar/MetaPipe/blob/master/R/metapipe.R'><code>R/metapipe.R</code></a></small>
     <div class="hidden name"><code>qtl_perm_test.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Perform QTL mapping permutation test using <code>scanone</code> to obtain significant QTLs</p>
+    <p>Perform QTL mapping permutation test using the 
+<code><a href='https://rdrr.io/pkg/qtl/man/scanone.html'>qtl:scanone(...)</a></code> function to find significant QTL.</p>
     </div>
 
     <pre class="usage"><span class='fu'>qtl_perm_test</span><span class='op'>(</span>
@@ -155,19 +157,20 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x_data</th>
-      <td><p>cross-data containing genetic map data and traits</p></td>
+      <td><p>Cross-data frame containing genetic map data and traits.</p></td>
     </tr>
     <tr>
       <th>cpus</th>
-      <td><p>number of CPUS to be used</p></td>
+      <td><p>Number of CPUS to be used in the computation.</p></td>
     </tr>
     <tr>
       <th>qtl_method</th>
-      <td><p>QTL mapping method [default: <code>scanone</code>]</p></td>
+      <td><p>QTL mapping method.</p></td>
     </tr>
     <tr>
       <th>raw_data_normalised</th>
-      <td><p>normalised raw data, see <code><a href='assess_normality.html'>assess_normality</a></code></p></td>
+      <td><p>Normalised raw data, see 
+<code><a href='assess_normality.html'>assess_normality</a></code>.</p></td>
     </tr>
     <tr>
       <th>lod_threshold</th>
@@ -175,25 +178,27 @@
     </tr>
     <tr>
       <th>parametric</th>
-      <td><p>boolean flag to indicate whether or not <code>x_data</code> is parametric</p></td>
+      <td><p>Boolean flag to indicate whether or not <code>x_data</code> 
+contains parametric (normal) traits.</p></td>
     </tr>
     <tr>
       <th>n_perm</th>
-      <td><p>number of permutations</p></td>
+      <td><p>Number of permutations.</p></td>
     </tr>
     <tr>
       <th>plots_dir</th>
-      <td><p>output directory for plots</p></td>
+      <td><p>Output directory for plots.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>optional parameters for <code>R/qtl</code> library</p></td>
+      <td><p>Optional parameters for 
+<code><a href='https://rdrr.io/pkg/qtl/man/scanone.html'>qtl:scanone(...)</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>data frame containing the significant QTLs information</p>
+    <p>Data frame containing the significant QTLs information.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='assess_normality.html'>assess_normality</a></code> and <code><a href='qtl_scone.html'>qtl_scone</a></code></p></div>

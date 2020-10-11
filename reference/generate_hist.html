@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>This function generates a single histogram — generate_hist • MetaPipe</title>
+<title>Generate histogram — generate_hist • MetaPipe</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="This function generates a single histogram — generate_hist" />
-<meta property="og:description" content="This function generates a single histogram" />
+<meta property="og:title" content="Generate histogram — generate_hist" />
+<meta property="og:description" content="Generate histogram" />
 
 
 
@@ -129,13 +129,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>This function generates a single histogram</h1>
+    <h1>Generate histogram</h1>
     <small class="dont-index">Source: <a href='https://github.com/villegar/MetaPipe/blob/master/R/plot-utils.R'><code>R/plot-utils.R</code></a></small>
     <div class="hidden name"><code>generate_hist.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function generates a single histogram</p>
+    <p>Generate histogram</p>
     </div>
 
     <pre class="usage"><span class='fu'>generate_hist</span><span class='op'>(</span>
@@ -158,59 +158,59 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>histogram data</p></td>
+      <td><p>Histogram data.</p></td>
     </tr>
     <tr>
       <th>title</th>
-      <td><p>plot title</p></td>
+      <td><p>Plot title.</p></td>
     </tr>
     <tr>
       <th>prefix</th>
-      <td><p>file prefix [default: <code>metapipe</code>]</p></td>
+      <td><p>File prefix.</p></td>
     </tr>
     <tr>
       <th>xlab</th>
-      <td><p>x-axis label [default: <code>NULL</code>]</p></td>
+      <td><p>X-axis label.</p></td>
     </tr>
     <tr>
       <th>save</th>
-      <td><p>boolean flag to indicate if that plot should be save to disk [default: <code>TRUE</code>]</p></td>
+      <td><p>Boolean flag to indicate if that plot should be save to disk.</p></td>
     </tr>
     <tr>
       <th>alpha</th>
-      <td><p>value to set the transparency of the bins [default: <code>1</code>]</p></td>
+      <td><p>Numeric value to set the transparency of the bins.</p></td>
     </tr>
     <tr>
       <th>angle</th>
-      <td><p>rotation angle for labels [default: <code>60</code>]</p></td>
+      <td><p>Rotation angle for labels.</p></td>
     </tr>
     <tr>
       <th>bins</th>
-      <td><p>number of bins to plot [default: <code>20</code>]</p></td>
+      <td><p>Number of bins to plot.</p></td>
     </tr>
     <tr>
       <th>col</th>
-      <td><p>colour for bins border [default: <code>"black"</code>]</p></td>
+      <td><p>Colour for bins border.</p></td>
     </tr>
     <tr>
       <th>hjust</th>
-      <td><p>horizontal adjustment of labels [default: <code>1</code>]</p></td>
+      <td><p>Horizontal adjustment of labels.</p></td>
     </tr>
     <tr>
       <th>fill</th>
-      <td><p>filling colour [default: <code>"#7FCDBB"</code>]</p></td>
+      <td><p>Filling colour.</p></td>
     </tr>
     <tr>
       <th>is_trait</th>
-      <td><p>if TRUE then prepends "Trait" to title [default: <code>FALSE</code>]</p></td>
+      <td><p>Boolean flag to prepend "Trait" to <code>title</code>.</p></td>
     </tr>
     </table>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='va'>norm_dist</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>100</span><span class='op'>)</span>
-<span class='fu'>generate_hist</span><span class='op'>(</span><span class='va'>norm_dist</span>, <span class='st'>"XYZ"</span>, <span class='st'>"xyz_hist"</span>, <span class='st'>"x"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: failed to load cairo DLL</span></div><div class='output co'>#&gt; NULL</div><div class='input'><span class='fu'>generate_hist</span><span class='op'>(</span><span class='va'>norm_dist</span>, <span class='st'>"XYZ"</span>, <span class='st'>"xyz_hist"</span>, <span class='st'>"x"</span>, is_trait <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>generate_hist</span><span class='op'>(</span><span class='va'>norm_dist</span>, <span class='st'>"XYZ"</span>, <span class='st'>"xyz_hist"</span>, <span class='st'>"x"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: failed to load cairo DLL</span></div><div class='output co'>#&gt; NULL</div><div class='input'><span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>generate_hist</span><span class='op'>(</span><span class='va'>norm_dist</span>, <span class='st'>"XYZ"</span>, <span class='st'>"xyz_hist"</span>, <span class='st'>"x"</span>, is_trait <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='warning'>Warning: failed to load cairo DLL</span></div><div class='output co'>#&gt; NULL</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

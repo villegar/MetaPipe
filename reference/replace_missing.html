@@ -230,6 +230,7 @@ should be replaced by half of the minimum value.</p></td>
 #&gt; 3  3 three -1.0489688  1.38851610 -0.4464265 -0.50
 #&gt; 4  4  four -1.4980031 -1.02062905 -1.2895295 -0.25
 #&gt; 5  5  five  1.8754450  0.03185385 -0.5803433  0.87</div><div class='input'>
+
 <span class='co'># F1 Seedling Ionomics dataset</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>ionomics</span><span class='op'>)</span> <span class='co'># Includes some missing data</span>
 <span class='va'>ionomics_rev</span> <span class='op'>&lt;-</span> <span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>replace_missing</span><span class='op'>(</span><span class='va'>ionomics</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
@@ -240,7 +241,16 @@ should be replaced by half of the minimum value.</p></td>
 #&gt; <span class='message'> - Se78</span></div><div class='input'><span class='va'>ionomics_rev</span> <span class='op'>&lt;-</span> <span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>replace_missing</span><span class='op'>(</span><span class='va'>ionomics</span>, 
                                           excluded_columns <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>,
                                           replace_na <span class='op'>=</span>  <span class='cn'>TRUE</span><span class='op'>)</span>
-</div></pre>
+<span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span><span class='va'>ionomics_rev</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>8</span><span class='op'>]</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 
+#&gt; 
+#&gt; |ID    | SampleWeight|     Ca44|      K39|      P31|       Li7|      B11|      Na23|
+#&gt; |:-----|------------:|--------:|--------:|--------:|---------:|--------:|---------:|
+#&gt; |E_001 |           79| 15894.22| 5888.311| 1743.118| 0.0128699| 18.66673|  6.970224|
+#&gt; |E_002 |           93| 13155.45| 7013.400| 2244.684| 0.0119316| 14.47693|  5.866392|
+#&gt; |E_004 |           97| 14182.51| 7966.273| 2311.057| 0.0212316| 14.71313| 10.251955|
+#&gt; |E_005 |           82| 22550.82| 7514.089| 2315.675| 0.0233063| 20.10630| 11.773697|
+#&gt; |E_006 |           99| 15982.76| 7608.464| 1995.193| 0.0588128| 12.97801| 11.043837|</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

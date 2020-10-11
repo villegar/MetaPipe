@@ -6,8 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function to save a graphical object generated with ggplot2 to disk in 
-Portable Network Graphics (PNG) format. — ggplot_save • MetaPipe</title>
+<title>Save gpplot2 plot as PNG — ggplot_save • MetaPipe</title>
 
 
 <!-- jquery -->
@@ -40,9 +39,8 @@ Portable Network Graphics (PNG) format. — ggplot_save • MetaPipe</title>
 
 
 
-<meta property="og:title" content="Function to save a graphical object generated with ggplot2 to disk in 
-Portable Network Graphics (PNG) format. — ggplot_save" />
-<meta property="og:description" content="Function to save a graphical object generated with ggplot2 to disk in 
+<meta property="og:title" content="Save gpplot2 plot as PNG — ggplot_save" />
+<meta property="og:description" content="Save a graphical object generated with ggplot2 to disk in 
 Portable Network Graphics (PNG) format." />
 
 
@@ -132,44 +130,43 @@ Portable Network Graphics (PNG) format." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Function to save a graphical object generated with <code>ggplot2</code> to disk in 
-Portable Network Graphics (PNG) format.</h1>
+    <h1>Save <code>gpplot2</code> plot as PNG</h1>
     <small class="dont-index">Source: <a href='https://github.com/villegar/MetaPipe/blob/master/R/plot-utils.R'><code>R/plot-utils.R</code></a></small>
     <div class="hidden name"><code>ggplot_save.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Function to save a graphical object generated with <code>ggplot2</code> to disk in 
+    <p>Save a graphical object generated with <code>ggplot2</code> to disk in 
 Portable Network Graphics (PNG) format.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ggplot_save</span><span class='op'>(</span><span class='va'>myPlot</span>, <span class='va'>name</span>, width <span class='op'>=</span> <span class='fl'>6</span>, height <span class='op'>=</span> <span class='fl'>6</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>ggplot_save</span><span class='op'>(</span><span class='va'>plt_obj</span>, <span class='va'>name</span>, width <span class='op'>=</span> <span class='fl'>6</span>, height <span class='op'>=</span> <span class='fl'>6</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>myPlot</th>
-      <td><p>graphical object</p></td>
+      <th>plt_obj</th>
+      <td><p>Graphical object.</p></td>
     </tr>
     <tr>
       <th>name</th>
-      <td><p>output name with or without path</p></td>
+      <td><p>Output name with or without path.</p></td>
     </tr>
     <tr>
       <th>width</th>
-      <td><p>width in inches</p></td>
+      <td><p>Width in inches.</p></td>
     </tr>
     <tr>
       <th>height</th>
-      <td><p>height in inches</p></td>
+      <td><p>Height in inches.</p></td>
     </tr>
     </table>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>myplot</span> <span class='op'>&lt;-</span> <span class='fu'>ggplot2</span><span class='fu'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/qplot.html'>qplot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'>ggplot_save</span><span class='op'>(</span><span class='va'>myplot</span>, <span class='st'>"hist"</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='va'>plt_obj</span> <span class='op'>&lt;-</span> <span class='fu'>ggplot2</span><span class='fu'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/qplot.html'>qplot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>ggplot_save</span><span class='op'>(</span><span class='va'>plt_obj</span>, <span class='st'>"hist"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='warning'>Warning: failed to load cairo DLL</span></div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='output co'>#&gt; NULL</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

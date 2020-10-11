@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>This function generates a two histograms to compare two datasets — compare_hist • MetaPipe</title>
+<title>Compare histograms — compare_hist • MetaPipe</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,9 @@
 
 
 
-<meta property="og:title" content="This function generates a two histograms to compare two datasets — compare_hist" />
-<meta property="og:description" content="This function generates a two histograms to compare two datasets" />
+<meta property="og:title" content="Compare histograms — compare_hist" />
+<meta property="og:description" content="Compare two histograms from two different sources. For example original data 
+and transformed data." />
 
 
 
@@ -129,13 +130,14 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>This function generates a two histograms to compare two datasets</h1>
+    <h1>Compare histograms</h1>
     <small class="dont-index">Source: <a href='https://github.com/villegar/MetaPipe/blob/master/R/plot-utils.R'><code>R/plot-utils.R</code></a></small>
     <div class="hidden name"><code>compare_hist.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function generates a two histograms to compare two datasets</p>
+    <p>Compare two histograms from two different sources. For example original data 
+and transformed data.</p>
     </div>
 
     <pre class="usage"><span class='fu'>compare_hist</span><span class='op'>(</span><span class='va'>original</span>, <span class='va'>transformed</span>, <span class='va'>trait</span>, <span class='va'>prefix</span>, <span class='va'>xlab</span><span class='op'>)</span></pre>
@@ -145,23 +147,23 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>original</th>
-      <td><p>Original data</p></td>
+      <td><p>Original data.</p></td>
     </tr>
     <tr>
       <th>transformed</th>
-      <td><p>Transformed data</p></td>
+      <td><p>Transformed data.</p></td>
     </tr>
     <tr>
       <th>trait</th>
-      <td><p>trait name</p></td>
+      <td><p>Trait name.</p></td>
     </tr>
     <tr>
       <th>prefix</th>
-      <td><p>File prefix</p></td>
+      <td><p>File prefix.</p></td>
     </tr>
     <tr>
       <th>xlab</th>
-      <td><p>x-axis label</p></td>
+      <td><p>X-axis label.</p></td>
     </tr>
     </table>
 
@@ -169,7 +171,11 @@
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='va'>norm_dist</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>100</span><span class='op'>)</span>
 <span class='va'>norm_dist_transformed</span> <span class='op'>&lt;-</span> <span class='va'>norm_dist</span><span class='op'>^</span><span class='fl'>2</span>
-<span class='fu'>compare_hist</span><span class='op'>(</span><span class='va'>norm_dist</span>, <span class='va'>norm_dist_transformed</span>, <span class='st'>"XYZ"</span>, <span class='st'>"xyz_hist"</span>, <span class='st'>"x"</span><span class='op'>)</span>
+<span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>compare_hist</span><span class='op'>(</span><span class='va'>norm_dist</span>, 
+                       <span class='va'>norm_dist_transformed</span>, 
+                       <span class='st'>"XYZ"</span>, 
+                       <span class='st'>"xyz_hist"</span>, 
+                       <span class='st'>"x"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='warning'>Warning: unable to load shared object '/Library/Frameworks/R.framework/Resources/modules//R_X11.so':</span>
 #&gt; <span class='warning'>  dlopen(/Library/Frameworks/R.framework/Resources/modules//R_X11.so, 6): Library not loaded: /opt/X11/lib/libSM.6.dylib</span>
 #&gt; <span class='warning'>  Referenced from: /Library/Frameworks/R.framework/Versions/4.0/Resources/modules/R_X11.so</span>

@@ -144,7 +144,8 @@
   cpus <span class='op'>=</span> <span class='fl'>1</span>,
   out_prefix <span class='op'>=</span> <span class='st'>"metapipe"</span>,
   plots_dir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span><span class='op'>(</span><span class='op'>)</span>,
-  transf_vals <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>, <span class='fl'>7</span>, <span class='fl'>8</span>, <span class='fl'>9</span>, <span class='fl'>10</span><span class='op'>)</span>
+  transf_vals <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>, <span class='fl'>7</span>, <span class='fl'>8</span>, <span class='fl'>9</span>, <span class='fl'>10</span><span class='op'>)</span>,
+  alpha <span class='op'>=</span> <span class='fl'>0.05</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -175,6 +176,10 @@ properties that are non-numeric, excluded columns.</p></td>
       <th>transf_vals</th>
       <td><p>Numeric vector with the transformation values.</p></td>
     </tr>
+    <tr>
+      <th>alpha</th>
+      <td><p>Significance level.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -200,7 +205,8 @@ logarithmic (<code>log_a(x)</code>), power (<code>x^a</code>), and
 radical/root (<code>x^(1/a)</code>) functions.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='assess_normality_postprocessing.html'>assess_normality_postprocessing</a></code> and <code><a href='assess_normality_stats.html'>assess_normality_stats</a></code></p></div>
+    <div class='dont-index'><p><code><a href='assess_normality_postprocessing.html'>assess_normality_postprocessing</a></code> and 
+<code><a href='assess_normality_stats.html'>assess_normality_stats</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Toy dataset</span>
@@ -208,18 +214,49 @@ radical/root (<code>x^(1/a)</code>) functions.</p>
                            P1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"one"</span>, <span class='st'>"two"</span>, <span class='st'>"three"</span>, <span class='st'>"four"</span>, <span class='st'>"five"</span><span class='op'>)</span>, 
                            T1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>5</span><span class='op'>)</span>, 
                            T2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'>assess_normality</span><span class='op'>(</span><span class='va'>example_data</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;    index trait       values   flag transf transf_val
-#&gt; 1      1    T1 -1.400043517 Normal                NA
-#&gt; 2      1    T1  0.255317055 Normal                NA
-#&gt; 3      1    T1 -2.437263611 Normal                NA
-#&gt; 4      1    T1 -0.005571287 Normal                NA
-#&gt; 5      1    T1  0.621552721 Normal                NA
-#&gt; 6      2    T2  1.148411606 Normal                NA
-#&gt; 7      2    T2 -1.821817661 Normal                NA
-#&gt; 8      2    T2 -0.247325302 Normal                NA
-#&gt; 9      2    T2 -0.244199607 Normal                NA
-#&gt; 10     2    T2 -0.282705449 Normal                NA</div><div class='input'>
+<span class='va'>example_data_normalised</span> <span class='op'>&lt;-</span> <span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>assess_normality</span><span class='op'>(</span><span class='va'>example_data</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span><span class='va'>example_data_normalised</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 
+#&gt; 
+#&gt; | index|trait |     values|flag   |transf |transf_val |
+#&gt; |-----:|:-----|----------:|:------|:------|:----------|
+#&gt; |     1|T1    | -1.4000435|Normal |       |NA         |
+#&gt; |     1|T1    |  0.2553171|Normal |       |NA         |
+#&gt; |     1|T1    | -2.4372636|Normal |       |NA         |
+#&gt; |     1|T1    | -0.0055713|Normal |       |NA         |
+#&gt; |     1|T1    |  0.6215527|Normal |       |NA         |
+#&gt; |     2|T2    |  1.1484116|Normal |       |NA         |
+#&gt; |     2|T2    | -1.8218177|Normal |       |NA         |
+#&gt; |     2|T2    | -0.2473253|Normal |       |NA         |
+#&gt; |     2|T2    | -0.2441996|Normal |       |NA         |
+#&gt; |     2|T2    | -0.2827054|Normal |       |NA         |</div><div class='input'>
+
+<span class='co'># F1 Seedling Ionomics dataset</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>ionomics</span><span class='op'>)</span> <span class='co'># Includes some missing data</span>
+<span class='va'>ionomics_rev</span> <span class='op'>&lt;-</span> <span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'><a href='replace_missing.html'>replace_missing</a></span><span class='op'>(</span><span class='va'>ionomics</span>, 
+                                          excluded_columns <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>,
+                                          replace_na <span class='op'>=</span>  <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='va'>ionomics_normalised</span> <span class='op'>&lt;-</span> 
+  <span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>assess_normality</span><span class='op'>(</span><span class='va'>ionomics_rev</span>,
+                             excluded_columns <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>,
+                             out_prefix <span class='op'>=</span> <span class='st'>"ionomics"</span>,
+                             transf_vals <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+<span class='co'># Show one entry for each of the first ten traits (left to right)</span>
+<span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span><span class='va'>ionomics_normalised</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>ionomics</span><span class='op'>)</span> <span class='op'>*</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>)</span>, <span class='op'>]</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 
+#&gt; 
+#&gt; |     | index|trait |       values|flag   |transf |transf_val |
+#&gt; |:----|-----:|:-----|------------:|:------|:------|:----------|
+#&gt; |217  |     1|Ca44  | 2.249595e+04|Normal |       |NA         |
+#&gt; |434  |     2|K39   | 7.097199e+03|Skewed |       |NA         |
+#&gt; |651  |     3|P31   | 2.940119e+03|Skewed |       |NA         |
+#&gt; |868  |     4|Li7   | 2.053170e-02|Skewed |       |NA         |
+#&gt; |1085 |     5|B11   | 4.342285e+00|Normal |log    |2          |
+#&gt; |1302 |     6|Na23  | 2.663747e+00|Normal |root   |e          |
+#&gt; |1519 |     7|Mg26  | 1.151307e+01|Normal |log    |2          |
+#&gt; |1736 |     8|Al27  | 8.406187e+00|Skewed |       |NA         |
+#&gt; |1953 |     9|S34   | 1.425524e+03|Skewed |       |NA         |
+#&gt; |2170 |    10|Fe54  | 3.870016e+01|Skewed |       |NA         |</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
