@@ -488,7 +488,9 @@ assess_normality_stats <- function(out_prefix = "metapipe") {
 #' MetaPipe::random_genotypes(size = 3)
 #' 
 #' @seealso \code{\link{random_map}}
-random_genotypes <- function(genotypes = c("A", "H", "B"), size = 100, seed = NULL) {
+random_genotypes <- function(genotypes = c("A", "H", "B"),
+                             size = 100,
+                             seed = NULL) {
   if (!is.null(seed))
     set.seed(seed)
   return(genotypes[sample(1:length(genotypes), size, replace = TRUE)])
@@ -513,17 +515,24 @@ random_genotypes <- function(genotypes = c("A", "H", "B"), size = 100, seed = NU
 #' gmap_3 <- MetaPipe::random_map(population = 3)
 #' 
 #' @seealso \code{\link{random_genotypes}}
-random_map <- function(genotypes = c("A", "H", "B"), lg = 1:10, markers = 10, population = 100, seed = NULL) {
+random_map <- function(genotypes = c("A", "H", "B"),
+                       lg = 1:10,
+                       markers = 10,
+                       population = 100,
+                       seed = NULL) {
   marker_names <- paste0(rep(paste0("S", lg, "_"), each = markers), 1:markers)
   # Temporal vector for LG and positions
-  tmp <- data.frame(lg = rep(lg, each = markers), pos = rep(1:markers))
+  tmp <- data.frame(lg = rep(lg, each = markers), 
+                    pos = rep(1:markers))
   
   # Empty map
   map <- data.frame(ID = c("", "", 1:population))
   for (k in 1:length(marker_names)) {
-    if (!is.null(seed)) 
+    if (!is.null(seed))
       seed <- seed + k
-    new_genotypes <- c(tmp[k, 1], tmp[k, 2], MetaPipe::random_genotypes(genotypes, population, seed))
+    new_genotypes <- c(tmp[k, 1],
+                       tmp[k, 2],
+                       MetaPipe::random_genotypes(genotypes, population, seed))
     map <- cbind(map, new_genotypes)
   }
   
@@ -535,14 +544,15 @@ random_map <- function(genotypes = c("A", "H", "B"), lg = 1:10, markers = 10, po
 
 #' Perform QTL mapping
 #' 
-#' Perform QTL mapping using the \code{\link[qtl:scanone]{qtl:scanone()}} 
-#' to obtain LOD scores for all traits, peak positions, and markers.
+#' Perform QTL mapping using the \code{\link[qtl:scanone]{qtl:scanone(...)}} 
+#' function to obtain LOD scores for all traits, peak positions, and markers.
 #' 
 #' @importFrom foreach %dopar%
 #' 
 #' @param x_data Cross-data frame containing genetic map data and traits.
 #' @param cpus Number of CPUS to be used in the computation.
-#' @param ... Optional parameters for \code{R/qtl} library.
+#' @param ... Optional parameters for 
+#'     \code{\link[qtl:scanone]{qtl:scanone(...)}}.
 #'
 #' @return Data frame containing the LOD scores.
 #' @export
@@ -622,23 +632,30 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
   return(x_scone)
 }
 
-#' Perform QTL mapping permutation test using \code{scanone} to obtain significant QTLs
+#' QTL mapping permutation test
+#' 
+#' Perform QTL mapping permutation test using the 
+#' \code{\link[qtl:scanone]{qtl:scanone(...)}} function to find significant QTL.
+#' 
 #' @importFrom foreach %dopar%
 #' @importFrom graphics abline
 #' @importFrom graphics legend
 #' @importFrom stats as.formula
 #' 
-#' @param x_data cross-data containing genetic map data and traits
-#' @param cpus number of CPUS to be used
-#' @param qtl_method QTL mapping method [default: \code{scanone}]
-#' @param raw_data_normalised normalised raw data, see \code{\link{assess_normality}}
+#' @param x_data Cross-data frame containing genetic map data and traits.
+#' @param cpus Number of CPUS to be used in the computation.
+#' @param qtl_method QTL mapping method.
+#' @param raw_data_normalised Normalised raw data, see 
+#'     \code{\link{assess_normality}}.
 #' @param lod_threshold LOD score threshold to look up for significant QTLs
-#' @param parametric boolean flag to indicate whether or not \code{x_data} is parametric
-#' @param n_perm number of permutations
-#' @param plots_dir output directory for plots
-#' @param ... optional parameters for \code{R/qtl} library
+#' @param parametric Boolean flag to indicate whether or not \code{x_data} 
+#'     contains parametric (normal) traits.
+#' @param n_perm Number of permutations.
+#' @param plots_dir Output directory for plots.
+#' @param ... Optional parameters for 
+#'     \code{\link[qtl:scanone]{qtl:scanone(...)}}.
 #' 
-#' @return data frame containing the significant QTLs information
+#' @return Data frame containing the significant QTLs information.
 #' @export
 #' 
 #' @examples
