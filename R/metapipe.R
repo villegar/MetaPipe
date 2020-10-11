@@ -333,6 +333,21 @@ assess_normality <- function(raw_data,
 #' 
 #' Post-processing for the normality assessment of the traits.
 #' 
+#' It creates four CSV files containing the following data:
+#' \itemize{
+#'   \item \code{paste0(out_prefix, "_raw_data_normalised_all.csv")}: 
+#'   data frame in long format created with the \code{\link{assess_normality}}
+#'   function. Contains all the traits, including name, values, and 
+#'   transformation (if applicable).
+#'   \item \code{paste0(out_prefix, "_raw_data_norm.csv")}: data frame in wide
+#'   format containing traits with a normal distribution.
+#'   \item \code{paste0(out_prefix, "_raw_data_non_par.csv")}: data frame in 
+#'   wide format containing traits \emph{without} a normal distribution.
+#'   \item \code{paste0(out_prefix, "_normalisation_stats.csv")}: data frame
+#'   containing details of the \code{\link{assess_normality}} process, like 
+#'   the total number of traits transformed and normalisations performed.
+#' }
+#' 
 #' @param raw_data Data frame containing the raw data.
 #' @param excluded_columns Numeric vector containing the indices of the dataset 
 #'     properties that are non-numeric, excluded columns.
@@ -342,7 +357,8 @@ assess_normality <- function(raw_data,
 #' @param pareto_scaling Boolean flag to indicate whether or not perform a 
 #'     Pareto scaling on the normalised data.
 #'
-#' @return Files containing the normal and non-parametric normalised data.
+#' @return List of data frames for the normal (\code{norm}) and skewed 
+#' (\code{skew}) traits.
 #' @export
 #'
 #' @examples
