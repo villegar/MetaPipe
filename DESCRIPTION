@@ -20,12 +20,12 @@ Authors@R: c(
            comment = c(ORCID = "0000-0002-4234-6419")),
     person(given = "Jason P.",
            family = "Londo",
-           role = c("ctb"),
+           role = c("dtc"),
            email = "jason.londo@usda.gov",
            comment = c(ORCID = "0000-0003-0535-4820")),
     person(given = "Gaurab",
            family = "Bhattarai",
-           role = c("ctb"),
+           role = c("dtc"),
            email = "gbhattarai@uga.edu",
            comment = c(ORCID = "0000-0002-2899-7725"))
     )
