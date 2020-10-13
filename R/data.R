@@ -42,15 +42,15 @@
 #' within each chromosome at different positions.
 #' 
 #' @format A data frame with 296 rows and 1116 variables:
-#' \describe{
-#'     \item{ID}{Sample ID}
-#'     \item{S<chr>_<pos> [1115 variables]}{Chromosome \code{<chr>}, position 
-#'     \code{<pos>}
+#' \itemize{
+#'     \item \strong{ID:} Sample ID
+#'     \item \strong{S<chr>_<pos> [1115 variables]:} Chromosome \code{<chr>}, position 
+#'     \code{<pos>}    
 #'     \itemize{
 #'         \item \strong{S1_61235:}  Chromosome 1, position  61235
 #'         \item \strong{S1_929902:} Chromosome 1, position 929902
 #'         \item \strong{S1_666584:} Chromosome 1, position 666584
-#'    }}
+#'    }
 #' }
 #' @author Gaurab Bhattarai \email{gbhattarai@uga.edu}
 #' @usage data(father_riparia)
