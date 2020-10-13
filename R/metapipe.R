@@ -842,7 +842,7 @@ qtl_perm_test <- function(x_data,
                            marker <- rownames(sum_x_scone)[k]
                            
                            # Verify if current QTL has a pseudomarker
-                           marker_info <- MetaPipe::transform_pseudo_marker(x_data, marker, nrecord$lg, nrecord$pos_peak)
+                           marker_info <- transform_pseudo_marker(x_data, marker, nrecord$lg, nrecord$pos_peak)
                            nrecord$marker <- marker_info[1]
                            nrecord$pos_peak <- as.numeric(marker_info[2])
                            
@@ -861,7 +861,7 @@ qtl_perm_test <- function(x_data,
                            # Verify if the 95% Bayes' CI QTLs have pseudomarkers
                            for(l in 1:nrow(p95_bayes)) {
                              marker <- rownames(p95_bayes)[l]
-                             marker_info <- MetaPipe::transform_pseudo_marker(x_data, marker, p95_bayes[l, "chr"], p95_bayes[l, "pos"])
+                             marker_info <- transform_pseudo_marker(x_data, marker, p95_bayes[l, "chr"], p95_bayes[l, "pos"])
                              p95_bayes[l, "marker"] <- marker_info[1]
                              p95_bayes[l, "pos"] <- as.numeric(marker_info[2])
                            }

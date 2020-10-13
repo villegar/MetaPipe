@@ -5,12 +5,15 @@
 #'
 #' @param marker String with the marker.
 #'
-#' @return \code{TRUE} or \code{FALSE}
-#' @export
+#' @return \code{TRUE} if the given marker is a pseudo-marker, \code{FALSE} 
+#' otherwise.
 #'
 #' @examples
-#' is_pseudo_marker('c1.loc1')
-#' is_pseudo_marker('S1_2345')
+#' MetaPipe:::is_pseudo_marker('c1.loc1')
+#' MetaPipe:::is_pseudo_marker('S1_2345')
+#' 
+#' @noRd
+#' @keywords internal
 is_pseudo_marker <- function(marker) {
   return(ifelse(grepl("loc", marker), TRUE, FALSE))
 }
@@ -26,7 +29,6 @@ is_pseudo_marker <- function(marker) {
 #' @param pos Pseudo-marker's position.
 #'
 #' @return A prime marker and its position.
-#' @export
 #'
 #' @examples
 #' # Toy dataset
@@ -67,11 +69,14 @@ is_pseudo_marker <- function(marker) {
 #' set.seed(seed)
 #' x <- qtl::jittermap(x)
 #' x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
-#' MetaPipe::transform_pseudo_marker(x, 'loc1', 1, 2.0)
+#' MetaPipe:::transform_pseudo_marker(x, 'loc1', 1, 2.0)
+#' 
+#' @noRd
+#' @keywords internal
 transform_pseudo_marker <- function(x_data, marker, chr, pos) {
   markerp <- marker
   posp <- pos
-  if (MetaPipe::is_pseudo_marker(marker)) {
+  if (is_pseudo_marker(marker)) {
     minfo <- qtl::find.markerpos(x_data, 
                                  qtl::find.marker(x_data, chr = chr, pos = pos))
     markerp <- rownames(minfo)
