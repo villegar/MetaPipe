@@ -20,6 +20,8 @@ hcolor <- "#363B74"
 tcolor <- "#EEEEEE"
 
 knitr::opts_chunk$set(dpi = 300, fig.width = 7)
+
+`%>%` <- dplyr::`%>%`
 ```
 
 ```{r setup}
@@ -49,7 +51,10 @@ assess_normality(raw_data = raw_data,
                  cpus = 1, 
                  out_prefix = "metapipe", 
                  plots_dir = getwd(), 
-                 transf_vals = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10))
+                 transf_vals = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10),
+                 alpha = 0.05,
+                 pareto_scaling = FALSE,
+                 show_stats = TRUE)
 ```
 
 where `raw_data` is a data frame containing the raw data, as described in 
@@ -80,9 +85,12 @@ data set:
 example_data <- data.frame(ID = 1:500,
                            T1 = test_data,
                            T2 = 2^test_data)
-transformed_data <- MetaPipe::assess_normality(example_data, c(1))
-# head(transformed_data)
-# head(transformed_data[-c(1:500), ])
+normalised_data <- MetaPipe::assess_normality(example_data, c(1))
+
+normalised_data_norm <- normalised_data$norm
+normalised_data_skew <- normalised_data$skew
+
+transformed_data <- read.csv("metapipe_raw_data_normalised_all.csv")
 ```
 The output of this function is a long table of each trait, with the following
 format:
@@ -97,17 +105,16 @@ raw_df <- data.frame(A = rep("&nbsp;", nrows),
                      G = rep(NA, nrows))
 colnames(raw_df) <- c("index", "trait", "values", "flag", "transf", "transf_val")
 
-`%>%` <- dplyr::`%>%`
 knitr::kable(raw_df, format = "html", escape = FALSE, table.attr = "style='width:100%;'", align = 'c') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover")) %>%
   kableExtra::row_spec(0, extra_css = "vertical-align: middle;", background = hcolor, color = tcolor) %>%
   kableExtra::column_spec(1:6, border_left = TRUE, border_right = TRUE)
 ```
 
-where `index` is a simple numeric value to uniquely identify each trait, 
-`trait` is the trait/variable name, `values` is the actual entry, `flag` 
-indicates whether the entry is parametric (Normal) or skewed (Non-normal), 
-`transf` is the transformationfunction (empty for untransformed traits), and 
+where `index` is a simple numeric value to uniquely identify each trait,
+`trait` is the trait/variable name, `values` is the actual entry, `flag`
+indicates whether the entry is parametric (Normal) or skewed (Non-normal),
+`transf` is the transformationfunction (empty for untransformed traits), and
 `transf_val` is the transformation value used.
 
 From the previous example, the top 5 entries for the trait `T1` are:
@@ -126,6 +133,12 @@ knitr::kable(tmp, format = "html", escape = FALSE, table.attr = "style='width:10
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover")) %>%
   kableExtra::row_spec(0, extra_css = "vertical-align: middle;", background = hcolor, color = tcolor) %>%
   kableExtra::column_spec(1:6, border_left = TRUE, border_right = TRUE)
+```
+
+```{r echo = FALSE, eval = FALSE}
+knitr::kable(head(transformed_data_norm), format = "html", escape = FALSE, table.attr = "style='width:100%;'", align = 'c') %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover")) %>%
+  kableExtra::row_spec(0, extra_css = "vertical-align: middle;", background = hcolor, color = tcolor)
 ```
 
 As expected both tables show the same entries; however, the latter indicates that
