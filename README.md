@@ -46,7 +46,7 @@ You can install the development version from
 [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages(c("hexSticker", "kableExtra", "qpdf", remotes")
+# install.packages(c("hexSticker", "kableExtra", "qpdf", "remotes")
 remotes::install_github("villegar/MetaPipe", build_vignettes = TRUE)
 ```
 
@@ -96,12 +96,12 @@ write.csv(example_data, "example_data.csv", row.names = FALSE)
 
 # Load the data
 load_raw("example_data.csv", c(2))
-#>   ID    P1          T1         T2        T3    T4 T5
-#> 1  1   one -0.56047565  1.7150650        NA    NA NA
-#> 2  2   two -0.23017749  0.4609162 1.2240818  1.20 NA
-#> 3  3 three  1.55870831 -1.2650612 0.3598138 -0.50 NA
-#> 4  4  four  0.07050839 -0.6868529 0.4007715    NA NA
-#> 5  5  five  0.12928774 -0.4456620 0.1106827  0.87 NA
+#>   ID    P1 T5          T1         T2        T3    T4
+#> 1  1   one NA -0.56047565  1.7150650        NA    NA
+#> 2  2   two NA -0.23017749  0.4609162 1.2240818  1.20
+#> 3  3 three NA  1.55870831 -1.2650612 0.3598138 -0.50
+#> 4  4  four NA  0.07050839 -0.6868529 0.4007715    NA
+#> 5  5  five NA  0.12928774 -0.4456620 0.1106827  0.87
 ```
 
 ### Replace missing data
@@ -137,8 +137,8 @@ example_data$T2[4] <- NA
 
 # No changes expected
 replace_missing(example_data, c(2))
-#> The following traits were dropped because they have 50% or more missing values: 
-#> T5
+#> The following trait was dropped because it has 50% or more missing values: 
+#>  - T5
 #>   ID    P1          T1         T2        T3    T4
 #> 1  1   one -0.56047565  1.7150650        NA    NA
 #> 2  2   two          NA  0.4609162 1.2240818  1.20
@@ -149,7 +149,9 @@ replace_missing(example_data, c(2))
 # Traits with 25% of NA should be dropped
 replace_missing(example_data, c(2), prop_na =  0.25)
 #> The following traits were dropped because they have 25% or more missing values: 
-#> T1, T4, T5
+#>  - T1
+#>  - T4
+#>  - T5
 #>   ID    P1         T2        T3
 #> 1  1   one  1.7150650        NA
 #> 2  2   two  0.4609162 1.2240818
@@ -159,8 +161,8 @@ replace_missing(example_data, c(2), prop_na =  0.25)
 
 # NAs should be replaced by half of the minimum value
 replace_missing(example_data, c(2), replace_na =  TRUE)
-#> The following traits were dropped because they have 100% missing values: 
-#> T5
+#> The following trait was dropped because it has 100% missing values: 
+#>  - T5
 #>   ID    P1          T1         T2         T3    T4
 #> 1  1   one -0.56047565  1.7150650 0.05534136 -0.25
 #> 2  2   two -0.28023782  0.4609162 1.22408180  1.20

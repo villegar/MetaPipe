@@ -69,7 +69,7 @@ The goal of MetaPipe is to provide an easy to use and powerful tool capable of p
 
 You can install the development version from [GitHub](https://github.com/) with:
 ``` r
-# install.packages(c("hexSticker", "kableExtra", "qpdf", remotes")
+# install.packages(c("hexSticker", "kableExtra", "qpdf", "remotes")
 remotes::install_github("villegar/MetaPipe", build_vignettes = TRUE)
 ```
 ## Example
@@ -185,7 +185,7 @@ function; thus, the data seems to be skewed:
 ```{r assess-normality-example-data-before, echo = FALSE, fig.align = 'center', out.width = "60%"}
 set.seed(123)
 test_data <- rnorm(500)
-MetaPipe::generate_hist(2^test_data, NULL, xlab = latex2exp::TeX("2^{data}"), save = FALSE, alpha = 1, fill = hcolor)
+MetaPipe:::generate_hist(2^test_data, NULL, xlab = latex2exp::TeX("2^{data}"), save = FALSE, alpha = 1, fill = hcolor)
 ```
 
 Using `MetaPipe` we can find an optimal transformation that "normalises" this 
