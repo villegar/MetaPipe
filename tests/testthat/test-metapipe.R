@@ -76,6 +76,58 @@ test_that("replace missing data works", {
   expect_false(file.exists(filename))
 })
 
+test_that("normality assessment works", {
+  set.seed(123)
+  example_data <- data.frame(ID = c(1, 2, 3, 4, 5), 
+                             P1 = c("one", "two", "three", "four", "five"), 
+                             T1 = rnorm(5), 
+                             T2 = rnorm(5))
+  expected_output <- data.frame(index = rep(c(1, 2), each = 5),
+                                trait = rep(c("T1", "T2"), each = 5),
+                                values = c(example_data$T1, example_data$T2),
+                                flag = "Normal",
+                                transf = "",
+                                transf_val = NA,
+                                stringsAsFactors = FALSE)
+  
+  # Transforming data for log_2 normalisation
+  example_data_exp2 <- example_data[,]
+  example_data_exp2$T1 <- 2 ^ example_data$T1
+  
+  normalised_data <- assess_normality(example_data, c(1, 2))
+  normalised_data2 <- assess_normality(example_data_exp2, 
+                                       c(1, 2), 
+                                       plots_dir = "plots")
+  
+  # Check for generated histograms
+  filenames <- c("plots/HIST_1_LOG_2_T1.png", 
+                 "plots/HIST_2_NORM_T2.png", 
+                 "HIST_1_NORM_T1.png", 
+                 "HIST_2_NORM_T2.png")
+  for (f in filenames) {
+    expect_true(file.exists(f))
+    expect_false(dir.exists(f))
+    expect_gt(file.size(f), 0)
+    file.remove(f)
+    expect_false(file.exists(f))
+  }
+  
+  # Testing for all data sets
+  filenames <- c("metapipe_raw_data_non_par.csv",
+                 "metapipe_raw_data_norm.csv",
+                 "metapipe_raw_data_normalised_all.csv")
+  for (f in filenames) {
+    if (f == "metapipe_normalisation_stats.csv")
+      expect_message(assess_normality_stats())
+    expect_true(file.exists(f))
+    expect_false(dir.exists(f))
+    if (f != "metapipe_raw_data_non_par.csv")
+      expect_gt(file.size(f), 0)
+    file.remove(f)
+    expect_false(file.exists(f))
+  }
+})
+
 test_that("qtl mapping scanone works", {
   # Create toy dataset
   excluded_columns <- c(2)

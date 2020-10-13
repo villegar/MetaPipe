@@ -23,9 +23,9 @@ test_that("normality assessment works", {
   
   # Testing for both data sets
   expect_equal(expected_output, 
-               assess_normality(example_data, c(1, 2)))
+               assess_normality_core(example_data, c(1, 2)))
   expect_equal(expected_output_exp2, 
-               assess_normality(example_data_exp2, c(1, 2)))
+               assess_normality_core(example_data_exp2, c(1, 2)))
   
   # Check for generated histograms
   filenames <- c("HIST_1_LOG_2_T1.png", 
