@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • MetaPipe</title>
+<title>Father Riparia Genetic Map dataset — father_riparia • MetaPipe</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,10 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Father Riparia Genetic Map dataset — father_riparia" />
+<meta property="og:description" content="A dataset containing information of a genetic map for a vitis Riparia 
+subject; more specifically, each column after ID, contains genotypes 
+within each chromosome at different positions." />
 
 
 
@@ -58,7 +61,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -126,120 +129,42 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Father Riparia Genetic Map dataset</h1>
+    <small class="dont-index">Source: <a href='https://github.com/villegar/MetaPipe/blob/master/R/data.R'><code>R/data.R</code></a></small>
+    <div class="hidden name"><code>father_riparia.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>A dataset containing information of a genetic map for a <em>vitis Riparia</em> 
+subject; more specifically, each column after <code>ID</code>, contains genotypes 
+within each chromosome at different positions.</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>father_riparia</span><span class='op'>)</span></pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="assess_normality.html">assess_normality()</a></code> </p>
-        </td>
-        <td><p>Assess normality of traits</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="assess_normality_postprocessing.html">assess_normality_postprocessing()</a></code> </p>
-        </td>
-        <td><p>Post-processing for <code>assess_normality</code></p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="assess_normality_stats.html">assess_normality_stats()</a></code> </p>
-        </td>
-        <td><p>Assess normality statistics</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="effect_plots.html">effect_plots()</a></code> </p>
-        </td>
-        <td><p>Create effect plots</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="father_riparia.html">father_riparia</a></code> </p>
-        </td>
-        <td><p>Father Riparia Genetic Map dataset</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ionomics.html">ionomics</a></code> </p>
-        </td>
-        <td><p>F1 Seedling Ionomics dataset</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="load_raw.html">load_raw()</a></code> </p>
-        </td>
-        <td><p>Load raw data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="log_transformation.html">log_transformation()</a></code> </p>
-        </td>
-        <td><p>Logarithmic transformation</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="power_transformation.html">power_transformation()</a></code> </p>
-        </td>
-        <td><p>Power transformation</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="qtl_perm_test.html">qtl_perm_test()</a></code> </p>
-        </td>
-        <td><p>QTL mapping permutation test</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="qtl_scone.html">qtl_scone()</a></code> </p>
-        </td>
-        <td><p>Perform QTL mapping</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="replace_missing.html">replace_missing()</a></code> </p>
-        </td>
-        <td><p>Replace missing values (<code>NA</code>s)</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="root_transformation.html">root_transformation()</a></code> </p>
-        </td>
-        <td><p>Root transformation</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="transform_data.html">transform_data()</a></code> </p>
-        </td>
-        <td><p>Normalise data</p></td>
-      </tr>
-    </tbody>
-    </table>
+
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+
+    <p>A data frame with 296 rows and 1116 variables:</p><ul>
+<li><p><strong>ID:</strong> Sample ID</p></li>
+<li><p><strong>S&lt;chr&gt;_&lt;pos&gt; [1115 variables]:</strong> Chromosome <code>&lt;chr&gt;</code>, position 
+    <code>&lt;pos&gt;</code></p><ul>
+<li><p><strong>S1_61235:</strong>  Chromosome 1, position  61235</p></li>
+<li><p><strong>S1_929902:</strong> Chromosome 1, position 929902</p></li>
+<li><p><strong>S1_666584:</strong> Chromosome 1, position 666584</p></li>
+</ul></li>
+</ul>
+
+    <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
+
+    <p><a href='https://fennell-lab.netlify.app'>https://fennell-lab.netlify.app</a></p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Gaurab Bhattarai <a href='mailto:gbhattarai@uga.edu'>gbhattarai@uga.edu</a></p>
+
   </div>
-
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
