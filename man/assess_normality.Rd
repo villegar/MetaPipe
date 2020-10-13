@@ -11,7 +11,9 @@ assess_normality(
   out_prefix = "metapipe",
   plots_dir = getwd(),
   transf_vals = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10),
-  alpha = 0.05
+  alpha = 0.05,
+  pareto_scaling = FALSE,
+  show_stats = TRUE
 )
 }
 \arguments{
@@ -29,10 +31,17 @@ properties that are non-numeric, excluded columns.}
 \item{transf_vals}{Numeric vector with the transformation values.}
 
 \item{alpha}{Significance level.}
+
+\item{pareto_scaling}{Boolean flag to indicate whether or not perform a 
+Pareto scaling on the normalised data.}
+
+\item{show_stats}{Boolean flag to indicate whether or not to show the 
+normality assessment statistics (how many traits are normal, how many
+were transformed/normalised, what transformations were applied, etc.).}
 }
 \value{
-Structure containing the normalised data, if a suitable 
-transformation was found, otherwise returns the original data.
+List of data frames for the normal (\code{norm}) and skewed 
+(\code{skew}) traits.
 }
 \description{
 Assess normality of traits in a data frame.
@@ -62,7 +71,14 @@ example_data <- data.frame(ID = c(1,2,3,4,5),
                            T1 = rnorm(5), 
                            T2 = rnorm(5))
 example_data_normalised <- MetaPipe::assess_normality(example_data, c(1, 2))
-knitr::kable(example_data_normalised)
+example_data_norm <- example_data_normalised$norm
+example_data_skew <- example_data_normalised$skew
+
+# Normal traits
+knitr::kable(example_data_norm)
+
+# Skewed traits (empty)
+# knitr::kable(example_data_skew)
 
 
 # F1 Seedling Ionomics dataset
@@ -75,11 +91,13 @@ ionomics_normalised <-
                              excluded_columns = c(1, 2),
                              out_prefix = "ionomics",
                              transf_vals = c(2, exp(1)))
-# Show one entry for each of the first ten traits (left to right)
-knitr::kable(ionomics_normalised[nrow(ionomics) * c(1:10), ])
+                             
+ionomics_norm <- ionomics_normalised$norm
+ionomics_skew <- ionomics_normalised$skew
 
-}
-\seealso{
-\code{\link{assess_normality_postprocessing}} and 
-\code{\link{assess_normality_stats}}
+# Normal traits
+knitr::kable(ionomics_norm[1:5, ])
+
+# Skewed traits (partial output)
+knitr::kable(ionomics_skew[1:5, 1:10])
 }
