@@ -53,22 +53,12 @@ Imports:
     R.devices, 
     tictoc
 Suggests:
-    Amelia,
     badger,
-    factoextra, 
-    FactoMineR,
-    gplots,
-    gridExtra,
     hexSticker,
     knitr,
     kableExtra,
-    MASS, 
-    psych, 
     rmarkdown,
-    shiny,
-    testthat,
-    tidyverse,
-    VIM
+    testthat
 Depends: 
     R (>= 3.6)
 VignetteBuilder: knitr
