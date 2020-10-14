@@ -21,7 +21,7 @@ test_that("transform pseudo-marker works", {
                                         transf = "",
                                         transf_val = NA,
                                         stringsAsFactors = FALSE)
-  assess_normality_postprocessing(example_data, excluded_columns, example_data_normalised)
+  output <- assess_normality(example_data, excluded_columns)
   
   # Create and store random genetic map [for testing only]
   genetic_map <- random_map(population = population, seed = seed)
@@ -68,7 +68,7 @@ test_that("effect plots work", {
                                         transf = "",
                                         transf_val = NA,
                                         stringsAsFactors = FALSE)
-  assess_normality_postprocessing(example_data, excluded_columns, example_data_normalised)
+  output <- assess_normality(example_data, excluded_columns)
   
   # Create and store random genetic map [for testing only]
   genetic_map <- random_map(population = population, seed = seed)

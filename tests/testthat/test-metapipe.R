@@ -147,9 +147,7 @@ test_that("qtl mapping scanone works", {
                                         transf = "",
                                         transf_val = NA,
                                         stringsAsFactors = FALSE)
-  assess_normality_postprocessing(example_data, 
-                                  excluded_columns, 
-                                  example_data_normalised)
+  output <- assess_normality(example_data, excluded_columns)
   
   # Create and store random genetic map [for testing only]
   genetic_map <- random_map(population = population, seed = seed)
@@ -197,9 +195,8 @@ test_that("qtl mapping permutation test with scanone works", {
                                         transf = "",
                                         transf_val = NA,
                                         stringsAsFactors = FALSE)
-  assess_normality_postprocessing(example_data, 
-                                  excluded_columns, 
-                                  example_data_normalised)
+  
+  output <- assess_normality(example_data, excluded_columns)
   
   # Create and store random genetic map [for testing only]
   genetic_map <- random_map(population = population, seed = seed)
