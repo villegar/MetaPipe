@@ -17,7 +17,7 @@ properties that are non-numeric, excluded columns.}
 Data frame with the pre-processed raw data.
 }
 \description{
-Load raw data from disk and aggregates using the \code{mean} function 
+Load raw data from disk and aggregates (using the \code{mean} function) 
 observations with duplicated IDs (first column). Non-numeric columns must
 be excluded using the \code{excluded_columns} parameter.
 }

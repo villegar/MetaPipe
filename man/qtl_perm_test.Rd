@@ -42,12 +42,12 @@ contains parametric (normal) traits.}
 Data frame containing the significant QTLs information.
 }
 \description{
-Perform QTL mapping permutation test using the 
+Perform a QTL mapping permutation test using the 
 \code{\link[qtl:scanone]{qtl:scanone(...)}} function to find significant QTL.
 }
 \examples{
 # Toy dataset
-excluded_columns <- c(2)
+excluded_columns <- c(1, 2)
 population <- 5
 seed <- 1
 example_data <- data.frame(ID = 1:population,
@@ -76,7 +76,15 @@ x <- qtl::jittermap(x)
 x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
 x_qtl_perm <- qtl_perm_test(x, n_perm = 5, model = "normal", method = "hk")
 
+\donttest{
+x_qtl_perm_1000 <- qtl_perm_test(x, 
+                                 n_perm = 1000, 
+                                 model = "normal", 
+                                 method = "hk")
+}
 }
 \seealso{
-\code{\link{assess_normality}} and \code{\link{qtl_scone}}
+Other QTL mapping functions: 
+\code{\link{qtl_scone}()}
 }
+\concept{QTL mapping functions}

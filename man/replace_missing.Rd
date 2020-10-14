@@ -21,10 +21,11 @@ properties that are non-numeric, excluded columns.}
 \item{out_prefix}{Prefix for output files and plots.}
 
 \item{prop_na}{Proportion of missing/total observations, if a trait exceeds 
-this threshold, then it is dropped out}
+this threshold and \code{replace_na = FALSE}, then it will be 
+dropped out.}
 
 \item{replace_na}{Boolean flag to indicate whether or not missing values 
-should be replaced by half of the minimum value.}
+should be replaced by half of the minimum value within each trait.}
 }
 \value{
 Data frame containing the raw data without missing values.
@@ -36,11 +37,12 @@ between two actions to handle missing data:
   \item Drop traits (variables) that exceed a given threshold, 
   \code{prop_na}, a rate of missing (\code{NA}) and total observations.
 
-  \item Replace missing values by half of the minimum of each trait.
+  \item Replace missing values by half of the minimum within each trait.
 }
 
-Finally, if all entries are missing for a particular trait, this will be 
-removed from the dataset and stored in a external CSV file.
+Finally, if there are traits for which all entries are missing, these will 
+be removed from the dataset and stored in a external CSV file called
+"\code{out_prefix}_NA_raw_data.csv".
 }
 \examples{
                                         

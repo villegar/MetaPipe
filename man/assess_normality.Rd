@@ -47,20 +47,20 @@ List of data frames for the normal (\code{norm}) and skewed
 Assess normality of traits in a data frame.
 }
 \details{
-The normality of each trait is checked using a \emph{Shapiro-Wilk} test, 
+The normality of each trait is assessed using a \emph{Shapiro-Wilk} test, 
 under the following hypotheses:
 
 \itemize{
-  \item \eqn{H_0: } the sample comes from a normally distributed population
-  \item \eqn{H_1: } the sample does not come from a normally distributed 
-  population
+  \item \eqn{H_0:} the sample comes from a normally distributed population.
+  \item \eqn{H_1:} the sample does not come from a normally distributed 
+  population.
 }
 
 Using a significance level of \eqn{\alpha = 0.05}. If the conclusion is that 
 the sample does not come from a normally distributed population, then a 
 number of transformations are performed, based on the transformation values 
 passed with \code{transf_vals}. By default, the following transformation 
-values are used \code{c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10)} with the 
+values are used \code{a = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10)} with the 
 logarithmic (\code{log_a(x)}), power (\code{x^a}), and 
 radical/root (\code{x^(1/a)}) functions.
 }
