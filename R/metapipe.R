@@ -1,6 +1,6 @@
 #' Load raw data
 #' 
-#' Load raw data from disk and aggregates using the \code{mean} function 
+#' Load raw data from disk and aggregates (using the \code{mean} function) 
 #' observations with duplicated IDs (first column). Non-numeric columns must
 #' be excluded using the \code{excluded_columns} parameter.
 #' 
@@ -75,20 +75,22 @@ load_raw <- function(raw_data_filename, excluded_columns = NULL) {
 #'   \item Drop traits (variables) that exceed a given threshold, 
 #'   \code{prop_na}, a rate of missing (\code{NA}) and total observations.
 #' 
-#'   \item Replace missing values by half of the minimum of each trait.
+#'   \item Replace missing values by half of the minimum within each trait.
 #' }
 #' 
-#' Finally, if all entries are missing for a particular trait, this will be 
-#' removed from the dataset and stored in a external CSV file.
+#' Finally, if there are traits for which all entries are missing, these will 
+#' be removed from the dataset and stored in a external CSV file called
+#' "\code{out_prefix}_NA_raw_data.csv".
 #' 
 #' @param raw_data Data frame containing the raw data.
 #' @param excluded_columns Numeric vector containing the indices of the dataset 
 #'     properties that are non-numeric, excluded columns.
 #' @param out_prefix Prefix for output files and plots.
 #' @param prop_na Proportion of missing/total observations, if a trait exceeds 
-#'     this threshold, then it is dropped out
+#'     this threshold and \code{replace_na = FALSE}, then it will be 
+#'     dropped out.
 #' @param replace_na Boolean flag to indicate whether or not missing values 
-#'     should be replaced by half of the minimum value.
+#'     should be replaced by half of the minimum value within each trait.
 #'
 #' @return Data frame containing the raw data without missing values.
 #' @export
@@ -174,20 +176,20 @@ replace_missing <- function(raw_data,
 #' Assess normality of traits in a data frame. 
 #' 
 #' @details 
-#' The normality of each trait is checked using a \emph{Shapiro-Wilk} test, 
+#' The normality of each trait is assessed using a \emph{Shapiro-Wilk} test, 
 #' under the following hypotheses:
 #' 
 #' \itemize{
-#'   \item \eqn{H_0: } the sample comes from a normally distributed population
-#'   \item \eqn{H_1: } the sample does not come from a normally distributed 
-#'   population
+#'   \item \eqn{H_0:} the sample comes from a normally distributed population.
+#'   \item \eqn{H_1:} the sample does not come from a normally distributed 
+#'   population.
 #' }
 #' 
 #' Using a significance level of \eqn{\alpha = 0.05}. If the conclusion is that 
 #' the sample does not come from a normally distributed population, then a 
 #' number of transformations are performed, based on the transformation values 
 #' passed with \code{transf_vals}. By default, the following transformation 
-#' values are used \code{c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10)} with the 
+#' values are used \code{a = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10)} with the 
 #' logarithmic (\code{log_a(x)}), power (\code{x^a}), and 
 #' radical/root (\code{x^(1/a)}) functions.
 #' 
@@ -267,6 +269,8 @@ assess_normality <- function(raw_data,
                              alpha = 0.05,
                              pareto_scaling = FALSE,
                              show_stats = TRUE) {
+  
+  # Call core function: assess normality and transform traits
   raw_data_normalised <- assess_normality_core(raw_data, 
                                                excluded_columns,
                                                cpus, 
@@ -274,6 +278,7 @@ assess_normality <- function(raw_data,
                                                plots_dir, 
                                                transf_vals, 
                                                alpha)
+  # Call the post-processing function
   raw_data_normalised_post <- 
     assess_normality_postprocessing(raw_data,
                                     excluded_columns,
@@ -281,6 +286,7 @@ assess_normality <- function(raw_data,
                                     out_prefix,
                                     pareto_scaling)
   
+  # Show stats of the normalisation process
   if (show_stats) {
     assess_normality_stats(out_prefix)
   }
