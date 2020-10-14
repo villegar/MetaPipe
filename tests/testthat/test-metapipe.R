@@ -97,11 +97,11 @@ test_that("normality assessment works", {
   normalised_data <- assess_normality(example_data, c(1, 2))
   normalised_data2 <- assess_normality(example_data_exp2, 
                                        c(1, 2), 
-                                       plots_dir = "plots")
+                                       plots_dir = here::here("plots"))
   
   # Check for generated histograms
-  filenames <- c("plots/HIST_1_LOG_2_T1.png", 
-                 "plots/HIST_2_NORM_T2.png", 
+  filenames <- c(here::here("plots/HIST_1_LOG_2_T1.png"), 
+                 here::here("plots/HIST_2_NORM_T2.png"), 
                  "HIST_1_NORM_T1.png", 
                  "HIST_2_NORM_T2.png")
   for (f in filenames) {
@@ -112,8 +112,14 @@ test_that("normality assessment works", {
     expect_false(file.exists(f))
   }
   
+  # Delete plots directory
+  expect_true(dir.exists(here::here("plots")))
+  unlink(here::here("plots"), recursive = TRUE)
+  expect_false(dir.exists(here::here("plots")))
+  
   # Testing for all data sets
-  filenames <- c("metapipe_raw_data_non_par.csv",
+  filenames <- c("metapipe_normalisation_stats.csv",
+                 "metapipe_raw_data_non_par.csv",
                  "metapipe_raw_data_norm.csv",
                  "metapipe_raw_data_normalised_all.csv")
   for (f in filenames) {
