@@ -39,7 +39,7 @@ example_data_normalised <-
 
 out_prefix <- here::here("metapipe")
 example_data_normalised_post <- 
-  MetaPipe::assess_normality_postprocessing(example_data, 
+  MetaPipe:::assess_normality_postprocessing(example_data, 
                                             excluded_columns, 
                                             example_data_normalised,
                                             out_prefix = out_prefix)
