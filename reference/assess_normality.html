@@ -201,19 +201,19 @@ were transformed/normalised, what transformations were applied, etc.).</p></td>
 (<code>skew</code>) traits.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The normality of each trait is checked using a <em>Shapiro-Wilk</em> test, 
+    <p>The normality of each trait is assessed using a <em>Shapiro-Wilk</em> test, 
 under the following hypotheses:</p>
 <ul>
-<li><p>\(H_0: \) the sample comes from a normally distributed population</p></li>
-<li><p>\(H_1: \) the sample does not come from a normally distributed 
-  population</p></li>
+<li><p>\(H_0:\) the sample comes from a normally distributed population.</p></li>
+<li><p>\(H_1:\) the sample does not come from a normally distributed 
+  population.</p></li>
 </ul>
 
 <p>Using a significance level of \(\alpha = 0.05\). If the conclusion is that 
 the sample does not come from a normally distributed population, then a 
 number of transformations are performed, based on the transformation values 
 passed with <code>transf_vals</code>. By default, the following transformation 
-values are used <code><a href='https://rdrr.io/r/base/c.html'>c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10)</a></code> with the 
+values are used <code>a = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10)</code> with the 
 logarithmic (<code>log_a(x)</code>), power (<code>x^a</code>), and 
 radical/root (<code>x^(1/a)</code>) functions.</p>
 

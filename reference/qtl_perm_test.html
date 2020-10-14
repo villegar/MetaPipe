@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="QTL mapping permutation test — qtl_perm_test" />
-<meta property="og:description" content="Perform QTL mapping permutation test using the 
+<meta property="og:description" content="Perform a QTL mapping permutation test using the 
 qtl:scanone(...) function to find significant QTL." />
 
 
@@ -136,7 +136,7 @@ qtl:scanone(...) function to find significant QTL." />
     </div>
 
     <div class="ref-description">
-    <p>Perform QTL mapping permutation test using the 
+    <p>Perform a QTL mapping permutation test using the 
 <code><a href='https://rdrr.io/pkg/qtl/man/scanone.html'>qtl:scanone(...)</a></code> function to find significant QTL.</p>
     </div>
 
@@ -201,11 +201,12 @@ contains parametric (normal) traits.</p></td>
     <p>Data frame containing the significant QTLs information.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='assess_normality.html'>assess_normality</a></code> and <code><a href='qtl_scone.html'>qtl_scone</a></code></p></div>
+    <div class='dont-index'><p>Other QTL mapping functions: 
+<code><a href='qtl_scone.html'>qtl_scone</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Toy dataset</span>
-<span class='va'>excluded_columns</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span><span class='op'>)</span>
+<span class='va'>excluded_columns</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>
 <span class='va'>population</span> <span class='op'>&lt;-</span> <span class='fl'>5</span>
 <span class='va'>seed</span> <span class='op'>&lt;-</span> <span class='fl'>1</span>
 <span class='va'>example_data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>ID <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='va'>population</span>,
@@ -238,6 +239,12 @@ contains parametric (normal) traits.</p></td>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>qtl</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/qtl/man/calc.genoprob.html'>calc.genoprob</a></span><span class='op'>(</span><span class='va'>x</span>, step <span class='op'>=</span> <span class='fl'>1</span>, error.prob <span class='op'>=</span> <span class='fl'>0.001</span><span class='op'>)</span>
 <span class='va'>x_qtl_perm</span> <span class='op'>&lt;-</span> <span class='fu'>qtl_perm_test</span><span class='op'>(</span><span class='va'>x</span>, n_perm <span class='op'>=</span> <span class='fl'>5</span>, model <span class='op'>=</span> <span class='st'>"normal"</span>, method <span class='op'>=</span> <span class='st'>"hk"</span><span class='op'>)</span>
 
+<span class='co'># \donttest{</span>
+<span class='va'>x_qtl_perm_1000</span> <span class='op'>&lt;-</span> <span class='fu'>qtl_perm_test</span><span class='op'>(</span><span class='va'>x</span>, 
+                                 n_perm <span class='op'>=</span> <span class='fl'>1000</span>, 
+                                 model <span class='op'>=</span> <span class='st'>"normal"</span>, 
+                                 method <span class='op'>=</span> <span class='st'>"hk"</span><span class='op'>)</span>
+<span class='co'># }</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

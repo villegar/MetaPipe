@@ -44,11 +44,12 @@
 between two actions to handle missing data:
 Drop traits (variables) that exceed a given threshold, 
   prop_na, a rate of missing (NA) and total observations.
-Replace missing values by half of the minimum of each trait.
+Replace missing values by half of the minimum within each trait.
 
 
-Finally, if all entries are missing for a particular trait, this will be 
-removed from the dataset and stored in a external CSV file." />
+Finally, if there are traits for which all entries are missing, these will 
+be removed from the dataset and stored in a external CSV file called
+&quot;out_prefix_NA_raw_data.csv&quot;." />
 
 
 
@@ -147,11 +148,12 @@ removed from the dataset and stored in a external CSV file." />
 between two actions to handle missing data:</p><ol>
 <li><p>Drop traits (variables) that exceed a given threshold, 
   <code>prop_na</code>, a rate of missing (<code>NA</code>) and total observations.</p></li>
-<li><p>Replace missing values by half of the minimum of each trait.</p></li>
+<li><p>Replace missing values by half of the minimum within each trait.</p></li>
 </ol>
 
-<p>Finally, if all entries are missing for a particular trait, this will be 
-removed from the dataset and stored in a external CSV file.</p>
+<p>Finally, if there are traits for which all entries are missing, these will 
+be removed from the dataset and stored in a external CSV file called
+"<code>out_prefix</code>_NA_raw_data.csv".</p>
     </div>
 
     <pre class="usage"><span class='fu'>replace_missing</span><span class='op'>(</span>
@@ -181,12 +183,13 @@ properties that are non-numeric, excluded columns.</p></td>
     <tr>
       <th>prop_na</th>
       <td><p>Proportion of missing/total observations, if a trait exceeds 
-this threshold, then it is dropped out</p></td>
+this threshold and <code>replace_na = FALSE</code>, then it will be 
+dropped out.</p></td>
     </tr>
     <tr>
       <th>replace_na</th>
       <td><p>Boolean flag to indicate whether or not missing values 
-should be replaced by half of the minimum value.</p></td>
+should be replaced by half of the minimum value within each trait.</p></td>
     </tr>
     </table>
 
