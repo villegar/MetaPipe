@@ -310,42 +310,38 @@ assess_normality <- function(raw_data,
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#'     # Create toy dataset
-#'     excluded_columns <- c(2)
-#'     population <- 5
-#'     seed <- 1
-#'     example_data <- data.frame(ID = 1:population,
-#'                                P1 = c("one", "two", "three", "four", "five"),
-#'                                T1 = rnorm(population),
-#'                                T2 = rnorm(population))
-#'     example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
-#'                                           trait = rep(c("T1", "T2"), each = 5),
-#'                                           values = c(example_data$T1, example_data$T2),
-#'                                           flag = "Normal",
-#'                                           transf = "",
-#'                                           transf_val = NA,
-#'                                           stringsAsFactors = FALSE)
-#'     assess_normality_postprocessing(example_data, excluded_columns, 
-#'                                     example_data_normalised, 
-#'                                     out_prefix = here::here("metapipe"))
-#'     
-#'     # Create and store random genetic map [for testing only]
-#'     genetic_map <- MetaPipe:::random_map(population = population, seed = seed)
-#'     write.csv(genetic_map, here::here("metapipe_genetic_map.csv"), row.names = FALSE)
-#'     
-#'     # Load cross file with genetic map and raw data for normal traits
-#'     x <- qtl::read.cross(format = "csvs", 
-#'                          dir = here::here(),
-#'                          genfile = "metapipe_genetic_map.csv",
-#'                          phefile = "metapipe_raw_data_norm.csv")
-#'     set.seed(seed)
-#'     x <- qtl::jittermap(x)
-#'     x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
-#'     x_scone <- qtl_scone(x, 1, model = "normal", method = "hk")
-#' }
+#' # Create toy dataset
+#' excluded_columns <- c(1, 2)
+#' population <- 5
+#' seed <- 1
+#' example_data <- data.frame(ID = 1:population,
+#'                            P1 = c("one", "two", "three", "four", "five"),
+#'                            T1 = rnorm(population),
+#'                            T2 = rnorm(population))
+#'                            
+#' output <- MetaPipe::assess_normality(example_data, 
+#'                                      excluded_columns,
+#'                                      out_prefix = here::here("metapipe"),
+#'                                      show_stats = FALSE)
 #' 
-#' @seealso \code{\link{qtl_perm_test}}
+#' # Create and store random genetic map [for testing only]
+#' genetic_map <- MetaPipe:::random_map(population = population, 
+#'                                      seed = seed)
+#' write.csv(genetic_map, 
+#'           here::here("metapipe_genetic_map.csv"), 
+#'           row.names = FALSE)
+#' 
+#' # Load cross file with genetic map and raw data for normal traits
+#' x <- qtl::read.cross(format = "csvs", 
+#'                      dir = here::here(),
+#'                      genfile = "metapipe_genetic_map.csv",
+#'                      phefile = "metapipe_raw_data_norm.csv")
+#' set.seed(seed)
+#' x <- qtl::jittermap(x)
+#' x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
+#' x_scone <- qtl_scone(x, 1, model = "normal", method = "hk")
+#' 
+#' @family QTL mapping functions
 qtl_scone <- function(x_data, cpus = 1, ...) {
   i <- NULL # Local binding
   # Start parallel backend
@@ -386,7 +382,7 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
 
 #' QTL mapping permutation test
 #' 
-#' Perform QTL mapping permutation test using the 
+#' Perform a QTL mapping permutation test using the 
 #' \code{\link[qtl:scanone]{qtl:scanone(...)}} function to find significant QTL.
 #' 
 #' @importFrom foreach %dopar%
@@ -412,7 +408,7 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
 #' 
 #' @examples
 #' # Toy dataset
-#' excluded_columns <- c(2)
+#' excluded_columns <- c(1, 2)
 #' population <- 5
 #' seed <- 1
 #' example_data <- data.frame(ID = 1:population,
@@ -441,7 +437,13 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
 #' x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
 #' x_qtl_perm <- qtl_perm_test(x, n_perm = 5, model = "normal", method = "hk")
 #' 
-#' @seealso \code{\link{assess_normality}} and \code{\link{qtl_scone}}
+#' \donttest{
+#' x_qtl_perm_1000 <- qtl_perm_test(x, 
+#'                                  n_perm = 1000, 
+#'                                  model = "normal", 
+#'                                  method = "hk")
+#' }
+#' @family QTL mapping functions
 qtl_perm_test <- function(x_data, 
                           cpus = 1, 
                           qtl_method = "par-scanone", 
@@ -473,9 +475,10 @@ qtl_perm_test <- function(x_data,
                      .combine = rbind) %dopar% {
                        if (!is.null(raw_data_normalised)) {
                          transf_info <- raw_data_normalised$trait == traits[i]
-                         transf_info <- raw_data_normalised[transf_info, c("transf", "transf_val")][1, ]
-                       }
-                       else {
+                         transf_info <- 
+                           raw_data_normalised[transf_info, 
+                                               c("transf", "transf_val")][1, ]
+                       } else {
                          transf_info <- data.frame(transf = NA, transf_val = NA)
                        }
                        
@@ -506,14 +509,17 @@ qtl_perm_test <- function(x_data,
                        
                        # Run single scan
                        x_scone <- qtl::scanone(x_data, pheno.col = i, ...)
-                       sum_x_scone <- summary(x_scone, threshold = lod_threshold)
+                       sum_x_scone <- summary(x_scone, 
+                                              threshold = lod_threshold)
                        lod_cnt <- nrow(sum_x_scone)
-                       if(!is.null(lod_cnt) && lod_cnt > 0) {
-                         for(k in 1:lod_cnt) {
-                           if(k > 1) {
-                             nrecord <- record[1, ] # Create copy of record object
+                       if (!is.null(lod_cnt) && lod_cnt > 0) {
+                         for (k in 1:lod_cnt) {
+                           if (k > 1) {
+                             # Create copy of record object
+                             nrecord <- record[1, ]
                            } else {
-                             nrecord <- record # Copy record structured and data
+                             # Copy record structured and data
+                             nrecord <- record
                            }
                            
                            # Extract Peak QTL information
@@ -523,43 +529,66 @@ qtl_perm_test <- function(x_data,
                            marker <- rownames(sum_x_scone)[k]
                            
                            # Verify if current QTL has a pseudomarker
-                           marker_info <- transform_pseudo_marker(x_data, marker, nrecord$lg, nrecord$pos_peak)
+                           marker_info <- 
+                             transform_pseudo_marker(x_data, 
+                                                     marker, 
+                                                     nrecord$lg, 
+                                                     nrecord$pos_peak)
                            nrecord$marker <- marker_info[1]
                            nrecord$pos_peak <- as.numeric(marker_info[2])
                            
                            # Create QTL ID: trait:LG@position
-                           if(!is.na(nrecord$lg)) {
-                             nrecord$qtl_ID <- with(nrecord, sprintf("%s:%s@%f", traits[i], lg, pos_peak))
+                           if (!is.na(nrecord$lg)) {
+                             nrecord$qtl_ID <- 
+                               with(nrecord, 
+                                    sprintf("%s:%s@%f", 
+                                            traits[i], 
+                                            lg, 
+                                            pos_peak))
                            }
                            
                            # Compute the 95% Bayes' CI
-                           p95_bayes <- qtl::bayesint(x_scone, chr = nrecord$lg, expandtomarkers = TRUE, prob = 0.95)
+                           p95_bayes <- qtl::bayesint(x_scone, 
+                                                      chr = nrecord$lg, 
+                                                      expandtomarkers = TRUE, 
+                                                      prob = 0.95)
                            p95_bayes <- unique(p95_bayes)
                            low_bound <- 1 #p95_bayes$pos == min(p95_bayes$pos)
                            upper_bound <- which.max(p95_bayes$pos) #p95_bayes$pos == max(p95_bayes$pos)
-                           p95_bayes$marker <- NA # Add new column for markers, prevent duplicated row names
+                           # Add new column for markers, 
+                           # prevent duplicated row names
+                           p95_bayes$marker <- NA 
                            
                            # Verify if the 95% Bayes' CI QTLs have pseudomarkers
-                           for(l in 1:nrow(p95_bayes)) {
+                           for (l in 1:nrow(p95_bayes)) {
                              marker <- rownames(p95_bayes)[l]
-                             marker_info <- transform_pseudo_marker(x_data, marker, p95_bayes[l, "chr"], p95_bayes[l, "pos"])
+                             marker_info <- 
+                               transform_pseudo_marker(x_data, 
+                                                       marker, 
+                                                       p95_bayes[l, "chr"], 
+                                                       p95_bayes[l, "pos"])
                              p95_bayes[l, "marker"] <- marker_info[1]
                              p95_bayes[l, "pos"] <- as.numeric(marker_info[2])
                            }
                            
-                           nrecord$pos_p95_bay_int <- paste0(p95_bayes[low_bound, "pos"], "-",
-                                                             p95_bayes[upper_bound, "pos"])
-                           nrecord$marker_p95_bay_int <- paste0(p95_bayes[low_bound, "marker"], "-",
-                                                                p95_bayes[upper_bound, "marker"])
+                           nrecord$pos_p95_bay_int <- 
+                             paste0(p95_bayes[low_bound, "pos"], "-",
+                                    p95_bayes[upper_bound, "pos"])
+                           nrecord$marker_p95_bay_int <- 
+                             paste0(p95_bayes[low_bound, "marker"], "-",
+                                    p95_bayes[upper_bound, "marker"])
                            
-                           if(k > 1) {
+                           if (k > 1) {
                              record <- rbind(record, nrecord)
                            } else {
                              record <- nrecord
                            }
                          }
                          
-                         x_scone_perm <- qtl::scanone(x_data, pheno.col = i, n.perm = n_perm, ...)
+                         x_scone_perm <- qtl::scanone(x_data, 
+                                                      pheno.col = i, 
+                                                      n.perm = n_perm, 
+                                                      ...)
                          p5 <- summary(x_scone_perm)[[1]]  #  5% percent
                          p10 <- summary(x_scone_perm)[[2]] # 10% percent
                          
@@ -599,23 +628,36 @@ qtl_perm_test <- function(x_data,
                            record[p10_idx, ]$p10_qtl <- TRUE
                          }
                          
-                         # For paremetric QTL mapping only
+                         # For parametric QTL mapping only
                          if (parametric) {
                            chr <- as.numeric(sum_x_scone$chr)
                            pos <- as.numeric(sum_x_scone$pos)
-                           qtl_s <- qtl::makeqtl(x_data, chr, pos, what = c("prob"))
+                           qtl_s <- qtl::makeqtl(x_data, 
+                                                 chr, 
+                                                 pos, 
+                                                 what = c("prob"))
                            
-                           for(m in 1:length(chr)){
+                           for (m in 1:length(chr)) {
                              #qtl_s <- makeqtl(x_data, chr[m], pos[m], what=c("prob"))
                              #f <- as.formula(paste0("y~",paste0("Q",seq(1:nrow(sum_x_scone)), collapse = " + ")))
-                             f <- as.formula(paste0("y~", paste0("Q", m, collapse = " + ")))
-                             fit_qtl <- qtl::fitqtl(x_data, pheno.col = i, qtl_s, formula = f , get.ests = TRUE, ...) # model = "normal", method="hk"
+                             f <- as.formula(paste0("y~", 
+                                                    paste0("Q", 
+                                                           m, 
+                                                           collapse = " + ")))
+                             fit_qtl <- qtl::fitqtl(x_data, 
+                                                    pheno.col = i, 
+                                                    qtl_s, 
+                                                    formula = f, 
+                                                    get.ests = TRUE, 
+                                                    ...)
                              sum_fit_qtl <- summary(fit_qtl)
                              
-                             if(length(sum_fit_qtl) > 0){
+                             if (length(sum_fit_qtl) > 0) {
                                p.var <- as.numeric(sum_fit_qtl[[1]][1, "%var"])
-                               pvalue.f <- as.numeric(sum_fit_qtl[[1]][, "Pvalue(F)"])[1]
-                               estimates <- as.numeric(sum_fit_qtl$ests[, "est"])[-1]
+                               pvalue.f <- 
+                                 as.numeric(sum_fit_qtl[[1]][, "Pvalue(F)"])[1]
+                               estimates <- 
+                                 as.numeric(sum_fit_qtl$ests[, "est"])[-1]
                                record[m, ]$pvar <- p.var
                                record[m, ]$pval <- pvalue.f
                                record[m, ]$est_add <- estimates[1]
