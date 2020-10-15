@@ -7,7 +7,8 @@ father_riparia <- read.csv(father_riparia_path)
 colnames(father_riparia)[1] <- "ID"
 `%>%` <- dplyr::`%>%`
 father_riparia <- father_riparia %>%
-  dplyr::mutate(ID = gsub("160_271_", "E_", sprintf("%3s", ID)))
+  dplyr::mutate(ID = gsub("160_271_", "E_", sprintf("%3s", ID))) %>%
+  dplyr::mutate(ID = ifelse(grepl(" ", ID), NA, ID))
 
 # idx <- order(colnames(father_riparia))
 # father_riparia <- father_riparia[, idx]
