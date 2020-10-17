@@ -198,3 +198,41 @@ effect_plots <- function(x_data_sim, qtl_data, cpus = 1, plots_dir = getwd()) {
   }
   parallel::stopCluster(cl) # Stop cluster
 }
+
+#' Load data
+#' 
+#' Load data from a CSV file or verify that input is a data frame.
+#'
+#' @param input Input data. It can be a string with the filename or a 
+#'     data frame.
+#' @param wdir Working directory.
+#' @param contents Contents of \code{input}.
+#' @param ... Optional parameters for \code{\link{read.csv}}.
+#'
+#' @return Data frame.
+#'
+#' @noRd
+#' @keywords internal
+load_data <- function(input, wdir = here::here(), contents = "raw", ...) {
+    # Verify if input is a string with the filename
+    if (class(input) == "character") {
+      filename <- file.path(wdir, input)
+      # Verify the file exists
+      if (!file.exists(filename)) {
+        stop("\nThe given path to the file with ", contents, 
+             " data was not found: \n",
+             filename)
+      } else if (!grepl("*.csv$", filename)) { # Verify if input is a CSV file
+        stop("\nThe file with ", contents, 
+             " data is expected to be in CSV format: \n",
+             filename)
+      }
+      return(read.csv(filename, ...)) # Load data from external file
+  } else if(class(input) == "data.frame") { # Verify if input is a data frame
+    return(input) # Input was a data frame, so just return original structure
+  } else {
+    stop("\nValid arguments for ", contents, " data are: \n",
+         " - Data frame\n",
+         " - Filename (CSV format)")
+  }
+}
