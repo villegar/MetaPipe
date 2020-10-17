@@ -85,6 +85,7 @@ x_qtl_perm_1000 <- qtl_perm_test(x,
 }
 \seealso{
 Other QTL mapping functions: 
-\code{\link{qtl_scone}()}
+\code{\link{qtl_scone}()},
+\code{\link{read.cross}()}
 }
 \concept{QTL mapping functions}
