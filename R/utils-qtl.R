@@ -236,3 +236,84 @@ load_data <- function(input, wdir = here::here(), contents = "raw", ...) {
          " - Filename (CSV format)")
   }
 }
+
+#' Read QTL data
+#' 
+#' Read QTL data from two sources, one containing genotypes and another one
+#' phenotypes.
+#'
+#' @param geno Data frame or string (filename) to file containing genotype 
+#'     data. For example a genetic map like \code{\link{father_riparia}}.
+#' @param pheno Data frame or string (filename) to file containing phenotype 
+#'     data. For example, output from \code{\link{assess_normality}}.
+#' @param wdir Working directory.
+#' @param ... Optional parameters for 
+#'     \code{\link[qtl::read.cross]{qtl:read.cross(...)}} function.
+#'
+#' @return Object of \code{cross} class for QTL mapping.
+#' @export
+#'
+#' @examples
+#' data(father_riparia)
+#' data(ionomics)
+#' ionomics_rev <- MetaPipe::replace_missing(ionomics, 
+#'                                           excluded_columns = c(1, 2),
+#'                                           replace_na =  TRUE)
+#' ionomics_normalised <- 
+#'   MetaPipe::assess_normality(ionomics_rev,
+#'                              excluded_columns = c(1, 2),
+#'                              out_prefix = "ionomics",
+#'                              transf_vals = c(2, exp(1)),
+#'                              show_stats = FALSE)
+#' x_data <- MetaPipe::read.cross(father_riparia, 
+#'                                ionomics_normalised$norm,
+#'                                genotypes = c("nn", "np", "--"))
+#' 
+#' @family QTL mapping functions
+read.cross <- function(geno, pheno, wdir = here::here(), ...) {
+  geno <- load_data(geno, wdir, "genotype")
+  pheno <- load_data(pheno, wdir, "phenotype")
+  
+  # First column must be called ID
+  colnames(geno)[1] <- colnames(pheno)[1] <- "ID"
+  
+  # Check both files have the same IDs
+  ids <- dplyr::inner_join(geno, 
+                           pheno, 
+                           by = "ID")$ID
+
+  if (length(ids) == 0) {
+    stop("\nZero matching IDs were found, make sure both genotypes and ",
+         "phenotypes use the same ID format.")
+  }
+  
+  # Find matching indices for phenotypes
+  idx <- pheno$ID %in% ids
+  if (sum(!idx) > 0) {
+    warning("\nThe observations with the following IDs are going to be dropped ",
+            "as no matching genotypes where found: ",
+            paste0(pheno$ID[!idx], collapse = ", "))
+  }
+  
+  # Drop not matching entries (IDs)
+  geno <- dplyr::filter(geno, ID %in% ids | is.na(ID))
+  geno$ID[is.na(geno$ID)] <- ""
+  pheno <- dplyr::filter(pheno, idx)
+  
+  # Create temporal files
+  tmp_dir <- tempdir() 
+  write.csv(geno, file.path(tmp_dir, "geno.csv"), row.names = FALSE)
+  write.csv(pheno, file.path(tmp_dir, "pheno.csv"), row.names = FALSE)
+  
+  # Load cross file
+  x <- qtl::read.cross(format = "csvs", 
+                       dir = tmp_dir, 
+                       "geno.csv", 
+                       "pheno.csv",
+                       ...)
+  
+  # # Delete temp files
+  file.remove(file.path(tmp_dir, "geno.csv"))
+  file.remove(file.path(tmp_dir, "pheno.csv"))
+  return(x)
+}
