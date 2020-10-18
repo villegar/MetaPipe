@@ -277,6 +277,10 @@ read.cross <- function(geno, pheno, wdir = here::here(), ...) {
   # First column must be called ID
   colnames(geno)[1] <- colnames(pheno)[1] <- "ID"
   
+  # First column must be of the same data type
+  geno$ID <- suppressWarnings(as.character(geno$ID))
+  pheno$ID <- suppressWarnings(as.character(pheno$ID))
+  
   # Check both files have the same IDs
   ids <- dplyr::inner_join(geno, 
                            pheno, 
@@ -300,20 +304,26 @@ read.cross <- function(geno, pheno, wdir = here::here(), ...) {
   geno$ID[is.na(geno$ID)] <- ""
   pheno <- dplyr::filter(pheno, idx)
   
+  # Check that workin directory exists
+  if (!dir.exists(wdir)) {
+    stop("\nThe given working directory (wdir) does not exist:\n",
+         wdir)
+  }
+  
   # Create temporal files
-  tmp_dir <- tempdir() 
-  write.csv(geno, file.path(tmp_dir, "geno.csv"), row.names = FALSE)
-  write.csv(pheno, file.path(tmp_dir, "pheno.csv"), row.names = FALSE)
+  # tmp_dir <- tempdir() 
+  write.csv(geno, file.path(wdir, ".geno.csv"), row.names = FALSE)
+  write.csv(pheno, file.path(wdir, ".pheno.csv"), row.names = FALSE)
   
   # Load cross file
   x <- qtl::read.cross(format = "csvs", 
-                       dir = tmp_dir, 
-                       "geno.csv", 
-                       "pheno.csv",
+                       dir = wdir, 
+                       ".geno.csv", 
+                       ".pheno.csv",
                        ...)
   
-  # # Delete temp files
-  file.remove(file.path(tmp_dir, "geno.csv"))
-  file.remove(file.path(tmp_dir, "pheno.csv"))
+  # Delete temp files
+  file.remove(file.path(wdir, ".geno.csv"))
+  file.remove(file.path(wdir, ".pheno.csv"))
   return(x)
 }
