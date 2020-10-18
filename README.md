@@ -9,15 +9,17 @@
 
 # MetaPipe <img src="https://raw.githubusercontent.com/villegar/MetaPipe/master/inst/images/metapipe.png" alt="metapipe-logo" align="right" height=200px/>
 
-MetaPipe: A High-Performance Computing pipeline for QTL mapping of large
-metabolomic datasets <!-- badges: start -->
+MetaPipe: A High-Performance Computing Pipeline for QTL Mapping of Large
+Ionomic and Metabolomic Datasets <!-- badges: start -->
 <!-- [![Build Status](https://travis-ci.com/villegar/MetaPipe.svg?branch=master)](https://travis-ci.com/villegar/MetaPipe) -->
-[![](https://travis-ci.com/villegar/MetaPipe.svg?branch=master)](https://travis-ci.com/villegar/MetaPipe)
-[![](https://img.shields.io/badge/devel%20version-1.0.0-blue.svg)](https://github.com/villegar/MetaPipe)
-[![](https://img.shields.io/github/languages/code-size/villegar/MetaPipe.svg)](https://github.com/villegar/MetaPipe)<!-- [![](https://www.r-pkg.org/badges/version/MetaPipe?color=red)](https://cran.r-project.org/package=MetaPipe) -->
+<!-- [![](https://travis-ci.com/villegar/MetaPipe.svg?branch=master)](https://travis-ci.com/villegar/MetaPipe) -->
+[![](https://www.r-pkg.org/badges/version/MetaPipe?color=red)](https://cran.r-project.org/package=MetaPipe)
+[![](https://img.shields.io/badge/devel%20version-0.0.0.900-yellow.svg)](https://github.com/villegar/MetaPipe)
 [![](https://codecov.io/gh/villegar/MetaPipe/branch/master/graph/badge.svg)](https://codecov.io/gh/villegar/MetaPipe)
 [![R build
 status](https://github.com/villegar/MetaPipe/workflows/R-CMD-check/badge.svg)](https://github.com/villegar/MetaPipe/actions)
+<!-- [![](https://img.shields.io/github/languages/code-size/villegar/MetaPipe.svg)](https://github.com/villegar/MetaPipe) -->
+<!-- [![](https://www.r-pkg.org/badges/version/MetaPipe?color=red)](https://cran.r-project.org/package=MetaPipe) -->
 <!-- [![Dependencies](https://tinyverse.netlify.com/badge/MetaPipe)](https://cran.r-project.org/package=MetaPipe) -->
 <!-- [![CRAN checks](https://cranchecks.info/badges/summary/MetaPipe)](https://cran.r-project.org/web/checks/check_results_MetaPipe.html) -->
 <!-- [![R build status](https://github.com/villegar/MetaPipe/workflows/R-CMD-check/badge.svg)](https://github.com/villegar/MetaPipe/actions) -->
@@ -32,18 +34,16 @@ capable of performing QTL mapping analyses.
 
 ## Installation
 
-<!-- You can install the released version of MetaPipe from [CRAN](https://CRAN.R-project.org) with: -->
+You can install the released version of MetaPipe from
+[CRAN](https://CRAN.R-project.org) with:
 
-<!-- ``` r -->
+``` r
+install.packages("MetaPipe")
+```
 
-<!-- install.packages("MetaPipe") -->
+And the development version from [GitHub](https://github.com/) with:
 
-<!-- ``` -->
-
-<!-- And the development version from [GitHub](https://github.com/) with: -->
-
-You can install the development version from
-[GitHub](https://github.com/) with:
+<!-- You can install the development version from [GitHub](https://github.com/) with: -->
 
 ``` r
 # install.packages(c("hexSticker", "kableExtra", "qpdf", "remotes")
@@ -79,7 +79,7 @@ load_raw(raw_data_filename = "FILE.CSV", excluded_columns = c(...))
 where `raw_data_filename` is the filename containing the raw data, both
 absolute and relative paths are accepted. Next, the argument
 `excluded_columns` is a vector containing the indices of the properties,
-e.g. `c(2, 3, ..., M)`.
+e.g. `c(2, 3, ..., M)`.
 
 ``` r
 # Toy dataset
@@ -124,7 +124,7 @@ replace_missing(raw_data = example_data,
 
 where `raw_data` is a data frame containing the raw data, as described
 in [Load Raw Data](#load-raw-data) and `excluded_columns` is a vector
-containing the indices of the properties, e.g. `c(2, 3, ..., M)`. The
+containing the indices of the properties, e.g. `c(2, 3, ..., M)`. The
 other arguments are optional, `out_prefix` is the prefix for output
 files, `prop_na` is the proportion of NA values (used to drop traits),
 and `replace_na` is a logical flag to indicate whether or not NAs should
@@ -205,7 +205,7 @@ where `raw_data` is a data frame containing the raw data, as described
 in [Load Raw
 Data](https://villegar.github.io/MetaPipe/articles/load-raw-data.html)
 and `excluded_columns` is a vector containing the indices of the
-properties, e.g. `c(2, 3, ..., M)`. The other arguments are optional,
+properties, e.g. `c(2, 3, ..., M)`. The other arguments are optional,
 `cpus` is the number of cores to use, in other words, the number of
 concurrent traits to process, `out_prefix` is the prefix for output
 files, `plots_dir` is the output directory where the plots will be
@@ -216,8 +216,7 @@ values to be used when transforming the original data.
 
 The following histogram shows a sample data obtained from a normal
 distribution with the command `rnorm`, but it was transformed using the
-power (base `2`) function; thus, the data seems to be
-skewed:
+power (base `2`) function; thus, the data seems to be skewed:
 
 <img src="man/figures/README-assess-normality-example-data-before-1.png" width="60%" style="display: block; margin: auto;" />
 
@@ -229,573 +228,20 @@ example_data <- data.frame(ID = 1:500,
                            T1 = test_data,
                            T2 = 2^test_data)
 transformed_data <- MetaPipe::assess_normality(example_data, c(1))
+#> Total traits (excluding all NAs traits):     2
+#> Normal traits (without transformation):      1
+#> Normal traits (transformed):                 1
+#> Total normal traits:                         2
+#> Total skewed traits:                         0
+#> 
+#> Transformations summary:
+#>  f(x)    Value   # traits
+#>  log 2   1
 ```
 
-The top 5 entries for the trait `T1`
-are:
+The top 5 entries for the trait `T1` are:
 
-<table style="width:100%; margin-left: auto; margin-right: auto;" class="table table-striped table-hover">
-
-<thead>
-
-<tr>
-
-<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
-
-index
-
-</th>
-
-<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
-
-trait
-
-</th>
-
-<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
-
-values
-
-</th>
-
-<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
-
-flag
-
-</th>
-
-<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
-
-transf
-
-</th>
-
-<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
-
-transf\_val
-
-</th>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-<tr>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-1
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-T1
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-\-0.5604756
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-Normal
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-1
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-T1
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-\-0.2301775
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-Normal
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-1
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-T1
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-1.5587083
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-Normal
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-1
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-T1
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-0.0705084
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-Normal
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-1
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-T1
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-0.1292877
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-Normal
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-1
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-T1
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-1.7150650
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-Normal
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-</td>
-
-</tr>
-
-</tbody>
-
-</table>
-
-And for trait
-`T2`:
-
-<table style="width:100%; margin-left: auto; margin-right: auto;" class="table table-striped table-hover">
-
-<thead>
-
-<tr>
-
-<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
-
-index
-
-</th>
-
-<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
-
-trait
-
-</th>
-
-<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
-
-values
-
-</th>
-
-<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
-
-flag
-
-</th>
-
-<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
-
-transf
-
-</th>
-
-<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
-
-transf\_val
-
-</th>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-<tr>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-2
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-T2
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-\-0.5604756
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-Normal
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-log
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-2
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-2
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-T2
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-\-0.2301775
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-Normal
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-log
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-2
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-2
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-T2
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-1.5587083
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-Normal
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-log
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-2
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-2
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-T2
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-0.0705084
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-Normal
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-log
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-2
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-2
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-T2
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-0.1292877
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-Normal
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-log
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-2
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-2
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-T2
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-1.7150650
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-Normal
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-log
-
-</td>
-
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-
-2
-
-</td>
-
-</tr>
-
-</tbody>
-
-</table>
+And for trait `T2`:
 
 As expected both tables show the same entries; however, the latter
 indicates that `T2` was transformed using \(`\log_2`\). The function

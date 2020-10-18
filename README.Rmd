@@ -2,7 +2,6 @@
 output: github_document
 always_allow_html: yes
 ---
-
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, include = FALSE}
@@ -39,14 +38,17 @@ sub_html <- function(str1, str2) {
 
 <!-- `r system.file("images/metapipe.png", package = "MetaPipe")` -->
 # MetaPipe <img src="https://raw.githubusercontent.com/villegar/MetaPipe/master/inst/images/metapipe.png" alt="metapipe-logo" align="right" height=200px/>
-MetaPipe: A High-Performance Computing pipeline for QTL mapping of large metabolomic datasets
+MetaPipe: A High-Performance Computing Pipeline for QTL Mapping of Large Ionomic 
+           and Metabolomic Datasets
 <!-- badges: start -->
 <!-- [![Build Status](https://travis-ci.com/villegar/MetaPipe.svg?branch=master)](https://travis-ci.com/villegar/MetaPipe) -->
-`r badger::badge_travis("villegar/MetaPipe", is_commercial = TRUE)`
-`r badger::badge_devel("villegar/MetaPipe", "blue")`
-`r badger::badge_code_size("villegar/MetaPipe")`<!-- `r badger::badge_cran_release("MetaPipe", color = "red")` -->
+<!-- `r badger::badge_travis("villegar/MetaPipe", is_commercial = TRUE)` -->
+`r badger::badge_cran_release("MetaPipe", color = "red")`
+`r badger::badge_devel("villegar/MetaPipe", "yellow")`
 `r badger::badge_codecov("villegar/MetaPipe")`
 `r badger::badge_github_actions()`
+<!-- `r badger::badge_code_size("villegar/MetaPipe")` -->
+<!-- `r badger::badge_cran_release("MetaPipe", color = "red")` -->
 <!-- `r badger::badge_dependencies("MetaPipe")` -->
 <!-- `r badger::badge_cran_checks("MetaPipe")` -->
 <!-- [![R build status](https://github.com/villegar/MetaPipe/workflows/R-CMD-check/badge.svg)](https://github.com/villegar/MetaPipe/actions) -->
@@ -59,16 +61,15 @@ The goal of MetaPipe is to provide an easy to use and powerful tool capable of p
 
 ## Installation
 
-<!-- You can install the released version of MetaPipe from [CRAN](https://CRAN.R-project.org) with: -->
-
-<!-- ``` r -->
-<!-- install.packages("MetaPipe") -->
-<!-- ``` -->
-
-<!-- And the development version from [GitHub](https://github.com/) with: -->
-
-You can install the development version from [GitHub](https://github.com/) with:
+You can install the released version of MetaPipe from [CRAN](https://CRAN.R-project.org) with:
 ``` r
+install.packages("MetaPipe")
+```
+
+And the development version from [GitHub](https://github.com/) with:
+
+<!-- You can install the development version from [GitHub](https://github.com/) with: -->
+```r
 # install.packages(c("hexSticker", "kableExtra", "qpdf", "remotes")
 remotes::install_github("villegar/MetaPipe", build_vignettes = TRUE)
 ```
@@ -199,7 +200,7 @@ transformed_data <- MetaPipe::assess_normality(example_data, c(1))
 ```
 
 The top 5 entries for the trait `T1` are:
-```{r, echo = FALSE}
+```{r, echo = FALSE, eval = FALSE}
 knitr::kable(head(transformed_data), format = "html", escape = FALSE, table.attr = "style='width:100%;'", align = 'c') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover")) %>%
   kableExtra::row_spec(0, extra_css = "vertical-align: middle;", background = hcolor, color = tcolor) %>%
@@ -207,7 +208,7 @@ knitr::kable(head(transformed_data), format = "html", escape = FALSE, table.attr
 ```
 
 And for trait `T2`:
-```{r, echo = FALSE}
+```{r, echo = FALSE, eval = FALSE}
 tmp <- head(transformed_data[-c(1:500), ])
 rownames(tmp) <- c(1:6)
 knitr::kable(tmp, format = "html", escape = FALSE, table.attr = "style='width:100%;'", align = 'c') %>%
