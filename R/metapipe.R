@@ -339,7 +339,35 @@ assess_normality <- function(raw_data,
 #' set.seed(seed)
 #' x <- qtl::jittermap(x)
 #' x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
-#' x_scone <- qtl_scone(x, 1, model = "normal", method = "hk")
+#' x_scone <- MetaPipe::qtl_scone(x, 1, model = "normal", method = "hk")
+#' 
+#' 
+#' # F1 Seedling Ionomics dataset
+#' data(ionomics) # Includes some missing data
+#' data(father_riparia) # Genetic map
+#' ionomics_rev <- MetaPipe::replace_missing(ionomics, 
+#'                                           excluded_columns = c(1, 2),
+#'                                           replace_na =  TRUE)
+#' ionomics_normalised <- 
+#'   MetaPipe::assess_normality(ionomics_rev,
+#'                              excluded_columns = c(1, 2),
+#'                              out_prefix = "ionomics",
+#'                              transf_vals = c(2, exp(1)),
+#'                              show_stats = FALSE)
+#' 
+#' write.csv(father_riparia, 
+#'           here::here("ionomics_genetic_map.csv"), 
+#'           row.names = FALSE)
+#' # Load cross file with genetic map and raw data for normal traits
+#' x <- qtl::read.cross(format = "csvs", 
+#'                      dir = here::here(),
+#'                      "ionomics_genetic_map.csv",
+#'                      "ionomics_raw_data_norm.csv",
+#'                      genotypes = c("nn", "np", "--"))
+#' set.seed(seed)
+#' x <- qtl::jittermap(x)
+#' x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
+#' x_scone <- MetaPipe::qtl_scone(x, 1, model = "normal", method = "hk")
 #' 
 #' @family QTL mapping functions
 qtl_scone <- function(x_data, cpus = 1, ...) {
