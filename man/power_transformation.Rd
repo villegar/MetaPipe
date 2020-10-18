@@ -10,7 +10,9 @@ power_transformation(
   alpha = 0.05,
   transf_vals = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10),
   plots_prefix = "HIST",
-  digits = 6
+  digits = 6,
+  plot = TRUE,
+  quiet = FALSE
 )
 }
 \arguments{
@@ -25,9 +27,14 @@ power_transformation(
 \item{plots_prefix}{Prefix for plots with or without path.}
 
 \item{digits}{Significant digits to compare p-values of transformations.}
+
+\item{plot}{Boolean flag to indicate whether or not to plot a histogram 
+comparing the original and transformed/normalised data.}
+
+\item{quiet}{Boolean flag to hide status messages.}
 }
 \value{
-Data structure containing the normalised data, \code{NULL} if no 
+Data structure containing the normalised data, original data if no 
 transformation was performed.
 }
 \description{
@@ -40,6 +47,8 @@ MetaPipe::power_transformation(sqrt(data), "ROOT_2")
 
 }
 \seealso{
-\code{\link{log_transformation}} and 
-\code{\link{root_transformation}}
+Other Transformation functions: 
+\code{\link{log_transformation}()},
+\code{\link{root_transformation}()}
 }
+\concept{Transformation functions}
