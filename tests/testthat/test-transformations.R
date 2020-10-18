@@ -10,18 +10,18 @@ test_that("log transformation works", {
   set.seed(123)
   data <- rnorm(100, 5)
   
-  # Expected transformation
-  expected_df <- data.frame(
-    flag = "Normal",
-    transf = "log",
-    transf_val = 2,
-    stringsAsFactors = FALSE
-  )
+  # # Expected transformation
+  # expected_df <- data.frame(
+  #   flag = "Normal",
+  #   transf = "log",
+  #   transf_val = 2,
+  #   stringsAsFactors = FALSE
+  # )
   
-  result_df <- log_transformation(2 ^ data, "EXP_2")
-  expect_identical(expected_df, result_df)
-  expect_message(result_df <- log_transformation(data, "EXP_2"))
-  expect_null(result_df)
+  expect_message(result_df <- log_transformation(2 ^ data, "EXP_2"))
+  expect_equivalent(data, result_df)
+  expect_warning(result_df <- log_transformation(data, "EXP_2"))
+  # expect_null(result_df)
   filename <- "HIST_LOG_2_EXP_2.png"
   expect_true(file.exists(filename))
   expect_false(dir.exists(filename))
@@ -34,18 +34,18 @@ test_that("power transformation works", {
   set.seed(123)
   data <- rnorm(100, 5)
   
-  # Expected transformation
-  expected_df <- data.frame(
-    flag = "Normal",
-    transf = "power",
-    transf_val = 2,
-    stringsAsFactors = FALSE
-  )
+  # # Expected transformation
+  # expected_df <- data.frame(
+  #   flag = "Normal",
+  #   transf = "power",
+  #   transf_val = 2,
+  #   stringsAsFactors = FALSE
+  # )
   
-  result_df <- power_transformation(sqrt(data), "ROOT_2")
-  expect_identical(expected_df, result_df)
-  expect_message(result_df <- power_transformation(data, "ROOT_2"))
-  expect_null(result_df)
+  expect_message(result_df <- power_transformation(sqrt(data), "ROOT_2"))
+  expect_equivalent(data, result_df)
+  expect_warning(result_df <- power_transformation(data, "ROOT_2"))
+  # expect_null(result_df)
   filename <- "HIST_POW_2_ROOT_2.png"
   expect_true(file.exists(filename))
   expect_false(dir.exists(filename))
@@ -58,18 +58,18 @@ test_that("root transformation works", {
   set.seed(123)
   data <- rnorm(100, 5)
   
-  # Expected transformation
-  expected_df <- data.frame(
-    flag = "Normal",
-    transf = "root",
-    transf_val = "e",
-    stringsAsFactors = FALSE
-  )
+  # # Expected transformation
+  # expected_df <- data.frame(
+  #   flag = "Normal",
+  #   transf = "root",
+  #   transf_val = "e",
+  #   stringsAsFactors = FALSE
+  # )
   
-  result_df <- root_transformation(data ^ 2, "POW_2")
-  expect_identical(expected_df, result_df)
-  expect_message(result_df <- root_transformation(data, "POW_2"))
-  expect_null(result_df)
+  expect_message(result_df <- root_transformation(data ^ 2, "POW_2"))
+  expect_equivalent((data ^ 2) ^ (1/exp(1)), result_df)
+  expect_warning(result_df <- root_transformation(data, "POW_2"))
+  # expect_null(result_df)
   filename <- "HIST_ROOT_e_POW_2.png"
   expect_true(file.exists(filename))
   expect_false(dir.exists(filename))
