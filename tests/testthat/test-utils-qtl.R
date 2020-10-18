@@ -5,7 +5,7 @@ test_that("is pseudo-marker works", {
 
 test_that("transform pseudo-marker works", {
   # Create toy dataset
-  excluded_columns <- c(2)
+  excluded_columns <- c(1, 2)
   population <- 5
   seed <- 123
   set.seed(seed)
@@ -24,7 +24,7 @@ test_that("transform pseudo-marker works", {
   output <- assess_normality(example_data, excluded_columns)
   
   # Create and store random genetic map [for testing only]
-  genetic_map <- random_map(population = population, seed = seed)
+  genetic_map <- MetaPipe:::random_map(population = population, seed = seed)
   write.csv(genetic_map, "metapipe_genetic_map.csv", row.names = FALSE)
   expect_true(file.exists("metapipe_genetic_map.csv"))
   
@@ -52,7 +52,7 @@ test_that("transform pseudo-marker works", {
 
 test_that("effect plots work", {
   # Create toy dataset
-  excluded_columns <- c(2)
+  excluded_columns <- c(1, 2)
   population <- 5
   seed <- 123
   set.seed(seed)
@@ -71,7 +71,7 @@ test_that("effect plots work", {
   output <- assess_normality(example_data, excluded_columns)
   
   # Create and store random genetic map [for testing only]
-  genetic_map <- random_map(population = population, seed = seed)
+  genetic_map <- MetaPipe:::random_map(population = population, seed = seed)
   write.csv(genetic_map, "metapipe_genetic_map.csv", row.names = FALSE)
   expect_true(file.exists("metapipe_genetic_map.csv"))
   
@@ -124,4 +124,37 @@ test_that("effect plots work", {
     file.remove(f)
     expect_false(file.exists(f))
   }
+})
+
+test_that("read cross file works", {
+  # Toy dataset
+  excluded_columns <- c(1, 2)
+  population <- 5
+  seed <- 123
+  set.seed(seed)
+  setwd(here::here())
+  example_data <- data.frame(ID = 1:population,
+                             P1 = c("one", "two", "three", "four", "five"),
+                             T1 = rnorm(population),
+                             T2 = rnorm(population))
+  
+  output <- assess_normality(example_data, excluded_columns)
+  
+  # Create and store random genetic map [for testing only]
+  genetic_map <- MetaPipe:::random_map(population = population, seed = seed)
+  x_data <- MetaPipe::read.cross(genetic_map, output$norm)
+  # data(father_riparia)
+  # data(ionomics)
+  # ionomics_rev <- MetaPipe::replace_missing(ionomics,
+  #                                           excluded_columns = c(1, 2),
+  #                                           replace_na =  TRUE)
+  # ionomics_normalised <-
+  #   MetaPipe::assess_normality(ionomics_rev,
+  #                              excluded_columns = c(1, 2),
+  #                              out_prefix = "ionomics",
+  #                              transf_vals = c(2, exp(1)),
+  #                              show_stats = FALSE)
+  # x_data <- MetaPipe::read.cross(father_riparia,
+  #                                ionomics_normalised$norm,
+  #                                genotypes = c("nn", "np", "--"))
 })
