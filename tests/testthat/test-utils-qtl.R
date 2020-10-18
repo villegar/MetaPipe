@@ -132,29 +132,24 @@ test_that("read cross file works", {
   population <- 5
   seed <- 123
   set.seed(seed)
-  setwd(here::here())
   example_data <- data.frame(ID = 1:population,
                              P1 = c("one", "two", "three", "four", "five"),
                              T1 = rnorm(population),
                              T2 = rnorm(population))
   
-  output <- assess_normality(example_data, excluded_columns)
+  output <- MetaPipe::assess_normality(example_data, 
+                                       excluded_columns, 
+                                       show_stats = FALSE)
   
   # Create and store random genetic map [for testing only]
   genetic_map <- MetaPipe:::random_map(population = population, seed = seed)
   x_data <- MetaPipe::read.cross(genetic_map, output$norm)
-  # data(father_riparia)
-  # data(ionomics)
-  # ionomics_rev <- MetaPipe::replace_missing(ionomics,
-  #                                           excluded_columns = c(1, 2),
-  #                                           replace_na =  TRUE)
-  # ionomics_normalised <-
-  #   MetaPipe::assess_normality(ionomics_rev,
-  #                              excluded_columns = c(1, 2),
-  #                              out_prefix = "ionomics",
-  #                              transf_vals = c(2, exp(1)),
-  #                              show_stats = FALSE)
-  # x_data <- MetaPipe::read.cross(father_riparia,
-  #                                ionomics_normalised$norm,
-  #                                genotypes = c("nn", "np", "--"))
+  
+  # Remove genotype
+  expect_message(x_data <- MetaPipe::read.cross(genetic_map[-3,], 
+                                                output$norm,
+                                                quiet = FALSE))
+  
+  genetic_map[2, 2:3] <- 2 # Alter markers position (Warning expected)
+  expect_warning(x_data <- MetaPipe::read.cross(genetic_map, output$norm))
 })
