@@ -247,8 +247,9 @@ load_data <- function(input, wdir = here::here(), contents = "raw", ...) {
 #' @param pheno Data frame or string (filename) to file containing phenotype 
 #'     data. For example, output from \code{\link{assess_normality}}.
 #' @param wdir Working directory.
+#' @param quiet Boolean flag to hide status messages.
 #' @param ... Optional parameters for 
-#'     \code{\link[qtl::read.cross]{qtl:read.cross(...)}} function.
+#'     \code{\link[qtl:read.cross]{qtl::read.cross(...)}} function.
 #'
 #' @return Object of \code{cross} class for QTL mapping.
 #' @export
@@ -270,7 +271,10 @@ load_data <- function(input, wdir = here::here(), contents = "raw", ...) {
 #'                                genotypes = c("nn", "np", "--"))
 #' 
 #' @family QTL mapping functions
-read.cross <- function(geno, pheno, wdir = here::here(), ...) {
+read.cross <- function(geno, pheno, wdir = here::here(), quiet = TRUE, ...) {
+  # Local binding
+  ID <- NULL
+  
   geno <- load_data(geno, wdir, "genotype")
   pheno <- load_data(pheno, wdir, "phenotype")
   
@@ -293,18 +297,21 @@ read.cross <- function(geno, pheno, wdir = here::here(), ...) {
   
   # Find matching indices for phenotypes
   idx <- pheno$ID %in% ids
-  if (sum(!idx) > 0) {
-    warning("\nThe observations with the following IDs are going to be dropped ",
-            "as no matching genotypes where found: ",
-            paste0(pheno$ID[!idx], collapse = ", "))
+  if (sum(!idx) > 0 && !quiet) {
+    message(paste0("\nThe observation",
+                   ifelse(sum(!idx) > 1, "s ", " "),
+                   "with the following ID",
+                   ifelse(sum(!idx) > 1, "s: ", ": "),
+                   "\n ", paste0(pheno$ID[!idx], collapse = ", "),
+                   "\nwill be dropped, as no matching genotypes were found. "))
   }
   
   # Drop not matching entries (IDs)
-  geno <- dplyr::filter(geno, ID %in% ids | is.na(ID))
+  geno <- dplyr::filter(geno, ID %in% ids | is.na(ID) | ID == "")
   geno$ID[is.na(geno$ID)] <- ""
   pheno <- dplyr::filter(pheno, idx)
   
-  # Check that workin directory exists
+  # Check that working directory exists
   if (!dir.exists(wdir)) {
     stop("\nThe given working directory (wdir) does not exist:\n",
          wdir)
