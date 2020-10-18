@@ -310,34 +310,27 @@ assess_normality <- function(raw_data,
 #' @export
 #'
 #' @examples
-#' # Create toy dataset
+#' # Toy dataset
 #' excluded_columns <- c(1, 2)
 #' population <- 5
-#' seed <- 1
+#' seed <- 123
+#' set.seed(seed)
 #' example_data <- data.frame(ID = 1:population,
 #'                            P1 = c("one", "two", "three", "four", "five"),
 #'                            T1 = rnorm(population),
 #'                            T2 = rnorm(population))
-#'                            
+#' 
 #' output <- MetaPipe::assess_normality(example_data, 
-#'                                      excluded_columns,
-#'                                      out_prefix = here::here("metapipe"),
+#'                                      excluded_columns, 
 #'                                      show_stats = FALSE)
 #' 
-#' # Create and store random genetic map [for testing only]
+#' # Create and store random genetic map (for testing only)
 #' genetic_map <- MetaPipe:::random_map(population = population, 
 #'                                      seed = seed)
-#' write.csv(genetic_map, 
-#'           here::here("metapipe_genetic_map.csv"), 
-#'           row.names = FALSE)
 #' 
 #' # Load cross file with genetic map and raw data for normal traits
-#' x <- qtl::read.cross(format = "csvs", 
-#'                      dir = here::here(),
-#'                      genfile = "metapipe_genetic_map.csv",
-#'                      phefile = "metapipe_raw_data_norm.csv")
-#' set.seed(seed)
-#' x <- qtl::jittermap(x)
+#' x <- MetaPipe::read.cross(genetic_map, output$norm)
+#' 
 #' x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
 #' x_scone <- MetaPipe::qtl_scone(x, 1, model = "normal", method = "hk")
 #' 
@@ -355,19 +348,17 @@ assess_normality <- function(raw_data,
 #'                              transf_vals = c(2, exp(1)),
 #'                              show_stats = FALSE)
 #' 
-#' write.csv(father_riparia, 
-#'           here::here("ionomics_genetic_map.csv"), 
-#'           row.names = FALSE)
 #' # Load cross file with genetic map and raw data for normal traits
-#' x <- qtl::read.cross(format = "csvs", 
-#'                      dir = here::here(),
-#'                      "ionomics_genetic_map.csv",
-#'                      "ionomics_raw_data_norm.csv",
-#'                      genotypes = c("nn", "np", "--"))
+#' x <- MetaPipe::read.cross(father_riparia, 
+#'                           ionomics_normalised$norm,
+#'                           genotypes = c("nn", "np", "--"))
+#'                           
 #' set.seed(seed)
 #' x <- qtl::jittermap(x)
 #' x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
+#' \donttest{
 #' x_scone <- MetaPipe::qtl_scone(x, 1, model = "normal", method = "hk")
+#' }
 #' 
 #' @family QTL mapping functions
 qtl_scone <- function(x_data, cpus = 1, ...) {
@@ -429,7 +420,7 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
 #' @param n_perm Number of permutations.
 #' @param plots_dir Output directory for plots.
 #' @param ... Optional parameters for 
-#'     \code{\link[qtl:scanone]{qtl:scanone(...)}}.
+#'     \code{\link[qtl:scanone]{qtl::scanone(...)}}.
 #' 
 #' @return Data frame containing the significant QTLs information.
 #' @export
@@ -438,34 +429,58 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
 #' # Toy dataset
 #' excluded_columns <- c(1, 2)
 #' population <- 5
-#' seed <- 1
+#' seed <- 123
+#' set.seed(seed)
 #' example_data <- data.frame(ID = 1:population,
 #'                            P1 = c("one", "two", "three", "four", "five"),
 #'                            T1 = rnorm(population),
 #'                            T2 = rnorm(population))
-#'
+#' 
 #' output <- MetaPipe::assess_normality(example_data, 
-#'                                      excluded_columns,
-#'                                      out_prefix = here::here("metapipe"),
+#'                                      excluded_columns, 
 #'                                      show_stats = FALSE)
-#'  
+#' 
 #' # Create and store random genetic map (for testing only)
-#' genetic_map <- MetaPipe:::random_map(population = population, seed = seed)
-#' write.csv(genetic_map, 
-#'           here::here("metapipe_genetic_map.csv"), 
-#'           row.names = FALSE)
+#' genetic_map <- MetaPipe:::random_map(population = population, 
+#'                                      seed = seed)
 #' 
 #' # Load cross file with genetic map and raw data for normal traits
-#' x <- qtl::read.cross(format = "csvs", 
-#'                      dir = here::here(),
-#'                      genfile = "metapipe_genetic_map.csv",
-#'                      phefile = "metapipe_raw_data_norm.csv")
+#' x <- MetaPipe::read.cross(genetic_map, output$norm)
+#' 
+#' x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
+#' \donttest{
+#' x_scone <- MetaPipe::qtl_scone(x, 1, model = "normal", method = "hk")
+#' x_qtl_perm <- qtl_perm_test(x, n_perm = 5, model = "normal", method = "hk")
+#' x_qtl_perm_1000 <- qtl_perm_test(x, 
+#'                                  n_perm = 1000, 
+#'                                  model = "normal", 
+#'                                  method = "hk")
+#' }
+#' 
+#' # F1 Seedling Ionomics dataset
+#' data(ionomics) # Includes some missing data
+#' data(father_riparia) # Genetic map
+#' ionomics_rev <- MetaPipe::replace_missing(ionomics, 
+#'                                           excluded_columns = c(1, 2),
+#'                                           replace_na =  TRUE)
+#' ionomics_normalised <- 
+#'   MetaPipe::assess_normality(ionomics_rev,
+#'                              excluded_columns = c(1, 2),
+#'                              out_prefix = "ionomics",
+#'                              transf_vals = c(2, exp(1)),
+#'                              show_stats = FALSE)
+#' 
+#' # Load cross file with genetic map and raw data for normal traits
+#' x <- MetaPipe::read.cross(father_riparia, 
+#'                           ionomics_normalised$norm,
+#'                           genotypes = c("nn", "np", "--"))
+#'                           
 #' set.seed(seed)
 #' x <- qtl::jittermap(x)
 #' x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
-#' x_qtl_perm <- qtl_perm_test(x, n_perm = 5, model = "normal", method = "hk")
-#' 
 #' \donttest{
+#' x_scone <- MetaPipe::qtl_scone(x, 1, model = "normal", method = "hk")
+#' x_qtl_perm <- qtl_perm_test(x, n_perm = 5, model = "normal", method = "hk")
 #' x_qtl_perm_1000 <- qtl_perm_test(x, 
 #'                                  n_perm = 1000, 
 #'                                  model = "normal", 
