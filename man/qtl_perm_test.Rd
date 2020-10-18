@@ -68,10 +68,9 @@ genetic_map <- MetaPipe:::random_map(population = population,
 x <- MetaPipe::read.cross(genetic_map, output$norm)
 
 x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
+\donttest{
 x_scone <- MetaPipe::qtl_scone(x, 1, model = "normal", method = "hk")
 x_qtl_perm <- qtl_perm_test(x, n_perm = 5, model = "normal", method = "hk")
-
-\donttest{
 x_qtl_perm_1000 <- qtl_perm_test(x, 
                                  n_perm = 1000, 
                                  model = "normal", 

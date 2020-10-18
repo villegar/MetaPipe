@@ -32,9 +32,6 @@ A data frame with 217 rows and 23 variables:
     \item{Cd111}{Cadmium 111, in atom \%}
 }
 }
-\source{
-\url{https://fennell-lab.netlify.app}
-}
 \usage{
 data(ionomics)
 }
