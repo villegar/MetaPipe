@@ -32,7 +32,7 @@
 #' @author Jason P. Londo \email{jason.londo@usda.gov}
 #' @usage data(ionomics)
 #' @keywords datasets
-#' @source \url{https://fennell-lab.netlify.app}
+# @source \url{https://fennell-lab.netlify.app}
 "ionomics"
 
 #' Father Riparia Genetic Map dataset
@@ -52,8 +52,13 @@
 #'         \item \strong{S1_666584:} Chromosome 1, position 666584
 #'    }
 #' }
-#' @author Gaurab Bhattarai \email{gbhattarai@uga.edu}
+#' @author Gaurab Bhattarai \email{gbhattarai@uga.edu} & 
+#' Laszlo G Kovacs \email{laszlokovacs@missouristate.edu}
 #' @usage data(father_riparia)
 #' @keywords datasets
-#' @source \url{https://fennell-lab.netlify.app}
+# @source \url{https://fennell-lab.netlify.app}
+#' @references 
+#' Bhattarai, Gaurab, "Mapping a New Disease Resistance Locus in an F1 Progeny 
+#' Derived from Two Grape Wild Relatives" (2019). MSU Graduate Theses. 3366.
+#' \url{https://bearworks.missouristate.edu/theses/3366}
 "father_riparia"
