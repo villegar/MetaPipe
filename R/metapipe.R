@@ -250,7 +250,7 @@ replace_missing <- function(raw_data,
 #' knitr::kable(ionomics_norm[1:5, ])
 #' 
 #' # Skewed traits (partial output)
-#' knitr::kable(ionomics_skew[1:5, 1:10])
+#' knitr::kable(ionomics_skew[1:5, 1:8])
 assess_normality <- function(raw_data, 
                              excluded_columns, 
                              cpus = 1, 
