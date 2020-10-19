@@ -433,10 +433,17 @@ assess_normality_stats <- function(out_prefix = "metapipe") {
   
   if (nrow(transformations) > 0) {
     msg <- paste0(msg, "\n\nTransformations summary:")
-    msg <- paste0(msg, "\n\tf(x)\tValue \t# traits")
+    msg <- paste0(msg, 
+                  sprintf("\n\t%-10s%-10s%-10s", "f(x)", "Value", "# traits"))
+                  #"\n\tf(x)\tValue \t# traits")
     for (i in 1:nrow(transformations)) {
       tmp <- strsplit(as.character(transformations[i, 1]), '\t')[[1]]
-      msg <- paste0(msg, "\n\t", tmp[1], "\t", tmp[2],"\t", transformations[i, 2])
+      msg <- paste0(msg,
+                    sprintf("\n\t%-10s%-10s%-10s", 
+                            tmp[1], 
+                            tmp[2], 
+                            transformations[i, 2]))
+                    # tmp[1], "\t", tmp[2],"\t", transformations[i, 2])
     }
   }
   msg <- paste0(msg, "\n") # Clean output
