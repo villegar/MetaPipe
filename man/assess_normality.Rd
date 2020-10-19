@@ -99,5 +99,5 @@ ionomics_skew <- ionomics_normalised$skew
 knitr::kable(ionomics_norm[1:5, ])
 
 # Skewed traits (partial output)
-knitr::kable(ionomics_skew[1:5, 1:10])
+knitr::kable(ionomics_skew[1:5, 1:8])
 }
