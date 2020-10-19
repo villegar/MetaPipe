@@ -36,8 +36,7 @@ sub_html <- function(str1, str2) {
 }
 ```
 
-<!-- `r system.file("images/metapipe.png", package = "MetaPipe")` -->
-# MetaPipe <img src="https://raw.githubusercontent.com/villegar/MetaPipe/master/inst/images/metapipe.png" alt="metapipe-logo" align="right" height=200px/>
+# MetaPipe <img src="https://raw.githubusercontent.com/villegar/MetaPipe/master/inst/images/metapipe.png" alt="logo" align="right" height=200px/>
 MetaPipe: A High-Performance Computing Pipeline for QTL Mapping of Large Ionomic 
            and Metabolomic Datasets
 <!-- badges: start -->
@@ -48,41 +47,40 @@ MetaPipe: A High-Performance Computing Pipeline for QTL Mapping of Large Ionomic
 `r badger::badge_codecov("villegar/MetaPipe")`
 `r badger::badge_github_actions()`
 <!-- `r badger::badge_code_size("villegar/MetaPipe")` -->
-<!-- `r badger::badge_cran_release("MetaPipe", color = "red")` -->
 <!-- `r badger::badge_dependencies("MetaPipe")` -->
 <!-- `r badger::badge_cran_checks("MetaPipe")` -->
-<!-- [![R build status](https://github.com/villegar/MetaPipe/workflows/R-CMD-check/badge.svg)](https://github.com/villegar/MetaPipe/actions) -->
 
 <!-- badges: end -->
 ## Overview
 
-The goal of MetaPipe is to provide an easy to use and powerful tool capable of performing QTL mapping analyses. 
+The goal of MetaPipe is to provide an easy to use and powerful tool capable of 
+performing QTL mapping analyses. 
 <!-- on metabolomics data. -->
 
 ## Installation
 
-You can install the released version of MetaPipe from [CRAN](https://CRAN.R-project.org) with:
+You can install the released version of MetaPipe from 
+[CRAN](https://cran.r-project.org/package=MetaPipe) with:
 ``` r
 install.packages("MetaPipe")
 ```
 
-And the development version from [GitHub](https://github.com/) with:
-
-<!-- You can install the development version from [GitHub](https://github.com/) with: -->
+And the development version from [GitHub](https://github.com/villegar/MetaPipe) 
+with:
 ```r
 # install.packages(c("hexSticker", "kableExtra", "qpdf", "remotes")
 remotes::install_github("villegar/MetaPipe", build_vignettes = TRUE)
 ```
 ## Example
-
 <!-- This is a basic example which shows you how to solve a common problem: -->
-You should start by loading `MetaPipe` on your session.
-```{r example}
-library(MetaPipe)
-```
+<!-- You should start by loading `MetaPipe` on your session. -->
+<!-- ```{r example} -->
+<!-- library(MetaPipe) -->
+<!-- ``` -->
 
 ### Load raw data
-For details about the data structure and extended documentation, see the vignette [Load Raw Data](https://villegar.github.io/MetaPipe/articles/load-raw-data). 
+For details about the data structure and extended documentation, see the vignette 
+[Load Raw Data](https://villegar.github.io/MetaPipe/articles/load-raw-data). 
 
 ```{r load-raw-data-vignette, eval = FALSE}
 vignette("load-raw-data", package = "MetaPipe")
@@ -95,20 +93,13 @@ load_raw(raw_data_filename = "FILE.CSV", excluded_columns = c(...))
 where `raw_data_filename` is the filename containing the raw data, both absolute and relative paths are accepted. Next, the argument `excluded_columns` is a vector containing the indices of the properties, e.g. `c(2, 3, ..., M)`.
 
 ```{r load-raw-data-example}
-# Toy dataset
-set.seed(123)
-example_data <- data.frame(ID = c(1,2,3,4,5),
-                           P1 = c("one", "two", "three", "four", "five"), 
-                           T1 = rnorm(5), 
-                           T2 = rnorm(5),
-                           T3 = c(NA, rnorm(4)),                     #  20 % NAs
-                           T4 = c(NA, 1.2, -0.5, NA, 0.87),          #  40 % NAs
-                           T5 = NA)                                  # 100 % NAs
-## Write to disk
-write.csv(example_data, "example_data.csv", row.names = FALSE)
-
-# Load the data
-load_raw("example_data.csv", c(2))
+# F1 Seedling Ionomics dataset
+ionomics_path <- system.file("extdata", 
+                             "ionomics.csv", 
+                             package = "MetaPipe", 
+                             mustWork = TRUE)
+ionomics <- MetaPipe::load_raw(ionomics_path)
+knitr::kable(ionomics[1:5, 1:8])
 ```
 
 ### Replace missing data
@@ -123,23 +114,23 @@ vignette("replace-missing-data", package = "MetaPipe")
 replace_missing(raw_data = example_data, 
                 excluded_columns = c(2), 
                 # Optional
-                out_prefix = "metapipe", prop_na = 0.5, replace_na = FALSE)
+                out_prefix = "metapipe", 
+                prop_na = 0.5, 
+                replace_na = FALSE)
 ```
-where `raw_data` is a data frame containing the raw data, as described in [Load Raw Data](#load-raw-data) and `excluded_columns` is a vector containing the indices of the properties, e.g. `c(2, 3, ..., M)`. The other arguments are optional, `out_prefix` is the prefix for output files, `prop_na` is the proportion of NA values (used to drop traits), and `replace_na` is a logical flag to indicate whether or not NAs should be replace by half of the minimum value.
+where `raw_data` is a data frame containing the raw data, as described in [Load Raw Data](#load-raw-data) and `excluded_columns` is a vector containing the indices of the properties, e.g. `c(2, 3, ..., M)`. The other arguments are optional, `out_prefix` is the prefix for output files, `prop_na` is the proportion of NA values (used to drop traits), and `replace_na` is a logical flag to indicate whether or not `NA`s should be replace by half of the minimum value within each variable.
 
 ```{r replace-missing-data-example}
-# Inserting missing values manually
-example_data$T1[2:3] <- NA
-example_data$T2[4] <- NA
-
-# No changes expected
-replace_missing(example_data, c(2))
-
-# Traits with 25% of NA should be dropped
-replace_missing(example_data, c(2), prop_na =  0.25)
-
-# NAs should be replaced by half of the minimum value
-replace_missing(example_data, c(2), replace_na =  TRUE)
+# F1 Seedling Ionomics dataset
+data(ionomics) # Includes some missing data
+ionomics_rev <- MetaPipe::replace_missing(ionomics, c(1, 2))
+ionomics_rev <- MetaPipe::replace_missing(ionomics, 
+                                          excluded_columns = c(1, 2), 
+                                          prop_na =  0.025)
+ionomics_rev <- MetaPipe::replace_missing(ionomics, 
+                                          excluded_columns = c(1, 2),
+                                          replace_na =  TRUE)
+knitr::kable(ionomics_rev[1:5, 1:8])
 ```
 
 
@@ -177,6 +168,35 @@ for output files, `plots_dir` is the output directory where the plots will be
 stored, and `transf_vals` is a vector containing the transformation values to 
 be used when transforming the original data.
 
+```{r assess-normality-call}
+# F1 Seedling Ionomics dataset
+data(ionomics) # Includes some missing data
+ionomics_rev <- MetaPipe::replace_missing(ionomics, 
+                                          excluded_columns = c(1, 2),
+                                          replace_na =  TRUE)
+ionomics_normalised <- 
+  MetaPipe::assess_normality(ionomics_rev,
+                             excluded_columns = c(1, 2),
+                             out_prefix = "ionomics",
+                             transf_vals = c(2, exp(1)))
+
+# Extract normalised features
+ionomics_norm <- ionomics_normalised$norm
+ionomics_skew <- ionomics_normalised$skew
+```
+
+The function call to `MetaPipe::assess_normality` will print a summary of the 
+transformations performed (if any), as well as an overview of the number of 
+traits that should be considered _normal_ and _skewed_.
+
+```{r}
+# Normal traits
+knitr::kable(ionomics_norm[1:5, ])
+
+# Skewed traits (partial output)
+knitr::kable(ionomics_skew[1:5, 1:8])
+```
+
 #### Example
 
 The following histogram shows a sample data obtained from a normal distribution
@@ -192,7 +212,7 @@ MetaPipe:::generate_hist(2^test_data, NULL, xlab = latex2exp::TeX("2^{data}"), s
 Using `MetaPipe` we can find an optimal transformation that "normalises" this 
 data set:
 
-```{r assess-normality-call}
+```{r assess-normality-call2}
 example_data <- data.frame(ID = 1:500,
                            T1 = test_data,
                            T2 = 2^test_data)
