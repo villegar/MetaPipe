@@ -34,7 +34,7 @@ check_types <- function(raw_data,
                         numeric = TRUE,
                         quiet = TRUE) {
   # Extract data type (class) of each variable (column)
-  var_types <- sapply(raw_data, class)
+  var_types <- sapply(raw_data, typeof)
   if (!is.null(excluded_columns)) {
     var_types <- var_types[-excluded_columns]
   }
