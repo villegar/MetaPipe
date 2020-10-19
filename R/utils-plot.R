@@ -239,7 +239,7 @@ generate_hist <- function(data,
 #' @param p_color Package name colour.
 #'
 #' @examples
-#' MetaPipe:::hex_logo()
+#' MetaPipe:::hex_logo(output = "hex-logo.png")
 #' 
 #' @keywords internal
 #' @noRd
@@ -260,4 +260,37 @@ hex_logo <- function(subplot = system.file("images/lab-2.png",
                       url = "https://github.com/villegar/MetaPipe", 
                       u_angle = 30, u_color = p_color, u_size = 1.35,
                       filename = output)
+}
+
+PCA <- function(data, plot = TRUE, ...) {
+  idx <- MetaPipe:::check_types(data, quiet = FALSE)
+  if (length(idx) > 0)
+    data <- data[, -idx]
+  # res.pca <- PCA(data,  graph = FALSE, scale.unit = TRUE)
+  res.pca <- prcomp(data, scale = TRUE)
+  #fviz_screeplot(res.pca, addlabels = TRUE, ylim = c(0, 50))
+  #res.pca$eig
+  # Biplot with top 10 features 
+  # savePlot(fviz_pca_biplot(res.pca, col.var="contrib",
+  #                          gradient.cols = c("green","red","blue"),#"#00AFBB" "#E7B800", "#FC4E07"),
+  #                          select.var = list(contrib = 2),
+  #                          label="var",addEllipses=TRUE, ellipse.level=0.95, repel = TRUE  # Avoid text overlapping
+  # ) + xlim(-10, 10) + ylim (-10, 10),
+  # paste0(PLOTS.DIR,"/PCA-biplot-top10"),8,8)
+  if (plot) {
+    print(
+      factoextra::fviz_pca_biplot(
+        res.pca,
+        col.var = "contrib",
+        # gradient.cols = c("green", "yello", "blue"),
+        gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+        select.var = list(contrib = 2),
+        label = "var",
+        addEllipses = TRUE,
+        ellipse.level = 0.95,
+        repel = TRUE  # Avoid text overlapping
+      )
+    )
+  }
+  return(res.pca)
 }
