@@ -43,7 +43,7 @@ paretoscale <- function(z) {
 #' @keywords internal
 #' @noRd
 check_alpha <- function(alpha) {
-  if (!is.numeric(alpha))
+  if (typeof(alpha) == "integer")
     stop("alpha must be a numeric value")
   else if (alpha < 0)
     stop("alpha must be non-negative")
@@ -91,18 +91,21 @@ check_transformation <-
 #' @param transf_vals Transformation values.
 #' @param plots_prefix Prefix for plots with or without path.
 #' @param digits Significant digits to compare p-values of transformations.
+#' @param plot Boolean flag to indicate whether or not to plot a histogram 
+#'     comparing the original and transformed/normalised data.
+#' @param quiet Boolean flag to hide status messages. 
 #'
-#' @return Data structure containing the normalised data, \code{NULL} if no 
+#' @return Data structure containing the normalised data, original data if no 
 #' transformation was performed.
+#' 
 #' @export
 #'
 #' @examples
 #' set.seed(123)
 #' data <- rnorm(100, 5)
-#' MetaPipe::log_transformation(2 ^ data, "EXP_2")
+#' transformed <- MetaPipe::log_transformation(2 ^ data, "EXP_2")
 #' 
-#' @seealso \code{\link{power_transformation}} and
-#' \code{\link{root_transformation}}
+#' @family Transformation functions
 log_transformation <- function(data, 
                                trait = "DATA", 
                                alpha = 0.05,
@@ -117,17 +120,19 @@ log_transformation <- function(data,
                                                9, 
                                                10),
                                plots_prefix = "HIST",
-                               digits = 6) {
+                               digits = 6, 
+                               plot = TRUE,
+                               quiet = FALSE) {
   check_alpha(alpha = alpha) # Check the significance level
   
   ref_pval <- shapiro.test(data)[[2]] # Obtain reference p-value
   
-  # Data frame to hold the outcome of the transformation
-  record <- data.frame(
-    flag = "Skewed",
-    transf = "",
-    transf_val = 0
-  )
+  # # Data frame to hold the outcome of the transformation
+  # record <- data.frame(
+  #   flag = "Skewed",
+  #   transf = "",
+  #   transf_val = 0
+  # )
   
   pvals <- data.frame(matrix(vector(), 1, length(transf_vals)))
   for (k in 1:ncol(pvals)) {
@@ -142,22 +147,29 @@ log_transformation <- function(data,
   
   # Verify if a transformation normalised the data
   if (check_transformation(alpha, max_pval, "Log") ||
-      check_transformation(ref_pval, max_pval, "Log"))
-    return(NULL)
+      check_transformation(ref_pval, max_pval, "Log")) {
+    warning("No logarithmic transformation was found to transform/normalise ",
+            "the data.")
+    return(data)
+  }
   
   base <- transf_vals[max_pval_idx]
   transformed <- log(data, base)
   
   base <- ifelse(base == exp(1), "e", base)
   
-  xlab <- paste0("$\\log_{", base, "}(", trait, ")$")
-  transformation <- paste0("LOG_", base)
-  prefix <- paste0(plots_prefix, "_", transformation)
-  compare_hist(data, transformed, trait, prefix, xlab)
-  record$flag = "Normal"
-  record$transf <- "log"
-  record$transf_val <- base
-  return(record)
+  if (plot) {
+    xlab <- paste0("$\\log_{", base, "}(", trait, ")$")
+    transformation <- paste0("LOG_", base)
+    prefix <- paste0(plots_prefix, "_", transformation)
+    compare_hist(data, transformed, trait, prefix, xlab)
+  }
+  # record$flag = "Normal"
+  # record$transf <- "log"
+  # record$transf_val <- base
+  if (!quiet)
+    message("\nThe data was normalised by a logarithm of base ", base)
+  return(transformed)
 }
 
 #' Power transformation
@@ -170,9 +182,13 @@ log_transformation <- function(data,
 #' @param transf_vals Transformation values.
 #' @param plots_prefix Prefix for plots with or without path.
 #' @param digits Significant digits to compare p-values of transformations.
+#' @param plot Boolean flag to indicate whether or not to plot a histogram 
+#'     comparing the original and transformed/normalised data.
+#' @param quiet Boolean flag to hide status messages. 
 #'
-#' @return Data structure containing the normalised data, \code{NULL} if no 
+#' @return Data structure containing the normalised data, original data if no 
 #' transformation was performed.
+#' 
 #' @export
 #'
 #' @examples
@@ -180,8 +196,7 @@ log_transformation <- function(data,
 #' data <- rnorm(100, 5)
 #' MetaPipe::power_transformation(sqrt(data), "ROOT_2")
 #' 
-#' @seealso \code{\link{log_transformation}} and 
-#' \code{\link{root_transformation}}
+#' @family Transformation functions
 power_transformation <- function(data, 
                                  trait = "DATA", 
                                  alpha = 0.05,
@@ -196,17 +211,19 @@ power_transformation <- function(data,
                                                  9, 
                                                  10),
                                  plots_prefix = "HIST",
-                                 digits = 6) {
+                                 digits = 6, 
+                                 plot = TRUE,
+                                 quiet = FALSE) {
   check_alpha(alpha = alpha) # Check the significance level
   
   ref_pval <- shapiro.test(data)[[2]] # Obtain reference p-value
   
-  # Data frame to hold the outcome of the transformation
-  record <- data.frame(
-    flag = "Skewed",
-    transf = "",
-    transf_val = 0
-  )
+  # # Data frame to hold the outcome of the transformation
+  # record <- data.frame(
+  #   flag = "Skewed",
+  #   transf = "",
+  #   transf_val = 0
+  # )
   
   pvals <- data.frame(matrix(vector(), 1, length(transf_vals)))
   for (k in 1:ncol(pvals)) {
@@ -221,22 +238,29 @@ power_transformation <- function(data,
   
   # Verify if a transformation normalised the data
   if (check_transformation(alpha, max_pval, "Power") || 
-      check_transformation(ref_pval, max_pval, "Power"))
-    return(NULL)
+      check_transformation(ref_pval, max_pval, "Power")){
+    warning("No power transformation was found to transform/normalise ",
+            "the data.")
+    return(data)
+  }
   
   power <- transf_vals[max_pval_idx]
   transformed <- data ^ power
   
   power <- ifelse(power == exp(1), "e", power)
   
-  xlab <- paste0("$(", trait, ")^", power, "$")
-  transformation <- paste0("POW_", power)
-  prefix <- paste0(plots_prefix, "_", transformation)
-  compare_hist(data, transformed, trait, prefix, xlab)
-  record$flag = "Normal"
-  record$transf <- "power"
-  record$transf_val <- power
-  return(record)
+  if (plot) {
+    xlab <- paste0("$(", trait, ")^", power, "$")
+    transformation <- paste0("POW_", power)
+    prefix <- paste0(plots_prefix, "_", transformation)
+    compare_hist(data, transformed, trait, prefix, xlab)
+  }
+  # record$flag = "Normal"
+  # record$transf <- "power"
+  # record$transf_val <- power
+  if (!quiet)
+    message("\nThe data was normalised by a power of ", power)
+  return(transformed)
 }
 
 #' Root transformation
@@ -249,8 +273,11 @@ power_transformation <- function(data,
 #' @param transf_vals Transformation values.
 #' @param plots_prefix Prefix for plots with or without path.
 #' @param digits Significant digits to compare p-values of transformations.
+#' @param plot Boolean flag to indicate whether or not to plot a histogram 
+#'     comparing the original and transformed/normalised data.
+#' @param quiet Boolean flag to hide status messages. 
 #'
-#' @return Data structure containing the normalised data, \code{NULL} if no 
+#' @return Data structure containing the normalised data, original data if no 
 #' transformation was performed.
 #' @export
 #'
@@ -259,8 +286,7 @@ power_transformation <- function(data,
 #' data <- rnorm(100, 5)
 #' MetaPipe::root_transformation(data ^ 2, "EXP_2")
 #' 
-#' @seealso \code{\link{log_transformation}} and 
-#' \code{\link{power_transformation}}
+#' @family Transformation functions
 root_transformation <- function(data, 
                                 trait = "DATA", 
                                 alpha = 0.05,
@@ -275,18 +301,20 @@ root_transformation <- function(data,
                                                 9, 
                                                 10),
                                 plots_prefix = "HIST",
-                                digits = 6) {
+                                digits = 6, 
+                                plot = TRUE,
+                                quiet = FALSE) {
   
   check_alpha(alpha = alpha) # Check the significance level
   
   ref_pval <- shapiro.test(data)[[2]] # Obtain reference p-value
   
-  # Data frame to hold the outcome of the transformation
-  record <- data.frame(
-    flag = "Skewed",
-    transf = "",
-    transf_val = 0
-  )
+  # # Data frame to hold the outcome of the transformation
+  # record <- data.frame(
+  #   flag = "Skewed",
+  #   transf = "",
+  #   transf_val = 0
+  # )
   
   pvals <- data.frame(matrix(vector(), 1, length(transf_vals)))
   for (k in 1:ncol(pvals)) {
@@ -301,22 +329,29 @@ root_transformation <- function(data,
   
   # Verify if a transformation normalised the data
   if (check_transformation(alpha, max_pval, "Root") ||
-      check_transformation(ref_pval, max_pval, "Root"))
-    return(NULL)
+      check_transformation(ref_pval, max_pval, "Root")){
+    warning("No root transformation was found to transform/normalise ",
+            "the data.")
+    return(data)
+  }
   
   root <- transf_vals[max_pval_idx]
   transformed <- data ^ (1 / root)
   
   root <- ifelse(root == exp(1), "e", root)
   
-  xlab <- paste0("$\\sqrt[", root, "]{", trait, "}$")
-  transformation <- paste0("ROOT_", root)
-  prefix <- paste0(plots_prefix, "_", transformation)
-  compare_hist(data, transformed, trait, prefix, xlab)
-  record$flag = "Normal"
-  record$transf <- "root"
-  record$transf_val <- root
-  return(record)
+  if (plot) {
+    xlab <- paste0("$\\sqrt[", root, "]{", trait, "}$")
+    transformation <- paste0("ROOT_", root)
+    prefix <- paste0(plots_prefix, "_", transformation)
+    compare_hist(data, transformed, trait, prefix, xlab)
+  }
+  # record$flag = "Normal"
+  # record$transf <- "root"
+  # record$transf_val <- root
+  if (!quiet)
+    message("\nThe data was normalised by a root of ", root)
+  return(transformed)
 }
 
 #' Normalise data

@@ -42,7 +42,7 @@ between two actions to handle missing data:
 
 Finally, if there are traits for which all entries are missing, these will 
 be removed from the dataset and stored in a external CSV file called
-"\code{out_prefix}_NA_raw_data.csv".
+\code{"out_prefix_NA_raw_data.csv"}.
 }
 \examples{
                                         

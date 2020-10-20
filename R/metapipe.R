@@ -80,7 +80,7 @@ load_raw <- function(raw_data_filename, excluded_columns = NULL) {
 #' 
 #' Finally, if there are traits for which all entries are missing, these will 
 #' be removed from the dataset and stored in a external CSV file called
-#' "\code{out_prefix}_NA_raw_data.csv".
+#' \code{"out_prefix_NA_raw_data.csv"}.
 #' 
 #' @param raw_data Data frame containing the raw data.
 #' @param excluded_columns Numeric vector containing the indices of the dataset 
@@ -208,7 +208,7 @@ replace_missing <- function(raw_data,
 #'     Pareto scaling on the normalised data.
 #' @param show_stats Boolean flag to indicate whether or not to show the 
 #'     normality assessment statistics (how many traits are normal, how many
-#'     were transformed/normalised, what transformations were applied, etc.).
+#'     were transformed/normalised, and which transformations were applied).
 #'     
 #' @return List of data frames for the normal (\code{norm}) and skewed 
 #' (\code{skew}) traits.
@@ -250,7 +250,7 @@ replace_missing <- function(raw_data,
 #' knitr::kable(ionomics_norm[1:5, ])
 #' 
 #' # Skewed traits (partial output)
-#' knitr::kable(ionomics_skew[1:5, 1:10])
+#' knitr::kable(ionomics_skew[1:5, 1:8])
 assess_normality <- function(raw_data, 
                              excluded_columns, 
                              cpus = 1, 
@@ -294,7 +294,7 @@ assess_normality <- function(raw_data,
   return(raw_data_normalised_post)
 }
 
-#' Perform QTL mapping
+#' QTL mapping
 #' 
 #' Perform QTL mapping using the \code{\link[qtl:scanone]{qtl:scanone(...)}} 
 #' function to obtain LOD scores for all traits, peak positions, and markers.
@@ -713,68 +713,4 @@ qtl_perm_test <- function(x_data,
                      }
   parallel::stopCluster(cl) # Stop cluster
   return(x_sum_map)
-}
-
-qtl_preprocessing <- function(genetic_map, out_prefix = "metapipe") {
-# #   genetic_map <- read.csv("OriginalMap.csv")
-# #   colnames(genetic_map)[1] <- "ID"
-# #   genetic_map$ID <- as.character(genetic_map$ID)
-# #   
-#   ## Normal traits
-#   raw_data_norm <- read.csv(paste0(out_prefix,"_raw_data_norm.csv"), stringsAsFactors = FALSE)
-# #   colnames(raw_data_norm)[1] <- "ID"
-# #   raw_data_norm$GenoID <- with(raw_data_norm,
-# #                                gsub(" ", "0", paste0(Generation, "_", sprintf("%3s", as.character(ID))))
-# #                               )
-# #   raw_data_norm$ID <- raw_data_norm$GenoID
-# #   raw_data_norm$GenoID <- NULL
-# #   
-#   pheno_norm <- dplyr::inner_join(raw_data_norm, genetic_map, by = "ID")[, colnames(raw_data_norm)]
-#   pheno_norm$Group <- NULL
-#   pheno_norm$Generation <- NULL
-#   geno_norm <- rbind(genetic_map[1:2, ],
-#                      dplyr::inner_join(pheno_norm, genetic_map, by = "ID")[, colnames(genetic_map)]
-#                     )
-#   
-#   ## Non-parametric traits
-#   raw_data_non_par <- read.csv(paste0(out_prefix, "_raw_data_non_par.csv"), stringsAsFactors = FALSE)
-#   colnames(raw_data_non_par)[1] <- "ID"
-#   raw_data_non_par$GenoID <- with(raw_data_non_par,
-#                                   gsub(" ", "0", paste0(Generation, "_", sprintf("%3s", as.character(ID))))
-                                 # )
-#   raw_data_non_par$ID <- raw_data_non_par$GenoID
-#   raw_data_non_par$GenoID <- NULL
-#   
-#   pheno_non_par <- dplyr::inner_join(raw_data_non_par, genetic_map, by = "ID")[, colnames(raw_data_non_par)]
-#   pheno_non_par$Group <- NULL
-#   pheno_non_par$Generation <- NULL
-#   non.parametric.gen <- rbind(genetic_map[1:2, ],
-#                               dplyr::inner_join(pheno_non_par, genetic_map, by = "ID")[, colnames(genetic_map)]
-#                              )
-#   
-#   # Clean phenotypic data
-#   empty_traits_non_par <- sapply(pheno_non_par, function(x) all(is.na(x)) || all(is.infinite(x)))
-#   empty_traits_norm <- sapply(pheno_norm, function(x) all(is.na(x)) || all(is.infinite(x)))
-#   #pheno_non_par.ncols <- ncol(pheno_non_par)
-#   #pheno_norm.ncols <- ncol(pheno_norm)
-#   pheno_non_par[empty_traits_non_par] <- NULL
-#   pheno_norm[empty_traits_norm] <- NULL
-#   
-#   if(any(empty_traits_non_par)) {
-#     print(paste0("The following non-parametric traits were removed (NAs):"))
-#     print(names(empty_traits_non_par)[empty_traits_non_par])
-#   }
-#   
-#   if(any(empty_traits_norm)) {
-#     print(paste0("The following normal traits were removed (NAs):"))
-#     print(names(empty_traits_norm)[empty_traits_norm])
-#   }
-#   
-#   # Write genotypic and phenotypic dataset
-#   ## Normal traits
-#   write.csv(geno_norm, file = paste0(OUT_PREFIX,".geno_norm.csv"), row.names=FALSE)
-#   write.csv(pheno_norm, file = paste0(OUT_PREFIX,".pheno_norm.csv"), row.names=FALSE)
-#   ## Non-parametric traits
-#   write.csv(non.parametric.gen, file = paste0(OUT_PREFIX,".non.parametric.gen.csv"), row.names=FALSE)
-#   write.csv(pheno_non_par, file = paste0(OUT_PREFIX,".pheno_non_par.csv"), row.names=FALSE)
 }

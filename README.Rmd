@@ -2,7 +2,6 @@
 output: github_document
 always_allow_html: yes
 ---
-
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, include = FALSE}
@@ -10,7 +9,9 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/README-",
-  out.width = "100%"
+  out.width = "100%",
+  dpi = 300, 
+  fig.width = 7
 )
 options(knitr.kable.NA = '')
 hcolor <- "#363B74"
@@ -37,51 +38,51 @@ sub_html <- function(str1, str2) {
 }
 ```
 
-<!-- `r system.file("images/metapipe.png", package = "MetaPipe")` -->
-# MetaPipe <img src="https://raw.githubusercontent.com/villegar/MetaPipe/master/inst/images/metapipe.png" alt="metapipe-logo" align="right" height=200px/>
-MetaPipe: A High-Performance Computing pipeline for QTL mapping of large metabolomic datasets
+# MetaPipe <img src="https://raw.githubusercontent.com/villegar/MetaPipe/master/inst/images/metapipe.png" alt="logo" align="right" height=200px/>
+MetaPipe: A High-Performance Computing Pipeline for QTL Mapping of Large Ionomic 
+           and Metabolomic Datasets
 <!-- badges: start -->
 <!-- [![Build Status](https://travis-ci.com/villegar/MetaPipe.svg?branch=master)](https://travis-ci.com/villegar/MetaPipe) -->
-`r badger::badge_travis("villegar/MetaPipe", is_commercial = TRUE)`
-`r badger::badge_devel("villegar/MetaPipe", "blue")`
-`r badger::badge_code_size("villegar/MetaPipe")`<!-- `r badger::badge_cran_release("MetaPipe", color = "red")` -->
+<!-- `r badger::badge_travis("villegar/MetaPipe", is_commercial = TRUE)` -->
+`r badger::badge_cran_release("MetaPipe", color = "red")`
+`r badger::badge_devel("villegar/MetaPipe", "yellow")`
 `r badger::badge_codecov("villegar/MetaPipe")`
 `r badger::badge_github_actions()`
+<!-- `r badger::badge_code_size("villegar/MetaPipe")` -->
 <!-- `r badger::badge_dependencies("MetaPipe")` -->
 <!-- `r badger::badge_cran_checks("MetaPipe")` -->
-<!-- [![R build status](https://github.com/villegar/MetaPipe/workflows/R-CMD-check/badge.svg)](https://github.com/villegar/MetaPipe/actions) -->
 
 <!-- badges: end -->
 ## Overview
 
-The goal of MetaPipe is to provide an easy to use and powerful tool capable of performing QTL mapping analyses. 
+The goal of MetaPipe is to provide an easy to use and powerful tool capable of 
+performing QTL mapping analyses. 
 <!-- on metabolomics data. -->
 
 ## Installation
 
-<!-- You can install the released version of MetaPipe from [CRAN](https://CRAN.R-project.org) with: -->
-
-<!-- ``` r -->
-<!-- install.packages("MetaPipe") -->
-<!-- ``` -->
-
-<!-- And the development version from [GitHub](https://github.com/) with: -->
-
-You can install the development version from [GitHub](https://github.com/) with:
+You can install the released version of MetaPipe from 
+[CRAN](https://cran.r-project.org/package=MetaPipe) with:
 ``` r
+install.packages("MetaPipe")
+```
+
+And the development version from [GitHub](https://github.com/villegar/MetaPipe) 
+with:
+```r
 # install.packages(c("hexSticker", "kableExtra", "qpdf", "remotes")
 remotes::install_github("villegar/MetaPipe", build_vignettes = TRUE)
 ```
 ## Example
-
 <!-- This is a basic example which shows you how to solve a common problem: -->
-You should start by loading `MetaPipe` on your session.
-```{r example}
-library(MetaPipe)
-```
+<!-- You should start by loading `MetaPipe` on your session. -->
+<!-- ```{r example} -->
+<!-- library(MetaPipe) -->
+<!-- ``` -->
 
 ### Load raw data
-For details about the data structure and extended documentation, see the vignette [Load Raw Data](https://villegar.github.io/MetaPipe/articles/load-raw-data). 
+For details about the data structure and extended documentation, see the vignette 
+[Load Raw Data](https://villegar.github.io/MetaPipe/articles/load-raw-data). 
 
 ```{r load-raw-data-vignette, eval = FALSE}
 vignette("load-raw-data", package = "MetaPipe")
@@ -89,25 +90,18 @@ vignette("load-raw-data", package = "MetaPipe")
 
 #### Function call
 ```{r load-raw-data-fx-call, eval = FALSE}
-load_raw(raw_data_filename = "FILE.CSV", excluded_columns = c(...))
+MetaPipe::load_raw(raw_data_filename = "FILE.CSV", excluded_columns = c(...))
 ```
 where `raw_data_filename` is the filename containing the raw data, both absolute and relative paths are accepted. Next, the argument `excluded_columns` is a vector containing the indices of the properties, e.g. `c(2, 3, ..., M)`.
 
 ```{r load-raw-data-example}
-# Toy dataset
-set.seed(123)
-example_data <- data.frame(ID = c(1,2,3,4,5),
-                           P1 = c("one", "two", "three", "four", "five"), 
-                           T1 = rnorm(5), 
-                           T2 = rnorm(5),
-                           T3 = c(NA, rnorm(4)),                     #  20 % NAs
-                           T4 = c(NA, 1.2, -0.5, NA, 0.87),          #  40 % NAs
-                           T5 = NA)                                  # 100 % NAs
-## Write to disk
-write.csv(example_data, "example_data.csv", row.names = FALSE)
-
-# Load the data
-load_raw("example_data.csv", c(2))
+# F1 Seedling Ionomics dataset
+ionomics_path <- system.file("extdata", 
+                             "ionomics.csv", 
+                             package = "MetaPipe", 
+                             mustWork = TRUE)
+ionomics <- MetaPipe::load_raw(ionomics_path)
+knitr::kable(ionomics[1:5, 1:8])
 ```
 
 ### Replace missing data
@@ -119,26 +113,26 @@ vignette("replace-missing-data", package = "MetaPipe")
 
 #### Function call
 ```{r replace-missing-data-fx-call, eval = FALSE}
-replace_missing(raw_data = example_data, 
-                excluded_columns = c(2), 
-                # Optional
-                out_prefix = "metapipe", prop_na = 0.5, replace_na = FALSE)
+MetaPipe::replace_missing(raw_data = example_data, 
+                          excluded_columns = c(2), 
+                          # Optional
+                          out_prefix = "metapipe", 
+                          prop_na = 0.5, 
+                          replace_na = FALSE)
 ```
-where `raw_data` is a data frame containing the raw data, as described in [Load Raw Data](#load-raw-data) and `excluded_columns` is a vector containing the indices of the properties, e.g. `c(2, 3, ..., M)`. The other arguments are optional, `out_prefix` is the prefix for output files, `prop_na` is the proportion of NA values (used to drop traits), and `replace_na` is a logical flag to indicate whether or not NAs should be replace by half of the minimum value.
+where `raw_data` is a data frame containing the raw data, as described in [Load Raw Data](#load-raw-data) and `excluded_columns` is a vector containing the indices of the properties, e.g. `c(2, 3, ..., M)`. The other arguments are optional, `out_prefix` is the prefix for output files, `prop_na` is the proportion of NA values (used to drop traits), and `replace_na` is a logical flag to indicate whether or not `NA`s should be replace by half of the minimum value within each variable.
 
 ```{r replace-missing-data-example}
-# Inserting missing values manually
-example_data$T1[2:3] <- NA
-example_data$T2[4] <- NA
-
-# No changes expected
-replace_missing(example_data, c(2))
-
-# Traits with 25% of NA should be dropped
-replace_missing(example_data, c(2), prop_na =  0.25)
-
-# NAs should be replaced by half of the minimum value
-replace_missing(example_data, c(2), replace_na =  TRUE)
+# F1 Seedling Ionomics dataset
+data(ionomics) # Includes some missing data
+ionomics_rev <- MetaPipe::replace_missing(ionomics, c(1, 2))
+ionomics_rev <- MetaPipe::replace_missing(ionomics, 
+                                          excluded_columns = c(1, 2), 
+                                          prop_na =  0.025)
+ionomics_rev <- MetaPipe::replace_missing(ionomics, 
+                                          excluded_columns = c(1, 2),
+                                          replace_na =  TRUE)
+knitr::kable(ionomics_rev[1:5, 1:8])
 ```
 
 
@@ -158,13 +152,16 @@ will be computed, and the normality assessed one more time.
 
 #### Function call
 ```{r assess-normality-fx-call, eval = FALSE}
-assess_normality(raw_data = raw_data, 
-                 excluded_columns = c(2, 3, ..., M), 
-                 # Optional
-                 cpus = 1, 
-                 out_prefix = "metapipe", 
-                 plots_dir = getwd(), 
-                 transf_vals = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10))
+MetaPipe::assess_normality(raw_data = raw_data, 
+                           excluded_columns = c(2, 3, ..., M), 
+                           # Optional
+                           cpus = 1, 
+                           out_prefix = "metapipe", 
+                           plots_dir = getwd(), 
+                           transf_vals = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10),
+                           alpha = 0.05,
+                           pareto_scaling = FALSE,
+                           show_stats = TRUE)
 ```
 
 where `raw_data` is a data frame containing the raw data, as described in 
@@ -173,73 +170,64 @@ vector containing the indices of the properties, e.g. `c(2, 3, ..., M)`. The
 other arguments are optional, `cpus` is the number of cores to use, in other 
 words, the number of concurrent traits to process, `out_prefix` is the prefix 
 for output files, `plots_dir` is the output directory where the plots will be 
-stored, and `transf_vals` is a vector containing the transformation values to 
-be used when transforming the original data.
-
-#### Example
-
-The following histogram shows a sample data obtained from a normal distribution
-with the command `rnorm`, but it was transformed using the power (base `2`) 
-function; thus, the data seems to be skewed:
-
-```{r assess-normality-example-data-before, echo = FALSE, fig.align = 'center', out.width = "60%"}
-set.seed(123)
-test_data <- rnorm(500)
-MetaPipe:::generate_hist(2^test_data, NULL, xlab = latex2exp::TeX("2^{data}"), save = FALSE, alpha = 1, fill = hcolor)
-```
-
-Using `MetaPipe` we can find an optimal transformation that "normalises" this 
-data set:
+stored, `transf_vals` is a vector containing the transformation values to 
+be used when transforming the original data, `alpha` is the significance level
+for the _Wilk-Shapiro_ tests, `pareto_scaling` is a boolean flag to indicate 
+whether or not to scale the traits to the same scale, and `show_stats` is a 
+boolean flag to show or hide some general statistics of the normalisation 
+process.
 
 ```{r assess-normality-call}
-example_data <- data.frame(ID = 1:500,
-                           T1 = test_data,
-                           T2 = 2^test_data)
-transformed_data <- MetaPipe::assess_normality(example_data, c(1))
+# F1 Seedling Ionomics dataset
+data(ionomics) # Includes some missing data
+ionomics_rev <- MetaPipe::replace_missing(ionomics, 
+                                          excluded_columns = c(1, 2),
+                                          replace_na =  TRUE)
+ionomics_normalised <- 
+  MetaPipe::assess_normality(ionomics_rev,
+                             excluded_columns = c(1, 2),
+                             transf_vals = c(2, exp(1)),
+                             out_prefix = "README-ionomics",
+                             plots_dir = "man/figures/",
+                             pareto_scaling = FALSE)
+
+# Extract normalised features
+ionomics_norm <- ionomics_normalised$norm
+ionomics_skew <- ionomics_normalised$skew
 ```
 
-The top 5 entries for the trait `T1` are:
-```{r, echo = FALSE}
-knitr::kable(head(transformed_data), format = "html", escape = FALSE, table.attr = "style='width:100%;'", align = 'c') %>%
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover")) %>%
-  kableExtra::row_spec(0, extra_css = "vertical-align: middle;", background = hcolor, color = tcolor) %>%
-  kableExtra::column_spec(1:6, border_left = TRUE, border_right = TRUE)
+The function call to `MetaPipe::assess_normality` will print a summary of the 
+transformations performed (if any), as well as an overview of the number of 
+traits that should be considered _normal_ and _skewed_. Next, we can preview 
+some of the partial output of the normality assessment process:
+
+```{r}
+# Normal traits
+knitr::kable(ionomics_norm[1:5, ]) 
+# Skewed traits (partial output)
+knitr::kable(ionomics_skew[1:5, 1:8])
 ```
 
-And for trait `T2`:
-```{r, echo = FALSE}
-tmp <- head(transformed_data[-c(1:500), ])
-rownames(tmp) <- c(1:6)
-knitr::kable(tmp, format = "html", escape = FALSE, table.attr = "style='width:100%;'", align = 'c') %>%
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover")) %>%
-  kableExtra::row_spec(0, extra_css = "vertical-align: middle;", background = hcolor, color = tcolor) %>%
-  kableExtra::column_spec(1:6, border_left = TRUE, border_right = TRUE)
-```
+Among the transformed traits, we have `B11` and `Na23`. Both of which seem to be 
+skewed, but after a simple transformation, can be classify as normalised traits.
 
-As expected both tables show the same entries; however, the latter indicates that
-`T2` was transformed using $`\log_2`$. The function will generate histograms for
-all the traits, the naming convention used is:
+<img src="man/figures/HIST_5_LOG_2_B11.png" width="45%" />
+<img src="man/figures/HIST_6_ROOT_e_NA23.png" width="45%" />
 
-- `HIST_[index]_[transf]_[transf_val]_[trait].png` for transformed traits
-- `HIST_[index]_NORM_[trait].png` for those that were not transformed. 
-
-For the previous data set `HIST_1_NORM_T1.png` and `HIST_2_LOG_2_T2.png`:
-
-<img src="man/figures/HIST_1_NORM_T1.png" width="45%" />
-<img src="man/figures/HIST_2_LOG_2_T2.png" width="45%" />
-
-<!-- The figures below show the original data (`T1`) and the transfomed data (`T2`): -->
-
-```{r assess-normality-example-data-after, echo = FALSE, fig.align = 'center', out.width = "60%", eval = FALSE}
-MetaPipe::generate_hist(test_data, NULL, xlab = latex2exp::TeX("T1"), save = FALSE, alpha = 1, fill = hcolor)
-
-MetaPipe::generate_hist(log(2^test_data), NULL, xlab = latex2exp::TeX("log_2(2^{T2})"), save = FALSE, alpha = 1, fill = hcolor)
+### QTL mapping
+```{r, eval = FALSE, echo = FALSE}
+MetaPipe:::PCA(ionomics_norm[, -1])
+MetaPipe:::PCA(ionomics_skew[, -1])
 ```
 
 ```{r clean-readme-knitting, echo = FALSE}
-filenames <- c("example_data.csv", 
-               "HIST_1_NORM_T1.png", 
-               "HIST_2_LOG_2_T2.png", 
-               "metapipe_NA_raw_data.csv")
+# List all generated histograms
+ionomics_hists <- list.files("man/figures", "HIST*", full.names = TRUE)
+# Filter displayed histograms
+idx <- !sapply(ionomics_hists, grepl, pattern = "Na23") & 
+       !sapply(ionomics_hists, grepl, pattern = "B11")
+filenames <- c("metapipe_NA_raw_data.csv",
+               ionomics_hists[idx],
+               list.files(".", "README-ionomics*"))
 output <- lapply(filenames, file.remove)
 ```

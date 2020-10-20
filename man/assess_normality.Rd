@@ -37,7 +37,7 @@ Pareto scaling on the normalised data.}
 
 \item{show_stats}{Boolean flag to indicate whether or not to show the 
 normality assessment statistics (how many traits are normal, how many
-were transformed/normalised, what transformations were applied, etc.).}
+were transformed/normalised, and which transformations were applied).}
 }
 \value{
 List of data frames for the normal (\code{norm}) and skewed 
@@ -99,5 +99,5 @@ ionomics_skew <- ionomics_normalised$skew
 knitr::kable(ionomics_norm[1:5, ])
 
 # Skewed traits (partial output)
-knitr::kable(ionomics_skew[1:5, 1:10])
+knitr::kable(ionomics_skew[1:5, 1:8])
 }

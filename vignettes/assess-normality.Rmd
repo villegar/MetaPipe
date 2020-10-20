@@ -114,7 +114,7 @@ knitr::kable(raw_df, format = "html", escape = FALSE, table.attr = "style='width
 where `index` is a simple numeric value to uniquely identify each trait,
 `trait` is the trait/variable name, `values` is the actual entry, `flag`
 indicates whether the entry is parametric (Normal) or skewed (Non-normal),
-`transf` is the transformationfunction (empty for untransformed traits), and
+`transf` is the transformation function (empty for untransformed traits), and
 `transf_val` is the transformation value used.
 
 From the previous example, the top 5 entries for the trait `T1` are:

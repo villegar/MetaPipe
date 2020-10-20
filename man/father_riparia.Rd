@@ -7,18 +7,15 @@
 \format{
 A data frame with 296 rows and 1116 variables:
 \itemize{
-    \item \strong{ID:} Sample ID
-    \item \strong{S<chr>_<pos> [1115 variables]:} Chromosome \code{<chr>}, position 
-    \code{<pos>}    
+    \item \strong{ID:} Sample ID.
+    \item \strong{S\code{<chr>}_\code{<pos>} [1115 variables]:} Chromosome 
+    \code{<chr>}, position \code{<pos>}.    
     \itemize{
-        \item \strong{S1_61235:}  Chromosome 1, position  61235
-        \item \strong{S1_929902:} Chromosome 1, position 929902
-        \item \strong{S1_666584:} Chromosome 1, position 666584
+        \item \strong{S1_61235:}  Chromosome 1, position  61235.
+        \item \strong{S1_929902:} Chromosome 1, position 929902.
+        \item \strong{S1_666584:} Chromosome 1, position 666584.
    }
 }
-}
-\source{
-\url{https://fennell-lab.netlify.app}
 }
 \usage{
 data(father_riparia)
@@ -28,7 +25,13 @@ A dataset containing information of a genetic map for a \emph{vitis Riparia}
 subject; more specifically, each column after \code{ID}, contains genotypes 
 within each chromosome at different positions.
 }
+\references{
+Bhattarai, Gaurab, "Mapping a New Disease Resistance Locus in an F1 Progeny 
+Derived from Two Grape Wild Relatives" (2019). MSU Graduate Theses. 3366.
+\url{https://bearworks.missouristate.edu/theses/3366}
+}
 \author{
-Gaurab Bhattarai \email{gbhattarai@uga.edu}
+Gaurab Bhattarai \email{gbhattarai@uga.edu} & 
+Laszlo G Kovacs \email{laszlokovacs@missouristate.edu}
 }
 \keyword{datasets}

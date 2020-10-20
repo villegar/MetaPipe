@@ -34,14 +34,14 @@ check_types <- function(raw_data,
                         numeric = TRUE,
                         quiet = TRUE) {
   # Extract data type (class) of each variable (column)
-  var_types <- sapply(raw_data, class)
+  var_types <- sapply(raw_data, typeof)
   if (!is.null(excluded_columns)) {
     var_types <- var_types[-excluded_columns]
   }
-  if (numeric) { # if numeric = TRUE, find non-numeri columns
-    idx <- !(var_types %in% c("numeric", "integer", "complex"))
+  if (numeric) { # if numeric = TRUE, find non-numeric columns
+    idx <- !(var_types %in% c("numeric", "double", "integer", "complex"))
   } else { # if numeric = FALSE, find numeric columns
-    idx <- var_types %in% c("numeric", "integer", "complex")
+    idx <- var_types %in% c("numeric", "double", "integer", "complex")
   }
   # If any variables were found to meet the search criteria
   if (any(idx)) {

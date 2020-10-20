@@ -2,7 +2,7 @@
 % Please edit documentation in R/metapipe.R
 \name{qtl_scone}
 \alias{qtl_scone}
-\title{Perform QTL mapping}
+\title{QTL mapping}
 \usage{
 qtl_scone(x_data, cpus = 1, ...)
 }
