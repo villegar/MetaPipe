@@ -262,12 +262,41 @@ hex_logo <- function(subplot = system.file("images/lab-2.png",
                       filename = output)
 }
 
+#' Simple PCA
+#' 
+#' Perform a simple PCA using \code{\link[stats:prcomp]{stats::prcomp}}. 
+#' Optionally, it will create a PCA biplot using 
+#' \code{\link[factoextra:fviz_pca_biplot]{factoextra::fviz_pca_biplot}} if 
+#' \code{plot = TRUE}.
+#'
+#' @param data A numeric or complex matrix (or data frame) that will be used to
+#'     perform the Principal Components Analysis.
+#' @param plot Boolean flag to indicate whether or not to create a PCA biplot.
+#' @param ... Optional parameters for 
+#'     \code{\link[factoextra:fviz_pca_biplot]{factoextra::fviz_pca_biplot}}.
+#'
+#' @return Data frame with PCA result.
+#' @export
+#'
+#' @examples
+#' # Toy dataset
+#' example_data <- data.frame(ID = c(1,2,3,4,5), 
+#'                            P1 = c("one", "two", "three", "four", "five"), 
+#'                            T1 = rnorm(5), 
+#'                            T2 = rnorm(5))
+#' example_data_pca <- PCA(example_data[, -c(1:2)])
+#' 
+#' # F1 Seedling Ionomics dataset
+#' data(ionomics) # Includes some missing data
+#' ionomics_rev <- MetaPipe::replace_missing(ionomics, 
+#'                                           excluded_columns = c(1, 2),
+#'                                           replace_na =  TRUE)
+#' ionomics_pca <- PCA(ionomics_rev[, -c(1:2)])
 PCA <- function(data, plot = TRUE, ...) {
   idx <- MetaPipe:::check_types(data, quiet = FALSE)
   if (length(idx) > 0)
     data <- data[, -idx]
-  # res.pca <- PCA(data,  graph = FALSE, scale.unit = TRUE)
-  res.pca <- prcomp(data, scale = TRUE)
+  res.pca <- stats::prcomp(data, scale = TRUE)
   #fviz_screeplot(res.pca, addlabels = TRUE, ylim = c(0, 50))
   #res.pca$eig
   # Biplot with top 10 features 
@@ -288,7 +317,8 @@ PCA <- function(data, plot = TRUE, ...) {
         label = "var",
         addEllipses = TRUE,
         ellipse.level = 0.95,
-        repel = TRUE  # Avoid text overlapping
+        repel = TRUE,  # Avoid text overlapping
+        ...
       )
     )
   }
