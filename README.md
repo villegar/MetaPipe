@@ -70,7 +70,7 @@ vignette("load-raw-data", package = "MetaPipe")
 #### Function call
 
 ``` r
-load_raw(raw_data_filename = "FILE.CSV", excluded_columns = c(...))
+MetaPipe::load_raw(raw_data_filename = "FILE.CSV", excluded_columns = c(...))
 ```
 
 where `raw_data_filename` is the filename containing the raw data, both
@@ -108,12 +108,12 @@ vignette("replace-missing-data", package = "MetaPipe")
 #### Function call
 
 ``` r
-replace_missing(raw_data = example_data, 
-                excluded_columns = c(2), 
-                # Optional
-                out_prefix = "metapipe", 
-                prop_na = 0.5, 
-                replace_na = FALSE)
+MetaPipe::replace_missing(raw_data = example_data, 
+                          excluded_columns = c(2), 
+                          # Optional
+                          out_prefix = "metapipe", 
+                          prop_na = 0.5, 
+                          replace_na = FALSE)
 ```
 
 where `raw_data` is a data frame containing the raw data, as described
@@ -168,13 +168,16 @@ one more time.
 #### Function call
 
 ``` r
-assess_normality(raw_data = raw_data, 
-                 excluded_columns = c(2, 3, ..., M), 
-                 # Optional
-                 cpus = 1, 
-                 out_prefix = "metapipe", 
-                 plots_dir = getwd(), 
-                 transf_vals = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10))
+MetaPipe::assess_normality(raw_data = raw_data, 
+                           excluded_columns = c(2, 3, ..., M), 
+                           # Optional
+                           cpus = 1, 
+                           out_prefix = "metapipe", 
+                           plots_dir = getwd(), 
+                           transf_vals = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10),
+                           alpha = 0.05,
+                           pareto_scaling = FALSE,
+                           show_stats = TRUE)
 ```
 
 where `raw_data` is a data frame containing the raw data, as described
@@ -185,8 +188,12 @@ properties, e.g. `c(2, 3, ..., M)`. The other arguments are optional,
 `cpus` is the number of cores to use, in other words, the number of
 concurrent traits to process, `out_prefix` is the prefix for output
 files, `plots_dir` is the output directory where the plots will be
-stored, and `transf_vals` is a vector containing the transformation
-values to be used when transforming the original data.
+stored, `transf_vals` is a vector containing the transformation values
+to be used when transforming the original data, `alpha` is the
+significance level for the *Wilk-Shapiro* tests, `pareto_scaling` is a
+boolean flag to indicate whether or not to scale the traits to the same
+scale, and `show_stats` is a boolean flag to show or hide some general
+statistics of the normalisation process.
 
 ``` r
 # F1 Seedling Ionomics dataset
@@ -197,8 +204,10 @@ ionomics_rev <- MetaPipe::replace_missing(ionomics,
 ionomics_normalised <- 
   MetaPipe::assess_normality(ionomics_rev,
                              excluded_columns = c(1, 2),
-                             out_prefix = "ionomics",
-                             transf_vals = c(2, exp(1)))
+                             transf_vals = c(2, exp(1)),
+                             out_prefix = "README-ionomics",
+                             plots_dir = "man/figures/",
+                             pareto_scaling = FALSE)
 #> Total traits (excluding all NAs traits):     21
 #> Normal traits (without transformation):      2
 #> Normal traits (transformed):                 4
@@ -206,9 +215,9 @@ ionomics_normalised <-
 #> Total skewed traits:                         15
 #> 
 #> Transformations summary:
-#>  f(x)    Value   # traits
-#>  log 2   3
-#>  root    e   1
+#>  f(x)      Value     # traits  
+#>  log       2         3         
+#>  root      e         1
 
 # Extract normalised features
 ionomics_norm <- ionomics_normalised$norm
@@ -217,11 +226,13 @@ ionomics_skew <- ionomics_normalised$skew
 
 The function call to `MetaPipe::assess_normality` will print a summary
 of the transformations performed (if any), as well as an overview of the
-number of traits that should be considered *normal* and *skewed*.
+number of traits that should be considered *normal* and *skewed*. Next,
+we can preview some of the partial output of the normality assessment
+process:
 
 ``` r
 # Normal traits
-knitr::kable(ionomics_norm[1:5, ])
+knitr::kable(ionomics_norm[1:5, ]) 
 ```
 
 | ID     |     Ca44 |      B11 |     Na23 |     Mg26 |     Rb85 |      Sr88 |
@@ -233,7 +244,6 @@ knitr::kable(ionomics_norm[1:5, ])
 | E\_006 | 15982.76 | 3.697997 | 2.419593 | 11.72734 | 2.229866 | 13.901449 |
 
 ``` r
-
 # Skewed traits (partial output)
 knitr::kable(ionomics_skew[1:5, 1:8])
 ```
@@ -246,53 +256,9 @@ knitr::kable(ionomics_skew[1:5, 1:8])
 | E\_005 | 7514.089 | 2315.675 | 0.0233063 |  9.482051 | 1091.607 | 40.22041 | 43.24368 |
 | E\_006 | 7608.464 | 1995.193 | 0.0588128 | 29.329605 | 1096.871 | 75.23614 | 53.64705 |
 
-#### Example
+Among the transformed traits, we have `B11` and `Na23`. Both of which
+seem to be skewed, but after a simple transformation, can be classify as
+normalised traits.
 
-The following histogram shows a sample data obtained from a normal
-distribution with the command `rnorm`, but it was transformed using the
-power (base `2`) function; thus, the data seems to be skewed:
-
-<img src="man/figures/README-assess-normality-example-data-before-1.png" width="60%" style="display: block; margin: auto;" />
-
-Using `MetaPipe` we can find an optimal transformation that “normalises”
-this data set:
-
-``` r
-example_data <- data.frame(ID = 1:500,
-                           T1 = test_data,
-                           T2 = 2^test_data)
-transformed_data <- MetaPipe::assess_normality(example_data, c(1))
-#> Total traits (excluding all NAs traits):     2
-#> Normal traits (without transformation):      1
-#> Normal traits (transformed):                 1
-#> Total normal traits:                         2
-#> Total skewed traits:                         0
-#> 
-#> Transformations summary:
-#>  f(x)    Value   # traits
-#>  log 2   1
-```
-
-The top 5 entries for the trait `T1` are:
-
-And for trait `T2`:
-
-As expected both tables show the same entries; however, the latter
-indicates that `T2` was transformed using \(`\log_2`\). The function
-will generate histograms for all the traits, the naming convention used
-is:
-
-  - `HIST_[index]_[transf]_[transf_val]_[trait].png` for transformed
-    traits
-  - `HIST_[index]_NORM_[trait].png` for those that were not transformed.
-
-For the previous data set `HIST_1_NORM_T1.png` and
-`HIST_2_LOG_2_T2.png`:
-
-<img src="man/figures/HIST_1_NORM_T1.png" width="45%" />
-<img src="man/figures/HIST_2_LOG_2_T2.png" width="45%" />
-
-<!-- The figures below show the original data (`T1`) and the transfomed data (`T2`): -->
-
-    #> Warning in FUN(X[[i]], ...): cannot remove file 'example_data.csv', reason 'No
-    #> such file or directory'
+<img src="man/figures/HIST_5_LOG_2_B11.png" width="45%" />
+<img src="man/figures/HIST_6_ROOT_e_NA23.png" width="45%" />
