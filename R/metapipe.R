@@ -80,7 +80,7 @@ load_raw <- function(raw_data_filename, excluded_columns = NULL) {
 #' 
 #' Finally, if there are traits for which all entries are missing, these will 
 #' be removed from the dataset and stored in a external CSV file called
-#' "\code{out_prefix}_NA_raw_data.csv".
+#' \code{"out_prefix_NA_raw_data.csv"}.
 #' 
 #' @param raw_data Data frame containing the raw data.
 #' @param excluded_columns Numeric vector containing the indices of the dataset 
@@ -208,7 +208,7 @@ replace_missing <- function(raw_data,
 #'     Pareto scaling on the normalised data.
 #' @param show_stats Boolean flag to indicate whether or not to show the 
 #'     normality assessment statistics (how many traits are normal, how many
-#'     were transformed/normalised, what transformations were applied, etc.).
+#'     were transformed/normalised, and which transformations were applied).
 #'     
 #' @return List of data frames for the normal (\code{norm}) and skewed 
 #' (\code{skew}) traits.
