@@ -262,3 +262,5 @@ normalised traits.
 
 <img src="man/figures/HIST_5_LOG_2_B11.png" width="45%" />
 <img src="man/figures/HIST_6_ROOT_e_NA23.png" width="45%" />
+
+### QTL mapping

@@ -214,13 +214,20 @@ skewed, but after a simple transformation, can be classify as normalised traits.
 <img src="man/figures/HIST_5_LOG_2_B11.png" width="45%" />
 <img src="man/figures/HIST_6_ROOT_e_NA23.png" width="45%" />
 
+### QTL mapping
 ```{r, eval = FALSE, echo = FALSE}
 MetaPipe:::PCA(ionomics_norm[, -1])
 MetaPipe:::PCA(ionomics_skew[, -1])
 ```
 
 ```{r clean-readme-knitting, echo = FALSE}
+# List all generated histograms
+ionomics_hists <- list.files("man/figures", "HIST*", full.names = TRUE)
+# Filter displayed histograms
+idx <- !sapply(ionomics_hists, grepl, pattern = "Na23") & 
+       !sapply(ionomics_hists, grepl, pattern = "B11")
 filenames <- c("metapipe_NA_raw_data.csv",
+               ionomics_hists[idx],
                list.files(".", "README-ionomics*"))
 output <- lapply(filenames, file.remove)
 ```
