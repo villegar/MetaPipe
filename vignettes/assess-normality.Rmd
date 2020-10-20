@@ -160,3 +160,8 @@ MetaPipe:::generate_hist(test_data, NULL, xlab = latex2exp::TeX("data"), save = 
 
 MetaPipe:::generate_hist(log(2^test_data), NULL, xlab = latex2exp::TeX("log_2(2^{data})"), save = FALSE, alpha = 1, fill = hcolor) 
 ```
+
+```{r clean-knitting-output, echo = FALSE}
+filenames <- c(list.files(".", "metapipe_*"))
+output <- lapply(filenames, file.remove)
+```

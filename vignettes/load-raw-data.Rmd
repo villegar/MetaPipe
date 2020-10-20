@@ -89,3 +89,8 @@ load_raw("example_data_dup.csv", c(2))
 ```
 
 Next, see either [Replace Missing Data](replace-missing-data.html) [Optional] or [Assess Normality](assess-normality.html). 
+
+```{r clean-knitting-output, echo = FALSE}
+filenames <- c(list.files(".", "example_*"))
+output <- lapply(filenames, file.remove)
+```
