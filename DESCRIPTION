@@ -42,6 +42,7 @@ Imports:
     DiagrammeR,
     doParallel, 
     dplyr,
+    factoextra,
     foreach, 
     ggplot2,
     grDevices, 
