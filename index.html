@@ -35,7 +35,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">MetaPipe</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.900</span>
       </span>
     </div>
 
@@ -93,9 +93,9 @@
   <div class="contents col-md-9">
 <div id="metapipe-" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#metapipe-" class="anchor"></a>MetaPipe <img src="https://raw.githubusercontent.com/villegar/MetaPipe/master/inst/images/metapipe.png" alt="metapipe-logo" align="right" height="200px/">
+<a href="#metapipe-" class="anchor"></a>MetaPipe <img src="https://raw.githubusercontent.com/villegar/MetaPipe/master/inst/images/metapipe.png" alt="logo" align="right" height="200px/">
 </h1></div>
-<p>MetaPipe: A High-Performance Computing pipeline for QTL mapping of large metabolomic datasets <!-- badges: start --> <!-- [![Build Status](https://travis-ci.com/villegar/MetaPipe.svg?branch=master)](https://travis-ci.com/villegar/MetaPipe) --> <a href="https://travis-ci.com/villegar/MetaPipe"><img src="https://travis-ci.com/villegar/MetaPipe.svg?branch=master"></a> <a href="https://github.com/villegar/MetaPipe"><img src="https://img.shields.io/badge/devel%20version-1.0.0-blue.svg"></a> <a href="https://github.com/villegar/MetaPipe"><img src="https://img.shields.io/github/languages/code-size/villegar/MetaPipe.svg"></a><!-- [![](https://www.r-pkg.org/badges/version/MetaPipe?color=red)](https://cran.r-project.org/package=MetaPipe) --> <a href="https://codecov.io/gh/villegar/MetaPipe"><img src="https://codecov.io/gh/villegar/MetaPipe/branch/master/graph/badge.svg"></a> <a href="https://github.com/villegar/MetaPipe/actions"><img src="https://github.com/villegar/MetaPipe/workflows/R-CMD-check/badge.svg" alt="R build status"></a> <!-- [![Dependencies](https://tinyverse.netlify.com/badge/MetaPipe)](https://cran.r-project.org/package=MetaPipe) --> <!-- [![CRAN checks](https://cranchecks.info/badges/summary/MetaPipe)](https://cran.r-project.org/web/checks/check_results_MetaPipe.html) --> <!-- [![R build status](https://github.com/villegar/MetaPipe/workflows/R-CMD-check/badge.svg)](https://github.com/villegar/MetaPipe/actions) --></p>
+<p>MetaPipe: A High-Performance Computing Pipeline for QTL Mapping of Large Ionomic and Metabolomic Datasets <!-- badges: start --> <!-- [![Build Status](https://travis-ci.com/villegar/MetaPipe.svg?branch=master)](https://travis-ci.com/villegar/MetaPipe) --> <!-- [![](https://travis-ci.com/villegar/MetaPipe.svg?branch=master)](https://travis-ci.com/villegar/MetaPipe) --> <a href="https://cran.r-project.org/package=MetaPipe"><img src="https://www.r-pkg.org/badges/version/MetaPipe?color=red"></a> <a href="https://github.com/villegar/MetaPipe"><img src="https://img.shields.io/badge/devel%20version-0.0.0.900-yellow.svg"></a> <a href="https://codecov.io/gh/villegar/MetaPipe"><img src="https://codecov.io/gh/villegar/MetaPipe/branch/master/graph/badge.svg"></a> <a href="https://github.com/villegar/MetaPipe/actions"><img src="https://github.com/villegar/MetaPipe/workflows/R-CMD-check/badge.svg" alt="R build status"></a> <!-- [![](https://img.shields.io/github/languages/code-size/villegar/MetaPipe.svg)](https://github.com/villegar/MetaPipe) --> <!-- [![Dependencies](https://tinyverse.netlify.com/badge/MetaPipe)](https://cran.r-project.org/package=MetaPipe) --> <!-- [![CRAN checks](https://cranchecks.info/badges/summary/MetaPipe)](https://cran.r-project.org/web/checks/check_results_MetaPipe.html) --></p>
 <!-- badges: end -->
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
@@ -105,13 +105,11 @@
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<!-- You can install the released version of MetaPipe from [CRAN](https://CRAN.R-project.org) with: -->
-<!-- ``` r -->
-<!-- install.packages("MetaPipe") -->
-<!-- ``` -->
-<!-- And the development version from [GitHub](https://github.com/) with: -->
-<p>You can install the development version from <a href="https://github.com/">GitHub</a> with:</p>
+<p>You can install the released version of MetaPipe from <a href="https://cran.r-project.org/package=MetaPipe">CRAN</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"MetaPipe"</span><span class="op">)</span></pre></div>
+<p>And the development version from <a href="https://github.com/villegar/MetaPipe">GitHub</a> with:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit">
 <span class="co"># install.packages(c("hexSticker", "kableExtra", "qpdf", "remotes")</span>
 <span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"villegar/MetaPipe"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></pre></div>
 </div>
@@ -119,9 +117,10 @@
 <h2 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h2>
 <!-- This is a basic example which shows you how to solve a common problem: -->
-<p>You should start by loading <code>MetaPipe</code> on your session.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/villegar/MetaPipe">MetaPipe</a></span><span class="op">)</span></pre></div>
+<!-- You should start by loading `MetaPipe` on your session. -->
+<!-- ```{r example} -->
+<!-- library(MetaPipe) -->
+<!-- ``` -->
 <div id="load-raw-data" class="section level3">
 <h3 class="hasAnchor">
 <a href="#load-raw-data" class="anchor"></a>Load raw data</h3>
@@ -132,29 +131,80 @@
 <h4 class="hasAnchor">
 <a href="#function-call" class="anchor"></a>Function call</h4>
 <div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="fu"><a href="reference/load_raw.html">load_raw</a></span><span class="op">(</span>raw_data_filename <span class="op">=</span> <span class="st">"FILE.CSV"</span>, excluded_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span><span class="op">)</span></pre></div>
+<span class="fu">MetaPipe</span><span class="fu">::</span><span class="fu"><a href="reference/load_raw.html">load_raw</a></span><span class="op">(</span>raw_data_filename <span class="op">=</span> <span class="st">"FILE.CSV"</span>, excluded_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span><span class="op">)</span></pre></div>
 <p>where <code>raw_data_filename</code> is the filename containing the raw data, both absolute and relative paths are accepted. Next, the argument <code>excluded_columns</code> is a vector containing the indices of the properties, e.g. <code><a href="https://rdrr.io/r/base/c.html">c(2, 3, ..., M)</a></code>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="co"># Toy dataset</span>
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span>
-<span class="va">example_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>ID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span><span class="op">)</span>,
-                           P1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"one"</span>, <span class="st">"two"</span>, <span class="st">"three"</span>, <span class="st">"four"</span>, <span class="st">"five"</span><span class="op">)</span>, 
-                           T1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>, 
-                           T2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>,
-                           T3 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span>,                     <span class="co">#  20 % NAs</span>
-                           T4 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">1.2</span>, <span class="op">-</span><span class="fl">0.5</span>, <span class="cn">NA</span>, <span class="fl">0.87</span><span class="op">)</span>,          <span class="co">#  40 % NAs</span>
-                           T5 <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>                                  <span class="co"># 100 % NAs</span>
-<span class="co">## Write to disk</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span><span class="op">(</span><span class="va">example_data</span>, <span class="st">"example_data.csv"</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="co"># Load the data</span>
-<span class="fu"><a href="reference/load_raw.html">load_raw</a></span><span class="op">(</span><span class="st">"example_data.csv"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt;   ID    P1 T5          T1         T2        T3    T4</span>
-<span class="co">#&gt; 1  1   one NA -0.56047565  1.7150650        NA    NA</span>
-<span class="co">#&gt; 2  2   two NA -0.23017749  0.4609162 1.2240818  1.20</span>
-<span class="co">#&gt; 3  3 three NA  1.55870831 -1.2650612 0.3598138 -0.50</span>
-<span class="co">#&gt; 4  4  four NA  0.07050839 -0.6868529 0.4007715    NA</span>
-<span class="co">#&gt; 5  5  five NA  0.12928774 -0.4456620 0.1106827  0.87</span></pre></div>
+<span class="co"># F1 Seedling Ionomics dataset</span>
+<span class="va">ionomics_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, 
+                             <span class="st">"ionomics.csv"</span>, 
+                             package <span class="op">=</span> <span class="st">"MetaPipe"</span>, 
+                             mustWork <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="va">ionomics</span> <span class="op">&lt;-</span> <span class="fu">MetaPipe</span><span class="fu">::</span><span class="fu"><a href="reference/load_raw.html">load_raw</a></span><span class="op">(</span><span class="va">ionomics_path</span><span class="op">)</span>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">ionomics</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">]</span><span class="op">)</span></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="left">ID</th>
+<th align="right">SampleWeight</th>
+<th align="right">Ca44</th>
+<th align="right">K39</th>
+<th align="right">P31</th>
+<th align="right">Li7</th>
+<th align="right">B11</th>
+<th align="right">Na23</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">E_199</td>
+<td align="right">79</td>
+<td align="right">32675.79</td>
+<td align="right">6051.023</td>
+<td align="right">2679.338</td>
+<td align="right">0.1159068</td>
+<td align="right">23.32975</td>
+<td align="right">9.372606</td>
+</tr>
+<tr class="even">
+<td align="left">E_209</td>
+<td align="right">81</td>
+<td align="right">28467.95</td>
+<td align="right">5642.651</td>
+<td align="right">2075.403</td>
+<td align="right">0.0104801</td>
+<td align="right">27.31206</td>
+<td align="right">8.787553</td>
+</tr>
+<tr class="odd">
+<td align="left">E_035</td>
+<td align="right">81</td>
+<td align="right">27901.35</td>
+<td align="right">7357.856</td>
+<td align="right">2632.343</td>
+<td align="right">0.0561879</td>
+<td align="right">16.87480</td>
+<td align="right">14.369062</td>
+</tr>
+<tr class="even">
+<td align="left">E_197</td>
+<td align="right">79</td>
+<td align="right">27855.36</td>
+<td align="right">5225.275</td>
+<td align="right">1761.725</td>
+<td align="right">0.0104453</td>
+<td align="right">25.34740</td>
+<td align="right">11.009597</td>
+</tr>
+<tr class="odd">
+<td align="left">E_016</td>
+<td align="right">79</td>
+<td align="right">27377.40</td>
+<td align="right">6141.001</td>
+<td align="right">2145.715</td>
+<td align="right">0.0172996</td>
+<td align="right">24.64500</td>
+<td align="right">6.999958</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div id="replace-missing-data" class="section level3">
@@ -167,50 +217,90 @@
 <h4 class="hasAnchor">
 <a href="#function-call-1" class="anchor"></a>Function call</h4>
 <div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="fu"><a href="reference/replace_missing.html">replace_missing</a></span><span class="op">(</span>raw_data <span class="op">=</span> <span class="va">example_data</span>, 
-                excluded_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>, 
-                <span class="co"># Optional</span>
-                out_prefix <span class="op">=</span> <span class="st">"metapipe"</span>, prop_na <span class="op">=</span> <span class="fl">0.5</span>, replace_na <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></pre></div>
-<p>where <code>raw_data</code> is a data frame containing the raw data, as described in <a href="#load-raw-data">Load Raw Data</a> and <code>excluded_columns</code> is a vector containing the indices of the properties, e.g. <code><a href="https://rdrr.io/r/base/c.html">c(2, 3, ..., M)</a></code>. The other arguments are optional, <code>out_prefix</code> is the prefix for output files, <code>prop_na</code> is the proportion of NA values (used to drop traits), and <code>replace_na</code> is a logical flag to indicate whether or not NAs should be replace by half of the minimum value.</p>
+<span class="fu">MetaPipe</span><span class="fu">::</span><span class="fu"><a href="reference/replace_missing.html">replace_missing</a></span><span class="op">(</span>raw_data <span class="op">=</span> <span class="va">example_data</span>, 
+                          excluded_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>, 
+                          <span class="co"># Optional</span>
+                          out_prefix <span class="op">=</span> <span class="st">"metapipe"</span>, 
+                          prop_na <span class="op">=</span> <span class="fl">0.5</span>, 
+                          replace_na <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></pre></div>
+<p>where <code>raw_data</code> is a data frame containing the raw data, as described in <a href="#load-raw-data">Load Raw Data</a> and <code>excluded_columns</code> is a vector containing the indices of the properties, e.g. <code><a href="https://rdrr.io/r/base/c.html">c(2, 3, ..., M)</a></code>. The other arguments are optional, <code>out_prefix</code> is the prefix for output files, <code>prop_na</code> is the proportion of NA values (used to drop traits), and <code>replace_na</code> is a logical flag to indicate whether or not <code>NA</code>s should be replace by half of the minimum value within each variable.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="co"># Inserting missing values manually</span>
-<span class="va">example_data</span><span class="op">$</span><span class="va">T1</span><span class="op">[</span><span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span>
-<span class="va">example_data</span><span class="op">$</span><span class="va">T2</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span>
-
-<span class="co"># No changes expected</span>
-<span class="fu"><a href="reference/replace_missing.html">replace_missing</a></span><span class="op">(</span><span class="va">example_data</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; The following trait was dropped because it has 50% or more missing values: </span>
-<span class="co">#&gt;  - T5</span>
-<span class="co">#&gt;   ID    P1          T1         T2        T3    T4</span>
-<span class="co">#&gt; 1  1   one -0.56047565  1.7150650        NA    NA</span>
-<span class="co">#&gt; 2  2   two          NA  0.4609162 1.2240818  1.20</span>
-<span class="co">#&gt; 3  3 three          NA -1.2650612 0.3598138 -0.50</span>
-<span class="co">#&gt; 4  4  four  0.07050839         NA 0.4007715    NA</span>
-<span class="co">#&gt; 5  5  five  0.12928774 -0.4456620 0.1106827  0.87</span>
-
-<span class="co"># Traits with 25% of NA should be dropped</span>
-<span class="fu"><a href="reference/replace_missing.html">replace_missing</a></span><span class="op">(</span><span class="va">example_data</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>, prop_na <span class="op">=</span>  <span class="fl">0.25</span><span class="op">)</span>
-<span class="co">#&gt; The following traits were dropped because they have 25% or more missing values: </span>
-<span class="co">#&gt;  - T1</span>
-<span class="co">#&gt;  - T4</span>
-<span class="co">#&gt;  - T5</span>
-<span class="co">#&gt;   ID    P1         T2        T3</span>
-<span class="co">#&gt; 1  1   one  1.7150650        NA</span>
-<span class="co">#&gt; 2  2   two  0.4609162 1.2240818</span>
-<span class="co">#&gt; 3  3 three -1.2650612 0.3598138</span>
-<span class="co">#&gt; 4  4  four         NA 0.4007715</span>
-<span class="co">#&gt; 5  5  five -0.4456620 0.1106827</span>
-
-<span class="co"># NAs should be replaced by half of the minimum value</span>
-<span class="fu"><a href="reference/replace_missing.html">replace_missing</a></span><span class="op">(</span><span class="va">example_data</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>, replace_na <span class="op">=</span>  <span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">#&gt; The following trait was dropped because it has 100% missing values: </span>
-<span class="co">#&gt;  - T5</span>
-<span class="co">#&gt;   ID    P1          T1         T2         T3    T4</span>
-<span class="co">#&gt; 1  1   one -0.56047565  1.7150650 0.05534136 -0.25</span>
-<span class="co">#&gt; 2  2   two -0.28023782  0.4609162 1.22408180  1.20</span>
-<span class="co">#&gt; 3  3 three -0.28023782 -1.2650612 0.35981383 -0.50</span>
-<span class="co">#&gt; 4  4  four  0.07050839 -0.6325306 0.40077145 -0.25</span>
-<span class="co">#&gt; 5  5  five  0.12928774 -0.4456620 0.11068272  0.87</span></pre></div>
+<span class="co"># F1 Seedling Ionomics dataset</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">ionomics</span><span class="op">)</span> <span class="co"># Includes some missing data</span>
+<span class="va">ionomics_rev</span> <span class="op">&lt;-</span> <span class="fu">MetaPipe</span><span class="fu">::</span><span class="fu"><a href="reference/replace_missing.html">replace_missing</a></span><span class="op">(</span><span class="va">ionomics</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
+<span class="va">ionomics_rev</span> <span class="op">&lt;-</span> <span class="fu">MetaPipe</span><span class="fu">::</span><span class="fu"><a href="reference/replace_missing.html">replace_missing</a></span><span class="op">(</span><span class="va">ionomics</span>, 
+                                          excluded_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, 
+                                          prop_na <span class="op">=</span>  <span class="fl">0.025</span><span class="op">)</span>
+<span class="co">#&gt; The following trait was dropped because it has 2.5% or more missing values: </span>
+<span class="co">#&gt;  - Se78</span>
+<span class="va">ionomics_rev</span> <span class="op">&lt;-</span> <span class="fu">MetaPipe</span><span class="fu">::</span><span class="fu"><a href="reference/replace_missing.html">replace_missing</a></span><span class="op">(</span><span class="va">ionomics</span>, 
+                                          excluded_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,
+                                          replace_na <span class="op">=</span>  <span class="cn">TRUE</span><span class="op">)</span>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">ionomics_rev</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">]</span><span class="op">)</span></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="left">ID</th>
+<th align="right">SampleWeight</th>
+<th align="right">Ca44</th>
+<th align="right">K39</th>
+<th align="right">P31</th>
+<th align="right">Li7</th>
+<th align="right">B11</th>
+<th align="right">Na23</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">E_001</td>
+<td align="right">79</td>
+<td align="right">15894.22</td>
+<td align="right">5888.311</td>
+<td align="right">1743.118</td>
+<td align="right">0.0128699</td>
+<td align="right">18.66673</td>
+<td align="right">6.970224</td>
+</tr>
+<tr class="even">
+<td align="left">E_002</td>
+<td align="right">93</td>
+<td align="right">13155.45</td>
+<td align="right">7013.400</td>
+<td align="right">2244.684</td>
+<td align="right">0.0119316</td>
+<td align="right">14.47693</td>
+<td align="right">5.866392</td>
+</tr>
+<tr class="odd">
+<td align="left">E_004</td>
+<td align="right">97</td>
+<td align="right">14182.51</td>
+<td align="right">7966.273</td>
+<td align="right">2311.057</td>
+<td align="right">0.0212316</td>
+<td align="right">14.71313</td>
+<td align="right">10.251955</td>
+</tr>
+<tr class="even">
+<td align="left">E_005</td>
+<td align="right">82</td>
+<td align="right">22550.82</td>
+<td align="right">7514.089</td>
+<td align="right">2315.675</td>
+<td align="right">0.0233063</td>
+<td align="right">20.10630</td>
+<td align="right">11.773697</td>
+</tr>
+<tr class="odd">
+<td align="left">E_006</td>
+<td align="right">99</td>
+<td align="right">15982.76</td>
+<td align="right">7608.464</td>
+<td align="right">1995.193</td>
+<td align="right">0.0588128</td>
+<td align="right">12.97801</td>
+<td align="right">11.043837</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div id="assess-normality" class="section level3">
@@ -224,315 +314,180 @@
 <h4 class="hasAnchor">
 <a href="#function-call-2" class="anchor"></a>Function call</h4>
 <div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="fu"><a href="reference/assess_normality.html">assess_normality</a></span><span class="op">(</span>raw_data <span class="op">=</span> <span class="va">raw_data</span>, 
-                 excluded_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span>, <span class="va">...</span>, <span class="va">M</span><span class="op">)</span>, 
-                 <span class="co"># Optional</span>
-                 cpus <span class="op">=</span> <span class="fl">1</span>, 
-                 out_prefix <span class="op">=</span> <span class="st">"metapipe"</span>, 
-                 plots_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html">getwd</a></span><span class="op">(</span><span class="op">)</span>, 
-                 transf_vals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span>, <span class="fl">7</span>, <span class="fl">8</span>, <span class="fl">9</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></pre></div>
-<p>where <code>raw_data</code> is a data frame containing the raw data, as described in <a href="https://villegar.github.io/MetaPipe/articles/load-raw-data.html">Load Raw Data</a> and <code>excluded_columns</code> is a vector containing the indices of the properties, e.g. <code><a href="https://rdrr.io/r/base/c.html">c(2, 3, ..., M)</a></code>. The other arguments are optional, <code>cpus</code> is the number of cores to use, in other words, the number of concurrent traits to process, <code>out_prefix</code> is the prefix for output files, <code>plots_dir</code> is the output directory where the plots will be stored, and <code>transf_vals</code> is a vector containing the transformation values to be used when transforming the original data.</p>
-</div>
-<div id="example-1" class="section level4">
-<h4 class="hasAnchor">
-<a href="#example-1" class="anchor"></a>Example</h4>
-<p>The following histogram shows a sample data obtained from a normal distribution with the command <code>rnorm</code>, but it was transformed using the power (base <code>2</code>) function; thus, the data seems to be skewed:</p>
-<p><img src="reference/figures/README-assess-normality-example-data-before-1.png" width="60%" style="display: block; margin: auto;"></p>
-<p>Using <code>MetaPipe</code> we can find an optimal transformation that “normalises” this data set:</p>
+<span class="fu">MetaPipe</span><span class="fu">::</span><span class="fu"><a href="reference/assess_normality.html">assess_normality</a></span><span class="op">(</span>raw_data <span class="op">=</span> <span class="va">raw_data</span>, 
+                           excluded_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span>, <span class="va">...</span>, <span class="va">M</span><span class="op">)</span>, 
+                           <span class="co"># Optional</span>
+                           cpus <span class="op">=</span> <span class="fl">1</span>, 
+                           out_prefix <span class="op">=</span> <span class="st">"metapipe"</span>, 
+                           plots_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html">getwd</a></span><span class="op">(</span><span class="op">)</span>, 
+                           transf_vals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span>, <span class="fl">7</span>, <span class="fl">8</span>, <span class="fl">9</span>, <span class="fl">10</span><span class="op">)</span>,
+                           alpha <span class="op">=</span> <span class="fl">0.05</span>,
+                           pareto_scaling <span class="op">=</span> <span class="cn">FALSE</span>,
+                           show_stats <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></pre></div>
+<p>where <code>raw_data</code> is a data frame containing the raw data, as described in <a href="https://villegar.github.io/MetaPipe/articles/load-raw-data.html">Load Raw Data</a> and <code>excluded_columns</code> is a vector containing the indices of the properties, e.g. <code><a href="https://rdrr.io/r/base/c.html">c(2, 3, ..., M)</a></code>. The other arguments are optional, <code>cpus</code> is the number of cores to use, in other words, the number of concurrent traits to process, <code>out_prefix</code> is the prefix for output files, <code>plots_dir</code> is the output directory where the plots will be stored, <code>transf_vals</code> is a vector containing the transformation values to be used when transforming the original data, <code>alpha</code> is the significance level for the <em>Wilk-Shapiro</em> tests, <code>pareto_scaling</code> is a boolean flag to indicate whether or not to scale the traits to the same scale, and <code>show_stats</code> is a boolean flag to show or hide some general statistics of the normalisation process.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit">
-<span class="va">example_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>ID <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">500</span>,
-                           T1 <span class="op">=</span> <span class="va">test_data</span>,
-                           T2 <span class="op">=</span> <span class="fl">2</span><span class="op">^</span><span class="va">test_data</span><span class="op">)</span>
-<span class="va">transformed_data</span> <span class="op">&lt;-</span> <span class="fu">MetaPipe</span><span class="fu">::</span><span class="fu"><a href="reference/assess_normality.html">assess_normality</a></span><span class="op">(</span><span class="va">example_data</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></pre></div>
-<p>The top 5 entries for the trait <code>T1</code> are:</p>
-<table class="table table table-striped table-hover">
-<thead><tr>
-<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
-<p>index</p>
-</th>
-<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
-<p>trait</p>
-</th>
-<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
-<p>values</p>
-</th>
-<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
-<p>flag</p>
-</th>
-<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
-<p>transf</p>
-</th>
-<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
-<p>transf_val</p>
-</th>
+<span class="co"># F1 Seedling Ionomics dataset</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">ionomics</span><span class="op">)</span> <span class="co"># Includes some missing data</span>
+<span class="va">ionomics_rev</span> <span class="op">&lt;-</span> <span class="fu">MetaPipe</span><span class="fu">::</span><span class="fu"><a href="reference/replace_missing.html">replace_missing</a></span><span class="op">(</span><span class="va">ionomics</span>, 
+                                          excluded_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,
+                                          replace_na <span class="op">=</span>  <span class="cn">TRUE</span><span class="op">)</span>
+<span class="va">ionomics_normalised</span> <span class="op">&lt;-</span> 
+  <span class="fu">MetaPipe</span><span class="fu">::</span><span class="fu"><a href="reference/assess_normality.html">assess_normality</a></span><span class="op">(</span><span class="va">ionomics_rev</span>,
+                             excluded_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,
+                             transf_vals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span>,
+                             out_prefix <span class="op">=</span> <span class="st">"README-ionomics"</span>,
+                             plots_dir <span class="op">=</span> <span class="st">"man/figures/"</span>,
+                             pareto_scaling <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="co">#&gt; Total traits (excluding all NAs traits):     21</span>
+<span class="co">#&gt; Normal traits (without transformation):      2</span>
+<span class="co">#&gt; Normal traits (transformed):                 4</span>
+<span class="co">#&gt; Total normal traits:                         6</span>
+<span class="co">#&gt; Total skewed traits:                         15</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Transformations summary:</span>
+<span class="co">#&gt;  f(x)      Value     # traits  </span>
+<span class="co">#&gt;  log       2         3         </span>
+<span class="co">#&gt;  root      e         1</span>
+
+<span class="co"># Extract normalised features</span>
+<span class="va">ionomics_norm</span> <span class="op">&lt;-</span> <span class="va">ionomics_normalised</span><span class="op">$</span><span class="va">norm</span>
+<span class="va">ionomics_skew</span> <span class="op">&lt;-</span> <span class="va">ionomics_normalised</span><span class="op">$</span><span class="va">skew</span></pre></div>
+<p>The function call to <code><a href="reference/assess_normality.html">MetaPipe::assess_normality</a></code> will print a summary of the transformations performed (if any), as well as an overview of the number of traits that should be considered <em>normal</em> and <em>skewed</em>. Next, we can preview some of the partial output of the normality assessment process:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit">
+<span class="co"># Normal traits</span>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">ionomics_norm</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span><span class="op">)</span> </pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="left">ID</th>
+<th align="right">Ca44</th>
+<th align="right">B11</th>
+<th align="right">Na23</th>
+<th align="right">Mg26</th>
+<th align="right">Rb85</th>
+<th align="right">Sr88</th>
 </tr></thead>
 <tbody>
-<tr>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>1</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>T1</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>-0.5604756</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>Normal</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-</td>
+<tr class="odd">
+<td align="left">E_001</td>
+<td align="right">15894.22</td>
+<td align="right">4.222397</td>
+<td align="right">2.042740</td>
+<td align="right">10.77021</td>
+<td align="right">1.555742</td>
+<td align="right">7.347059</td>
 </tr>
-<tr>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>1</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>T1</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>-0.2301775</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>Normal</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-</td>
+<tr class="even">
+<td align="left">E_002</td>
+<td align="right">13155.45</td>
+<td align="right">3.855684</td>
+<td align="right">1.917202</td>
+<td align="right">10.54095</td>
+<td align="right">2.058711</td>
+<td align="right">6.890243</td>
 </tr>
-<tr>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>1</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>T1</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>1.5587083</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>Normal</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-</td>
+<tr class="odd">
+<td align="left">E_004</td>
+<td align="right">14182.51</td>
+<td align="right">3.879033</td>
+<td align="right">2.354263</td>
+<td align="right">10.51931</td>
+<td align="right">2.198422</td>
+<td align="right">9.025915</td>
 </tr>
-<tr>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>1</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>T1</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>0.0705084</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>Normal</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-</td>
+<tr class="even">
+<td align="left">E_005</td>
+<td align="right">22550.82</td>
+<td align="right">4.329576</td>
+<td align="right">2.477233</td>
+<td align="right">11.13450</td>
+<td align="right">1.791578</td>
+<td align="right">15.292360</td>
 </tr>
-<tr>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>1</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>T1</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>0.1292877</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>Normal</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-</td>
-</tr>
-<tr>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>1</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>T1</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>1.7150650</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>Normal</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-</td>
+<tr class="odd">
+<td align="left">E_006</td>
+<td align="right">15982.76</td>
+<td align="right">3.697997</td>
+<td align="right">2.419593</td>
+<td align="right">11.72734</td>
+<td align="right">2.229866</td>
+<td align="right">13.901449</td>
 </tr>
 </tbody>
 </table>
-<p>And for trait <code>T2</code>:</p>
-<table class="table table table-striped table-hover">
-<thead><tr>
-<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
-<p>index</p>
-</th>
-<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
-<p>trait</p>
-</th>
-<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
-<p>values</p>
-</th>
-<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
-<p>flag</p>
-</th>
-<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
-<p>transf</p>
-</th>
-<th style="text-align:center;color: #EEEEEE !important;background-color: #363B74 !important;vertical-align: middle;">
-<p>transf_val</p>
-</th>
+<div class="sourceCode" id="cb13"><pre class="downlit">
+<span class="co"># Skewed traits (partial output)</span>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">ionomics_skew</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">]</span><span class="op">)</span></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="left">ID</th>
+<th align="right">K39</th>
+<th align="right">P31</th>
+<th align="right">Li7</th>
+<th align="right">Al27</th>
+<th align="right">S34</th>
+<th align="right">Fe54</th>
+<th align="right">Mn55</th>
 </tr></thead>
 <tbody>
-<tr>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>2</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>T2</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>-0.5604756</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>Normal</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>log</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>2</p>
-</td>
+<tr class="odd">
+<td align="left">E_001</td>
+<td align="right">5888.311</td>
+<td align="right">1743.118</td>
+<td align="right">0.0128699</td>
+<td align="right">3.845879</td>
+<td align="right">1152.944</td>
+<td align="right">27.59340</td>
+<td align="right">54.53991</td>
 </tr>
-<tr>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>2</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>T2</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>-0.2301775</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>Normal</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>log</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>2</p>
-</td>
+<tr class="even">
+<td align="left">E_002</td>
+<td align="right">7013.400</td>
+<td align="right">2244.684</td>
+<td align="right">0.0119316</td>
+<td align="right">5.825639</td>
+<td align="right">1600.442</td>
+<td align="right">35.49159</td>
+<td align="right">52.57114</td>
 </tr>
-<tr>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>2</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>T2</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>1.5587083</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>Normal</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>log</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>2</p>
-</td>
+<tr class="odd">
+<td align="left">E_004</td>
+<td align="right">7966.273</td>
+<td align="right">2311.057</td>
+<td align="right">0.0212316</td>
+<td align="right">8.036047</td>
+<td align="right">1039.098</td>
+<td align="right">39.13434</td>
+<td align="right">36.66475</td>
 </tr>
-<tr>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>2</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>T2</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>0.0705084</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>Normal</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>log</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>2</p>
-</td>
+<tr class="even">
+<td align="left">E_005</td>
+<td align="right">7514.089</td>
+<td align="right">2315.675</td>
+<td align="right">0.0233063</td>
+<td align="right">9.482051</td>
+<td align="right">1091.607</td>
+<td align="right">40.22041</td>
+<td align="right">43.24368</td>
 </tr>
-<tr>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>2</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>T2</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>0.1292877</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>Normal</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>log</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>2</p>
-</td>
-</tr>
-<tr>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>2</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>T2</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>1.7150650</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>Normal</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>log</p>
-</td>
-<td style="text-align:center;border-left:1px solid;border-right:1px solid;">
-<p>2</p>
-</td>
+<tr class="odd">
+<td align="left">E_006</td>
+<td align="right">7608.464</td>
+<td align="right">1995.193</td>
+<td align="right">0.0588128</td>
+<td align="right">29.329605</td>
+<td align="right">1096.871</td>
+<td align="right">75.23614</td>
+<td align="right">53.64705</td>
 </tr>
 </tbody>
 </table>
-<p>As expected both tables show the same entries; however, the latter indicates that <code>T2</code> was transformed using <span class="math inline">$`\log_2`$</span>. The function will generate histograms for all the traits, the naming convention used is:</p>
-<ul>
-<li>
-<code>HIST_[index]_[transf]_[transf_val]_[trait].png</code> for transformed traits</li>
-<li>
-<code>HIST_[index]_NORM_[trait].png</code> for those that were not transformed.</li>
-</ul>
-<p>For the previous data set <code>HIST_1_NORM_T1.png</code> and <code>HIST_2_LOG_2_T2.png</code>:</p>
-<p><img src="reference/figures/HIST_1_NORM_T1.png" width="45%"><img src="reference/figures/HIST_2_LOG_2_T2.png" width="45%"></p>
-<!-- The figures below show the original data (`T1`) and the transfomed data (`T2`): -->
+<p>Among the transformed traits, we have <code>B11</code> and <code>Na23</code>. Both of which seem to be skewed, but after a simple transformation, can be classify as normalised traits.</p>
+<p><img src="reference/figures/HIST_5_LOG_2_B11.png" width="45%"><img src="reference/figures/HIST_6_ROOT_e_NA23.png" width="45%"></p>
 </div>
+</div>
+<div id="qtl-mapping" class="section level3">
+<h3 class="hasAnchor">
+<a href="#qtl-mapping" class="anchor"></a>QTL mapping</h3>
 </div>
 </div>
 </div>

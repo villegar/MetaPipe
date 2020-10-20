@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MetaPipe</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.900</span>
       </span>
     </div>
 
@@ -191,7 +191,7 @@ Pareto scaling on the normalised data.</p></td>
       <th>show_stats</th>
       <td><p>Boolean flag to indicate whether or not to show the 
 normality assessment statistics (how many traits are normal, how many
-were transformed/normalised, what transformations were applied, etc.).</p></td>
+were transformed/normalised, and which transformations were applied).</p></td>
     </tr>
     </table>
 
@@ -237,11 +237,11 @@ radical/root (<code>x^(1/a)</code>) functions.</p>
 #&gt; 
 #&gt; | ID|         T1|         T2|
 #&gt; |--:|----------:|----------:|
-#&gt; |  1| -1.4000435|  1.1484116|
-#&gt; |  2|  0.2553171| -1.8218177|
-#&gt; |  3| -2.4372636| -0.2473253|
-#&gt; |  4| -0.0055713| -0.2441996|
-#&gt; |  5|  0.6215527| -0.2827054|</div><div class='input'>
+#&gt; |  1|  0.5429963|  0.7377763|
+#&gt; |  2| -0.9140748|  1.8885049|
+#&gt; |  3|  0.4681544| -0.0974451|
+#&gt; |  4|  0.3629513| -0.9358474|
+#&gt; |  5| -1.3045435| -0.0159503|</div><div class='input'>
 <span class='co'># Skewed traits (empty)</span>
 <span class='co'># knitr::kable(example_data_skew)</span>
 
@@ -263,9 +263,9 @@ radical/root (<code>x^(1/a)</code>) functions.</p>
 #&gt; <span class='message'>Total skewed traits:                         15</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>Transformations summary:</span>
-#&gt; <span class='message'>	f(x)	Value 	# traits</span>
-#&gt; <span class='message'>	log	2	3</span>
-#&gt; <span class='message'>	root	e	1</span></div><div class='input'>                             
+#&gt; <span class='message'>	f(x)      Value     # traits  </span>
+#&gt; <span class='message'>	log       2         3         </span>
+#&gt; <span class='message'>	root      e         1         </span></div><div class='input'>                             
 <span class='va'>ionomics_norm</span> <span class='op'>&lt;-</span> <span class='va'>ionomics_normalised</span><span class='op'>$</span><span class='va'>norm</span>
 <span class='va'>ionomics_skew</span> <span class='op'>&lt;-</span> <span class='va'>ionomics_normalised</span><span class='op'>$</span><span class='va'>skew</span>
 
@@ -281,16 +281,16 @@ radical/root (<code>x^(1/a)</code>) functions.</p>
 #&gt; |E_005 | 22550.82| 4.329576| 2.477233| 11.13450| 1.791578| 15.292360|
 #&gt; |E_006 | 15982.76| 3.697997| 2.419593| 11.72734| 2.229866| 13.901449|</div><div class='input'>
 <span class='co'># Skewed traits (partial output)</span>
-<span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span><span class='va'>ionomics_skew</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>]</span><span class='op'>)</span>
+<span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span><span class='va'>ionomics_skew</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>8</span><span class='op'>]</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; 
 #&gt; 
-#&gt; |ID    |      K39|      P31|       Li7|      Al27|      S34|     Fe54|     Mn55|      Co59|      Ni60|
-#&gt; |:-----|--------:|--------:|---------:|---------:|--------:|--------:|--------:|---------:|---------:|
-#&gt; |E_001 | 5888.311| 1743.118| 0.0128699|  3.845879| 1152.944| 27.59340| 54.53991| 0.1887654| 0.8138975|
-#&gt; |E_002 | 7013.400| 2244.684| 0.0119316|  5.825639| 1600.442| 35.49159| 52.57114| 0.2829400| 0.6484187|
-#&gt; |E_004 | 7966.273| 2311.057| 0.0212316|  8.036047| 1039.098| 39.13434| 36.66475| 0.2045208| 0.5553003|
-#&gt; |E_005 | 7514.089| 2315.675| 0.0233063|  9.482051| 1091.607| 40.22041| 43.24368| 0.2010852| 0.6602820|
-#&gt; |E_006 | 7608.464| 1995.193| 0.0588128| 29.329605| 1096.871| 75.23614| 53.64705| 0.3534595| 0.1035969|</div></pre>
+#&gt; |ID    |      K39|      P31|       Li7|      Al27|      S34|     Fe54|     Mn55|
+#&gt; |:-----|--------:|--------:|---------:|---------:|--------:|--------:|--------:|
+#&gt; |E_001 | 5888.311| 1743.118| 0.0128699|  3.845879| 1152.944| 27.59340| 54.53991|
+#&gt; |E_002 | 7013.400| 2244.684| 0.0119316|  5.825639| 1600.442| 35.49159| 52.57114|
+#&gt; |E_004 | 7966.273| 2311.057| 0.0212316|  8.036047| 1039.098| 39.13434| 36.66475|
+#&gt; |E_005 | 7514.089| 2315.675| 0.0233063|  9.482051| 1091.607| 40.22041| 43.24368|
+#&gt; |E_006 | 7608.464| 1995.193| 0.0588128| 29.329605| 1096.871| 75.23614| 53.64705|</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
