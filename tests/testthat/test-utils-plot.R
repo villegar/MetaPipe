@@ -79,3 +79,12 @@ test_that("hex logo works", {
   file.remove(filename)
   expect_false(file.exists(filename))
 })
+
+test_that("PCA works", {
+  # Toy dataset
+  example_data <- data.frame(ID = c(1,2,3,4,5), 
+                             P1 = c("one", "two", "three", "four", "five"), 
+                             T1 = rnorm(5), 
+                             T2 = rnorm(5))
+  expect_warning(example_data_pca <- PCA(example_data[, -c(1)]))
+})
