@@ -43,7 +43,7 @@ paretoscale <- function(z) {
 #' @keywords internal
 #' @noRd
 check_alpha <- function(alpha) {
-  if (typeof(alpha) == "integer")
+  if (!(typeof(alpha) %in% c("integer", "double")))
     stop("alpha must be a numeric value")
   else if (alpha < 0)
     stop("alpha must be non-negative")
