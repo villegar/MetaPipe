@@ -237,6 +237,7 @@ replace_missing <- function(raw_data,
 #' ionomics_rev <- MetaPipe::replace_missing(ionomics, 
 #'                                           excluded_columns = c(1, 2),
 #'                                           replace_na =  TRUE)
+#' \donttest{
 #' ionomics_normalised <- 
 #'   MetaPipe::assess_normality(ionomics_rev,
 #'                              excluded_columns = c(1, 2),
@@ -251,6 +252,7 @@ replace_missing <- function(raw_data,
 #' 
 #' # Skewed traits (partial output)
 #' knitr::kable(ionomics_skew[1:5, 1:8])
+#' }
 assess_normality <- function(raw_data, 
                              excluded_columns, 
                              cpus = 1, 
@@ -327,13 +329,13 @@ assess_normality <- function(raw_data,
 #' # Create and store random genetic map (for testing only)
 #' genetic_map <- MetaPipe:::random_map(population = population, 
 #'                                      seed = seed)
-#' 
+#' \donttest{
 #' # Load cross file with genetic map and raw data for normal traits
 #' x <- MetaPipe::read.cross(genetic_map, output$norm)
 #' 
 #' x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
 #' x_scone <- MetaPipe::qtl_scone(x, 1, model = "normal", method = "hk")
-#' 
+#' }
 #' 
 #' # F1 Seedling Ionomics dataset
 #' data(ionomics) # Includes some missing data
@@ -347,7 +349,7 @@ assess_normality <- function(raw_data,
 #'                              out_prefix = "ionomics",
 #'                              transf_vals = c(2, exp(1)),
 #'                              show_stats = FALSE)
-#' 
+#' \donttest{
 #' # Load cross file with genetic map and raw data for normal traits
 #' x <- MetaPipe::read.cross(father_riparia, 
 #'                           ionomics_normalised$norm,
@@ -356,7 +358,7 @@ assess_normality <- function(raw_data,
 #' set.seed(seed)
 #' x <- qtl::jittermap(x)
 #' x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
-#' \donttest{
+#' 
 #' x_scone <- MetaPipe::qtl_scone(x, 1, model = "normal", method = "hk")
 #' }
 #' 
