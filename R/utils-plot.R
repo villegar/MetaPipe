@@ -293,7 +293,7 @@ hex_logo <- function(subplot = system.file("images/lab-2.png",
 #'                                           replace_na =  TRUE)
 #' ionomics_pca <- PCA(ionomics_rev[, -c(1:2)])
 PCA <- function(data, plot = TRUE, ...) {
-  idx <- MetaPipe:::check_types(data, quiet = FALSE)
+  idx <- check_types(data, quiet = FALSE)
   if (length(idx) > 0)
     data <- data[, -idx]
   res.pca <- stats::prcomp(data, scale = TRUE)
