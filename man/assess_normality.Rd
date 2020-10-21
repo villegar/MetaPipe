@@ -86,6 +86,7 @@ data(ionomics) # Includes some missing data
 ionomics_rev <- MetaPipe::replace_missing(ionomics, 
                                           excluded_columns = c(1, 2),
                                           replace_na =  TRUE)
+\donttest{
 ionomics_normalised <- 
   MetaPipe::assess_normality(ionomics_rev,
                              excluded_columns = c(1, 2),
@@ -100,4 +101,5 @@ knitr::kable(ionomics_norm[1:5, ])
 
 # Skewed traits (partial output)
 knitr::kable(ionomics_skew[1:5, 1:8])
+}
 }

@@ -39,13 +39,13 @@ output <- MetaPipe::assess_normality(example_data,
 # Create and store random genetic map (for testing only)
 genetic_map <- MetaPipe:::random_map(population = population, 
                                      seed = seed)
-
+\donttest{
 # Load cross file with genetic map and raw data for normal traits
 x <- MetaPipe::read.cross(genetic_map, output$norm)
 
 x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
 x_scone <- MetaPipe::qtl_scone(x, 1, model = "normal", method = "hk")
-
+}
 
 # F1 Seedling Ionomics dataset
 data(ionomics) # Includes some missing data
@@ -59,7 +59,7 @@ ionomics_normalised <-
                              out_prefix = "ionomics",
                              transf_vals = c(2, exp(1)),
                              show_stats = FALSE)
-
+\donttest{
 # Load cross file with genetic map and raw data for normal traits
 x <- MetaPipe::read.cross(father_riparia, 
                           ionomics_normalised$norm,
@@ -68,7 +68,7 @@ x <- MetaPipe::read.cross(father_riparia,
 set.seed(seed)
 x <- qtl::jittermap(x)
 x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
-\donttest{
+
 x_scone <- MetaPipe::qtl_scone(x, 1, model = "normal", method = "hk")
 }
 
