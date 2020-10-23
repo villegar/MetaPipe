@@ -15,7 +15,7 @@ Authors@R: c(
            email = "dilmini.alahakoon@sdstate.edu"),
     person(given = "Anne",
            family = "Fennell",
-           role = c("ths"),
+           role = c("aut","ths"),
            email = "anne.fennell@sdstate.edu",
            comment = c(ORCID = "0000-0002-4234-6419")),
     person(given = "Jason P.",
@@ -27,7 +27,11 @@ Authors@R: c(
            family = "Bhattarai",
            role = c("dtc"),
            email = "gbhattarai@uga.edu",
-           comment = c(ORCID = "0000-0002-2899-7725"))
+           comment = c(ORCID = "0000-0002-2899-7725")),
+    person(given = "Laszlo G.",
+           family = "Kovacs",
+           role = c("dtc"),
+           email = "laszlokovacs@missouristate.edu")
     )
 Description: Pipeline for Quantitative Trait Locus (QTL) mapping of large 
     ionomic and metabolomic datasets. It uses a High-Performance Computing 
