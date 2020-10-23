@@ -251,6 +251,7 @@ radical/root (<code>x^(1/a)</code>) functions.</p>
 <span class='va'>ionomics_rev</span> <span class='op'>&lt;-</span> <span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'><a href='replace_missing.html'>replace_missing</a></span><span class='op'>(</span><span class='va'>ionomics</span>, 
                                           excluded_columns <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>,
                                           replace_na <span class='op'>=</span>  <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='co'># \donttest{</span>
 <span class='va'>ionomics_normalised</span> <span class='op'>&lt;-</span> 
   <span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>assess_normality</span><span class='op'>(</span><span class='va'>ionomics_rev</span>,
                              excluded_columns <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>,
@@ -290,7 +291,8 @@ radical/root (<code>x^(1/a)</code>) functions.</p>
 #&gt; |E_002 | 7013.400| 2244.684| 0.0119316|  5.825639| 1600.442| 35.49159| 52.57114|
 #&gt; |E_004 | 7966.273| 2311.057| 0.0212316|  8.036047| 1039.098| 39.13434| 36.66475|
 #&gt; |E_005 | 7514.089| 2315.675| 0.0233063|  9.482051| 1091.607| 40.22041| 43.24368|
-#&gt; |E_006 | 7608.464| 1995.193| 0.0588128| 29.329605| 1096.871| 75.23614| 53.64705|</div></pre>
+#&gt; |E_006 | 7608.464| 1995.193| 0.0588128| 29.329605| 1096.871| 75.23614| 53.64705|</div><div class='input'><span class='co'># }</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -302,7 +304,7 @@ radical/root (<code>x^(1/a)</code>) functions.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Roberto Villegas-Diaz, Dilmini Alahakoon.</p>
+  <p>Developed by Roberto Villegas-Diaz, Dilmini Alahakoon, Anne Fennell.</p>
 </div>
 
 <div class="pkgdown">

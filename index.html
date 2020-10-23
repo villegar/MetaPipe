@@ -482,12 +482,38 @@
 </tbody>
 </table>
 <p>Among the transformed traits, we have <code>B11</code> and <code>Na23</code>. Both of which seem to be skewed, but after a simple transformation, can be classify as normalised traits.</p>
-<p><img src="reference/figures/HIST_5_LOG_2_B11.png" width="45%"><img src="reference/figures/HIST_6_ROOT_e_NA23.png" width="45%"></p>
+<p><img src="reference/figures/HIST_5_LOG_2_B11.png" width="45%"><img src="reference/figures/HIST_6_ROOT_e_Na23.png" width="45%"></p>
 </div>
 </div>
 <div id="qtl-mapping" class="section level3">
 <h3 class="hasAnchor">
 <a href="#qtl-mapping" class="anchor"></a>QTL mapping</h3>
+<div id="scan-one-qtl-mapping" class="section level4">
+<h4 class="hasAnchor">
+<a href="#scan-one-qtl-mapping" class="anchor"></a>Scan one QTL mapping</h4>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>qtl_scone &lt;-<span class="st"> </span><span class="cf">function</span>(x_data, <span class="dt">cpus =</span> <span class="dv">1</span>, ...)</span></code></pre></div>
+<!-- #### Function call -->
+<p>where <code>x_data</code></p>
+<div class="sourceCode" id="cb15"><pre class="downlit">
+<span class="co"># F1 Seedling Ionomics dataset</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">father_riparia</span><span class="op">)</span> <span class="co"># Genetic map</span>
+<span class="co"># Load cross file with genetic map and raw data for normal traits</span>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">MetaPipe</span><span class="fu">::</span><span class="fu"><a href="reference/read.cross.html">read.cross</a></span><span class="op">(</span><span class="va">father_riparia</span>, 
+                          <span class="va">ionomics_norm</span>,
+                          genotypes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"nn"</span>, <span class="st">"np"</span>, <span class="st">"--"</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt;  --Read the following data:</span>
+<span class="co">#&gt;   166  individuals</span>
+<span class="co">#&gt;   1115  markers</span>
+<span class="co">#&gt;   7  phenotypes</span>
+<span class="co">#&gt; Warning in summary.cross(cross): Some markers at the same position on chr</span>
+<span class="co">#&gt; 1,4,5,7,8,9,10,12,14,15,16,17; use jittermap().</span>
+<span class="co">#&gt;  --Cross type: f2</span>
+                          
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">qtl</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/qtl/man/jittermap.html">jittermap</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">qtl</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/qtl/man/calc.genoprob.html">calc.genoprob</a></span><span class="op">(</span><span class="va">x</span>, step <span class="op">=</span> <span class="fl">1</span>, error.prob <span class="op">=</span> <span class="fl">0.001</span><span class="op">)</span>
+<span class="va">x_scone</span> <span class="op">&lt;-</span> <span class="fu">MetaPipe</span><span class="fu">::</span><span class="fu"><a href="reference/qtl_scone.html">qtl_scone</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, model <span class="op">=</span> <span class="st">"normal"</span>, method <span class="op">=</span> <span class="st">"hk"</span><span class="op">)</span></pre></div>
+</div>
 </div>
 </div>
 </div>
@@ -515,6 +541,7 @@
 <ul class="list-unstyled">
 <li>Roberto Villegas-Diaz <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0001-5036-8661" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>Dilmini Alahakoon <br><small class="roles"> Author </small>  </li>
+<li>Anne Fennell <br><small class="roles"> Author, thesis advisor </small> <a href="https://orcid.org/0000-0002-4234-6419" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li><a href="authors.html">All authors...</a></li>
 </ul>
 </div>
@@ -524,7 +551,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Roberto Villegas-Diaz, Dilmini Alahakoon.</p>
+  <p>Developed by Roberto Villegas-Diaz, Dilmini Alahakoon, Anne Fennell.</p>
 </div>
 
 <div class="pkgdown">
