@@ -261,6 +261,37 @@ seem to be skewed, but after a simple transformation, can be classify as
 normalised traits.
 
 <img src="man/figures/HIST_5_LOG_2_B11.png" width="45%" />
-<img src="man/figures/HIST_6_ROOT_e_NA23.png" width="45%" />
+<img src="man/figures/HIST_6_ROOT_e_Na23.png" width="45%" />
 
 ### QTL mapping
+
+#### Scan one QTL mapping
+
+``` r
+qtl_scone <- function(x_data, cpus = 1, ...)
+```
+
+<!-- #### Function call -->
+
+where `x_data`
+
+``` r
+# F1 Seedling Ionomics dataset
+data(father_riparia) # Genetic map
+# Load cross file with genetic map and raw data for normal traits
+x <- MetaPipe::read.cross(father_riparia, 
+                          ionomics_norm,
+                          genotypes = c("nn", "np", "--"))
+#>  --Read the following data:
+#>   166  individuals
+#>   1115  markers
+#>   7  phenotypes
+#> Warning in summary.cross(cross): Some markers at the same position on chr
+#> 1,4,5,7,8,9,10,12,14,15,16,17; use jittermap().
+#>  --Cross type: f2
+                          
+set.seed(123)
+x <- qtl::jittermap(x)
+x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
+x_scone <- MetaPipe::qtl_scone(x, 1, model = "normal", method = "hk")
+```

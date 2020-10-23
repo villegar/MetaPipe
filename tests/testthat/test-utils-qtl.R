@@ -152,4 +152,14 @@ test_that("read cross file works", {
   
   genetic_map[2, 2:3] <- 2 # Alter markers position (Warning expected)
   expect_warning(x_data <- MetaPipe::read.cross(genetic_map, output$norm))
+  
+  write.csv(example_data, "geno.csv")
+  write.table(c(1:10), "pheno.txt")
+  expect_error(MetaPipe::read.cross("geno.csv", "pheno.txt"))
+  expect_error(MetaPipe::read.cross(TRUE, "pheno.txt"))
+  expect_error(MetaPipe::read.cross("geno.csv", "phenoS.txt"))
+  expect_error(MetaPipe::read.cross(genetic_map, output$norm, wdir = "GBS"))
+  output$norm$ID <- output$norm$ID + 100
+  expect_error(MetaPipe::read.cross(genetic_map, output$norm))
+  . <- sapply(c("geno.csv", "pheno.txt"), file.remove)
 })

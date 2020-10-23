@@ -28,7 +28,7 @@ within each chromosome at different positions.
 \references{
 Bhattarai, Gaurab, "Mapping a New Disease Resistance Locus in an F1 Progeny 
 Derived from Two Grape Wild Relatives" (2019). MSU Graduate Theses. 3366.
-\url{https://bearworks.missouristate.edu/theses/3366}
+\url{https://bearworks.missouristate.edu/theses/3366/}
 }
 \author{
 Gaurab Bhattarai \email{gbhattarai@uga.edu} & 
