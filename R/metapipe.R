@@ -465,6 +465,7 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
 #' ionomics_rev <- MetaPipe::replace_missing(ionomics, 
 #'                                           excluded_columns = c(1, 2),
 #'                                           replace_na =  TRUE)
+#' \donttest{
 #' ionomics_normalised <- 
 #'   MetaPipe::assess_normality(ionomics_rev,
 #'                              excluded_columns = c(1, 2),
@@ -480,7 +481,7 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
 #' set.seed(seed)
 #' x <- qtl::jittermap(x)
 #' x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
-#' \donttest{
+#' 
 #' x_scone <- MetaPipe::qtl_scone(x, 1, model = "normal", method = "hk")
 #' x_qtl_perm <- qtl_perm_test(x, n_perm = 5, model = "normal", method = "hk")
 #' x_qtl_perm_1000 <- qtl_perm_test(x, 
