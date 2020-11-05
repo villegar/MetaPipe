@@ -247,8 +247,7 @@ load_data <- function(input, wdir = here::here(), contents = "raw", ...) {
 #'     data. For example, output from \code{\link{assess_normality}}.
 #' @param wdir Working directory.
 #' @param quiet Boolean flag to hide status messages.
-#' @param ... Optional parameters for 
-#'     \code{\link[qtl:read.cross]{qtl::read.cross(...)}} function.
+#' @inheritDotParams qtl::read.cross -format -dir
 #'
 #' @return Object of \code{cross} class for QTL mapping.
 #' @export
