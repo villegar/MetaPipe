@@ -308,9 +308,8 @@ assess_normality <- function(raw_data,
 #' 
 #' @param x_data Cross-data frame containing genetic map data and traits.
 #' @param cpus Number of CPUs to be used in the computation.
-#' @param ... Optional parameters for 
-#'     \code{\link[qtl:scanone]{qtl:scanone(...)}}.
-#'
+#' @inheritDotParams qtl::scanone -cross -pheno.col
+#' 
 #' @return Data frame containing the LOD scores.
 #' @export
 #'
