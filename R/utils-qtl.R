@@ -207,11 +207,10 @@ effect_plots <- function(x_data_sim, qtl_data, cpus = 1, plots_dir = getwd()) {
 #'     data frame.
 #' @param wdir Working directory.
 #' @param contents Contents of \code{input}.
-#' @param ... Optional parameters for \code{\link{read.csv}}.
+#' @inheritDotParams utils::read.csv -file
 #'
 #' @return Data frame.
-#'
-#' @noRd
+#' 
 #' @keywords internal
 load_data <- function(input, wdir = here::here(), contents = "raw", ...) {
     # Verify if input is a string with the filename
