@@ -308,9 +308,8 @@ assess_normality <- function(raw_data,
 #' 
 #' @param x_data Cross-data frame containing genetic map data and traits.
 #' @param cpus Number of CPUs to be used in the computation.
-#' @param ... Optional parameters for 
-#'     \code{\link[qtl:scanone]{qtl:scanone(...)}}.
-#'
+#' @inheritDotParams qtl::scanone -cross -pheno.col
+#' 
 #' @return Data frame containing the LOD scores.
 #' @export
 #'
@@ -424,8 +423,7 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
 #'     contains parametric (normal) traits.
 #' @param n_perm Number of permutations.
 #' @param plots_dir Output directory for plots.
-#' @param ... Optional parameters for 
-#'     \code{\link[qtl:scanone]{qtl::scanone(...)}}.
+#' @inheritDotParams qtl::scanone -cross -pheno.col -n.perm
 #' 
 #' @return Data frame containing the significant QTLs information.
 #' @export
