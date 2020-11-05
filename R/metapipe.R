@@ -1,3 +1,6 @@
+#' @keywords internal
+"_PACKAGE"
+
 #' Load raw data
 #' 
 #' Load raw data from disk and aggregates (using the \code{mean} function) 

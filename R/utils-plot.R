@@ -242,7 +242,6 @@ generate_hist <- function(data,
 #' MetaPipe:::hex_logo(output = "hex-logo.png")
 #' 
 #' @keywords internal
-#' @noRd
 hex_logo <- function(subplot = system.file("images/lab-2.png", 
                                            package = "MetaPipe"),
                      dpi = 800,
@@ -272,9 +271,10 @@ hex_logo <- function(subplot = system.file("images/lab-2.png",
 #' @param data A numeric or complex matrix (or data frame) that will be used to
 #'     perform the Principal Components Analysis.
 #' @param plot Boolean flag to indicate whether or not to create a PCA biplot.
-#' @param ... Optional parameters for 
-#'     \code{\link[factoextra:fviz_pca_biplot]{factoextra::fviz_pca_biplot}}.
-#'
+# @param ... Optional parameters for 
+#     \code{\link[factoextra:fviz_pca_biplot]{factoextra::fviz_pca_biplot}}.
+#' @inheritDotParams factoextra::fviz_pca_biplot -X -col.var -gradient.cols 
+#'     -label -addEllipses -repel
 #' @return Data frame with PCA result.
 #' @export
 #'
