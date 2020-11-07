@@ -62,7 +62,6 @@
 #' @seealso \code{\link{assess_normality_postprocessing}} and 
 #' \code{\link{assess_normality_stats}}
 #' 
-#' @noRd
 #' @keywords internal
 assess_normality_core <- function(raw_data, 
                              excluded_columns, 
@@ -236,7 +235,6 @@ assess_normality_core <- function(raw_data,
 #' @seealso \code{\link{assess_normality_core}} and 
 #' \code{\link{assess_normality_stats}}
 #' 
-#' @noRd
 #' @keywords internal
 assess_normality_postprocessing <- function(raw_data, 
                                             excluded_columns,
@@ -405,7 +403,6 @@ assess_normality_postprocessing <- function(raw_data,
 #' @seealso \code{\link{assess_normality_core}} and 
 #' \code{\link{assess_normality_postprocessing}}
 #' 
-#' @noRd
 #' @keywords internal
 assess_normality_stats <- function(out_prefix = "metapipe") {
   stats_filename <- paste0(out_prefix, "_normalisation_stats.csv")
