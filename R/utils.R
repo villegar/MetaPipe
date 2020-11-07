@@ -28,7 +28,6 @@
 #' MetaPipe:::check_types(example_data, quiet = FALSE)
 #' 
 #' @keywords internal
-#' @noRd
 check_types <- function(raw_data,
                         excluded_columns = NULL,
                         numeric = TRUE,
@@ -80,7 +79,6 @@ check_types <- function(raw_data,
 #' @seealso \code{\link{random_map}}
 #' 
 #' @keywords internal
-#' @noRd
 random_genotypes <- function(genotypes = c("A", "H", "B"),
                              size = 100,
                              seed = NULL) {
@@ -109,7 +107,6 @@ random_genotypes <- function(genotypes = c("A", "H", "B"),
 #' @seealso \code{\link{random_genotypes}}
 #'  
 #' @keywords internal
-#' @noRd
 random_map <- function(genotypes = c("A", "H", "B"),
                        lg = 1:10,
                        markers = 10,
@@ -152,7 +149,6 @@ random_map <- function(genotypes = c("A", "H", "B"),
 #' MetaPipe:::rplc_na(c(1, NA, 3, NA))
 #' 
 #' @keywords internal
-#' @noRd
 rplc_na <- function(x) {
   replace(x, 
           is.na(x), 

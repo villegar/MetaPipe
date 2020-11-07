@@ -8,8 +8,8 @@
 #' under the following hypotheses:
 #' 
 #' \itemize{
-#'   \item \eqn{H_0: } the sample comes from a normally distributed population
-#'   \item \eqn{H_1: } the sample does not come from a normally distributed 
+#'   \item \eqn{H_0:} the sample comes from a normally distributed population
+#'   \item \eqn{H_1:} the sample does not come from a normally distributed 
 #'   population
 #' }
 #' 
@@ -42,7 +42,8 @@
 #'                            P1 = c("one", "two", "three", "four", "five"), 
 #'                            T1 = rnorm(5), 
 #'                            T2 = rnorm(5))
-#' example_data_normalised <- MetaPipe::assess_normality_core(example_data, c(1, 2))
+#' example_data_normalised <- MetaPipe:::assess_normality_core(example_data, 
+#'                                                             c(1, 2))
 #' knitr::kable(example_data_normalised)
 #' 
 #' 
@@ -52,17 +53,16 @@
 #'                                           excluded_columns = c(1, 2),
 #'                                           replace_na =  TRUE)
 #' ionomics_normalised <- 
-#'   MetaPipe::assess_normality_core(ionomics_rev,
-#'                              excluded_columns = c(1, 2),
-#'                              out_prefix = "ionomics",
-#'                              transf_vals = c(2, exp(1)))
+#'   MetaPipe:::assess_normality_core(ionomics_rev,
+#'                                    excluded_columns = c(1, 2),
+#'                                    out_prefix = "ionomics",
+#'                                    transf_vals = c(2, exp(1)))
 #' # Show one entry for each of the first ten traits (left to right)
 #' knitr::kable(ionomics_normalised[nrow(ionomics) * c(1:10), ])
 #' 
 #' @seealso \code{\link{assess_normality_postprocessing}} and 
 #' \code{\link{assess_normality_stats}}
 #' 
-#' @noRd
 #' @keywords internal
 assess_normality_core <- function(raw_data, 
                              excluded_columns, 
@@ -196,11 +196,12 @@ assess_normality_core <- function(raw_data,
 #'                            P1 = c("one", "two", "three", "four", "five"), 
 #'                            T1 = rnorm(5), 
 #'                            T2 = rnorm(5))
-#' example_data_normalised <- MetaPipe::assess_normality_core(example_data, c(1, 2))
+#' example_data_normalised <- MetaPipe:::assess_normality_core(example_data, 
+#'                                                             c(1, 2))
 #' example_data_normalised_post <- 
-#'  MetaPipe::assess_normality_postprocessing(example_data, 
-#'                                            c(1, 2), 
-#'                                            example_data_normalised)
+#'  MetaPipe:::assess_normality_postprocessing(example_data, 
+#'                                             c(1, 2), 
+#'                                             example_data_normalised)
 #' example_data_norm <- example_data_normalised_post$norm
 #' example_data_skew <- example_data_normalised_post$skew
 #' # Normal traits
@@ -216,15 +217,15 @@ assess_normality_core <- function(raw_data,
 #'                                           excluded_columns = c(1, 2),
 #'                                           replace_na =  TRUE)
 #' ionomics_normalised <- 
-#'   MetaPipe::assess_normality_core(ionomics_rev,
-#'                              excluded_columns = c(1, 2),
-#'                              out_prefix = "ionomics",
-#'                              transf_vals = c(2, exp(1)))
+#'   MetaPipe:::assess_normality_core(ionomics_rev,
+#'                                    excluded_columns = c(1, 2),
+#'                                    out_prefix = "ionomics",
+#'                                    transf_vals = c(2, exp(1)))
 #' ionomics_normalised_post <- 
-#'   MetaPipe::assess_normality_postprocessing(ionomics_rev, 
-#'                                             c(1, 2), 
-#'                                             ionomics_normalised,
-#'                                             out_prefix = "ionomics")
+#'   MetaPipe:::assess_normality_postprocessing(ionomics_rev, 
+#'                                              c(1, 2), 
+#'                                              ionomics_normalised,
+#'                                              out_prefix = "ionomics")
 #' ionomics_norm <- ionomics_normalised_post$norm
 #' ionomics_skew <- ionomics_normalised_post$skew
 #' # Normal traits
@@ -236,7 +237,6 @@ assess_normality_core <- function(raw_data,
 #' @seealso \code{\link{assess_normality_core}} and 
 #' \code{\link{assess_normality_stats}}
 #' 
-#' @noRd
 #' @keywords internal
 assess_normality_postprocessing <- function(raw_data, 
                                             excluded_columns,
@@ -377,7 +377,8 @@ assess_normality_postprocessing <- function(raw_data,
 #'                            P1 = c("one", "two", "three", "four", "five"), 
 #'                            T1 = rnorm(5), 
 #'                            T2 = rnorm(5))
-#' example_data_normalised <- MetaPipe:::assess_normality_core(example_data, c(1, 2))
+#' example_data_normalised <- MetaPipe:::assess_normality_core(example_data, 
+#'                                                             c(1, 2))
 #' example_data_normalised_post <- 
 #'  MetaPipe:::assess_normality_postprocessing(example_data, 
 #'                                            c(1, 2), 
@@ -392,9 +393,9 @@ assess_normality_postprocessing <- function(raw_data,
 #'                                           replace_na =  TRUE)
 #' ionomics_normalised <- 
 #'   MetaPipe:::assess_normality_core(ionomics_rev,
-#'                              excluded_columns = c(1, 2),
-#'                              out_prefix = "ionomics",
-#'                              transf_vals = c(2, exp(1)))
+#'                                    excluded_columns = c(1, 2),
+#'                                    out_prefix = "ionomics",
+#'                                    transf_vals = c(2, exp(1)))
 #' ionomics_normalised_post <- 
 #'   MetaPipe:::assess_normality_postprocessing(ionomics_rev, 
 #'                                             c(1, 2), 
@@ -405,7 +406,6 @@ assess_normality_postprocessing <- function(raw_data,
 #' @seealso \code{\link{assess_normality_core}} and 
 #' \code{\link{assess_normality_postprocessing}}
 #' 
-#' @noRd
 #' @keywords internal
 assess_normality_stats <- function(out_prefix = "metapipe") {
   stats_filename <- paste0(out_prefix, "_normalisation_stats.csv")

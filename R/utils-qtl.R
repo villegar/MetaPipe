@@ -12,7 +12,6 @@
 #' MetaPipe:::is_pseudo_marker('c1.loc1')
 #' MetaPipe:::is_pseudo_marker('S1_2345')
 #' 
-#' @noRd
 #' @keywords internal
 is_pseudo_marker <- function(marker) {
   return(ifelse(grepl("loc", marker), TRUE, FALSE))
@@ -71,7 +70,6 @@ is_pseudo_marker <- function(marker) {
 #' x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
 #' MetaPipe:::transform_pseudo_marker(x, 'loc1', 1, 2.0)
 #' 
-#' @noRd
 #' @keywords internal
 transform_pseudo_marker <- function(x_data, marker, chr, pos) {
   markerp <- marker
