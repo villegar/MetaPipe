@@ -2,7 +2,7 @@ Package: MetaPipe
 Type: Package
 Title: A High-Performance Computing Pipeline for QTL Mapping of Large Ionomic 
            and Metabolomic Datasets
-Version: 0.0.0.900
+Version: 0.1.0
 Authors@R: c(
     person(given = "Roberto",
            family = "Villegas-Diaz",
@@ -53,13 +53,10 @@ Imports:
     grid,
     here, 
     latex2exp,
-    plyr,
     qtl, 
     R.devices, 
     tictoc
 Suggests:
-    badger,
-    hexSticker,
     knitr,
     kableExtra,
     rmarkdown,
