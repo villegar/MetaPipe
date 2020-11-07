@@ -39,6 +39,7 @@ jobs:
           brew install openmpi
           brew install cairo
           brew cask install xquartz
+          brew install imagemagick
           
       - name: Install dependencies
         run: |
