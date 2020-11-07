@@ -12,7 +12,7 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
@@ -73,7 +73,7 @@ Portable Network Graphics (PNG) format." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MetaPipe</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.900</span>
       </span>
     </div>
 
@@ -131,7 +131,7 @@ Portable Network Graphics (PNG) format." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Save <code>gpplot2</code> plot as PNG</h1>
-    <small class="dont-index">Source: <a href='https://github.com/villegar/MetaPipe/blob/master/R/plot-utils.R'><code>R/plot-utils.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/villegar/MetaPipe/blob/master/R/utils-plot.R'><code>R/utils-plot.R</code></a></small>
     <div class="hidden name"><code>ggplot_save.Rd</code></div>
     </div>
 
@@ -166,8 +166,9 @@ Portable Network Graphics (PNG) format.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='va'>plt_obj</span> <span class='op'>&lt;-</span> <span class='fu'>ggplot2</span><span class='fu'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/qplot.html'>qplot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>ggplot_save</span><span class='op'>(</span><span class='va'>plt_obj</span>, <span class='st'>"hist"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: failed to load cairo DLL</span></div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='output co'>#&gt; NULL</div></pre>
+<span class='fu'>MetaPipe</span><span class='fu'>:::</span><span class='fu'>ggplot_save</span><span class='op'>(</span><span class='va'>plt_obj</span>, <span class='st'>"hist"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='output co'>#&gt; NULL</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -179,7 +180,7 @@ Portable Network Graphics (PNG) format.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Roberto Villegas-Diaz, Dilmini Alahakoon.</p>
+  <p>Developed by Roberto Villegas-Diaz, Dilmini Alahakoon, Anne Fennell.</p>
 </div>
 
 <div class="pkgdown">

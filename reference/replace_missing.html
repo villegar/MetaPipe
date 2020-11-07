@@ -12,7 +12,7 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
@@ -209,27 +209,27 @@ should be replaced by half of the minimum value within each trait.</p></td>
                            T5 <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span>                               <span class='co'># 100 % NAs</span>
 <span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>replace_missing</span><span class='op'>(</span><span class='va'>example_data</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>The following trait was dropped because it has 50% or more missing values: </span>
-#&gt; <span class='message'> - T5</span></div><div class='output co'>#&gt;   ID    P1          T1         T2        T3    T4
-#&gt; 1  1   one -0.56047565  1.7150650        NA    NA
-#&gt; 2  2   two -0.23017749  0.4609162 1.2240818  1.20
-#&gt; 3  3 three  1.55870831 -1.2650612 0.3598138 -0.50
-#&gt; 4  4  four  0.07050839 -0.6868529 0.4007715    NA
-#&gt; 5  5  five  0.12928774 -0.4456620 0.1106827  0.87</div><div class='input'><span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>replace_missing</span><span class='op'>(</span><span class='va'>example_data</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>, prop_na <span class='op'>=</span>  <span class='fl'>0.25</span><span class='op'>)</span>
+#&gt; <span class='message'> - T5</span></div><div class='output co'>#&gt;   ID    P1         T1          T2         T3    T4
+#&gt; 1  1   one  1.6188664  0.78187496         NA    NA
+#&gt; 2  2   two  1.1600249  0.26110707  0.1313151  1.20
+#&gt; 3  3 three  1.1548553  3.78930718 -1.0231337 -0.50
+#&gt; 4  4  four -0.2241540  0.14991336  0.9706384    NA
+#&gt; 5  5  five -0.5893814 -0.04855334  0.6502193  0.87</div><div class='input'><span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>replace_missing</span><span class='op'>(</span><span class='va'>example_data</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>, prop_na <span class='op'>=</span>  <span class='fl'>0.25</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>The following traits were dropped because they have 25% or more missing values: </span>
 #&gt; <span class='message'> - T4</span>
-#&gt; <span class='message'> - T5</span></div><div class='output co'>#&gt;   ID    P1          T1         T2        T3
-#&gt; 1  1   one -0.56047565  1.7150650        NA
-#&gt; 2  2   two -0.23017749  0.4609162 1.2240818
-#&gt; 3  3 three  1.55870831 -1.2650612 0.3598138
-#&gt; 4  4  four  0.07050839 -0.6868529 0.4007715
-#&gt; 5  5  five  0.12928774 -0.4456620 0.1106827</div><div class='input'><span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>replace_missing</span><span class='op'>(</span><span class='va'>example_data</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>, replace_na <span class='op'>=</span>  <span class='cn'>TRUE</span><span class='op'>)</span>
+#&gt; <span class='message'> - T5</span></div><div class='output co'>#&gt;   ID    P1         T1          T2         T3
+#&gt; 1  1   one  1.6188664  0.78187496         NA
+#&gt; 2  2   two  1.1600249  0.26110707  0.1313151
+#&gt; 3  3 three  1.1548553  3.78930718 -1.0231337
+#&gt; 4  4  four -0.2241540  0.14991336  0.9706384
+#&gt; 5  5  five -0.5893814 -0.04855334  0.6502193</div><div class='input'><span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>replace_missing</span><span class='op'>(</span><span class='va'>example_data</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>, replace_na <span class='op'>=</span>  <span class='cn'>TRUE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>The following trait was dropped because it has 100% missing values: </span>
-#&gt; <span class='message'> - T5</span></div><div class='output co'>#&gt;   ID    P1          T1         T2         T3    T4
-#&gt; 1  1   one -0.56047565  1.7150650 0.05534136 -0.25
-#&gt; 2  2   two -0.23017749  0.4609162 1.22408180  1.20
-#&gt; 3  3 three  1.55870831 -1.2650612 0.35981383 -0.50
-#&gt; 4  4  four  0.07050839 -0.6868529 0.40077145 -0.25
-#&gt; 5  5  five  0.12928774 -0.4456620 0.11068272  0.87</div><div class='input'>
+#&gt; <span class='message'> - T5</span></div><div class='output co'>#&gt;   ID    P1         T1          T2         T3    T4
+#&gt; 1  1   one  1.6188664  0.78187496 -0.5115669 -0.25
+#&gt; 2  2   two  1.1600249  0.26110707  0.1313151  1.20
+#&gt; 3  3 three  1.1548553  3.78930718 -1.0231337 -0.50
+#&gt; 4  4  four -0.2241540  0.14991336  0.9706384 -0.25
+#&gt; 5  5  five -0.5893814 -0.04855334  0.6502193  0.87</div><div class='input'>
 
 <span class='co'># F1 Seedling Ionomics dataset</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>ionomics</span><span class='op'>)</span> <span class='co'># Includes some missing data</span>

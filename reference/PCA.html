@@ -12,7 +12,7 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
@@ -160,8 +160,49 @@ perform the Principal Components Analysis.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Optional parameters for 
-<code><a href='https://rdrr.io/pkg/factoextra/man/fviz_pca.html'>factoextra::fviz_pca_biplot</a></code>.</p></td>
+      <td><p>Arguments passed on to <code><a href='https://rdrr.io/pkg/factoextra/man/fviz_pca.html'>factoextra::fviz_pca_biplot</a></code></p><dl>
+    <dt><code>axes</code></dt><dd><p>a numeric vector of length 2 specifying the dimensions to be 
+plotted.</p></dd>
+    <dt><code>geom</code></dt><dd><p>a text specifying the geometry to be used for the graph. Allowed 
+values are the combination of <code><a href='https://rdrr.io/r/base/c.html'>c("point", "arrow", "text")</a></code>. Use 
+<code>"point"</code> (to show only points); <code>"text"</code> to show only labels; 
+<code><a href='https://rdrr.io/r/base/c.html'>c("point", "text")</a></code> or <code><a href='https://rdrr.io/r/base/c.html'>c("arrow", "text")</a></code> to show arrows and 
+texts. Using <code><a href='https://rdrr.io/r/base/c.html'>c("arrow", "text")</a></code> is sensible only for the graph of 
+variables.</p></dd>
+    <dt><code>geom.ind</code></dt><dd><p>as <code>geom</code> but for individuals and variables, 
+respectively. Default is geom.ind = c("point", "text), geom.var = 
+c("arrow", "text").</p></dd>
+    <dt><code>geom.var</code></dt><dd><p>as <code>geom</code> but for individuals and variables, 
+respectively. Default is geom.ind = c("point", "text), geom.var = 
+c("arrow", "text").</p></dd>
+    <dt><code>habillage</code></dt><dd><p>an optional factor variable for coloring the observations by
+groups. Default value is "none". If X is a PCA object from FactoMineR 
+package, habillage can also specify the supplementary qualitative variable 
+(by its index or name) to be used for coloring individuals by groups (see 
+?PCA in FactoMineR).</p></dd>
+    <dt><code>palette</code></dt><dd><p>the color palette to be used for coloring or filling by
+groups. Allowed values include "grey" for grey color palettes; brewer
+palettes e.g. "RdBu", "Blues", ...; or custom color palette e.g. c("blue",
+"red"); and scientific journal palettes from ggsci R package, e.g.: "npg",
+"aaas", "lancet", "jco", "ucscgb", "uchicago", "simpsons" and
+"rickandmorty". Can be also a numeric vector of length(groups); in this
+case a basic color palette is created using the function
+<a href='https://rdrr.io/r/grDevices/palette.html'>palette</a>.</p></dd>
+    <dt><code>col.ind</code></dt><dd><p>color for individuals and variables, respectively. Can
+be a continuous variable or a factor variable. Possible values include also
+: "cos2", "contrib", "coord", "x" or "y". In this case, the colors for 
+individuals/variables are automatically controlled by their qualities of 
+representation ("cos2"), contributions ("contrib"), coordinates (x^2+y^2, 
+"coord"), x values ("x") or y values ("y"). To use automatic coloring (by 
+cos2, contrib, ....), make sure that habillage ="none".</p></dd>
+    <dt><code>fill.ind</code></dt><dd><p>same as col.ind and col.var but for the fill color.</p></dd>
+    <dt><code>fill.var</code></dt><dd><p>same as col.ind and col.var but for the fill color.</p></dd>
+    <dt><code>invisible</code></dt><dd><p>a text specifying the elements to be hidden on the plot. 
+Default value is "none". Allowed values are the combination of c("ind", 
+"ind.sup", "quali", "var", "quanti.sup").</p></dd>
+    <dt><code>title</code></dt><dd><p>the title of the graph</p></dd>
+  
+</dl></td>
     </tr>
     </table>
 

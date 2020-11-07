@@ -6,13 +6,13 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Post-processing for assess_normality — assess_normality_postprocessing • MetaPipe</title>
+<title>Post-processing for assess_normality_core — assess_normality_postprocessing • MetaPipe</title>
 
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Post-processing for assess_normality — assess_normality_postprocessing" />
+<meta property="og:title" content="Post-processing for assess_normality_core — assess_normality_postprocessing" />
 <meta property="og:description" content="Post-processing for the normality assessment of the traits." />
 
 
@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MetaPipe</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.900</span>
       </span>
     </div>
 
@@ -129,8 +129,8 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Post-processing for <code><a href='assess_normality.html'>assess_normality</a></code></h1>
-    <small class="dont-index">Source: <a href='https://github.com/villegar/MetaPipe/blob/master/R/metapipe.R'><code>R/metapipe.R</code></a></small>
+    <h1>Post-processing for <code><a href='assess_normality_core.html'>assess_normality_core</a></code></h1>
+    <small class="dont-index">Source: <a href='https://github.com/villegar/MetaPipe/blob/master/R/utils-assess-normality.R'><code>R/utils-assess-normality.R</code></a></small>
     <div class="hidden name"><code>assess_normality_postprocessing.Rd</code></div>
     </div>
 
@@ -161,7 +161,7 @@ properties that are non-numeric, excluded columns.</p></td>
     <tr>
       <th>raw_data_normalised</th>
       <td><p>Data frame containing the normalised raw data, 
-created with <code><a href='assess_normality.html'>assess_normality</a></code>.</p></td>
+created with <code><a href='assess_normality_core.html'>assess_normality_core</a></code>.</p></td>
     </tr>
     <tr>
       <th>out_prefix</th>
@@ -182,7 +182,7 @@ Pareto scaling on the normalised data.</p></td>
 
     <p>It creates four CSV files containing the following data:</p><ul>
 <li><p><code><a href='https://rdrr.io/r/base/paste.html'>paste0(out_prefix, "_raw_data_normalised_all.csv")</a></code>: 
-  data frame in long format created with the <code><a href='assess_normality.html'>assess_normality</a></code>
+  data frame in long format created with the <code><a href='assess_normality_core.html'>assess_normality_core</a></code>
   function. Contains all the traits, including name, values, and 
   transformation (if applicable).</p></li>
 <li><p><code><a href='https://rdrr.io/r/base/paste.html'>paste0(out_prefix, "_raw_data_norm.csv")</a></code>: data frame in wide
@@ -190,13 +190,13 @@ Pareto scaling on the normalised data.</p></td>
 <li><p><code><a href='https://rdrr.io/r/base/paste.html'>paste0(out_prefix, "_raw_data_non_par.csv")</a></code>: data frame in 
   wide format containing traits <em>without</em> a normal distribution.</p></li>
 <li><p><code><a href='https://rdrr.io/r/base/paste.html'>paste0(out_prefix, "_normalisation_stats.csv")</a></code>: data frame
-  containing details of the <code><a href='assess_normality.html'>assess_normality</a></code> process, like 
+  containing details of the <code><a href='assess_normality_core.html'>assess_normality_core</a></code> process, like 
   the total number of traits transformed and normalisations performed.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='assess_normality.html'>assess_normality</a></code> and 
+    <div class='dont-index'><p><code><a href='assess_normality_core.html'>assess_normality_core</a></code> and 
 <code><a href='assess_normality_stats.html'>assess_normality_stats</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -205,11 +205,12 @@ Pareto scaling on the normalised data.</p></td>
                            P1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"one"</span>, <span class='st'>"two"</span>, <span class='st'>"three"</span>, <span class='st'>"four"</span>, <span class='st'>"five"</span><span class='op'>)</span>, 
                            T1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>5</span><span class='op'>)</span>, 
                            T2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>example_data_normalised</span> <span class='op'>&lt;-</span> <span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'><a href='assess_normality.html'>assess_normality</a></span><span class='op'>(</span><span class='va'>example_data</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>example_data_normalised</span> <span class='op'>&lt;-</span> <span class='fu'>MetaPipe</span><span class='fu'>:::</span><span class='fu'><a href='assess_normality_core.html'>assess_normality_core</a></span><span class='op'>(</span><span class='va'>example_data</span>, 
+                                                            <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>example_data_normalised_post</span> <span class='op'>&lt;-</span> 
- <span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>assess_normality_postprocessing</span><span class='op'>(</span><span class='va'>example_data</span>, 
-                                           <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>, 
-                                           <span class='va'>example_data_normalised</span><span class='op'>)</span>
+ <span class='fu'>MetaPipe</span><span class='fu'>:::</span><span class='fu'>assess_normality_postprocessing</span><span class='op'>(</span><span class='va'>example_data</span>, 
+                                            <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>, 
+                                            <span class='va'>example_data_normalised</span><span class='op'>)</span>
 <span class='va'>example_data_norm</span> <span class='op'>&lt;-</span> <span class='va'>example_data_normalised_post</span><span class='op'>$</span><span class='va'>norm</span>
 <span class='va'>example_data_skew</span> <span class='op'>&lt;-</span> <span class='va'>example_data_normalised_post</span><span class='op'>$</span><span class='va'>skew</span>
 <span class='co'># Normal traits</span>
@@ -218,11 +219,11 @@ Pareto scaling on the normalised data.</p></td>
 #&gt; 
 #&gt; | ID|         T1|         T2|
 #&gt; |--:|----------:|----------:|
-#&gt; |  1| -0.5536994| -1.8630115|
-#&gt; |  2|  0.6289820| -0.5220125|
-#&gt; |  3|  2.0650249| -0.0526019|
-#&gt; |  4| -1.6309894|  0.5429963|
-#&gt; |  5|  0.5124269| -0.9140748|</div><div class='input'>
+#&gt; |  1| -0.3134460| -0.2514834|
+#&gt; |  2|  1.0673079|  0.4447971|
+#&gt; |  3|  0.0700349|  2.7554176|
+#&gt; |  4| -0.6391233|  0.0465314|
+#&gt; |  5| -0.0499649|  0.5777091|</div><div class='input'>
 <span class='co'># Skewed traits (empty)</span>
 <span class='co'># knitr::kable(example_data_skew)</span>
 
@@ -233,15 +234,15 @@ Pareto scaling on the normalised data.</p></td>
                                           excluded_columns <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>,
                                           replace_na <span class='op'>=</span>  <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='va'>ionomics_normalised</span> <span class='op'>&lt;-</span> 
-  <span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'><a href='assess_normality.html'>assess_normality</a></span><span class='op'>(</span><span class='va'>ionomics_rev</span>,
-                             excluded_columns <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>,
-                             out_prefix <span class='op'>=</span> <span class='st'>"ionomics"</span>,
-                             transf_vals <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='fu'>MetaPipe</span><span class='fu'>:::</span><span class='fu'><a href='assess_normality_core.html'>assess_normality_core</a></span><span class='op'>(</span><span class='va'>ionomics_rev</span>,
+                                   excluded_columns <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>,
+                                   out_prefix <span class='op'>=</span> <span class='st'>"ionomics"</span>,
+                                   transf_vals <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>ionomics_normalised_post</span> <span class='op'>&lt;-</span> 
-  <span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>assess_normality_postprocessing</span><span class='op'>(</span><span class='va'>ionomics_rev</span>, 
-                                            <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>, 
-                                            <span class='va'>ionomics_normalised</span>,
-                                            out_prefix <span class='op'>=</span> <span class='st'>"ionomics"</span><span class='op'>)</span>
+  <span class='fu'>MetaPipe</span><span class='fu'>:::</span><span class='fu'>assess_normality_postprocessing</span><span class='op'>(</span><span class='va'>ionomics_rev</span>, 
+                                             <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>, 
+                                             <span class='va'>ionomics_normalised</span>,
+                                             out_prefix <span class='op'>=</span> <span class='st'>"ionomics"</span><span class='op'>)</span>
 <span class='va'>ionomics_norm</span> <span class='op'>&lt;-</span> <span class='va'>ionomics_normalised_post</span><span class='op'>$</span><span class='va'>norm</span>
 <span class='va'>ionomics_skew</span> <span class='op'>&lt;-</span> <span class='va'>ionomics_normalised_post</span><span class='op'>$</span><span class='va'>skew</span>
 <span class='co'># Normal traits</span>
@@ -278,7 +279,7 @@ Pareto scaling on the normalised data.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Roberto Villegas-Diaz, Dilmini Alahakoon.</p>
+  <p>Developed by Roberto Villegas-Diaz, Dilmini Alahakoon, Anne Fennell.</p>
 </div>
 
 <div class="pkgdown">

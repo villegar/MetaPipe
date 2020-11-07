@@ -12,7 +12,7 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
@@ -165,8 +165,57 @@ data. For example, output from <code><a href='assess_normality.html'>assess_norm
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Optional parameters for 
-<code><a href='https://rdrr.io/pkg/qtl/man/read.cross.html'>qtl::read.cross(...)</a></code> function.</p></td>
+      <td><p>Arguments passed on to <code><a href='https://rdrr.io/pkg/qtl/man/read.cross.html'>qtl::read.cross</a></code></p><dl>
+    <dt><code>file</code></dt><dd><p>The main input file for formats <code>csv</code>, <code>csvr</code>
+    and <code>mm</code>.</p></dd>
+    <dt><code>genfile</code></dt><dd><p>File with genotype data (formats <code>csvs</code>,
+    <code>csvsr</code>, <code>karl</code>, <code>gary</code> and <code>mapqtl</code> only).</p></dd>
+    <dt><code>mapfile</code></dt><dd><p>File with marker position information (all
+    except the <code>csv</code> formats).</p></dd>
+    <dt><code>phefile</code></dt><dd><p>File with phenotype data (formats <code>csvs</code>,
+    <code>csvsr</code>, <code>karl</code>, <code>gary</code> and <code>mapqtl</code> only).</p></dd>
+    <dt><code>chridfile</code></dt><dd><p>File with chromosome ID for each marker (<code>gary</code>
+    format only).</p></dd>
+    <dt><code>mnamesfile</code></dt><dd><p>File with marker names (<code>gary</code> format only).</p></dd>
+    <dt><code>pnamesfile</code></dt><dd><p>File with phenotype names (<code>gary</code> format
+    only).</p></dd>
+    <dt><code>na.strings</code></dt><dd><p>A vector of strings which are to be interpreted as
+    missing values (<code>csv</code> and <code>gary</code> formats only).  For the
+    <code>csv</code> formats, these are interpreted globally
+    for the entire
+    file, so missing value codes in phenotypes must not be valid
+    genotypes, and vice versa. For the <code>gary</code> format, these are
+    used only for the phenotype data.</p></dd>
+    <dt><code>genotypes</code></dt><dd><p>A vector of character strings specifying the genotype
+    codes (<code>csv</code> formats only).  Generally this is a vector of
+    length 5, with the elements corresponding to AA, AB, BB, not BB
+    (i.e., AA or AB), and not AA (i.e., AB or BB).  <b>Note</b>: Pay
+    careful attention to the third and fourth of these; the order of
+    these can be confusing.    If you are trying to read 4-way cross data, your file must have
+    genotypes coded as described below, and you need to set
+    <code>genotypes=NULL</code> so that no re-coding gets done.</p></dd>
+    <dt><code>alleles</code></dt><dd><p>A vector of two one-letter character strings (or four,
+    for the four-way cross), to be used as labels for the two alleles.</p></dd>
+    <dt><code>estimate.map</code></dt><dd><p>For all formats but <code>qtlcart</code>, <code>mapqtl</code>,
+    and <code>karl</code>: if TRUE and marker positions are not included in
+    the input files, the genetic map is estimated using the function
+    <code><a href='https://rdrr.io/pkg/qtl/man/est.map.html'>est.map</a></code>.</p></dd>
+    <dt><code>convertXdata</code></dt><dd><p>If TRUE, any X chromosome genotype data is
+    converted to the internal standard, using columns <code>sex</code> and
+    <code>pgm</code> in the phenotype data if they available or by inference
+    if they are not.  If FALSE, the X chromsome data is read as is.</p></dd>
+    <dt><code>error.prob</code></dt><dd><p>In the case that the marker map must be estimated:
+   Assumed genotyping error rate used in the calculation of the
+   penetrance Pr(observed genotype | true genotype).</p></dd>
+    <dt><code>map.function</code></dt><dd><p>In the case that the marker map must be estimated:
+   Indicates whether to use the Haldane, Kosambi,
+   Carter-Falconer, or Morgan map function when converting genetic
+   distances into recombination fractions. (Ignored if m &gt; 0.)</p></dd>
+    <dt><code>BC.gen</code></dt><dd><p>Used only for cross type <code>"bcsft"</code>.</p></dd>
+    <dt><code>F.gen</code></dt><dd><p>Used only for cross type <code>"bcsft"</code>.</p></dd>
+    <dt><code>crosstype</code></dt><dd><p>Optional character string to force a particular cross type.</p></dd>
+  
+</dl></td>
     </tr>
     </table>
 

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>A High-Performance Computing Pipeline for QTL Mapping of Large Ionomic 
            and Metabolomic Datasets • MetaPipe</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
@@ -106,12 +106,12 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You can install the released version of MetaPipe from <a href="https://cran.r-project.org/package=MetaPipe">CRAN</a> with:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"MetaPipe"</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"MetaPipe"</span><span class="op">)</span></code></pre></div>
 <p>And the development version from <a href="https://github.com/villegar/MetaPipe">GitHub</a> with:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="co"># install.packages(c("hexSticker", "kableExtra", "qpdf", "remotes")</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"villegar/MetaPipe"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># install.packages(c("hexSticker", "kableExtra", "qpdf", "remotes")</span>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"villegar/MetaPipe"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
@@ -125,22 +125,22 @@
 <h3 class="hasAnchor">
 <a href="#load-raw-data" class="anchor"></a>Load raw data</h3>
 <p>For details about the data structure and extended documentation, see the vignette <a href="https://villegar.github.io/MetaPipe/articles/load-raw-data">Load Raw Data</a>.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span><span class="op">(</span><span class="st">"load-raw-data"</span>, package <span class="op">=</span> <span class="st">"MetaPipe"</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span><span class="op">(</span><span class="st">"load-raw-data"</span>, package <span class="op">=</span> <span class="st">"MetaPipe"</span><span class="op">)</span></code></pre></div>
 <div id="function-call" class="section level4">
 <h4 class="hasAnchor">
 <a href="#function-call" class="anchor"></a>Function call</h4>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="fu">MetaPipe</span><span class="fu">::</span><span class="fu"><a href="reference/load_raw.html">load_raw</a></span><span class="op">(</span>raw_data_filename <span class="op">=</span> <span class="st">"FILE.CSV"</span>, excluded_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">MetaPipe</span><span class="fu">::</span><span class="fu"><a href="reference/load_raw.html">load_raw</a></span><span class="op">(</span>raw_data_filename <span class="op">=</span> <span class="st">"FILE.CSV"</span>, excluded_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>where <code>raw_data_filename</code> is the filename containing the raw data, both absolute and relative paths are accepted. Next, the argument <code>excluded_columns</code> is a vector containing the indices of the properties, e.g. <code><a href="https://rdrr.io/r/base/c.html">c(2, 3, ..., M)</a></code>.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="co"># F1 Seedling Ionomics dataset</span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># F1 Seedling Ionomics dataset</span>
 <span class="va">ionomics_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, 
                              <span class="st">"ionomics.csv"</span>, 
                              package <span class="op">=</span> <span class="st">"MetaPipe"</span>, 
                              mustWork <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="va">ionomics</span> <span class="op">&lt;-</span> <span class="fu">MetaPipe</span><span class="fu">::</span><span class="fu"><a href="reference/load_raw.html">load_raw</a></span><span class="op">(</span><span class="va">ionomics_path</span><span class="op">)</span>
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">ionomics</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">]</span><span class="op">)</span></pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">ionomics</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">]</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">ID</th>
@@ -211,21 +211,21 @@
 <h3 class="hasAnchor">
 <a href="#replace-missing-data" class="anchor"></a>Replace missing data</h3>
 <p>For extended documentation, see the vignette <a href="https://villegar.github.io/MetaPipe/articles/replace-missing-data">Replace Missing Data</a>.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span><span class="op">(</span><span class="st">"replace-missing-data"</span>, package <span class="op">=</span> <span class="st">"MetaPipe"</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span><span class="op">(</span><span class="st">"replace-missing-data"</span>, package <span class="op">=</span> <span class="st">"MetaPipe"</span><span class="op">)</span></code></pre></div>
 <div id="function-call-1" class="section level4">
 <h4 class="hasAnchor">
 <a href="#function-call-1" class="anchor"></a>Function call</h4>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="fu">MetaPipe</span><span class="fu">::</span><span class="fu"><a href="reference/replace_missing.html">replace_missing</a></span><span class="op">(</span>raw_data <span class="op">=</span> <span class="va">example_data</span>, 
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">MetaPipe</span><span class="fu">::</span><span class="fu"><a href="reference/replace_missing.html">replace_missing</a></span><span class="op">(</span>raw_data <span class="op">=</span> <span class="va">example_data</span>, 
                           excluded_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>, 
                           <span class="co"># Optional</span>
                           out_prefix <span class="op">=</span> <span class="st">"metapipe"</span>, 
                           prop_na <span class="op">=</span> <span class="fl">0.5</span>, 
-                          replace_na <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></pre></div>
+                          replace_na <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p>where <code>raw_data</code> is a data frame containing the raw data, as described in <a href="#load-raw-data">Load Raw Data</a> and <code>excluded_columns</code> is a vector containing the indices of the properties, e.g. <code><a href="https://rdrr.io/r/base/c.html">c(2, 3, ..., M)</a></code>. The other arguments are optional, <code>out_prefix</code> is the prefix for output files, <code>prop_na</code> is the proportion of NA values (used to drop traits), and <code>replace_na</code> is a logical flag to indicate whether or not <code>NA</code>s should be replace by half of the minimum value within each variable.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="co"># F1 Seedling Ionomics dataset</span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># F1 Seedling Ionomics dataset</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">ionomics</span><span class="op">)</span> <span class="co"># Includes some missing data</span>
 <span class="va">ionomics_rev</span> <span class="op">&lt;-</span> <span class="fu">MetaPipe</span><span class="fu">::</span><span class="fu"><a href="reference/replace_missing.html">replace_missing</a></span><span class="op">(</span><span class="va">ionomics</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
 <span class="va">ionomics_rev</span> <span class="op">&lt;-</span> <span class="fu">MetaPipe</span><span class="fu">::</span><span class="fu"><a href="reference/replace_missing.html">replace_missing</a></span><span class="op">(</span><span class="va">ionomics</span>, 
@@ -236,7 +236,7 @@
 <span class="va">ionomics_rev</span> <span class="op">&lt;-</span> <span class="fu">MetaPipe</span><span class="fu">::</span><span class="fu"><a href="reference/replace_missing.html">replace_missing</a></span><span class="op">(</span><span class="va">ionomics</span>, 
                                           excluded_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,
                                           replace_na <span class="op">=</span>  <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">ionomics_rev</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">]</span><span class="op">)</span></pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">ionomics_rev</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">]</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">ID</th>
@@ -307,14 +307,14 @@
 <h3 class="hasAnchor">
 <a href="#assess-normality" class="anchor"></a>Assess normality</h3>
 <p>For extended documentation, see the vignette <a href="https://villegar.github.io/MetaPipe/articles/assess-normality">Assess Normality</a>.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span><span class="op">(</span><span class="st">"assess-normality"</span>, package <span class="op">=</span> <span class="st">"MetaPipe"</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span><span class="op">(</span><span class="st">"assess-normality"</span>, package <span class="op">=</span> <span class="st">"MetaPipe"</span><span class="op">)</span></code></pre></div>
 <p><code>MetaPipe</code> assesses the normality of variables (traits) by performing a Shapiro-Wilk test on the raw data (see <a href="https://villegar.github.io/MetaPipe/articles/load-raw-data.html">Load Raw Data</a> and <a href="https://villegar.github.io/MetaPipe/articles/replace-missing-data.html">Replace Missing Data</a>. Based on whether or not the data approximates a normal distribution, an array of transformations will be computed, and the normality assessed one more time.</p>
 <div id="function-call-2" class="section level4">
 <h4 class="hasAnchor">
 <a href="#function-call-2" class="anchor"></a>Function call</h4>
-<div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="fu">MetaPipe</span><span class="fu">::</span><span class="fu"><a href="reference/assess_normality.html">assess_normality</a></span><span class="op">(</span>raw_data <span class="op">=</span> <span class="va">raw_data</span>, 
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">MetaPipe</span><span class="fu">::</span><span class="fu"><a href="reference/assess_normality.html">assess_normality</a></span><span class="op">(</span>raw_data <span class="op">=</span> <span class="va">raw_data</span>, 
                            excluded_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span>, <span class="va">...</span>, <span class="va">M</span><span class="op">)</span>, 
                            <span class="co"># Optional</span>
                            cpus <span class="op">=</span> <span class="fl">1</span>, 
@@ -323,10 +323,10 @@
                            transf_vals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span>, <span class="fl">7</span>, <span class="fl">8</span>, <span class="fl">9</span>, <span class="fl">10</span><span class="op">)</span>,
                            alpha <span class="op">=</span> <span class="fl">0.05</span>,
                            pareto_scaling <span class="op">=</span> <span class="cn">FALSE</span>,
-                           show_stats <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></pre></div>
+                           show_stats <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p>where <code>raw_data</code> is a data frame containing the raw data, as described in <a href="https://villegar.github.io/MetaPipe/articles/load-raw-data.html">Load Raw Data</a> and <code>excluded_columns</code> is a vector containing the indices of the properties, e.g. <code><a href="https://rdrr.io/r/base/c.html">c(2, 3, ..., M)</a></code>. The other arguments are optional, <code>cpus</code> is the number of cores to use, in other words, the number of concurrent traits to process, <code>out_prefix</code> is the prefix for output files, <code>plots_dir</code> is the output directory where the plots will be stored, <code>transf_vals</code> is a vector containing the transformation values to be used when transforming the original data, <code>alpha</code> is the significance level for the <em>Wilk-Shapiro</em> tests, <code>pareto_scaling</code> is a boolean flag to indicate whether or not to scale the traits to the same scale, and <code>show_stats</code> is a boolean flag to show or hide some general statistics of the normalisation process.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit">
-<span class="co"># F1 Seedling Ionomics dataset</span>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># F1 Seedling Ionomics dataset</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">ionomics</span><span class="op">)</span> <span class="co"># Includes some missing data</span>
 <span class="va">ionomics_rev</span> <span class="op">&lt;-</span> <span class="fu">MetaPipe</span><span class="fu">::</span><span class="fu"><a href="reference/replace_missing.html">replace_missing</a></span><span class="op">(</span><span class="va">ionomics</span>, 
                                           excluded_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,
@@ -351,11 +351,11 @@
 
 <span class="co"># Extract normalised features</span>
 <span class="va">ionomics_norm</span> <span class="op">&lt;-</span> <span class="va">ionomics_normalised</span><span class="op">$</span><span class="va">norm</span>
-<span class="va">ionomics_skew</span> <span class="op">&lt;-</span> <span class="va">ionomics_normalised</span><span class="op">$</span><span class="va">skew</span></pre></div>
+<span class="va">ionomics_skew</span> <span class="op">&lt;-</span> <span class="va">ionomics_normalised</span><span class="op">$</span><span class="va">skew</span></code></pre></div>
 <p>The function call to <code><a href="reference/assess_normality.html">MetaPipe::assess_normality</a></code> will print a summary of the transformations performed (if any), as well as an overview of the number of traits that should be considered <em>normal</em> and <em>skewed</em>. Next, we can preview some of the partial output of the normality assessment process:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit">
-<span class="co"># Normal traits</span>
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">ionomics_norm</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span><span class="op">)</span> </pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Normal traits</span>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">ionomics_norm</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span><span class="op">)</span> </code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">ID</th>
@@ -414,9 +414,9 @@
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb13"><pre class="downlit">
-<span class="co"># Skewed traits (partial output)</span>
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">ionomics_skew</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">]</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Skewed traits (partial output)</span>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">ionomics_skew</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">]</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">ID</th>
@@ -494,8 +494,8 @@
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>qtl_scone &lt;-<span class="st"> </span><span class="cf">function</span>(x_data, <span class="dt">cpus =</span> <span class="dv">1</span>, ...)</span></code></pre></div>
 <!-- #### Function call -->
 <p>where <code>x_data</code></p>
-<div class="sourceCode" id="cb15"><pre class="downlit">
-<span class="co"># F1 Seedling Ionomics dataset</span>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># F1 Seedling Ionomics dataset</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">father_riparia</span><span class="op">)</span> <span class="co"># Genetic map</span>
 <span class="co"># Load cross file with genetic map and raw data for normal traits</span>
 <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">MetaPipe</span><span class="fu">::</span><span class="fu"><a href="reference/read.cross.html">read.cross</a></span><span class="op">(</span><span class="va">father_riparia</span>, 
@@ -512,7 +512,7 @@
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span>
 <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">qtl</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/qtl/man/jittermap.html">jittermap</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">qtl</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/qtl/man/calc.genoprob.html">calc.genoprob</a></span><span class="op">(</span><span class="va">x</span>, step <span class="op">=</span> <span class="fl">1</span>, error.prob <span class="op">=</span> <span class="fl">0.001</span><span class="op">)</span>
-<span class="va">x_scone</span> <span class="op">&lt;-</span> <span class="fu">MetaPipe</span><span class="fu">::</span><span class="fu"><a href="reference/qtl_scone.html">qtl_scone</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, model <span class="op">=</span> <span class="st">"normal"</span>, method <span class="op">=</span> <span class="st">"hk"</span><span class="op">)</span></pre></div>
+<span class="va">x_scone</span> <span class="op">&lt;-</span> <span class="fu">MetaPipe</span><span class="fu">::</span><span class="fu"><a href="reference/qtl_scone.html">qtl_scone</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, model <span class="op">=</span> <span class="st">"normal"</span>, method <span class="op">=</span> <span class="st">"hk"</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
 </div>

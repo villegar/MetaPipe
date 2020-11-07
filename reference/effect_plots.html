@@ -12,7 +12,7 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
@@ -187,14 +187,14 @@ qtl_perm_test." />
 
 <span class='va'>out_prefix</span> <span class='op'>&lt;-</span> <span class='fu'>here</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/here/man/here.html'>here</a></span><span class='op'>(</span><span class='st'>"metapipe"</span><span class='op'>)</span>
 <span class='va'>example_data_normalised_post</span> <span class='op'>&lt;-</span> 
-  <span class='fu'>MetaPipe</span><span class='fu'>:::</span><span class='fu'>assess_normality_postprocessing</span><span class='op'>(</span><span class='va'>example_data</span>, 
+  <span class='fu'>MetaPipe</span><span class='fu'>:::</span><span class='fu'><a href='assess_normality_postprocessing.html'>assess_normality_postprocessing</a></span><span class='op'>(</span><span class='va'>example_data</span>, 
                                             <span class='va'>excluded_columns</span>, 
                                             <span class='va'>example_data_normalised</span>,
                                             out_prefix <span class='op'>=</span> <span class='va'>out_prefix</span><span class='op'>)</span>
 
 <span class='co'># Create and store random genetic map (for testing only)</span>
 <span class='va'>genetic_map</span> <span class='op'>&lt;-</span> 
-  <span class='fu'>MetaPipe</span><span class='fu'>:::</span><span class='fu'>random_map</span><span class='op'>(</span>population <span class='op'>=</span> <span class='va'>population</span>, seed <span class='op'>=</span> <span class='va'>seed</span><span class='op'>)</span>
+  <span class='fu'>MetaPipe</span><span class='fu'>:::</span><span class='fu'><a href='random_map.html'>random_map</a></span><span class='op'>(</span>population <span class='op'>=</span> <span class='va'>population</span>, seed <span class='op'>=</span> <span class='va'>seed</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/write.table.html'>write.csv</a></span><span class='op'>(</span><span class='va'>genetic_map</span>, 
           <span class='fu'>here</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/here/man/here.html'>here</a></span><span class='op'>(</span><span class='st'>"metapipe_genetic_map.csv"</span><span class='op'>)</span>, 
           row.names <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>

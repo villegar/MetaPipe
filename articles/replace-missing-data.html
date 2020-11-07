@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Replace Missing Data • MetaPipe</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
@@ -99,8 +99,8 @@
 
     
     
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/villegar/MetaPipe">MetaPipe</a></span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/villegar/MetaPipe">MetaPipe</a></span><span class="op">)</span></code></pre></div>
 <p><code>MetaPipe</code> can handle with missing data in a couple of ways:</p>
 <ol style="list-style-type: decimal">
 <li>Drop traits which exceed an NA proportion threshold (50% by default)</li>
@@ -109,21 +109,21 @@
 <div id="function-call" class="section level2">
 <h2 class="hasAnchor">
 <a href="#function-call" class="anchor"></a>Function call</h2>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="fu"><a href="../reference/replace_missing.html">replace_missing</a></span><span class="op">(</span>raw_data <span class="op">=</span> <span class="va">raw_data</span>, 
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/replace_missing.html">replace_missing</a></span><span class="op">(</span>raw_data <span class="op">=</span> <span class="va">raw_data</span>, 
                 excluded_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span>, <span class="va">...</span>, <span class="va">M</span><span class="op">)</span>, 
                 <span class="co"># Optional</span>
                 out_prefix <span class="op">=</span> <span class="st">"metapipe"</span>, 
                 prop_na <span class="op">=</span> <span class="fl">0.5</span>, 
-                replace_na <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></pre></div>
+                replace_na <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p>where <code>raw_data</code> is a data frame containing the raw data, as described in <a href="load-raw-data.html">Load Raw Data</a> and <code>excluded_columns</code> is a vector containing the indices of the properties, e.g. <code><a href="https://rdrr.io/r/base/c.html">c(2, 3, ..., M)</a></code>. The other arguments are optional, <code>out_prefix</code> is the prefix for output files, <code>prop_na</code> is the proportion of NA values (used to drop traits), and <code>replace_na</code> is a logical flag to indicate whether or not NAs should be replace by half of the minimum value.</p>
 </div>
 <div id="drop-traits" class="section level2">
 <h2 class="hasAnchor">
 <a href="#drop-traits" class="anchor"></a>Drop traits</h2>
 <p>By default the pipeline will drop traits that exceed an NA proportion threshold, this can be fine tuned by the user with the parameter <code>prop_na</code>. It is important to keep in mind the side effects of excluding variables from the QTL mapping, like making wrong conclusions regarding the most significant QTLs.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span>
 <span class="va">example_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>ID <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,
                            P1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"one"</span>, <span class="st">"two"</span>, <span class="st">"three"</span>, <span class="st">"four"</span>, <span class="st">"five"</span><span class="op">)</span>, 
                            T1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>, 
@@ -153,14 +153,14 @@
 <span class="co">#&gt; 2  2   two -0.23017749  0.4609162 1.2240818</span>
 <span class="co">#&gt; 3  3 three  1.55870831 -1.2650612 0.3598138</span>
 <span class="co">#&gt; 4  4  four  0.07050839 -0.6868529 0.4007715</span>
-<span class="co">#&gt; 5  5  five  0.12928774 -0.4456620 0.1106827</span></pre></div>
+<span class="co">#&gt; 5  5  five  0.12928774 -0.4456620 0.1106827</span></code></pre></div>
 </div>
 <div id="replace-nas" class="section level2">
 <h2 class="hasAnchor">
 <a href="#replace-nas" class="anchor"></a>Replace NAs</h2>
 <p>Alternatively, the user can indicate whether or not NA values should be replaced by finding the minimum value for each trait and dividing it by two. This result can be achieved by passing the parameter <code>replace_na = TRUE</code>. Users should be cautious when using this approach, as the replacement of data points can have side effects that might lead to the wrong conclusions.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span>
 <span class="va">example_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>ID <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,
                            P1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"one"</span>, <span class="st">"two"</span>, <span class="st">"three"</span>, <span class="st">"four"</span>, <span class="st">"five"</span><span class="op">)</span>, 
                            T1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>, 
@@ -189,7 +189,7 @@
 <span class="co">#&gt; 2  2   two -0.23017749  0.4609162 1.22408180  1.20</span>
 <span class="co">#&gt; 3  3 three  1.55870831 -1.2650612 0.35981383 -0.50</span>
 <span class="co">#&gt; 4  4  four  0.07050839 -0.6868529 0.40077145 -0.25</span>
-<span class="co">#&gt; 5  5  five  0.12928774 -0.4456620 0.11068272  0.87</span></pre></div>
+<span class="co">#&gt; 5  5  five  0.12928774 -0.4456620 0.11068272  0.87</span></code></pre></div>
 <p>From the last example can be seen that <code>prop_na</code> and <code>replace_na</code> are mutually exclusive, and <code>replace_na</code> has precedence over <code>prop_na</code>.</p>
 <p>Next, see <a href="assess-normality.html">Assess Normality</a>.</p>
 </div>

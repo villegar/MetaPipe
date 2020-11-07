@@ -12,7 +12,7 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
@@ -73,7 +73,7 @@ substring 'loc'." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MetaPipe</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.900</span>
       </span>
     </div>
 
@@ -131,7 +131,7 @@ substring 'loc'." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Detect pseudo-markers</h1>
-    <small class="dont-index">Source: <a href='https://github.com/villegar/MetaPipe/blob/master/R/qtl-utils.R'><code>R/qtl-utils.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/villegar/MetaPipe/blob/master/R/utils-qtl.R'><code>R/utils-qtl.R</code></a></small>
     <div class="hidden name"><code>is_pseudo_marker.Rd</code></div>
     </div>
 
@@ -153,12 +153,14 @@ substring <code>'loc'</code>.</p>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>TRUE</code> or <code>FALSE</code></p>
+    <p><code>TRUE</code> if the given marker is a pseudo-marker, <code>FALSE</code> 
+otherwise.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>is_pseudo_marker</span><span class='op'>(</span><span class='st'>'c1.loc1'</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_pseudo_marker</span><span class='op'>(</span><span class='st'>'S1_2345'</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] FALSE</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>MetaPipe</span><span class='fu'>:::</span><span class='fu'>is_pseudo_marker</span><span class='op'>(</span><span class='st'>'c1.loc1'</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>MetaPipe</span><span class='fu'>:::</span><span class='fu'>is_pseudo_marker</span><span class='op'>(</span><span class='st'>'S1_2345'</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -170,7 +172,7 @@ substring <code>'loc'</code>.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Roberto Villegas-Diaz, Dilmini Alahakoon.</p>
+  <p>Developed by Roberto Villegas-Diaz, Dilmini Alahakoon, Anne Fennell.</p>
 </div>
 
 <div class="pkgdown">

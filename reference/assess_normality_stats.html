@@ -12,7 +12,7 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
@@ -74,7 +74,7 @@ cannot be executed without previously running the post-processing function." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MetaPipe</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.900</span>
       </span>
     </div>
 
@@ -132,7 +132,7 @@ cannot be executed without previously running the post-processing function." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Assess normality statistics</h1>
-    <small class="dont-index">Source: <a href='https://github.com/villegar/MetaPipe/blob/master/R/metapipe.R'><code>R/metapipe.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/villegar/MetaPipe/blob/master/R/utils-assess-normality.R'><code>R/utils-assess-normality.R</code></a></small>
     <div class="hidden name"><code>assess_normality_stats.Rd</code></div>
     </div>
 
@@ -155,7 +155,7 @@ cannot be executed without previously running the post-processing function.</p>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='assess_normality.html'>assess_normality</a></code> and 
+    <div class='dont-index'><p><code><a href='assess_normality_core.html'>assess_normality_core</a></code> and 
 <code><a href='assess_normality_postprocessing.html'>assess_normality_postprocessing</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -164,12 +164,13 @@ cannot be executed without previously running the post-processing function.</p>
                            P1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"one"</span>, <span class='st'>"two"</span>, <span class='st'>"three"</span>, <span class='st'>"four"</span>, <span class='st'>"five"</span><span class='op'>)</span>, 
                            T1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>5</span><span class='op'>)</span>, 
                            T2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>example_data_normalised</span> <span class='op'>&lt;-</span> <span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'><a href='assess_normality.html'>assess_normality</a></span><span class='op'>(</span><span class='va'>example_data</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>example_data_normalised</span> <span class='op'>&lt;-</span> <span class='fu'>MetaPipe</span><span class='fu'>:::</span><span class='fu'><a href='assess_normality_core.html'>assess_normality_core</a></span><span class='op'>(</span><span class='va'>example_data</span>, 
+                                                            <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>example_data_normalised_post</span> <span class='op'>&lt;-</span> 
- <span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'><a href='assess_normality_postprocessing.html'>assess_normality_postprocessing</a></span><span class='op'>(</span><span class='va'>example_data</span>, 
+ <span class='fu'>MetaPipe</span><span class='fu'>:::</span><span class='fu'><a href='assess_normality_postprocessing.html'>assess_normality_postprocessing</a></span><span class='op'>(</span><span class='va'>example_data</span>, 
                                            <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>, 
                                            <span class='va'>example_data_normalised</span><span class='op'>)</span>
-<span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>assess_normality_stats</span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'>MetaPipe</span><span class='fu'>:::</span><span class='fu'>assess_normality_stats</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Total traits (excluding all NAs traits):     2</span>
 #&gt; <span class='message'>Normal traits (without transformation):      2</span>
 #&gt; <span class='message'>Normal traits (transformed):                 0</span>
@@ -182,16 +183,16 @@ cannot be executed without previously running the post-processing function.</p>
                                           excluded_columns <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>,
                                           replace_na <span class='op'>=</span>  <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='va'>ionomics_normalised</span> <span class='op'>&lt;-</span> 
-  <span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'><a href='assess_normality.html'>assess_normality</a></span><span class='op'>(</span><span class='va'>ionomics_rev</span>,
-                             excluded_columns <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>,
-                             out_prefix <span class='op'>=</span> <span class='st'>"ionomics"</span>,
-                             transf_vals <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='fu'>MetaPipe</span><span class='fu'>:::</span><span class='fu'><a href='assess_normality_core.html'>assess_normality_core</a></span><span class='op'>(</span><span class='va'>ionomics_rev</span>,
+                                   excluded_columns <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>,
+                                   out_prefix <span class='op'>=</span> <span class='st'>"ionomics"</span>,
+                                   transf_vals <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>ionomics_normalised_post</span> <span class='op'>&lt;-</span> 
-  <span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'><a href='assess_normality_postprocessing.html'>assess_normality_postprocessing</a></span><span class='op'>(</span><span class='va'>ionomics_rev</span>, 
+  <span class='fu'>MetaPipe</span><span class='fu'>:::</span><span class='fu'><a href='assess_normality_postprocessing.html'>assess_normality_postprocessing</a></span><span class='op'>(</span><span class='va'>ionomics_rev</span>, 
                                             <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>, 
                                             <span class='va'>ionomics_normalised</span>,
                                             out_prefix <span class='op'>=</span> <span class='st'>"ionomics"</span><span class='op'>)</span>
-<span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>assess_normality_stats</span><span class='op'>(</span>out_prefix <span class='op'>=</span> <span class='st'>"ionomics"</span><span class='op'>)</span>
+<span class='fu'>MetaPipe</span><span class='fu'>:::</span><span class='fu'>assess_normality_stats</span><span class='op'>(</span>out_prefix <span class='op'>=</span> <span class='st'>"ionomics"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Total traits (excluding all NAs traits):     21</span>
 #&gt; <span class='message'>Normal traits (without transformation):      2</span>
 #&gt; <span class='message'>Normal traits (transformed):                 4</span>
@@ -199,9 +200,9 @@ cannot be executed without previously running the post-processing function.</p>
 #&gt; <span class='message'>Total skewed traits:                         15</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>Transformations summary:</span>
-#&gt; <span class='message'>	f(x)	Value 	# traits</span>
-#&gt; <span class='message'>	log	2	3</span>
-#&gt; <span class='message'>	root	e	1</span></div><div class='input'>
+#&gt; <span class='message'>	f(x)      Value     # traits  </span>
+#&gt; <span class='message'>	log       2         3         </span>
+#&gt; <span class='message'>	root      e         1         </span></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -214,7 +215,7 @@ cannot be executed without previously running the post-processing function.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Roberto Villegas-Diaz, Dilmini Alahakoon.</p>
+  <p>Developed by Roberto Villegas-Diaz, Dilmini Alahakoon, Anne Fennell.</p>
 </div>
 
 <div class="pkgdown">

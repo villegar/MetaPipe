@@ -12,7 +12,7 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
@@ -191,8 +191,70 @@ contains parametric (normal) traits.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Optional parameters for 
-<code><a href='https://rdrr.io/pkg/qtl/man/scanone.html'>qtl::scanone(...)</a></code>.</p></td>
+      <td><p>Arguments passed on to <code><a href='https://rdrr.io/pkg/qtl/man/scanone.html'>qtl::scanone</a></code></p><dl>
+    <dt><code>chr</code></dt><dd><p>Optional vector indicating the chromosomes for which LOD
+   scores should be calculated.  This should be a vector of character
+   strings referring to chromosomes by name; numeric values are
+   converted to strings.  Refer to chromosomes with a preceding <code><a href='https://rdrr.io/r/base/Arithmetic.html'>-</a></code>
+   to have all chromosomes but those considered.  A logical (TRUE/FALSE)
+   vector may also be used.</p></dd>
+    <dt><code>model</code></dt><dd><p>The phenotype model: the usual normal model, a model for
+   binary traits, a two-part model or non-parametric analysis</p></dd>
+    <dt><code>method</code></dt><dd><p>Indicates whether to use the EM algorithm,
+   imputation, Haley-Knott regression, the extended Haley-Knott method,
+   or marker regression.  Not all methods are available for all models.
+   Marker regression is performed either by dropping individuals with
+   missing genotypes (<code>"mr"</code>), or by first filling in missing data
+   using a single imputation (<code>"mr-imp"</code>) or by the Viterbi
+   algorithm (<code>"mr-argmax"</code>).</p></dd>
+    <dt><code>addcovar</code></dt><dd><p>Additive covariates;
+   allowed only for the normal and binary models.</p></dd>
+    <dt><code>intcovar</code></dt><dd><p>Interactive covariates (interact with QTL genotype);
+   allowed only for the normal and binary models.</p></dd>
+    <dt><code>weights</code></dt><dd><p>Optional weights of individuals.  Should be either NULL
+   or a vector of length n.ind containing positive weights.  Used only
+   in the case <code>model="normal"</code>.</p></dd>
+    <dt><code>use</code></dt><dd><p>In the case that multiple phenotypes are selected to be
+   scanned, this argument indicates whether to use all individuals,
+   including those missing some phenotypes, or just those individuals
+   that have data on all selected phenotypes.</p></dd>
+    <dt><code>upper</code></dt><dd><p>Used only for the two-part model; if true, the
+   "undefined" phenotype is the maximum observed phenotype; otherwise,
+   it is the smallest observed phenotype.</p></dd>
+    <dt><code>ties.random</code></dt><dd><p>Used only for the non-parametric "model"; if TRUE,
+   ties in the phenotypes are ranked at random.  If FALSE, average ranks
+   are used and a corrected LOD score is calculated.</p></dd>
+    <dt><code>start</code></dt><dd><p>Used only for the EM algorithm with the normal model and
+   no covariates.  If <code>NULL</code>, use the usual starting values; if
+   length 1, use random initial weights for EM; otherwise, this should
+   be a vector of length n+1 (where n is the number of possible
+   genotypes for the cross), giving the initial values for EM.</p></dd>
+    <dt><code>maxit</code></dt><dd><p>Maximum number of iterations for methods <code>"em"</code> and
+   <code>"ehk"</code>.</p></dd>
+    <dt><code>tol</code></dt><dd><p>Tolerance value for determining convergence for methods
+   <code>"em"</code> and <code>"ehk"</code>.</p></dd>
+    <dt><code>perm.Xsp</code></dt><dd><p>If <code>n.perm</code> &gt; 0, so that a permutation test will
+   be performed, this indicates whether separate permutations should be
+   performed for the autosomes and the X chromosome, in order to get an
+   X-chromosome-specific LOD threshold.  In this case, additional
+   permutations are performed for the X chromosome.</p></dd>
+    <dt><code>perm.strata</code></dt><dd><p>If <code>n.perm</code> &gt; 0, this may be used to perform a
+   stratified permutation test.  This should be a vector with the same
+   number of individuals as in the cross data.  Unique values indicate
+   the individual strata, and permutations will be performed within the
+   strata.</p></dd>
+    <dt><code>verbose</code></dt><dd><p>In the case <code>n.perm</code> is specified, display
+   information about the progress of the permutation tests.</p></dd>
+    <dt><code>batchsize</code></dt><dd><p>The number of phenotypes (or permutations) to be run
+   as a batch; used only for methods <code>"hk"</code> and <code>"imp"</code>.</p></dd>
+    <dt><code>n.cluster</code></dt><dd><p>If the package <code>snow</code> is available and
+   <code>n.perm</code> &gt; 0, permutations are run in parallel using this number
+   of nodes.</p></dd>
+    <dt><code>ind.noqtl</code></dt><dd><p>Indicates individuals who should not be allowed a QTL
+   effect (used rarely, if at all); this is a logical vector of same
+   length as there are individuals in the cross.</p></dd>
+  
+</dl></td>
     </tr>
     </table>
 
@@ -221,7 +283,7 @@ contains parametric (normal) traits.</p></td>
                                      show_stats <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 
 <span class='co'># Create and store random genetic map (for testing only)</span>
-<span class='va'>genetic_map</span> <span class='op'>&lt;-</span> <span class='fu'>MetaPipe</span><span class='fu'>:::</span><span class='fu'>random_map</span><span class='op'>(</span>population <span class='op'>=</span> <span class='va'>population</span>, 
+<span class='va'>genetic_map</span> <span class='op'>&lt;-</span> <span class='fu'>MetaPipe</span><span class='fu'>:::</span><span class='fu'><a href='random_map.html'>random_map</a></span><span class='op'>(</span>population <span class='op'>=</span> <span class='va'>population</span>, 
                                      seed <span class='op'>=</span> <span class='va'>seed</span><span class='op'>)</span>
 
 <span class='co'># Load cross file with genetic map and raw data for normal traits</span>
