@@ -20,7 +20,8 @@ example_data <- data.frame(ID = c(1,2,3,4,5),
                            P1 = c("one", "two", "three", "four", "five"), 
                            T1 = rnorm(5), 
                            T2 = rnorm(5))
-example_data_normalised <- MetaPipe:::assess_normality_core(example_data, c(1, 2))
+example_data_normalised <- MetaPipe:::assess_normality_core(example_data, 
+                                                            c(1, 2))
 example_data_normalised_post <- 
  MetaPipe:::assess_normality_postprocessing(example_data, 
                                            c(1, 2), 
@@ -35,9 +36,9 @@ ionomics_rev <- MetaPipe::replace_missing(ionomics,
                                           replace_na =  TRUE)
 ionomics_normalised <- 
   MetaPipe:::assess_normality_core(ionomics_rev,
-                             excluded_columns = c(1, 2),
-                             out_prefix = "ionomics",
-                             transf_vals = c(2, exp(1)))
+                                   excluded_columns = c(1, 2),
+                                   out_prefix = "ionomics",
+                                   transf_vals = c(2, exp(1)))
 ionomics_normalised_post <- 
   MetaPipe:::assess_normality_postprocessing(ionomics_rev, 
                                             c(1, 2), 

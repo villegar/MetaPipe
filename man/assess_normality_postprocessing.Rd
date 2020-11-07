@@ -55,11 +55,12 @@ example_data <- data.frame(ID = c(1,2,3,4,5),
                            P1 = c("one", "two", "three", "four", "five"), 
                            T1 = rnorm(5), 
                            T2 = rnorm(5))
-example_data_normalised <- MetaPipe::assess_normality_core(example_data, c(1, 2))
+example_data_normalised <- MetaPipe:::assess_normality_core(example_data, 
+                                                            c(1, 2))
 example_data_normalised_post <- 
- MetaPipe::assess_normality_postprocessing(example_data, 
-                                           c(1, 2), 
-                                           example_data_normalised)
+ MetaPipe:::assess_normality_postprocessing(example_data, 
+                                            c(1, 2), 
+                                            example_data_normalised)
 example_data_norm <- example_data_normalised_post$norm
 example_data_skew <- example_data_normalised_post$skew
 # Normal traits
@@ -75,15 +76,15 @@ ionomics_rev <- MetaPipe::replace_missing(ionomics,
                                           excluded_columns = c(1, 2),
                                           replace_na =  TRUE)
 ionomics_normalised <- 
-  MetaPipe::assess_normality_core(ionomics_rev,
-                             excluded_columns = c(1, 2),
-                             out_prefix = "ionomics",
-                             transf_vals = c(2, exp(1)))
+  MetaPipe:::assess_normality_core(ionomics_rev,
+                                   excluded_columns = c(1, 2),
+                                   out_prefix = "ionomics",
+                                   transf_vals = c(2, exp(1)))
 ionomics_normalised_post <- 
-  MetaPipe::assess_normality_postprocessing(ionomics_rev, 
-                                            c(1, 2), 
-                                            ionomics_normalised,
-                                            out_prefix = "ionomics")
+  MetaPipe:::assess_normality_postprocessing(ionomics_rev, 
+                                             c(1, 2), 
+                                             ionomics_normalised,
+                                             out_prefix = "ionomics")
 ionomics_norm <- ionomics_normalised_post$norm
 ionomics_skew <- ionomics_normalised_post$skew
 # Normal traits

@@ -42,8 +42,8 @@ The normality of each trait is checked using a \emph{Shapiro-Wilk} test,
 under the following hypotheses:
 
 \itemize{
-  \item \eqn{H_0: } the sample comes from a normally distributed population
-  \item \eqn{H_1: } the sample does not come from a normally distributed 
+  \item \eqn{H_0:} the sample comes from a normally distributed population
+  \item \eqn{H_1:} the sample does not come from a normally distributed 
   population
 }
 
@@ -61,7 +61,8 @@ example_data <- data.frame(ID = c(1,2,3,4,5),
                            P1 = c("one", "two", "three", "four", "five"), 
                            T1 = rnorm(5), 
                            T2 = rnorm(5))
-example_data_normalised <- MetaPipe::assess_normality_core(example_data, c(1, 2))
+example_data_normalised <- MetaPipe:::assess_normality_core(example_data, 
+                                                            c(1, 2))
 knitr::kable(example_data_normalised)
 
 
@@ -71,10 +72,10 @@ ionomics_rev <- MetaPipe::replace_missing(ionomics,
                                           excluded_columns = c(1, 2),
                                           replace_na =  TRUE)
 ionomics_normalised <- 
-  MetaPipe::assess_normality_core(ionomics_rev,
-                             excluded_columns = c(1, 2),
-                             out_prefix = "ionomics",
-                             transf_vals = c(2, exp(1)))
+  MetaPipe:::assess_normality_core(ionomics_rev,
+                                   excluded_columns = c(1, 2),
+                                   out_prefix = "ionomics",
+                                   transf_vals = c(2, exp(1)))
 # Show one entry for each of the first ten traits (left to right)
 knitr::kable(ionomics_normalised[nrow(ionomics) * c(1:10), ])
 
