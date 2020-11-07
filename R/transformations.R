@@ -14,7 +14,6 @@
 #' data_new <- MetaPipe:::paretoscale(data)
 #' 
 #' @keywords internal
-#' @noRd
 paretoscale <- function(z) {
   colmean <- apply(z, 2, mean)
   colsd <- apply(z, 2, sd)
@@ -41,7 +40,6 @@ paretoscale <- function(z) {
 #' }
 #' 
 #' @keywords internal
-#' @noRd
 check_alpha <- function(alpha) {
   if (!(typeof(alpha) %in% c("integer", "double")))
     stop("alpha must be a numeric value")
@@ -68,7 +66,6 @@ check_alpha <- function(alpha) {
 #' MetaPipe:::check_transformation(0.05, 0.1, "Log")
 #' 
 #' @keywords internal
-#' @noRd
 check_transformation <- 
   function(ref, 
            new, 
