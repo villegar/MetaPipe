@@ -13,7 +13,6 @@
 #'                      "hist")
 #' 
 #' @keywords internal
-#' @noRd
 save_plot <- function(plt_obj, name, width = 6, height = 6) {
   grDevices::png(paste0(name, ".png"), 
                  width = width, 
@@ -40,7 +39,6 @@ save_plot <- function(plt_obj, name, width = 6, height = 6) {
 #'                          "hist")
 #' 
 #' @keywords internal
-#' @noRd
 save_plotTIFF <- function(plt_obj, name, width = 6, height = 6) {
   grDevices::tiff(paste0(name, ".tiff"), 
                   width = width, 
@@ -67,7 +65,6 @@ save_plotTIFF <- function(plt_obj, name, width = 6, height = 6) {
 #'                         "hist")
 #' 
 #' @keywords internal
-#' @noRd
 save_plotPDF <- function(plt_obj, name, width = 6, height = 6) {
   grDevices::pdf(paste0(name, ".pdf"),
                  width = width,
@@ -91,7 +88,6 @@ save_plotPDF <- function(plt_obj, name, width = 6, height = 6) {
 #' MetaPipe:::ggplot_save(plt_obj, "hist")
 #' 
 #' @keywords internal
-#' @noRd
 ggplot_save <- function(plt_obj, name, width = 6, height = 6){
   R.devices::suppressGraphics({
     ggplot2::ggsave(
@@ -127,7 +123,6 @@ ggplot_save <- function(plt_obj, name, width = 6, height = 6){
 #'                         "x")
 #'
 #' @keywords internal
-#' @noRd
 compare_hist <- function(original, transformed, trait, prefix, xlab) {
   `..count..` <- NULL # Local binding
   ALPHA <- 1
@@ -187,7 +182,6 @@ compare_hist <- function(original, transformed, trait, prefix, xlab) {
 #' MetaPipe:::generate_hist(norm_dist, "XYZ", "xyz_hist", "x", is_trait = TRUE)
 #' 
 #' @keywords internal
-#' @noRd
 generate_hist <- function(data, 
                           title, 
                           prefix = "metapipe", 

@@ -37,6 +37,8 @@ jobs:
           rm -rf /usr/local/bin/gfortran
           brew install --force gcc
           brew install openmpi
+          brew install cairo
+          brew cask install xquartz
           
       - name: Install dependencies
         run: |
