@@ -37,6 +37,7 @@
 #' transformation was found, otherwise returns the original data.
 #'
 #' @examples
+#' \donttest{
 #' # Toy dataset
 #' example_data <- data.frame(ID = c(1,2,3,4,5), 
 #'                            P1 = c("one", "two", "three", "four", "five"), 
@@ -59,7 +60,7 @@
 #'                                    transf_vals = c(2, exp(1)))
 #' # Show one entry for each of the first ten traits (left to right)
 #' knitr::kable(ionomics_normalised[nrow(ionomics) * c(1:10), ])
-#' 
+#' }
 #' @seealso \code{\link{assess_normality_postprocessing}} and 
 #' \code{\link{assess_normality_stats}}
 #' 
@@ -191,6 +192,7 @@ assess_normality_core <- function(raw_data,
 #' (\code{skew}) traits.
 #'
 #' @examples
+#' \donttest{
 #' # Toy dataset
 #' example_data <- data.frame(ID = c(1,2,3,4,5), 
 #'                            P1 = c("one", "two", "three", "four", "five"), 
@@ -233,6 +235,7 @@ assess_normality_core <- function(raw_data,
 #' 
 #' # Skewed traits (partial output)
 #' knitr::kable(ionomics_skew[1:5, 1:10])
+#' }
 #' 
 #' @seealso \code{\link{assess_normality_core}} and 
 #' \code{\link{assess_normality_stats}}
@@ -372,6 +375,7 @@ assess_normality_postprocessing <- function(raw_data,
 #' @param out_prefix Prefix for output files and plots.
 #'
 #' @examples
+#' \donttest{
 #' # Toy dataset
 #' example_data <- data.frame(ID = c(1,2,3,4,5), 
 #'                            P1 = c("one", "two", "three", "four", "five"), 
@@ -402,6 +406,7 @@ assess_normality_postprocessing <- function(raw_data,
 #'                                             ionomics_normalised,
 #'                                             out_prefix = "ionomics")
 #' MetaPipe:::assess_normality_stats(out_prefix = "ionomics")
+#' }
 #' 
 #' @seealso \code{\link{assess_normality_core}} and 
 #' \code{\link{assess_normality_postprocessing}}
