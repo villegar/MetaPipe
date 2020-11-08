@@ -409,8 +409,7 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
 #' \code{\link[qtl:scanone]{qtl:scanone(...)}} function to find significant QTL.
 #' 
 #' @importFrom foreach %dopar%
-#' @importFrom graphics abline
-#' @importFrom graphics legend
+#' @importFrom graphics abline legend plot
 #' @importFrom stats as.formula
 #' 
 #' @param x_data Cross-data frame containing genetic map data and traits.
