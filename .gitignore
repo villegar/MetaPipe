@@ -8,3 +8,4 @@ inst/figures
 doc
 Meta
 pkgdown
+vignettes/*.csv

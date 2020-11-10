@@ -119,13 +119,14 @@ data(father_riparia) # Genetic map
 ionomics_rev <- MetaPipe::replace_missing(ionomics, 
                                           excluded_columns = c(1, 2),
                                           replace_na =  TRUE)
+\donttest{
 ionomics_normalised <- 
   MetaPipe::assess_normality(ionomics_rev,
                              excluded_columns = c(1, 2),
                              out_prefix = "ionomics",
                              transf_vals = c(2, exp(1)),
                              show_stats = FALSE)
-\donttest{
+                             
 # Load cross file with genetic map and raw data for normal traits
 x <- MetaPipe::read.cross(father_riparia, 
                           ionomics_normalised$norm,
