@@ -88,6 +88,10 @@ Perform QTL mapping using the \code{\link[qtl:scanone]{qtl:scanone(...)}}
 function to obtain LOD scores for all traits, peak positions, and markers.
 }
 \examples{
+# Create temp dir
+tmp <- tempdir()
+dir.create(tmp, showWarnings = FALSE, recursive = TRUE)
+
 # Toy dataset
 excluded_columns <- c(1, 2)
 population <- 5
@@ -100,7 +104,8 @@ example_data <- data.frame(ID = 1:population,
 
 output <- MetaPipe::assess_normality(example_data, 
                                      excluded_columns, 
-                                     show_stats = FALSE)
+                                     show_stats = FALSE,
+                                     out_prefix = paste0(tmp, "/tmp"))
 
 # Create and store random genetic map (for testing only)
 genetic_map <- MetaPipe:::random_map(population = population, 
@@ -118,12 +123,13 @@ data(ionomics) # Includes some missing data
 data(father_riparia) # Genetic map
 ionomics_rev <- MetaPipe::replace_missing(ionomics, 
                                           excluded_columns = c(1, 2),
-                                          replace_na =  TRUE)
+                                          replace_na =  TRUE,
+                                          out_prefix = paste0(tmp, "/tmp"))
 \donttest{
 ionomics_normalised <- 
   MetaPipe::assess_normality(ionomics_rev,
                              excluded_columns = c(1, 2),
-                             out_prefix = "ionomics",
+                             out_prefix = file.path(tmp, "ionomics"),
                              transf_vals = c(2, exp(1)),
                              show_stats = FALSE)
                              
@@ -138,6 +144,9 @@ x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
 
 x_scone <- MetaPipe::qtl_scone(x, 1, model = "normal", method = "hk")
 }
+
+# Clean temporal directory
+unlink(tmp, recursive = TRUE, force = TRUE)
 
 }
 \seealso{
