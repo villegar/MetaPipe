@@ -104,6 +104,7 @@ transform_pseudo_marker <- function(x_data, marker, chr, pos) {
 #'                            P1 = c("one", "two", "three", "four", "five"),
 #'                            T1 = rnorm(population),
 #'                            T2 = rnorm(population))
+#' \donttest{
 #' example_data_normalised <- 
 #'   data.frame(index = rep(c(1, 2), each = 5),
 #'              trait = rep(c("T1", "T2"), each = 5),
@@ -138,6 +139,7 @@ transform_pseudo_marker <- function(x_data, marker, chr, pos) {
 #'   MetaPipe::qtl_perm_test(x, n_perm = 5, model = "normal", method = "hk")
 #' x_sim <- qtl::sim.geno(x)
 #' MetaPipe::effect_plots(x_sim, x_qtl_perm)
+#' }
 #' 
 #' @seealso \code{\link{qtl_perm_test}}
 effect_plots <- function(x_data_sim, qtl_data, cpus = 1, plots_dir = getwd()) {
@@ -256,6 +258,7 @@ load_data <- function(input, wdir = here::here(), contents = "raw", ...) {
 #' ionomics_rev <- MetaPipe::replace_missing(ionomics, 
 #'                                           excluded_columns = c(1, 2),
 #'                                           replace_na =  TRUE)
+#' \donttest{
 #' ionomics_normalised <- 
 #'   MetaPipe::assess_normality(ionomics_rev,
 #'                              excluded_columns = c(1, 2),
@@ -265,7 +268,7 @@ load_data <- function(input, wdir = here::here(), contents = "raw", ...) {
 #' x_data <- MetaPipe::read.cross(father_riparia, 
 #'                                ionomics_normalised$norm,
 #'                                genotypes = c("nn", "np", "--"))
-#' 
+#' }
 #' @family QTL mapping functions
 read.cross <- function(geno, pheno, wdir = here::here(), quiet = TRUE, ...) {
   # Local binding
