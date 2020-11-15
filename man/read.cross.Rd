@@ -85,6 +85,7 @@ data(ionomics)
 ionomics_rev <- MetaPipe::replace_missing(ionomics, 
                                           excluded_columns = c(1, 2),
                                           replace_na =  TRUE)
+\donttest{
 ionomics_normalised <- 
   MetaPipe::assess_normality(ionomics_rev,
                              excluded_columns = c(1, 2),
@@ -94,7 +95,7 @@ ionomics_normalised <-
 x_data <- MetaPipe::read.cross(father_riparia, 
                                ionomics_normalised$norm,
                                genotypes = c("nn", "np", "--"))
-
+}
 }
 \seealso{
 Other QTL mapping functions: 

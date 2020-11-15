@@ -132,11 +132,11 @@ output <- MetaPipe::assess_normality(example_data,
 genetic_map <- MetaPipe:::random_map(population = population, 
                                      seed = seed)
 
+\donttest{
 # Load cross file with genetic map and raw data for normal traits
 x <- MetaPipe::read.cross(genetic_map, output$norm)
 
 x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
-\donttest{
 x_scone <- MetaPipe::qtl_scone(x, 1, model = "normal", method = "hk")
 x_qtl_perm <- MetaPipe::qtl_perm_test(x, 
                                       n_perm = 5, 
