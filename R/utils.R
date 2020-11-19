@@ -164,8 +164,10 @@ rplc_na <- function(x) {
 #' @keywords internal
 tidy_up <- function(patterns, path = here::here()) {
   # List files
-  filenames <- lapply(patterns, 
-                      function(x) list.files(path, x, full.names = TRUE))
+  filenames <- unlist(lapply(patterns,
+                             function(x) list.files(path, 
+                                                    x, 
+                                                    full.names = TRUE)))
   suppressWarnings(
     . <- lapply(filenames, file.remove)
   )
