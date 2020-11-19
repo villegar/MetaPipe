@@ -12,6 +12,9 @@
 #'                      main = "Histogram of Normal Distribution"), 
 #'                      "hist")
 #' 
+#' # Clean up example outputs
+#' MetaPipe:::tidy_up("hist")
+#' 
 #' @keywords internal
 save_plot <- function(plt_obj, name, width = 6, height = 6) {
   grDevices::png(paste0(name, ".png"), 
@@ -38,6 +41,9 @@ save_plot <- function(plt_obj, name, width = 6, height = 6) {
 #'                          main = "Histogram of Normal Distribution"), 
 #'                          "hist")
 #' 
+#' # Clean up example outputs
+#' MetaPipe:::tidy_up("hist")
+#' 
 #' @keywords internal
 save_plotTIFF <- function(plt_obj, name, width = 6, height = 6) {
   grDevices::tiff(paste0(name, ".tiff"), 
@@ -63,6 +69,9 @@ save_plotTIFF <- function(plt_obj, name, width = 6, height = 6) {
 #' MetaPipe:::save_plotPDF(hist(rnorm(100), 
 #'                         main = "Histogram of Normal Distribution"), 
 #'                         "hist")
+#'
+#' # Clean up example outputs
+#' MetaPipe:::tidy_up("hist")
 #' 
 #' @keywords internal
 save_plotPDF <- function(plt_obj, name, width = 6, height = 6) {
@@ -86,6 +95,9 @@ save_plotPDF <- function(plt_obj, name, width = 6, height = 6) {
 #' @examples
 #' plt_obj <- ggplot2::qplot(rnorm(100))
 #' MetaPipe:::ggplot_save(plt_obj, "hist")
+#' 
+#' # Clean up example outputs
+#' MetaPipe:::tidy_up("hist")
 #' 
 #' @keywords internal
 ggplot_save <- function(plt_obj, name, width = 6, height = 6){
@@ -122,6 +134,9 @@ ggplot_save <- function(plt_obj, name, width = 6, height = 6){
 #'                         "xyz_hist", 
 #'                         "x")
 #'
+#' # Clean up example outputs
+#' MetaPipe:::tidy_up("xyz")
+#' 
 #' @keywords internal
 compare_hist <- function(original, transformed, trait, prefix, xlab) {
   `..count..` <- NULL # Local binding
@@ -181,6 +196,9 @@ compare_hist <- function(original, transformed, trait, prefix, xlab) {
 #' MetaPipe:::generate_hist(norm_dist, "XYZ", "xyz_hist", "x")
 #' MetaPipe:::generate_hist(norm_dist, "XYZ", "xyz_hist", "x", is_trait = TRUE)
 #' 
+#' # Clean up example outputs
+#' MetaPipe:::tidy_up("xyz")
+#' 
 #' @keywords internal
 generate_hist <- function(data, 
                           title, 
@@ -218,7 +236,7 @@ generate_hist <- function(data,
   filename <- gsub("[[:punct:]]", "", title)
   filename <-  paste0(prefix, "_", gsub(" ", "-", filename))
   ggplot_save(plt_obj, filename)
-  return(NULL)
+  # return(NULL)
 }
 
 #' Simple PCA

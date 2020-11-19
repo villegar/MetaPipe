@@ -102,6 +102,9 @@ check_transformation <-
 #' data <- rnorm(100, 5)
 #' transformed <- MetaPipe::log_transformation(2 ^ data, "EXP_2")
 #' 
+#' # Clean up example outputs
+#' MetaPipe:::tidy_up("HIST")
+#' 
 #' @family Transformation functions
 log_transformation <- function(data, 
                                trait = "DATA", 
@@ -191,7 +194,10 @@ log_transformation <- function(data,
 #' @examples
 #' set.seed(123)
 #' data <- rnorm(100, 5)
-#' MetaPipe::power_transformation(sqrt(data), "ROOT_2")
+#' transformed <- MetaPipe::power_transformation(sqrt(data), "ROOT_2")
+#' 
+#' # Clean up example outputs
+#' MetaPipe:::tidy_up("HIST")
 #' 
 #' @family Transformation functions
 power_transformation <- function(data, 
@@ -281,7 +287,10 @@ power_transformation <- function(data,
 #' @examples
 #' set.seed(123)
 #' data <- rnorm(100, 5)
-#' MetaPipe::root_transformation(data ^ 2, "EXP_2")
+#' transformed <- MetaPipe::root_transformation(data ^ 2, "EXP_2")
+#' 
+#' # Clean up example outputs
+#' MetaPipe:::tidy_up("HIST")
 #' 
 #' @family Transformation functions
 root_transformation <- function(data, 
@@ -378,6 +387,9 @@ root_transformation <- function(data,
 #' knitr::kable(head(out_exp2))
 #' knitr::kable(head(out_root2))
 #' knitr::kable(head(out_pow2))
+#' 
+#' # Clean up example outputs
+#' MetaPipe:::tidy_up("HIST")
 transform_data <- function(data,
                            trait = "DATA",
                            alpha = 0.05,
@@ -453,8 +465,7 @@ transform_data <- function(data,
     record$transf <- "log"
     record$transf_val <- base
     return(record)
-  }
-  else if (transf == 2) { # Power transformation
+  } else if (transf == 2) { # Power transformation
     power <- transf_vals[transf_val_idx]
     transformed <- data ^ power
     power <- ifelse(power == exp(1), "e", power)
@@ -471,8 +482,7 @@ transform_data <- function(data,
     record$transf <- "power"
     record$transf_val <- power
     return(record)
-  }
-  else { # Root transformation
+  } else { # Root transformation
     root <- transf_vals[transf_val_idx]
     transformed <- data ^ (1 / root)
     root <- ifelse(root == exp(1), "e", root)

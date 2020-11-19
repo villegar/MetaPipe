@@ -61,6 +61,10 @@
 #' # Show one entry for each of the first ten traits (left to right)
 #' knitr::kable(ionomics_normalised[nrow(ionomics) * c(1:10), ])
 #' }
+#' 
+#' # Clean up example outputs
+#' MetaPipe:::tidy_up("HIST")
+#' 
 #' @seealso \code{\link{assess_normality_postprocessing}} and 
 #' \code{\link{assess_normality_stats}}
 #' 
@@ -237,6 +241,9 @@ assess_normality_core <- function(raw_data,
 #' knitr::kable(ionomics_skew[1:5, 1:10])
 #' }
 #' 
+#' # Clean up example outputs
+#' MetaPipe:::tidy_up(c("HIST_", "ionomics_", "metapipe_"))
+#' 
 #' @seealso \code{\link{assess_normality_core}} and 
 #' \code{\link{assess_normality_stats}}
 #' 
@@ -407,6 +414,9 @@ assess_normality_postprocessing <- function(raw_data,
 #'                                             out_prefix = "ionomics")
 #' MetaPipe:::assess_normality_stats(out_prefix = "ionomics")
 #' }
+#' 
+#' # Clean up example outputs
+#' MetaPipe:::tidy_up(c("HIST_", "ionomics_", "metapipe_"))
 #' 
 #' @seealso \code{\link{assess_normality_core}} and 
 #' \code{\link{assess_normality_postprocessing}}

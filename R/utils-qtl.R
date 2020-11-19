@@ -70,6 +70,9 @@ is_pseudo_marker <- function(marker) {
 #' x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
 #' MetaPipe:::transform_pseudo_marker(x, 'loc1', 1, 2.0)
 #' 
+#' # Clean up example outputs
+#' MetaPipe:::tidy_up("metapipe")
+#' 
 #' @keywords internal
 transform_pseudo_marker <- function(x_data, marker, chr, pos) {
   markerp <- marker
@@ -140,6 +143,9 @@ transform_pseudo_marker <- function(x_data, marker, chr, pos) {
 #' x_sim <- qtl::sim.geno(x)
 #' MetaPipe::effect_plots(x_sim, x_qtl_perm)
 #' }
+#' 
+#' # Clean up example outputs
+#' MetaPipe:::tidy_up(c("EFF-", "LOD-", "metapipe-"))
 #' 
 #' @seealso \code{\link{qtl_perm_test}}
 effect_plots <- function(x_data_sim, qtl_data, cpus = 1, plots_dir = getwd()) {
@@ -269,6 +275,10 @@ load_data <- function(input, wdir = here::here(), contents = "raw", ...) {
 #'                                ionomics_normalised$norm,
 #'                                genotypes = c("nn", "np", "--"))
 #' }
+#' 
+#' # Clean up example outputs
+#' MetaPipe:::tidy_up(c("HIST_", "ionomics_"))
+#' 
 #' @family QTL mapping functions
 read.cross <- function(geno, pheno, wdir = here::here(), quiet = TRUE, ...) {
   # Local binding

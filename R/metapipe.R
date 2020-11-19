@@ -41,6 +41,9 @@
 #'                              mustWork = TRUE)
 #' ionomics <- MetaPipe::load_raw(ionomics_path)
 #' knitr::kable(ionomics[1:5, 1:8])
+#' 
+#' # Clean up example outputs
+#' MetaPipe:::tidy_up("example_data")
 load_raw <- function(raw_data_filename, excluded_columns = NULL) {
   # Load and clean raw data
   raw_data <- read.csv(raw_data_filename, stringsAsFactors = FALSE)
@@ -122,6 +125,9 @@ load_raw <- function(raw_data_filename, excluded_columns = NULL) {
 #'                                           excluded_columns = c(1, 2),
 #'                                           replace_na =  TRUE)
 #' knitr::kable(ionomics_rev[1:5, 1:8])
+#' 
+#' # Clean up example outputs
+#' MetaPipe:::tidy_up("metapipe_")
 replace_missing <- function(raw_data,
                             excluded_columns = NULL,
                             out_prefix = "metapipe",
@@ -256,6 +262,9 @@ replace_missing <- function(raw_data,
 #' # Skewed traits (partial output)
 #' knitr::kable(ionomics_skew[1:5, 1:8])
 #' }
+#' 
+#' # Clean up example outputs
+#' MetaPipe:::tidy_up(c("HIST_", "ionomics_", "metapipe_"))
 assess_normality <- function(raw_data, 
                              excluded_columns, 
                              cpus = 1, 
@@ -515,6 +524,7 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
 #'                                            method = "hk",
 #'                                            plots_dir = tmp)
 #' }
+#' 
 #' # Clean temporal directory
 #' unlink(tmp, recursive = TRUE, force = TRUE)
 #' 
