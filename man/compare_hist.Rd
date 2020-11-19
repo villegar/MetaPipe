@@ -30,5 +30,8 @@ MetaPipe:::compare_hist(norm_dist,
                         "xyz_hist", 
                         "x")
 
+# Clean up example outputs
+MetaPipe:::tidy_up("xyz")
+
 }
 \keyword{internal}

@@ -65,6 +65,9 @@ x_sim <- qtl::sim.geno(x)
 MetaPipe::effect_plots(x_sim, x_qtl_perm)
 }
 
+# Clean up example outputs
+MetaPipe:::tidy_up(c("EFF-", "LOD-", "metapipe-"))
+
 }
 \seealso{
 \code{\link{qtl_perm_test}}

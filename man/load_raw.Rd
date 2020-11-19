@@ -42,4 +42,7 @@ ionomics_path <- system.file("extdata",
                              mustWork = TRUE)
 ionomics <- MetaPipe::load_raw(ionomics_path)
 knitr::kable(ionomics[1:5, 1:8])
+
+# Clean up example outputs
+MetaPipe:::tidy_up("example_data")
 }

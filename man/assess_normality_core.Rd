@@ -80,6 +80,10 @@ ionomics_normalised <-
 # Show one entry for each of the first ten traits (left to right)
 knitr::kable(ionomics_normalised[nrow(ionomics) * c(1:10), ])
 }
+
+# Clean up example outputs
+MetaPipe:::tidy_up("HIST")
+
 }
 \seealso{
 \code{\link{assess_normality_postprocessing}} and 

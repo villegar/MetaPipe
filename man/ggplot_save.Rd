@@ -23,5 +23,8 @@ Portable Network Graphics (PNG) format.
 plt_obj <- ggplot2::qplot(rnorm(100))
 MetaPipe:::ggplot_save(plt_obj, "hist")
 
+# Clean up example outputs
+MetaPipe:::tidy_up("hist")
+
 }
 \keyword{internal}

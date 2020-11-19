@@ -45,6 +45,9 @@ set.seed(123)
 data <- rnorm(100, 5)
 transformed <- MetaPipe::log_transformation(2 ^ data, "EXP_2")
 
+# Clean up example outputs
+MetaPipe:::tidy_up("HIST")
+
 }
 \seealso{
 Other Transformation functions: 

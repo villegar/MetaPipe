@@ -43,7 +43,10 @@ Normalise data with a root transformation.
 \examples{
 set.seed(123)
 data <- rnorm(100, 5)
-MetaPipe::root_transformation(data ^ 2, "EXP_2")
+transformed <- MetaPipe::root_transformation(data ^ 2, "EXP_2")
+
+# Clean up example outputs
+MetaPipe:::tidy_up("HIST")
 
 }
 \seealso{

@@ -48,6 +48,9 @@ ionomics_normalised_post <-
 MetaPipe:::assess_normality_stats(out_prefix = "ionomics")
 }
 
+# Clean up example outputs
+MetaPipe:::tidy_up(c("HIST_", "ionomics_", "metapipe_"))
+
 }
 \seealso{
 \code{\link{assess_normality_core}} and 

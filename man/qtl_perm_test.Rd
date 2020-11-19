@@ -186,6 +186,7 @@ x_qtl_perm_1000 <- MetaPipe::qtl_perm_test(x,
                                            method = "hk",
                                            plots_dir = tmp)
 }
+
 # Clean temporal directory
 unlink(tmp, recursive = TRUE, force = TRUE)
 

@@ -95,6 +95,9 @@ knitr::kable(ionomics_norm[1:5, ])
 knitr::kable(ionomics_skew[1:5, 1:10])
 }
 
+# Clean up example outputs
+MetaPipe:::tidy_up(c("HIST_", "ionomics_", "metapipe_"))
+
 }
 \seealso{
 \code{\link{assess_normality_core}} and 

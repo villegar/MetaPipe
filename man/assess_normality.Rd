@@ -102,4 +102,7 @@ knitr::kable(ionomics_norm[1:5, ])
 # Skewed traits (partial output)
 knitr::kable(ionomics_skew[1:5, 1:8])
 }
+
+# Clean up example outputs
+MetaPipe:::tidy_up(c("HIST_", "ionomics_", "metapipe_"))
 }

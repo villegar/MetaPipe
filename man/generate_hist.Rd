@@ -52,5 +52,8 @@ norm_dist <- rnorm(100)
 MetaPipe:::generate_hist(norm_dist, "XYZ", "xyz_hist", "x")
 MetaPipe:::generate_hist(norm_dist, "XYZ", "xyz_hist", "x", is_trait = TRUE)
 
+# Clean up example outputs
+MetaPipe:::tidy_up("xyz")
+
 }
 \keyword{internal}
