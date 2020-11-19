@@ -155,3 +155,19 @@ rplc_na <- function(x) {
           ifelse(all(is.na(x)), NA, (min(x, na.rm = TRUE) / 2))
   )
 }
+
+#' List files matching a pattern and delete them
+#'
+#' @param patterns Vector of strings with patterns to be deleted.
+#' @param path Path to the directory containing the files
+#' 
+#' @keywords internal
+tidy_up <- function(patterns, path = here::here()) {
+  # List files
+  filenames <- lapply(patterns, 
+                      function(x) list.files(path, x, full.names = TRUE))
+  suppressWarnings(
+    . <- lapply(filenames, file.remove)
+  )
+}
+
