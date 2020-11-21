@@ -66,7 +66,7 @@ MetaPipe::effect_plots(x_sim, x_qtl_perm)
 }
 
 # Clean up example outputs
-MetaPipe:::tidy_up(c("EFF-", "LOD-", "metapipe-"))
+MetaPipe:::tidy_up(c("EFF-", "LOD-", "metapipe"))
 
 }
 \seealso{
