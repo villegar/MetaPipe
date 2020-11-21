@@ -9,7 +9,8 @@ test_that("transform pseudo-marker works", {
   population <- 5
   seed <- 123
   set.seed(seed)
-  setwd(here::here())
+  old_path <- setwd(here::here())
+  on.exit(setwd(old_path))
   example_data <- data.frame(ID = 1:population,
                              P1 = c("one", "two", "three", "four", "five"),
                              T1 = rnorm(population),
@@ -56,14 +57,16 @@ test_that("effect plots work", {
   population <- 5
   seed <- 123
   set.seed(seed)
-  setwd(here::here())
+  old_path <- setwd(here::here())
+  on.exit(setwd(old_path))
   example_data <- data.frame(ID = 1:population,
                              P1 = c("one", "two", "three", "four", "five"),
                              T1 = rnorm(population),
                              T2 = rnorm(population))
   example_data_normalised <- data.frame(index = rep(c(1, 2), each = 5),
                                         trait = rep(c("T1", "T2"), each = 5),
-                                        values = c(example_data$T1, example_data$T2),
+                                        values = c(example_data$T1, 
+                                                   example_data$T2),
                                         flag = "Normal",
                                         transf = "",
                                         transf_val = NA,
@@ -86,12 +89,14 @@ test_that("effect plots work", {
   x_sim <- qtl::sim.geno(x)
   
   # Modify QTL data to include transformation data [for testing only]
-  x_qtl_perm[1, c("transf", "transf_val")] <- c("log", "2")
-  x_qtl_perm[2, c("transf", "transf_val")] <- c("root", "2")
-  x_qtl_perm[3, c("transf", "transf_val")] <- c("power", "2")
+  idx <- which(colnames(x_qtl_perm) %in% c("transf", "transf_val"))
+  x_qtl_perm[1, idx] <- c("log", "2")
+  x_qtl_perm[2, idx] <- c("root", "2")
+  x_qtl_perm[3, idx] <- c("power", "2")
   
   # Modify QTL data to include skewed traits
-  x_qtl_perm[4, c("method")] <- "skw-scanone"
+  idx <- which(colnames(x_qtl_perm) %in% c("method"))
+  x_qtl_perm[4, idx] <- "skw-scanone"
   
   effect_plots(x_sim, x_qtl_perm)
   
