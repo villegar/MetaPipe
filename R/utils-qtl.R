@@ -90,7 +90,9 @@ transform_pseudo_marker <- function(x_data, marker, chr, pos) {
 #' 
 #' Create effect plots for significant QTLs found with  
 #' \code{\link{qtl_perm_test}}.
-#'
+#' 
+#' @importFrom foreach "%dopar%"
+#' 
 #' @param x_data_sim Cross-data frame simulated with \code{qtl::sim.geno}.
 #' @param qtl_data Significant QTL data.
 #' @param cpus Number of CPUs to be used in the computation.
@@ -145,17 +147,17 @@ transform_pseudo_marker <- function(x_data, marker, chr, pos) {
 #' }
 #' 
 #' # Clean up example outputs
-#' MetaPipe:::tidy_up(c("EFF-", "LOD-", "metapipe-"))
+#' MetaPipe:::tidy_up(c("EFF-", "LOD-", "metapipe"))
 #' 
 #' @seealso \code{\link{qtl_perm_test}}
 effect_plots <- function(x_data_sim, qtl_data, cpus = 1, plots_dir = getwd()) {
   i <- NULL # Local binding
   # Start parallel backend
-  cl <- parallel::makeCluster(cpus, setup_strategy = "sequential")
+  cl <- parallel::makeCluster(cpus)#, setup_strategy = "sequential")
   doParallel::registerDoParallel(cl)
   
-  # Load binary operator for backend
-  `%dopar%` <- foreach::`%dopar%`
+  # # Load binary operator for backend
+  # `%dopar%` <- foreach::`%dopar%`
   
   # Extract trait names
   traits <- as.character(qtl_data$trait)
@@ -163,18 +165,18 @@ effect_plots <- function(x_data_sim, qtl_data, cpus = 1, plots_dir = getwd()) {
   # Extract markers
   markers <- as.character(qtl_data$marker)
 
-  plots <- foreach::foreach(i = 1:nrow(qtl_data)) %dopar% {
-    if (qtl_data[i, ]$method == "par-scanone") {
-      qtl_data[i, ]$transf <-
-        ifelse(is.na(qtl_data[i, ]$transf), "", qtl_data[i, ]$transf)
-      if (qtl_data[i, ]$transf == "log") {
+  plots <- foreach::foreach(i = seq_len(nrow(qtl_data))) %dopar% {
+    if (qtl_data$method[i] == "par-scanone") {
+      qtl_data$transf[i] <-
+        ifelse(is.na(qtl_data$transf[i]), "", qtl_data$transf[i])
+      if (qtl_data$transf[i] == "log") {
         ylab <-
-          paste0("$\\log_{", qtl_data[i, ]$transf_val, "}(", traits[i], ")$")
-      } else if (qtl_data[i, ]$transf == "root") {
+          paste0("$\\log_{", qtl_data$transf_val[i], "}(", traits[i], ")$")
+      } else if (qtl_data$transf[i] == "root") {
         ylab <-
-          paste0("$\\sqrt[", qtl_data[i, ]$transf_val, "]{", traits[i], "}$")
-      } else if (qtl_data[i, ]$transf == "power") {
-        ylab <- paste0("$(", traits[i], ")^", qtl_data[i, ]$transf_val, "$")
+          paste0("$\\sqrt[", qtl_data$transf_val[i], "]{", traits[i], "}$")
+      } else if (qtl_data$transf[i] == "power") {
+        ylab <- paste0("$(", traits[i], ")^", qtl_data$transf_val[i], "$")
       } else {
         ylab <- traits[i]
       }
