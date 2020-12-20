@@ -14,8 +14,8 @@ Pipeline for Quantitative Trait Locus (QTL) mapping of large
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/villegar/MetaPipe}
-  \item Report bugs at \url{https://github.com/villegar/MetaPipe/issues}
+  \item \url{https://github.com/villegar/MetaPipe/}
+  \item Report bugs at \url{https://github.com/villegar/MetaPipe/issues/}
 }
 
 }
