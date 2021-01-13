@@ -1,7 +1,6 @@
 #' Pareto scaling
 #' 
 #' Perform a pareto scaling.
-#' This function is adapted from Stephen C. Grace and Dane A. Hudson.
 #' 
 #' @importFrom stats sd
 #' @param z Original 2-dimensional data.
@@ -14,6 +13,10 @@
 #' data_new <- MetaPipe:::paretoscale(data)
 #' 
 #' @keywords internal
+#' 
+#' @references 
+#' Grace, Stephen & Hudson, Dane. (2016). Processing and Visualization of 
+#' Metabolomics Data Using R. \doi{10.5772/65405}. 
 paretoscale <- function(z) {
   colmean <- apply(z, 2, mean)
   colsd <- apply(z, 2, sd)
@@ -25,7 +28,7 @@ paretoscale <- function(z) {
 
 #' Check significance level
 #' 
-#' Check significance level (alpha) validity.
+#' Check significance level (\code{alpha}) validity.
 #'
 #' @param alpha Significance level.
 #'
