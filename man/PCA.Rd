@@ -12,50 +12,8 @@ perform the Principal Components Analysis.}
 
 \item{plot}{Boolean flag to indicate whether or not to create a PCA biplot.}
 
-\item{...}{
-  Arguments passed on to \code{\link[factoextra:fviz_pca]{factoextra::fviz_pca_biplot}}
-  \describe{
-    \item{\code{axes}}{a numeric vector of length 2 specifying the dimensions to be 
-plotted.}
-    \item{\code{geom}}{a text specifying the geometry to be used for the graph. Allowed 
-values are the combination of \code{c("point", "arrow", "text")}. Use 
-\code{"point"} (to show only points); \code{"text"} to show only labels; 
-\code{c("point", "text")} or \code{c("arrow", "text")} to show arrows and 
-texts. Using \code{c("arrow", "text")} is sensible only for the graph of 
-variables.}
-    \item{\code{geom.ind}}{as \code{geom} but for individuals and variables, 
-respectively. Default is geom.ind = c("point", "text), geom.var = 
-c("arrow", "text").}
-    \item{\code{geom.var}}{as \code{geom} but for individuals and variables, 
-respectively. Default is geom.ind = c("point", "text), geom.var = 
-c("arrow", "text").}
-    \item{\code{habillage}}{an optional factor variable for coloring the observations by
-groups. Default value is "none". If X is a PCA object from FactoMineR 
-package, habillage can also specify the supplementary qualitative variable 
-(by its index or name) to be used for coloring individuals by groups (see 
-?PCA in FactoMineR).}
-    \item{\code{palette}}{the color palette to be used for coloring or filling by
-groups. Allowed values include "grey" for grey color palettes; brewer
-palettes e.g. "RdBu", "Blues", ...; or custom color palette e.g. c("blue",
-"red"); and scientific journal palettes from ggsci R package, e.g.: "npg",
-"aaas", "lancet", "jco", "ucscgb", "uchicago", "simpsons" and
-"rickandmorty". Can be also a numeric vector of length(groups); in this
-case a basic color palette is created using the function
-\link[grDevices]{palette}.}
-    \item{\code{col.ind}}{color for individuals and variables, respectively. Can
-be a continuous variable or a factor variable. Possible values include also
-: "cos2", "contrib", "coord", "x" or "y". In this case, the colors for 
-individuals/variables are automatically controlled by their qualities of 
-representation ("cos2"), contributions ("contrib"), coordinates (x^2+y^2, 
-"coord"), x values ("x") or y values ("y"). To use automatic coloring (by 
-cos2, contrib, ....), make sure that habillage ="none".}
-    \item{\code{fill.ind}}{same as col.ind and col.var but for the fill color.}
-    \item{\code{fill.var}}{same as col.ind and col.var but for the fill color.}
-    \item{\code{invisible}}{a text specifying the elements to be hidden on the plot. 
-Default value is "none". Allowed values are the combination of c("ind", 
-"ind.sup", "quali", "var", "quanti.sup").}
-    \item{\code{title}}{the title of the graph}
-  }}
+\item{...}{Arguments passed on to 
+\code{\link[factoextra:fviz_pca_biplot]{factoextra::fviz_pca_biplot}}.}
 }
 \value{
 Data frame with PCA result.

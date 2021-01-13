@@ -17,60 +17,8 @@ data. For example, output from \code{\link{assess_normality}}.}
 
 \item{quiet}{Boolean flag to hide status messages.}
 
-\item{...}{
-  Arguments passed on to \code{\link[qtl:read.cross]{qtl::read.cross}}
-  \describe{
-    \item{\code{file}}{The main input file for formats \code{csv}, \code{csvr}
-    and \code{mm}.}
-    \item{\code{genfile}}{File with genotype data (formats \code{csvs},
-    \code{csvsr}, \code{karl}, \code{gary} and \code{mapqtl} only).}
-    \item{\code{mapfile}}{File with marker position information (all
-    except the \code{csv} formats).}
-    \item{\code{phefile}}{File with phenotype data (formats \code{csvs},
-    \code{csvsr}, \code{karl}, \code{gary} and \code{mapqtl} only).}
-    \item{\code{chridfile}}{File with chromosome ID for each marker (\code{gary}
-    format only).}
-    \item{\code{mnamesfile}}{File with marker names (\code{gary} format only).}
-    \item{\code{pnamesfile}}{File with phenotype names (\code{gary} format
-    only).}
-    \item{\code{na.strings}}{A vector of strings which are to be interpreted as
-    missing values (\code{csv} and \code{gary} formats only).  For the
-    \code{csv} formats, these are interpreted globally
-    for the entire
-    file, so missing value codes in phenotypes must not be valid
-    genotypes, and vice versa. For the \code{gary} format, these are
-    used only for the phenotype data.}
-    \item{\code{genotypes}}{A vector of character strings specifying the genotype
-    codes (\code{csv} formats only).  Generally this is a vector of
-    length 5, with the elements corresponding to AA, AB, BB, not BB
-    (i.e., AA or AB), and not AA (i.e., AB or BB).  \bold{Note}: Pay
-    careful attention to the third and fourth of these; the order of
-    these can be confusing.
-
-    If you are trying to read 4-way cross data, your file must have
-    genotypes coded as described below, and you need to set
-    \code{genotypes=NULL} so that no re-coding gets done.}
-    \item{\code{alleles}}{A vector of two one-letter character strings (or four,
-    for the four-way cross), to be used as labels for the two alleles.}
-    \item{\code{estimate.map}}{For all formats but \code{qtlcart}, \code{mapqtl},
-    and \code{karl}: if TRUE and marker positions are not included in
-    the input files, the genetic map is estimated using the function
-    \code{\link[qtl]{est.map}}.}
-    \item{\code{convertXdata}}{If TRUE, any X chromosome genotype data is
-    converted to the internal standard, using columns \code{sex} and
-    \code{pgm} in the phenotype data if they available or by inference
-    if they are not.  If FALSE, the X chromsome data is read as is.}
-    \item{\code{error.prob}}{In the case that the marker map must be estimated:
-   Assumed genotyping error rate used in the calculation of the
-   penetrance Pr(observed genotype | true genotype).}
-    \item{\code{map.function}}{In the case that the marker map must be estimated:
-   Indicates whether to use the Haldane, Kosambi,
-   Carter-Falconer, or Morgan map function when converting genetic
-   distances into recombination fractions. (Ignored if m > 0.)}
-    \item{\code{BC.gen}}{Used only for cross type \code{"bcsft"}.}
-    \item{\code{F.gen}}{Used only for cross type \code{"bcsft"}.}
-    \item{\code{crosstype}}{Optional character string to force a particular cross type.}
-  }}
+\item{...}{Arguments passed on to 
+\code{\link[qtl:read.cross]{qtl::read.cross}}.}
 }
 \value{
 Object of \code{cross} class for QTL mapping.
