@@ -9,3 +9,4 @@ doc
 Meta
 pkgdown
 vignettes/*.csv
+cran-comments.md
