@@ -13,7 +13,7 @@ check_alpha(alpha)
 Nothing if alpha is valid, otherwise stop execution.
 }
 \description{
-Check significance level (alpha) validity.
+Check significance level (\code{alpha}) validity.
 }
 \examples{
 MetaPipe:::check_alpha(0.5)
