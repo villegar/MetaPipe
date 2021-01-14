@@ -109,6 +109,7 @@ Perform a QTL mapping permutation test using the
 \code{\link[qtl:scanone]{qtl:scanone(...)}} function to find significant QTL.
 }
 \examples{
+\donttest{
 # Create temp dir
 tmp <- tempdir()
 dir.create(tmp, showWarnings = FALSE, recursive = TRUE)
@@ -132,7 +133,6 @@ output <- MetaPipe::assess_normality(example_data,
 genetic_map <- MetaPipe:::random_map(population = population, 
                                      seed = seed)
 
-\donttest{
 # Load cross file with genetic map and raw data for normal traits
 x <- MetaPipe::read.cross(genetic_map, output$norm)
 
@@ -148,7 +148,6 @@ x_qtl_perm_1000 <- MetaPipe::qtl_perm_test(x,
                                            model = "normal", 
                                            method = "hk",
                                            plots_dir = tmp)
-}
 
 # F1 Seedling Ionomics dataset
 data(ionomics) # Includes some missing data
@@ -157,7 +156,6 @@ ionomics_rev <- MetaPipe::replace_missing(ionomics,
                                           excluded_columns = c(1, 2),
                                           replace_na =  TRUE,
                                           out_prefix = paste0(tmp, "/tmp"))
-\donttest{
 ionomics_normalised <- 
   MetaPipe::assess_normality(ionomics_rev,
                              excluded_columns = c(1, 2),
@@ -185,10 +183,10 @@ x_qtl_perm_1000 <- MetaPipe::qtl_perm_test(x,
                                            model = "normal", 
                                            method = "hk",
                                            plots_dir = tmp)
-}
 
 # Clean temporal directory
 unlink(tmp, recursive = TRUE, force = TRUE)
+}
 
 }
 \seealso{
