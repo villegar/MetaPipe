@@ -25,6 +25,7 @@ Optionally, it will create a PCA biplot using
 \code{plot = TRUE}.
 }
 \examples{
+\donttest{
 # Toy dataset
 example_data <- data.frame(ID = c(1,2,3,4,5), 
                            P1 = c("one", "two", "three", "four", "five"), 
@@ -38,4 +39,5 @@ ionomics_rev <- MetaPipe::replace_missing(ionomics,
                                           excluded_columns = c(1, 2),
                                           replace_na =  TRUE)
 ionomics_pca <- PCA(ionomics_rev[, -c(1:2)])
+}
 }
