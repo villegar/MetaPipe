@@ -126,6 +126,7 @@ ggplot_save <- function(plt_obj, name, width = 6, height = 6){
 #' @param xlab X-axis label.
 #'
 #' @examples
+#' \donttest{
 #' norm_dist <- rnorm(100)
 #' norm_dist_transformed <- norm_dist^2
 #' MetaPipe:::compare_hist(norm_dist, 
@@ -136,7 +137,7 @@ ggplot_save <- function(plt_obj, name, width = 6, height = 6){
 #'
 #' # Clean up example outputs
 #' MetaPipe:::tidy_up("xyz")
-#' 
+#' }
 #' @keywords internal
 compare_hist <- function(original, transformed, trait, prefix, xlab) {
   `..count..` <- NULL # Local binding
@@ -192,13 +193,14 @@ compare_hist <- function(original, transformed, trait, prefix, xlab) {
 #' @param is_trait Boolean flag to prepend "Trait" to \code{title}.
 #'
 #' @examples
+#' \donttest{
 #' norm_dist <- rnorm(100)
 #' MetaPipe:::generate_hist(norm_dist, "XYZ", "xyz_hist", "x")
 #' MetaPipe:::generate_hist(norm_dist, "XYZ", "xyz_hist", "x", is_trait = TRUE)
 #' 
 #' # Clean up example outputs
 #' MetaPipe:::tidy_up("xyz")
-#' 
+#' }
 #' @keywords internal
 generate_hist <- function(data, 
                           title, 
@@ -257,6 +259,7 @@ generate_hist <- function(data,
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' # Toy dataset
 #' example_data <- data.frame(ID = c(1,2,3,4,5), 
 #'                            P1 = c("one", "two", "three", "four", "five"), 
@@ -270,6 +273,7 @@ generate_hist <- function(data,
 #'                                           excluded_columns = c(1, 2),
 #'                                           replace_na =  TRUE)
 #' ionomics_pca <- PCA(ionomics_rev[, -c(1:2)])
+#' }
 PCA <- function(data, plot = TRUE, ...) {
   idx <- check_types(data, quiet = FALSE)
   if (length(idx) > 0)
