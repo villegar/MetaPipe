@@ -41,6 +41,9 @@
 #'                              mustWork = TRUE)
 #' ionomics <- MetaPipe::load_raw(ionomics_path)
 #' knitr::kable(ionomics[1:5, 1:8])
+#' 
+#' # Clean up example outputs
+#' MetaPipe:::tidy_up("example_data")
 load_raw <- function(raw_data_filename, excluded_columns = NULL) {
   # Load and clean raw data
   raw_data <- read.csv(raw_data_filename, stringsAsFactors = FALSE)
@@ -122,6 +125,9 @@ load_raw <- function(raw_data_filename, excluded_columns = NULL) {
 #'                                           excluded_columns = c(1, 2),
 #'                                           replace_na =  TRUE)
 #' knitr::kable(ionomics_rev[1:5, 1:8])
+#' 
+#' # Clean up example outputs
+#' MetaPipe:::tidy_up("metapipe_")
 replace_missing <- function(raw_data,
                             excluded_columns = NULL,
                             out_prefix = "metapipe",
@@ -219,6 +225,7 @@ replace_missing <- function(raw_data,
 #' @export
 #' 
 #' @examples
+#' \donttest{
 #' # Toy dataset
 #' example_data <- data.frame(ID = c(1,2,3,4,5), 
 #'                            P1 = c("one", "two", "three", "four", "five"), 
@@ -240,7 +247,6 @@ replace_missing <- function(raw_data,
 #' ionomics_rev <- MetaPipe::replace_missing(ionomics, 
 #'                                           excluded_columns = c(1, 2),
 #'                                           replace_na =  TRUE)
-#' \donttest{
 #' ionomics_normalised <- 
 #'   MetaPipe::assess_normality(ionomics_rev,
 #'                              excluded_columns = c(1, 2),
@@ -255,6 +261,9 @@ replace_missing <- function(raw_data,
 #' 
 #' # Skewed traits (partial output)
 #' knitr::kable(ionomics_skew[1:5, 1:8])
+#' 
+#' # Clean up example outputs
+#' MetaPipe:::tidy_up(c("HIST_", "ionomics_", "metapipe_"))
 #' }
 assess_normality <- function(raw_data, 
                              excluded_columns, 
@@ -314,6 +323,11 @@ assess_normality <- function(raw_data,
 #' @export
 #'
 #' @examples
+#' \donttest{
+#' # Create temp dir
+#' tmp <- tempdir()
+#' dir.create(tmp, showWarnings = FALSE, recursive = TRUE)
+#' 
 #' # Toy dataset
 #' excluded_columns <- c(1, 2)
 #' population <- 5
@@ -326,32 +340,32 @@ assess_normality <- function(raw_data,
 #' 
 #' output <- MetaPipe::assess_normality(example_data, 
 #'                                      excluded_columns, 
-#'                                      show_stats = FALSE)
+#'                                      show_stats = FALSE,
+#'                                      out_prefix = paste0(tmp, "/tmp"))
 #' 
 #' # Create and store random genetic map (for testing only)
 #' genetic_map <- MetaPipe:::random_map(population = population, 
 #'                                      seed = seed)
-#' \donttest{
 #' # Load cross file with genetic map and raw data for normal traits
 #' x <- MetaPipe::read.cross(genetic_map, output$norm)
 #' 
 #' x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
 #' x_scone <- MetaPipe::qtl_scone(x, 1, model = "normal", method = "hk")
-#' }
 #' 
 #' # F1 Seedling Ionomics dataset
 #' data(ionomics) # Includes some missing data
 #' data(father_riparia) # Genetic map
 #' ionomics_rev <- MetaPipe::replace_missing(ionomics, 
 #'                                           excluded_columns = c(1, 2),
-#'                                           replace_na =  TRUE)
+#'                                           replace_na =  TRUE,
+#'                                           out_prefix = paste0(tmp, "/tmp"))
 #' ionomics_normalised <- 
 #'   MetaPipe::assess_normality(ionomics_rev,
 #'                              excluded_columns = c(1, 2),
-#'                              out_prefix = "ionomics",
+#'                              out_prefix = file.path(tmp, "ionomics"),
 #'                              transf_vals = c(2, exp(1)),
 #'                              show_stats = FALSE)
-#' \donttest{
+#'                              
 #' # Load cross file with genetic map and raw data for normal traits
 #' x <- MetaPipe::read.cross(father_riparia, 
 #'                           ionomics_normalised$norm,
@@ -362,8 +376,10 @@ assess_normality <- function(raw_data,
 #' x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
 #' 
 #' x_scone <- MetaPipe::qtl_scone(x, 1, model = "normal", method = "hk")
-#' }
 #' 
+#' # Clean temporal directory
+#' unlink(tmp, recursive = TRUE, force = TRUE)
+#' }
 #' @family QTL mapping functions
 qtl_scone <- function(x_data, cpus = 1, ...) {
   i <- NULL # Local binding
@@ -409,8 +425,7 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
 #' \code{\link[qtl:scanone]{qtl:scanone(...)}} function to find significant QTL.
 #' 
 #' @importFrom foreach %dopar%
-#' @importFrom graphics abline
-#' @importFrom graphics legend
+#' @importFrom graphics abline legend plot
 #' @importFrom stats as.formula
 #' 
 #' @param x_data Cross-data frame containing genetic map data and traits.
@@ -429,6 +444,11 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
 #' @export
 #' 
 #' @examples
+#' \donttest{
+#' # Create temp dir
+#' tmp <- tempdir()
+#' dir.create(tmp, showWarnings = FALSE, recursive = TRUE)
+#' 
 #' # Toy dataset
 #' excluded_columns <- c(1, 2)
 #' population <- 5
@@ -441,7 +461,8 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
 #' 
 #' output <- MetaPipe::assess_normality(example_data, 
 #'                                      excluded_columns, 
-#'                                      show_stats = FALSE)
+#'                                      show_stats = FALSE,
+#'                                      out_prefix = paste0(tmp, "/tmp"))
 #' 
 #' # Create and store random genetic map (for testing only)
 #' genetic_map <- MetaPipe:::random_map(population = population, 
@@ -451,26 +472,29 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
 #' x <- MetaPipe::read.cross(genetic_map, output$norm)
 #' 
 #' x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
-#' \donttest{
 #' x_scone <- MetaPipe::qtl_scone(x, 1, model = "normal", method = "hk")
-#' x_qtl_perm <- qtl_perm_test(x, n_perm = 5, model = "normal", method = "hk")
-#' x_qtl_perm_1000 <- qtl_perm_test(x, 
-#'                                  n_perm = 1000, 
-#'                                  model = "normal", 
-#'                                  method = "hk")
-#' }
+#' x_qtl_perm <- MetaPipe::qtl_perm_test(x, 
+#'                                       n_perm = 5, 
+#'                                       model = "normal", 
+#'                                       method = "hk",
+#'                                       plots_dir = tmp)
+#' x_qtl_perm_1000 <- MetaPipe::qtl_perm_test(x, 
+#'                                            n_perm = 1000, 
+#'                                            model = "normal", 
+#'                                            method = "hk",
+#'                                            plots_dir = tmp)
 #' 
 #' # F1 Seedling Ionomics dataset
 #' data(ionomics) # Includes some missing data
 #' data(father_riparia) # Genetic map
 #' ionomics_rev <- MetaPipe::replace_missing(ionomics, 
 #'                                           excluded_columns = c(1, 2),
-#'                                           replace_na =  TRUE)
-#' \donttest{
+#'                                           replace_na =  TRUE,
+#'                                           out_prefix = paste0(tmp, "/tmp"))
 #' ionomics_normalised <- 
 #'   MetaPipe::assess_normality(ionomics_rev,
 #'                              excluded_columns = c(1, 2),
-#'                              out_prefix = "ionomics",
+#'                              out_prefix = file.path(tmp, "ionomics"),
 #'                              transf_vals = c(2, exp(1)),
 #'                              show_stats = FALSE)
 #' 
@@ -484,12 +508,21 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
 #' x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
 #' 
 #' x_scone <- MetaPipe::qtl_scone(x, 1, model = "normal", method = "hk")
-#' x_qtl_perm <- qtl_perm_test(x, n_perm = 5, model = "normal", method = "hk")
-#' x_qtl_perm_1000 <- qtl_perm_test(x, 
-#'                                  n_perm = 1000, 
-#'                                  model = "normal", 
-#'                                  method = "hk")
+#' x_qtl_perm <- MetaPipe::qtl_perm_test(x, 
+#'                                       n_perm = 5, 
+#'                                       model = "normal", 
+#'                                       method = "hk",
+#'                                       plots_dir = tmp)
+#' x_qtl_perm_1000 <- MetaPipe::qtl_perm_test(x, 
+#'                                            n_perm = 1000, 
+#'                                            model = "normal", 
+#'                                            method = "hk",
+#'                                            plots_dir = tmp)
+#' 
+#' # Clean temporal directory
+#' unlink(tmp, recursive = TRUE, force = TRUE)
 #' }
+#' 
 #' @family QTL mapping functions
 qtl_perm_test <- function(x_data, 
                           cpus = 1, 

@@ -69,4 +69,7 @@ ionomics_rev <- MetaPipe::replace_missing(ionomics,
                                           excluded_columns = c(1, 2),
                                           replace_na =  TRUE)
 knitr::kable(ionomics_rev[1:5, 1:8])
+
+# Clean up example outputs
+MetaPipe:::tidy_up("metapipe_")
 }

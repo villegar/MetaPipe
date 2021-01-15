@@ -47,4 +47,7 @@ out_pow2 <- MetaPipe::transform_data(data ^ 2, "POW_2")
 knitr::kable(head(out_exp2))
 knitr::kable(head(out_root2))
 knitr::kable(head(out_pow2))
+
+# Clean up example outputs
+MetaPipe:::tidy_up("HIST")
 }

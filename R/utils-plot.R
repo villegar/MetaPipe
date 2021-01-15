@@ -12,6 +12,9 @@
 #'                      main = "Histogram of Normal Distribution"), 
 #'                      "hist")
 #' 
+#' # Clean up example outputs
+#' MetaPipe:::tidy_up("hist")
+#' 
 #' @keywords internal
 save_plot <- function(plt_obj, name, width = 6, height = 6) {
   grDevices::png(paste0(name, ".png"), 
@@ -38,6 +41,9 @@ save_plot <- function(plt_obj, name, width = 6, height = 6) {
 #'                          main = "Histogram of Normal Distribution"), 
 #'                          "hist")
 #' 
+#' # Clean up example outputs
+#' MetaPipe:::tidy_up("hist")
+#' 
 #' @keywords internal
 save_plotTIFF <- function(plt_obj, name, width = 6, height = 6) {
   grDevices::tiff(paste0(name, ".tiff"), 
@@ -63,6 +69,9 @@ save_plotTIFF <- function(plt_obj, name, width = 6, height = 6) {
 #' MetaPipe:::save_plotPDF(hist(rnorm(100), 
 #'                         main = "Histogram of Normal Distribution"), 
 #'                         "hist")
+#'
+#' # Clean up example outputs
+#' MetaPipe:::tidy_up("hist")
 #' 
 #' @keywords internal
 save_plotPDF <- function(plt_obj, name, width = 6, height = 6) {
@@ -86,6 +95,9 @@ save_plotPDF <- function(plt_obj, name, width = 6, height = 6) {
 #' @examples
 #' plt_obj <- ggplot2::qplot(rnorm(100))
 #' MetaPipe:::ggplot_save(plt_obj, "hist")
+#' 
+#' # Clean up example outputs
+#' MetaPipe:::tidy_up("hist")
 #' 
 #' @keywords internal
 ggplot_save <- function(plt_obj, name, width = 6, height = 6){
@@ -114,6 +126,7 @@ ggplot_save <- function(plt_obj, name, width = 6, height = 6){
 #' @param xlab X-axis label.
 #'
 #' @examples
+#' \donttest{
 #' norm_dist <- rnorm(100)
 #' norm_dist_transformed <- norm_dist^2
 #' MetaPipe:::compare_hist(norm_dist, 
@@ -122,6 +135,9 @@ ggplot_save <- function(plt_obj, name, width = 6, height = 6){
 #'                         "xyz_hist", 
 #'                         "x")
 #'
+#' # Clean up example outputs
+#' MetaPipe:::tidy_up("xyz")
+#' }
 #' @keywords internal
 compare_hist <- function(original, transformed, trait, prefix, xlab) {
   `..count..` <- NULL # Local binding
@@ -177,10 +193,14 @@ compare_hist <- function(original, transformed, trait, prefix, xlab) {
 #' @param is_trait Boolean flag to prepend "Trait" to \code{title}.
 #'
 #' @examples
+#' \donttest{
 #' norm_dist <- rnorm(100)
 #' MetaPipe:::generate_hist(norm_dist, "XYZ", "xyz_hist", "x")
 #' MetaPipe:::generate_hist(norm_dist, "XYZ", "xyz_hist", "x", is_trait = TRUE)
 #' 
+#' # Clean up example outputs
+#' MetaPipe:::tidy_up("xyz")
+#' }
 #' @keywords internal
 generate_hist <- function(data, 
                           title, 
@@ -218,41 +238,7 @@ generate_hist <- function(data,
   filename <- gsub("[[:punct:]]", "", title)
   filename <-  paste0(prefix, "_", gsub(" ", "-", filename))
   ggplot_save(plt_obj, filename)
-  return(NULL)
-}
-
-#' Hexagonal logo
-#' 
-#' Create Hexagonal logo for MetaPipe
-#'
-#' @param subplot Subplot/image/icon to be used in the background.
-#' @param dpi Dots per inch.
-#' @param h_color Hexagon edge colour.
-#' @param h_fill Hexagon filling colour.
-#' @param output Output filename and path.
-#' @param p_color Package name colour.
-#'
-#' @examples
-#' MetaPipe:::hex_logo(output = "hex-logo.png")
-#' 
-#' @keywords internal
-hex_logo <- function(subplot = system.file("images/lab-2.png", 
-                                           package = "MetaPipe"),
-                     dpi = 800,
-                     h_color = "#000000",
-                     h_fill = "#363b74",
-                     output = system.file("images/metapipe.png", 
-                                          package = "MetaPipe"),
-                     p_color = "#eeeeee") {
-  hexSticker::sticker(subplot = subplot, package = "MetaPipe", 
-                      h_color = h_color,  h_fill = h_fill,
-                      dpi = dpi,
-                      # l_x = 1.0, l_y = 1.0, spotlight = FALSE, 
-                      s_x = 1.0, s_y = .85, s_width = .5,
-                      p_x = 1.0, p_y = 1.52, p_size = 6, p_color = p_color,
-                      url = "https://github.com/villegar/MetaPipe", 
-                      u_angle = 30, u_color = p_color, u_size = 1.35,
-                      filename = output)
+  # return(NULL)
 }
 
 #' Simple PCA
@@ -265,12 +251,15 @@ hex_logo <- function(subplot = system.file("images/lab-2.png",
 #' @param data A numeric or complex matrix (or data frame) that will be used to
 #'     perform the Principal Components Analysis.
 #' @param plot Boolean flag to indicate whether or not to create a PCA biplot.
-#' @inheritDotParams factoextra::fviz_pca_biplot -X -col.var -gradient.cols 
-#'     -label -addEllipses -repel
+#' @param ... Arguments passed on to 
+#'     \code{\link[factoextra:fviz_pca_biplot]{factoextra::fviz_pca_biplot}}.
+# @inheritDotParams factoextra::fviz_pca_biplot -X -col.var -gradient.cols 
+#     -label -addEllipses -repel
 #' @return Data frame with PCA result.
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' # Toy dataset
 #' example_data <- data.frame(ID = c(1,2,3,4,5), 
 #'                            P1 = c("one", "two", "three", "four", "five"), 
@@ -284,6 +273,7 @@ hex_logo <- function(subplot = system.file("images/lab-2.png",
 #'                                           excluded_columns = c(1, 2),
 #'                                           replace_na =  TRUE)
 #' ionomics_pca <- PCA(ionomics_rev[, -c(1:2)])
+#' }
 PCA <- function(data, plot = TRUE, ...) {
   idx <- check_types(data, quiet = FALSE)
   if (length(idx) > 0)

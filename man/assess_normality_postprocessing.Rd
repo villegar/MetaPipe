@@ -50,6 +50,7 @@ It creates four CSV files containing the following data:
 }
 }
 \examples{
+\donttest{
 # Toy dataset
 example_data <- data.frame(ID = c(1,2,3,4,5), 
                            P1 = c("one", "two", "three", "four", "five"), 
@@ -92,6 +93,10 @@ knitr::kable(ionomics_norm[1:5, ])
 
 # Skewed traits (partial output)
 knitr::kable(ionomics_skew[1:5, 1:10])
+}
+
+# Clean up example outputs
+MetaPipe:::tidy_up(c("HIST_", "ionomics_", "metapipe_"))
 
 }
 \seealso{

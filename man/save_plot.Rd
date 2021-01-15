@@ -23,5 +23,8 @@ MetaPipe:::save_plot(hist(rnorm(100),
                      main = "Histogram of Normal Distribution"), 
                      "hist")
 
+# Clean up example outputs
+MetaPipe:::tidy_up("hist")
+
 }
 \keyword{internal}

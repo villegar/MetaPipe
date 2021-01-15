@@ -14,12 +14,15 @@ Scaled data.
 }
 \description{
 Perform a pareto scaling.
-This function is adapted from Stephen C. Grace and Dane A. Hudson.
 }
 \examples{
 set.seed(123)
 data <- matrix(rnorm(100, 5), ncol = 2)
 data_new <- MetaPipe:::paretoscale(data)
 
+}
+\references{
+Grace, Stephen & Hudson, Dane. (2016). Processing and Visualization of 
+Metabolomics Data Using R. \doi{10.5772/65405}.
 }
 \keyword{internal}

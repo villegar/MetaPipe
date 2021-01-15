@@ -70,6 +70,9 @@ is_pseudo_marker <- function(marker) {
 #' x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
 #' MetaPipe:::transform_pseudo_marker(x, 'loc1', 1, 2.0)
 #' 
+#' # Clean up example outputs
+#' MetaPipe:::tidy_up("metapipe")
+#' 
 #' @keywords internal
 transform_pseudo_marker <- function(x_data, marker, chr, pos) {
   markerp <- marker
@@ -87,7 +90,9 @@ transform_pseudo_marker <- function(x_data, marker, chr, pos) {
 #' 
 #' Create effect plots for significant QTLs found with  
 #' \code{\link{qtl_perm_test}}.
-#'
+#' 
+#' @importFrom foreach "%dopar%"
+#' 
 #' @param x_data_sim Cross-data frame simulated with \code{qtl::sim.geno}.
 #' @param qtl_data Significant QTL data.
 #' @param cpus Number of CPUs to be used in the computation.
@@ -104,6 +109,7 @@ transform_pseudo_marker <- function(x_data, marker, chr, pos) {
 #'                            P1 = c("one", "two", "three", "four", "five"),
 #'                            T1 = rnorm(population),
 #'                            T2 = rnorm(population))
+#' \donttest{
 #' example_data_normalised <- 
 #'   data.frame(index = rep(c(1, 2), each = 5),
 #'              trait = rep(c("T1", "T2"), each = 5),
@@ -138,16 +144,20 @@ transform_pseudo_marker <- function(x_data, marker, chr, pos) {
 #'   MetaPipe::qtl_perm_test(x, n_perm = 5, model = "normal", method = "hk")
 #' x_sim <- qtl::sim.geno(x)
 #' MetaPipe::effect_plots(x_sim, x_qtl_perm)
+#' }
+#' 
+#' # Clean up example outputs
+#' MetaPipe:::tidy_up(c("EFF-", "LOD-", "metapipe"))
 #' 
 #' @seealso \code{\link{qtl_perm_test}}
 effect_plots <- function(x_data_sim, qtl_data, cpus = 1, plots_dir = getwd()) {
   i <- NULL # Local binding
   # Start parallel backend
-  cl <- parallel::makeCluster(cpus, setup_strategy = "sequential")
+  cl <- parallel::makeCluster(cpus)#, setup_strategy = "sequential")
   doParallel::registerDoParallel(cl)
   
-  # Load binary operator for backend
-  `%dopar%` <- foreach::`%dopar%`
+  # # Load binary operator for backend
+  # `%dopar%` <- foreach::`%dopar%`
   
   # Extract trait names
   traits <- as.character(qtl_data$trait)
@@ -155,18 +165,18 @@ effect_plots <- function(x_data_sim, qtl_data, cpus = 1, plots_dir = getwd()) {
   # Extract markers
   markers <- as.character(qtl_data$marker)
 
-  plots <- foreach::foreach(i = 1:nrow(qtl_data)) %dopar% {
-    if (qtl_data[i, ]$method == "par-scanone") {
-      qtl_data[i, ]$transf <-
-        ifelse(is.na(qtl_data[i, ]$transf), "", qtl_data[i, ]$transf)
-      if (qtl_data[i, ]$transf == "log") {
+  plots <- foreach::foreach(i = seq_len(nrow(qtl_data))) %dopar% {
+    if (qtl_data$method[i] == "par-scanone") {
+      qtl_data$transf[i] <-
+        ifelse(is.na(qtl_data$transf[i]), "", qtl_data$transf[i])
+      if (qtl_data$transf[i] == "log") {
         ylab <-
-          paste0("$\\log_{", qtl_data[i, ]$transf_val, "}(", traits[i], ")$")
-      } else if (qtl_data[i, ]$transf == "root") {
+          paste0("$\\log_{", qtl_data$transf_val[i], "}(", traits[i], ")$")
+      } else if (qtl_data$transf[i] == "root") {
         ylab <-
-          paste0("$\\sqrt[", qtl_data[i, ]$transf_val, "]{", traits[i], "}$")
-      } else if (qtl_data[i, ]$transf == "power") {
-        ylab <- paste0("$(", traits[i], ")^", qtl_data[i, ]$transf_val, "$")
+          paste0("$\\sqrt[", qtl_data$transf_val[i], "]{", traits[i], "}$")
+      } else if (qtl_data$transf[i] == "power") {
+        ylab <- paste0("$(", traits[i], ")^", qtl_data$transf_val[i], "$")
       } else {
         ylab <- traits[i]
       }
@@ -245,7 +255,9 @@ load_data <- function(input, wdir = here::here(), contents = "raw", ...) {
 #'     data. For example, output from \code{\link{assess_normality}}.
 #' @param wdir Working directory.
 #' @param quiet Boolean flag to hide status messages.
-#' @inheritDotParams qtl::read.cross -format -dir
+#' @param ... Arguments passed on to 
+#'     \code{\link[qtl:read.cross]{qtl::read.cross}}.
+# @inheritDotParams qtl::read.cross -format -dir
 #'
 #' @return Object of \code{cross} class for QTL mapping.
 #' @export
@@ -256,6 +268,7 @@ load_data <- function(input, wdir = here::here(), contents = "raw", ...) {
 #' ionomics_rev <- MetaPipe::replace_missing(ionomics, 
 #'                                           excluded_columns = c(1, 2),
 #'                                           replace_na =  TRUE)
+#' \donttest{
 #' ionomics_normalised <- 
 #'   MetaPipe::assess_normality(ionomics_rev,
 #'                              excluded_columns = c(1, 2),
@@ -265,6 +278,10 @@ load_data <- function(input, wdir = here::here(), contents = "raw", ...) {
 #' x_data <- MetaPipe::read.cross(father_riparia, 
 #'                                ionomics_normalised$norm,
 #'                                genotypes = c("nn", "np", "--"))
+#' }
+#' 
+#' # Clean up example outputs
+#' MetaPipe:::tidy_up(c("HIST_", "ionomics_"))
 #' 
 #' @family QTL mapping functions
 read.cross <- function(geno, pheno, wdir = here::here(), quiet = TRUE, ...) {

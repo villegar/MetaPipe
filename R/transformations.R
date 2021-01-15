@@ -1,7 +1,6 @@
 #' Pareto scaling
 #' 
 #' Perform a pareto scaling.
-#' This function is adapted from Stephen C. Grace and Dane A. Hudson.
 #' 
 #' @importFrom stats sd
 #' @param z Original 2-dimensional data.
@@ -14,6 +13,10 @@
 #' data_new <- MetaPipe:::paretoscale(data)
 #' 
 #' @keywords internal
+#' 
+#' @references 
+#' Grace, Stephen & Hudson, Dane. (2016). Processing and Visualization of 
+#' Metabolomics Data Using R. \doi{10.5772/65405}. 
 paretoscale <- function(z) {
   colmean <- apply(z, 2, mean)
   colsd <- apply(z, 2, sd)
@@ -25,7 +28,7 @@ paretoscale <- function(z) {
 
 #' Check significance level
 #' 
-#' Check significance level (alpha) validity.
+#' Check significance level (\code{alpha}) validity.
 #'
 #' @param alpha Significance level.
 #'
@@ -101,6 +104,9 @@ check_transformation <-
 #' set.seed(123)
 #' data <- rnorm(100, 5)
 #' transformed <- MetaPipe::log_transformation(2 ^ data, "EXP_2")
+#' 
+#' # Clean up example outputs
+#' MetaPipe:::tidy_up("HIST")
 #' 
 #' @family Transformation functions
 log_transformation <- function(data, 
@@ -191,7 +197,10 @@ log_transformation <- function(data,
 #' @examples
 #' set.seed(123)
 #' data <- rnorm(100, 5)
-#' MetaPipe::power_transformation(sqrt(data), "ROOT_2")
+#' transformed <- MetaPipe::power_transformation(sqrt(data), "ROOT_2")
+#' 
+#' # Clean up example outputs
+#' MetaPipe:::tidy_up("HIST")
 #' 
 #' @family Transformation functions
 power_transformation <- function(data, 
@@ -281,7 +290,10 @@ power_transformation <- function(data,
 #' @examples
 #' set.seed(123)
 #' data <- rnorm(100, 5)
-#' MetaPipe::root_transformation(data ^ 2, "EXP_2")
+#' transformed <- MetaPipe::root_transformation(data ^ 2, "EXP_2")
+#' 
+#' # Clean up example outputs
+#' MetaPipe:::tidy_up("HIST")
 #' 
 #' @family Transformation functions
 root_transformation <- function(data, 
@@ -378,6 +390,9 @@ root_transformation <- function(data,
 #' knitr::kable(head(out_exp2))
 #' knitr::kable(head(out_root2))
 #' knitr::kable(head(out_pow2))
+#' 
+#' # Clean up example outputs
+#' MetaPipe:::tidy_up("HIST")
 transform_data <- function(data,
                            trait = "DATA",
                            alpha = 0.05,
@@ -453,8 +468,7 @@ transform_data <- function(data,
     record$transf <- "log"
     record$transf_val <- base
     return(record)
-  }
-  else if (transf == 2) { # Power transformation
+  } else if (transf == 2) { # Power transformation
     power <- transf_vals[transf_val_idx]
     transformed <- data ^ power
     power <- ifelse(power == exp(1), "e", power)
@@ -471,8 +485,7 @@ transform_data <- function(data,
     record$transf <- "power"
     record$transf_val <- power
     return(record)
-  }
-  else { # Root transformation
+  } else { # Root transformation
     root <- transf_vals[transf_val_idx]
     transformed <- data ^ (1 / root)
     root <- ifelse(root == exp(1), "e", root)

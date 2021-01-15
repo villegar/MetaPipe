@@ -28,6 +28,7 @@ example_data <- data.frame(ID = 1:population,
                            P1 = c("one", "two", "three", "four", "five"),
                            T1 = rnorm(population),
                            T2 = rnorm(population))
+\donttest{
 example_data_normalised <- 
   data.frame(index = rep(c(1, 2), each = 5),
              trait = rep(c("T1", "T2"), each = 5),
@@ -62,6 +63,10 @@ x_qtl_perm <-
   MetaPipe::qtl_perm_test(x, n_perm = 5, model = "normal", method = "hk")
 x_sim <- qtl::sim.geno(x)
 MetaPipe::effect_plots(x_sim, x_qtl_perm)
+}
+
+# Clean up example outputs
+MetaPipe:::tidy_up(c("EFF-", "LOD-", "metapipe"))
 
 }
 \seealso{

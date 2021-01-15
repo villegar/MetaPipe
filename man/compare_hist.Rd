@@ -22,6 +22,7 @@ Compare two histograms from two different sources. For example original data
 and transformed data.
 }
 \examples{
+\donttest{
 norm_dist <- rnorm(100)
 norm_dist_transformed <- norm_dist^2
 MetaPipe:::compare_hist(norm_dist, 
@@ -30,5 +31,8 @@ MetaPipe:::compare_hist(norm_dist,
                         "xyz_hist", 
                         "x")
 
+# Clean up example outputs
+MetaPipe:::tidy_up("xyz")
+}
 }
 \keyword{internal}

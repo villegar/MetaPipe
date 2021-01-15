@@ -63,5 +63,8 @@ x <- qtl::jittermap(x)
 x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
 MetaPipe:::transform_pseudo_marker(x, 'loc1', 1, 2.0)
 
+# Clean up example outputs
+MetaPipe:::tidy_up("metapipe")
+
 }
 \keyword{internal}

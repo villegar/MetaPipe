@@ -56,6 +56,7 @@ logarithmic (\code{log_a(x)}), power (\code{x^a}), and
 radical/root (\code{x^(1/a)}) functions.
 }
 \examples{
+\donttest{
 # Toy dataset
 example_data <- data.frame(ID = c(1,2,3,4,5), 
                            P1 = c("one", "two", "three", "four", "five"), 
@@ -78,6 +79,10 @@ ionomics_normalised <-
                                    transf_vals = c(2, exp(1)))
 # Show one entry for each of the first ten traits (left to right)
 knitr::kable(ionomics_normalised[nrow(ionomics) * c(1:10), ])
+}
+
+# Clean up example outputs
+MetaPipe:::tidy_up("HIST")
 
 }
 \seealso{

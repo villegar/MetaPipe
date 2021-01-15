@@ -70,15 +70,15 @@ test_that("generate histogram works", {
   }
 })
 
-test_that("hex logo works", {
-  filename <- "hex-logo.png"
-  hex_logo(output = filename)
-  expect_true(file.exists(filename))
-  expect_false(dir.exists(filename))
-  expect_gt(file.size(filename), 0)
-  file.remove(filename)
-  expect_false(file.exists(filename))
-})
+# test_that("hex logo works", {
+#   filename <- "hex-logo.png"
+#   hex_logo(output = filename)
+#   expect_true(file.exists(filename))
+#   expect_false(dir.exists(filename))
+#   expect_gt(file.size(filename), 0)
+#   file.remove(filename)
+#   expect_false(file.exists(filename))
+# })
 
 test_that("PCA works", {
   # Toy dataset

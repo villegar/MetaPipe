@@ -2,7 +2,7 @@ Package: MetaPipe
 Type: Package
 Title: A High-Performance Computing Pipeline for QTL Mapping of Large Ionomic 
            and Metabolomic Datasets
-Version: 0.0.0.900
+Version: 0.1.0
 Authors@R: c(
     person(given = "Roberto",
            family = "Villegas-Diaz",
@@ -36,8 +36,8 @@ Authors@R: c(
 Description: Pipeline for Quantitative Trait Locus (QTL) mapping of large 
     ionomic and metabolomic datasets. It uses a High-Performance Computing 
     (HPC) approach to speed up the computations performed.
-URL: https://github.com/villegar/MetaPipe
-BugReports: https://github.com/villegar/MetaPipe/issues
+URL: https://github.com/villegar/MetaPipe/
+BugReports: https://github.com/villegar/MetaPipe/issues/
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -53,13 +53,10 @@ Imports:
     grid,
     here, 
     latex2exp,
-    plyr,
     qtl, 
     R.devices, 
     tictoc
 Suggests:
-    badger,
-    hexSticker,
     knitr,
     kableExtra,
     rmarkdown,
