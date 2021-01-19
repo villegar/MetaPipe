@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MetaPipe</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -80,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -112,7 +112,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/villegar/MetaPipe/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -200,21 +200,12 @@ transformation was performed.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>123</span><span class='op'>)</span>
 <span class='va'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>100</span>, <span class='fl'>5</span><span class='op'>)</span>
-<span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>root_transformation</span><span class='op'>(</span><span class='va'>data</span> <span class='op'>^</span> <span class='fl'>2</span>, <span class='st'>"EXP_2"</span><span class='op'>)</span>
+<span class='va'>transformed</span> <span class='op'>&lt;-</span> <span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>root_transformation</span><span class='op'>(</span><span class='va'>data</span> <span class='op'>^</span> <span class='fl'>2</span>, <span class='st'>"EXP_2"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>The data was normalised by a root of e</span></div><div class='output co'>#&gt;   [1] 2.994219 3.156560 3.990078 3.301778 3.329897 4.059846 3.486982 2.636712
-#&gt;   [9] 2.931268 3.051000 3.839264 3.439366 3.458684 3.321006 2.996518 4.091761
-#&gt;  [17] 3.504318 2.262467 3.599297 3.037618 2.738461 3.162499 2.759859 2.910220
-#&gt;  [25] 2.962119 2.414277 3.662469 3.341394 2.702346 3.852750 3.470782 3.124905
-#&gt;  [33] 3.688902 3.681076 3.654986 3.593389 3.530577 3.238114 3.119581 3.083072
-#&gt;  [41] 2.927340 3.167392 2.636538 4.259997 3.831945 2.710080 3.072059 3.040646
-#&gt;  [49] 3.635744 3.227755 3.388953 3.254197 3.247296 3.904654 3.158705 3.971155
-#&gt;  [57] 2.487830 3.544923 3.327301 3.371195 3.448722 3.023026 3.106249 2.763654
-#&gt;  [65] 2.736427 3.412755 3.481010 3.293388 3.701391 4.207911 3.028608 2.071537
-#&gt;  [73] 3.739703 2.920086 2.930690 3.748786 3.129936 2.659709 3.354709 3.200896
-#&gt;  [81] 3.270706 3.451382 3.087888 3.572795 3.161277 3.426122 3.781358 3.474884
-#&gt;  [89] 3.109812 3.805046 3.734097 3.527994 3.382027 2.960690 3.901068 2.974453
-#&gt;  [97] 4.268029 3.978390 3.153870 2.759646</div><div class='input'>
+#&gt; <span class='message'>The data was normalised by a root of e</span></div><div class='input'>
+<span class='co'># Clean up example outputs</span>
+<span class='fu'>MetaPipe</span><span class='fu'>:::</span><span class='fu'><a href='tidy_up.html'>tidy_up</a></span><span class='op'>(</span><span class='st'>"HIST"</span><span class='op'>)</span>
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

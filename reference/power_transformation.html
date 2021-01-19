@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MetaPipe</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -80,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -112,7 +112,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/villegar/MetaPipe/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -200,21 +200,12 @@ transformation was performed.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>123</span><span class='op'>)</span>
 <span class='va'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>100</span>, <span class='fl'>5</span><span class='op'>)</span>
-<span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>power_transformation</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span>, <span class='st'>"ROOT_2"</span><span class='op'>)</span>
+<span class='va'>transformed</span> <span class='op'>&lt;-</span> <span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>power_transformation</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span>, <span class='st'>"ROOT_2"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>The data was normalised by a power of 2</span></div><div class='output co'>#&gt;   [1] 4.439524 4.769823 6.558708 5.070508 5.129288 6.715065 5.460916 3.734939
-#&gt;   [9] 4.313147 4.554338 6.224082 5.359814 5.400771 5.110683 4.444159 6.786913
-#&gt;  [17] 5.497850 3.033383 5.701356 4.527209 3.932176 4.782025 3.973996 4.271109
-#&gt;  [25] 4.374961 3.313307 5.837787 5.153373 3.861863 6.253815 5.426464 4.704929
-#&gt;  [33] 5.895126 5.878133 5.821581 5.688640 5.553918 4.938088 4.694037 4.619529
-#&gt;  [41] 4.305293 4.792083 3.734604 7.168956 6.207962 3.876891 4.597115 4.533345
-#&gt;  [49] 5.779965 4.916631 5.253319 4.971453 4.957130 6.368602 4.774229 6.516471
-#&gt;  [57] 3.451247 5.584614 5.123854 5.215942 5.379639 4.497677 4.666793 3.981425
-#&gt;  [65] 3.928209 5.303529 5.448210 5.053004 5.922267 7.050085 4.508969 2.690831
-#&gt;  [73] 6.005739 4.290799 4.311991 6.025571 4.715227 3.779282 5.181303 4.861109
-#&gt;  [81] 5.005764 5.385280 4.629340 5.644377 4.779513 5.331782 6.096839 5.435181
-#&gt;  [89] 4.674068 6.148808 5.993504 5.548397 5.238732 4.372094 6.360652 4.399740
-#&gt;  [97] 7.187333 6.532611 4.764300 3.973579</div><div class='input'>
+#&gt; <span class='message'>The data was normalised by a power of 2</span></div><div class='input'>
+<span class='co'># Clean up example outputs</span>
+<span class='fu'>MetaPipe</span><span class='fu'>:::</span><span class='fu'><a href='tidy_up.html'>tidy_up</a></span><span class='op'>(</span><span class='st'>"HIST"</span><span class='op'>)</span>
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
