@@ -317,7 +317,9 @@ assess_normality <- function(raw_data,
 #' 
 #' @param x_data Cross-data frame containing genetic map data and traits.
 #' @param cpus Number of CPUs to be used in the computation.
-#' @inheritDotParams qtl::scanone -cross -pheno.col
+#' @param ... Arguments passed on to 
+#'     \code{\link[qtl:scanone]{qtl::scanone}}.
+# @inheritDotParams qtl::scanone -cross -pheno.col
 #' 
 #' @return Data frame containing the LOD scores.
 #' @export
@@ -378,7 +380,8 @@ assess_normality <- function(raw_data,
 #' x_scone <- MetaPipe::qtl_scone(x, 1, model = "normal", method = "hk")
 #' 
 #' # Clean temporal directory
-#' unlink(tmp, recursive = TRUE, force = TRUE)
+#' # unlink(tmp, recursive = TRUE, force = TRUE)
+#' MetaPipe:::tidy_up(tmp)
 #' }
 #' @family QTL mapping functions
 qtl_scone <- function(x_data, cpus = 1, ...) {
@@ -438,7 +441,9 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
 #'     contains parametric (normal) traits.
 #' @param n_perm Number of permutations.
 #' @param plots_dir Output directory for plots.
-#' @inheritDotParams qtl::scanone -cross -pheno.col -n.perm
+#' @param ... Arguments passed on to 
+#'     \code{\link[qtl:scanone]{qtl::scanone}}.
+# @inheritDotParams qtl::scanone -cross -pheno.col -n.perm
 #' 
 #' @return Data frame containing the significant QTLs information.
 #' @export
@@ -520,7 +525,8 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
 #'                                            plots_dir = tmp)
 #' 
 #' # Clean temporal directory
-#' unlink(tmp, recursive = TRUE, force = TRUE)
+#' # unlink(tmp, recursive = TRUE, force = TRUE)
+#' MetaPipe:::tidy_up(tmp)
 #' }
 #' 
 #' @family QTL mapping functions

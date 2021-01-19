@@ -11,74 +11,8 @@ qtl_scone(x_data, cpus = 1, ...)
 
 \item{cpus}{Number of CPUs to be used in the computation.}
 
-\item{...}{
-  Arguments passed on to \code{\link[qtl:scanone]{qtl::scanone}}
-  \describe{
-    \item{\code{chr}}{Optional vector indicating the chromosomes for which LOD
-   scores should be calculated.  This should be a vector of character
-   strings referring to chromosomes by name; numeric values are
-   converted to strings.  Refer to chromosomes with a preceding \code{-}
-   to have all chromosomes but those considered.  A logical (TRUE/FALSE)
-   vector may also be used.}
-    \item{\code{model}}{The phenotype model: the usual normal model, a model for
-   binary traits, a two-part model or non-parametric analysis}
-    \item{\code{method}}{Indicates whether to use the EM algorithm,
-   imputation, Haley-Knott regression, the extended Haley-Knott method,
-   or marker regression.  Not all methods are available for all models.
-   Marker regression is performed either by dropping individuals with
-   missing genotypes (\code{"mr"}), or by first filling in missing data
-   using a single imputation (\code{"mr-imp"}) or by the Viterbi
-   algorithm (\code{"mr-argmax"}).}
-    \item{\code{addcovar}}{Additive covariates;
-   allowed only for the normal and binary models.}
-    \item{\code{intcovar}}{Interactive covariates (interact with QTL genotype);
-   allowed only for the normal and binary models.}
-    \item{\code{weights}}{Optional weights of individuals.  Should be either NULL
-   or a vector of length n.ind containing positive weights.  Used only
-   in the case \code{model="normal"}.}
-    \item{\code{use}}{In the case that multiple phenotypes are selected to be
-   scanned, this argument indicates whether to use all individuals,
-   including those missing some phenotypes, or just those individuals
-   that have data on all selected phenotypes.}
-    \item{\code{upper}}{Used only for the two-part model; if true, the
-   "undefined" phenotype is the maximum observed phenotype; otherwise,
-   it is the smallest observed phenotype.}
-    \item{\code{ties.random}}{Used only for the non-parametric "model"; if TRUE,
-   ties in the phenotypes are ranked at random.  If FALSE, average ranks
-   are used and a corrected LOD score is calculated.}
-    \item{\code{start}}{Used only for the EM algorithm with the normal model and
-   no covariates.  If \code{NULL}, use the usual starting values; if
-   length 1, use random initial weights for EM; otherwise, this should
-   be a vector of length n+1 (where n is the number of possible
-   genotypes for the cross), giving the initial values for EM.}
-    \item{\code{maxit}}{Maximum number of iterations for methods \code{"em"} and
-   \code{"ehk"}.}
-    \item{\code{tol}}{Tolerance value for determining convergence for methods
-   \code{"em"} and \code{"ehk"}.}
-    \item{\code{n.perm}}{If specified, a permutation test is performed rather than
-   an analysis of the observed data.  This argument defines the number
-   of permutation replicates.}
-    \item{\code{perm.Xsp}}{If \code{n.perm} > 0, so that a permutation test will
-   be performed, this indicates whether separate permutations should be
-   performed for the autosomes and the X chromosome, in order to get an
-   X-chromosome-specific LOD threshold.  In this case, additional
-   permutations are performed for the X chromosome.}
-    \item{\code{perm.strata}}{If \code{n.perm} > 0, this may be used to perform a
-   stratified permutation test.  This should be a vector with the same
-   number of individuals as in the cross data.  Unique values indicate
-   the individual strata, and permutations will be performed within the
-   strata.}
-    \item{\code{verbose}}{In the case \code{n.perm} is specified, display
-   information about the progress of the permutation tests.}
-    \item{\code{batchsize}}{The number of phenotypes (or permutations) to be run
-   as a batch; used only for methods \code{"hk"} and \code{"imp"}.}
-    \item{\code{n.cluster}}{If the package \code{snow} is available and
-   \code{n.perm} > 0, permutations are run in parallel using this number
-   of nodes.}
-    \item{\code{ind.noqtl}}{Indicates individuals who should not be allowed a QTL
-   effect (used rarely, if at all); this is a logical vector of same
-   length as there are individuals in the cross.}
-  }}
+\item{...}{Arguments passed on to 
+\code{\link[qtl:scanone]{qtl::scanone}}.}
 }
 \value{
 Data frame containing the LOD scores.
@@ -143,7 +77,8 @@ x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
 x_scone <- MetaPipe::qtl_scone(x, 1, model = "normal", method = "hk")
 
 # Clean temporal directory
-unlink(tmp, recursive = TRUE, force = TRUE)
+# unlink(tmp, recursive = TRUE, force = TRUE)
+MetaPipe:::tidy_up(tmp)
 }
 }
 \seealso{
