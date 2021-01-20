@@ -39,20 +39,21 @@ sub_html <- function(str1, str2) {
 ```
 
 # MetaPipe <img src="https://raw.githubusercontent.com/villegar/MetaPipe/master/inst/images/metapipe.png" alt="logo" align="right" height=200px/>
-MetaPipe: A High-Performance Computing Pipeline for QTL Mapping of Large Ionomic 
-           and Metabolomic Datasets
+
 <!-- badges: start -->
 <!-- [![Build Status](https://travis-ci.com/villegar/MetaPipe.svg?branch=master)](https://travis-ci.com/villegar/MetaPipe) -->
 <!-- `r badger::badge_travis("villegar/MetaPipe", is_commercial = TRUE)` -->
-`r badger::badge_cran_release("MetaPipe", color = "red")`
+`r badger::badge_cran_release("MetaPipe", color = "black")`
 `r badger::badge_devel("villegar/MetaPipe", "yellow")`
 `r badger::badge_codecov("villegar/MetaPipe")`
 `r badger::badge_github_actions()`
 <!-- `r badger::badge_code_size("villegar/MetaPipe")` -->
 <!-- `r badger::badge_dependencies("MetaPipe")` -->
 <!-- `r badger::badge_cran_checks("MetaPipe")` -->
-
 <!-- badges: end -->
+
+MetaPipe: A High-Performance Computing Pipeline for QTL Mapping of Large Ionomic and Metabolomic Datasets
+
 ## Overview
 
 The goal of MetaPipe is to provide an easy to use and powerful tool capable of 

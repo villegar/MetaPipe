@@ -7,20 +7,24 @@
 
 # MetaPipe <img src="https://raw.githubusercontent.com/villegar/MetaPipe/master/inst/images/metapipe.png" alt="logo" align="right" height=200px/>
 
-MetaPipe: A High-Performance Computing Pipeline for QTL Mapping of Large
-Ionomic and Metabolomic Datasets <!-- badges: start -->
+<!-- badges: start -->
+
 <!-- [![Build Status](https://travis-ci.com/villegar/MetaPipe.svg?branch=master)](https://travis-ci.com/villegar/MetaPipe) -->
+
 <!-- [![](https://travis-ci.com/villegar/MetaPipe.svg?branch=master)](https://travis-ci.com/villegar/MetaPipe) -->
-[![](https://www.r-pkg.org/badges/version/MetaPipe?color=red)](https://cran.r-project.org/package=MetaPipe)
-[![](https://img.shields.io/badge/devel%20version-0.0.0.900-yellow.svg)](https://github.com/villegar/MetaPipe)
+
+[![](https://www.r-pkg.org/badges/version/MetaPipe?color=black)](https://cran.r-project.org/package=MetaPipe)
+[![](https://img.shields.io/badge/devel%20version-0.1.0-yellow.svg)](https://github.com/villegar/MetaPipe)
 [![](https://codecov.io/gh/villegar/MetaPipe/branch/master/graph/badge.svg)](https://codecov.io/gh/villegar/MetaPipe)
 [![R build
-status](https://github.com/villegar/MetaPipe/workflows/R-CMD-check/badge.svg)](https://github.com/villegar/MetaPipe/actions)
+status](https://github.com/villegar/MetaPipe//workflows/R-CMD-check/badge.svg)](https://github.com/villegar/MetaPipe//actions)
 <!-- [![](https://img.shields.io/github/languages/code-size/villegar/MetaPipe.svg)](https://github.com/villegar/MetaPipe) -->
 <!-- [![Dependencies](https://tinyverse.netlify.com/badge/MetaPipe)](https://cran.r-project.org/package=MetaPipe) -->
 <!-- [![CRAN checks](https://cranchecks.info/badges/summary/MetaPipe)](https://cran.r-project.org/web/checks/check_results_MetaPipe.html) -->
-
 <!-- badges: end -->
+
+MetaPipe: A High-Performance Computing Pipeline for QTL Mapping of Large
+Ionomic and Metabolomic Datasets
 
 ## Overview
 
