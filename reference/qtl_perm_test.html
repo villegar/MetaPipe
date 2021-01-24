@@ -227,7 +227,7 @@ contains parametric (normal) traits.</p></td>
                                      out_prefix <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>tmp</span>, <span class='st'>"/tmp"</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'># Create and store random genetic map (for testing only)</span>
-<span class='va'>genetic_map</span> <span class='op'>&lt;-</span> <span class='fu'>MetaPipe</span><span class='fu'>:::</span><span class='fu'><a href='random_map.html'>random_map</a></span><span class='op'>(</span>population <span class='op'>=</span> <span class='va'>population</span>, 
+<span class='va'>genetic_map</span> <span class='op'>&lt;-</span> <span class='fu'>MetaPipe</span><span class='fu'>:::</span><span class='fu'>random_map</span><span class='op'>(</span>population <span class='op'>=</span> <span class='va'>population</span>, 
                                      seed <span class='op'>=</span> <span class='va'>seed</span><span class='op'>)</span>
 
 <span class='co'># Load cross file with genetic map and raw data for normal traits</span>
@@ -290,7 +290,7 @@ contains parametric (normal) traits.</p></td>
 
 <span class='co'># Clean temporal directory</span>
 <span class='co'># unlink(tmp, recursive = TRUE, force = TRUE)</span>
-<span class='fu'>MetaPipe</span><span class='fu'>:::</span><span class='fu'><a href='tidy_up.html'>tidy_up</a></span><span class='op'>(</span><span class='va'>tmp</span><span class='op'>)</span>
+<span class='fu'>MetaPipe</span><span class='fu'>:::</span><span class='fu'>tidy_up</span><span class='op'>(</span><span class='va'>tmp</span><span class='op'>)</span>
 <span class='co'># }</span>
 
 </div></pre>

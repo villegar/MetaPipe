@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Load raw data — load_raw" />
-<meta property="og:description" content="Load raw data from disk and aggregates (using the mean function) 
+<meta property="og:description" content="Load raw data from disk and aggregate (using the mean function) 
 observations with duplicated IDs (first column). Non-numeric columns must
 be excluded using the excluded_columns parameter." />
 
@@ -137,7 +137,7 @@ be excluded using the excluded_columns parameter." />
     </div>
 
     <div class="ref-description">
-    <p>Load raw data from disk and aggregates (using the <code>mean</code> function) 
+    <p>Load raw data from disk and aggregate (using the <code>mean</code> function) 
 observations with duplicated IDs (first column). Non-numeric columns must
 be excluded using the <code>excluded_columns</code> parameter.</p>
     </div>
@@ -150,7 +150,8 @@ be excluded using the <code>excluded_columns</code> parameter.</p>
     <tr>
       <th>raw_data_filename</th>
       <td><p>Filename containing the raw data, it can be a
-relative path or an absolute path.</p></td>
+relative path (e.g. <code>"my_input.csv"</code>) or an absolute path (e.g. 
+<code>"/path/to/my_input.csv"</code>).</p></td>
     </tr>
     <tr>
       <th>excluded_columns</th>
@@ -178,20 +179,20 @@ properties that are non-numeric, excluded columns.</p></td>
 #&gt; 
 #&gt; | ID|P1    |         T1|         T2|
 #&gt; |--:|:-----|----------:|----------:|
-#&gt; |  1|one   | -0.8396835| -0.4844113|
-#&gt; |  2|two   |  0.4461303| -1.0111405|
-#&gt; |  3|three | -0.3654167|  0.1191242|
-#&gt; |  4|four  |  0.5391799| -1.6952331|
-#&gt; |  5|five  | -0.8085769|  0.1718083|</div><div class='input'><span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span><span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>load_raw</span><span class='op'>(</span><span class='st'>"example_data_dup.csv"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+#&gt; |  1|one   | -1.1346302|  0.5904787|
+#&gt; |  2|two   |  0.7645571| -1.4130700|
+#&gt; |  3|three |  0.5707101|  1.6103416|
+#&gt; |  4|four  | -1.3516939|  1.8404425|
+#&gt; |  5|five  | -2.0298855|  1.3682979|</div><div class='input'><span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span><span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>load_raw</span><span class='op'>(</span><span class='st'>"example_data_dup.csv"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; 
 #&gt; 
 #&gt; | ID|P1    |         T1|         T2|
 #&gt; |--:|:-----|----------:|----------:|
-#&gt; |  1|one   | -0.8396835| -0.4844113|
-#&gt; |  2|two   |  0.4461303| -1.0111405|
-#&gt; |  3|three | -0.3654167|  0.1191242|
-#&gt; |  4|four  |  0.5391799| -1.6952331|
-#&gt; |  5|five  | -0.8085769|  0.1718083|</div><div class='input'>
+#&gt; |  1|one   | -1.1346302|  0.5904787|
+#&gt; |  2|two   |  0.7645571| -1.4130700|
+#&gt; |  3|three |  0.5707101|  1.6103416|
+#&gt; |  4|four  | -1.3516939|  1.8404425|
+#&gt; |  5|five  | -2.0298855|  1.3682979|</div><div class='input'>
 
 <span class='co'># F1 Seedling Ionomics dataset</span>
 <span class='va'>ionomics_path</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, 
@@ -210,7 +211,7 @@ properties that are non-numeric, excluded columns.</p></td>
 #&gt; |E_197 |           79| 27855.36| 5225.275| 1761.725| 0.0104453| 25.34740| 11.009597|
 #&gt; |E_016 |           79| 27377.40| 6141.001| 2145.715| 0.0172996| 24.64500|  6.999958|</div><div class='input'>
 <span class='co'># Clean up example outputs</span>
-<span class='fu'>MetaPipe</span><span class='fu'>:::</span><span class='fu'><a href='tidy_up.html'>tidy_up</a></span><span class='op'>(</span><span class='st'>"example_data"</span><span class='op'>)</span>
+<span class='fu'>MetaPipe</span><span class='fu'>:::</span><span class='fu'>tidy_up</span><span class='op'>(</span><span class='st'>"example_data"</span><span class='op'>)</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
