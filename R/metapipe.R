@@ -3,7 +3,7 @@
 
 #' Load raw data
 #' 
-#' Load raw data from disk and aggregates (using the \code{mean} function) 
+#' Load raw data from disk and aggregate (using the \code{mean} function) 
 #' observations with duplicated IDs (first column). Non-numeric columns must
 #' be excluded using the \code{excluded_columns} parameter.
 #' 
@@ -13,7 +13,8 @@
 #' @importFrom utils write.csv
 #' 
 #' @param raw_data_filename Filename containing the raw data, it can be a
-#'     relative path or an absolute path.
+#'     relative path (e.g. \code{"my_input.csv"}) or an absolute path (e.g. 
+#'     \code{"/path/to/my_input.csv"}).
 #' @param excluded_columns Numeric vector containing the indices of the dataset 
 #'     properties that are non-numeric, excluded columns.
 #'
@@ -86,7 +87,7 @@ load_raw <- function(raw_data_filename, excluded_columns = NULL) {
 #' 
 #' Finally, if there are traits for which all entries are missing, these will 
 #' be removed from the dataset and stored in a external CSV file called
-#' \code{"out_prefix_NA_raw_data.csv"}.
+#' \code{"<out_prefix>_NA_raw_data.csv"}.
 #' 
 #' @param raw_data Data frame containing the raw data.
 #' @param excluded_columns Numeric vector containing the indices of the dataset 

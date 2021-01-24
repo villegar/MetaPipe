@@ -10,6 +10,7 @@
 #' @param p_color Package name colour.
 #' 
 #' @keywords internal
+#' @noRd
 hex_logo <- function(subplot = system.file("images/lab-2.png", 
                                            package = "MetaPipe"),
                      dpi = 800,

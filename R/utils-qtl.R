@@ -13,6 +13,7 @@
 #' MetaPipe:::is_pseudo_marker('S1_2345')
 #' 
 #' @keywords internal
+#' @noRd
 is_pseudo_marker <- function(marker) {
   return(ifelse(grepl("loc", marker), TRUE, FALSE))
 }
@@ -74,6 +75,7 @@ is_pseudo_marker <- function(marker) {
 #' MetaPipe:::tidy_up("metapipe")
 #' 
 #' @keywords internal
+#' @noRd
 transform_pseudo_marker <- function(x_data, marker, chr, pos) {
   markerp <- marker
   posp <- pos
@@ -220,6 +222,7 @@ effect_plots <- function(x_data_sim, qtl_data, cpus = 1, plots_dir = getwd()) {
 #' @return Data frame.
 #' 
 #' @keywords internal
+#' @noRd
 load_data <- function(input, wdir = here::here(), contents = "raw", ...) {
     # Verify if input is a string with the filename
     if (class(input) == "character") {
