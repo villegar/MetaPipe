@@ -87,7 +87,7 @@ load_raw <- function(raw_data_filename, excluded_columns = NULL) {
 #' 
 #' Finally, if there are traits for which all entries are missing, these will 
 #' be removed from the dataset and stored in a external CSV file called
-#' \code{"out_prefix_NA_raw_data.csv"}.
+#' \code{"<out_prefix>_NA_raw_data.csv"}.
 #' 
 #' @param raw_data Data frame containing the raw data.
 #' @param excluded_columns Numeric vector containing the indices of the dataset 
