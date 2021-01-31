@@ -163,10 +163,9 @@ rplc_na <- function(x) {
 #' List files matching a pattern and delete them
 #'
 #' @param patterns Vector of strings with patterns to be deleted.
-#' @param path Path to the directory containing the files
+#' @param path Path to the directory containing the files.
 #' 
-#' @keywords internal
-#' @noRd
+#' @export
 tidy_up <- function(patterns, path = here::here()) {
   # List files
   filenames <- unlist(lapply(patterns,
