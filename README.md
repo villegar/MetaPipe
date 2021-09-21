@@ -177,7 +177,7 @@ MetaPipe::assess_normality(raw_data = raw_data,
                            # Optional
                            cpus = 1, 
                            out_prefix = "metapipe", 
-                           plots_dir = getwd(), 
+                           plots_dir = tempdir(), 
                            transf_vals = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10),
                            alpha = 0.05,
                            pareto_scaling = FALSE,

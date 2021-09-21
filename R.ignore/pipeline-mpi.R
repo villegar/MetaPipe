@@ -96,7 +96,8 @@ lod_threshold <- 3 # LOD threhold for QTL Analysis
 prop_na <- 0.5 # Allows 50% of NAs per feature
 
 # Environment configuration
-dir.create(file.path(getwd(), PLOTS_DIR), showWarnings = FALSE) # Directory for plots
+tmpdir <- tempdir()
+dir.create(file.path(tmpdir, PLOTS_DIR), showWarnings = FALSE) # Directory for plots
 
 tic("Total")
 tic("Loading and pre-processing")

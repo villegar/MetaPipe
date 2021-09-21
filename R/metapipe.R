@@ -270,7 +270,7 @@ assess_normality <- function(raw_data,
                              excluded_columns, 
                              cpus = 1, 
                              out_prefix = "metapipe", 
-                             plots_dir = getwd(), 
+                             plots_dir = tempdir(), 
                              transf_vals = c(2, 
                                              exp(1), 
                                              3, 
@@ -538,7 +538,7 @@ qtl_perm_test <- function(x_data,
                           lod_threshold = 3, 
                           parametric = TRUE, 
                           n_perm = 1000, 
-                          plots_dir = getwd(), 
+                          plots_dir = tempdir(), 
                           ...) {
   i <- NULL # Local bindings
   # Start parallel backend

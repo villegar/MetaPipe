@@ -12,7 +12,7 @@ qtl_perm_test(
   lod_threshold = 3,
   parametric = TRUE,
   n_perm = 1000,
-  plots_dir = getwd(),
+  plots_dir = tempdir(),
   ...
 )
 }

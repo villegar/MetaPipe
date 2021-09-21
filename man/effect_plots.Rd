@@ -4,7 +4,7 @@
 \alias{effect_plots}
 \title{Create effect plots}
 \usage{
-effect_plots(x_data_sim, qtl_data, cpus = 1, plots_dir = getwd())
+effect_plots(x_data_sim, qtl_data, cpus = 1, plots_dir = tempdir())
 }
 \arguments{
 \item{x_data_sim}{Cross-data frame simulated with \code{qtl::sim.geno}.}
