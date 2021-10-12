@@ -8,22 +8,22 @@ test_that("load raw data works", {
                              stringsAsFactors = FALSE)
   
   # Raw data without duplicates
-  filename <- "example_data.csv"
+  filename <- tempfile("example_data_", fileext = ".csv")
   write.csv(example_data, filename, row.names = FALSE)
   expect_true(file.exists(filename))
   expect_false(dir.exists(filename))
   expect_gt(file.size(filename), 0)
   
   # Raw data with duplicated entries (rows)
-  filename_dup <- "example_data_dup.csv"
+  filename_dup <- tempfile("example_data_dup_", fileext = ".csv")
   write.csv(example_data[c(1:5, 1, 2), ], filename_dup, row.names = FALSE)
   expect_true(file.exists(filename_dup))
   expect_false(dir.exists(filename_dup))
   expect_gt(file.size(filename_dup), 0)
   
   # Testing the function for both files
-  expect_equal(example_data, load_raw("example_data.csv", c(1, 2)))
-  expect_equal(example_data, load_raw("example_data_dup.csv", c(1, 2)))
+  expect_equal(example_data, MetaPipe::load_raw(filename, c(1, 2)))
+  expect_equal(example_data, MetaPipe::load_raw(filename_dup, c(1, 2)))
   
   # Deleting raw data files
   file.remove(filename)
@@ -54,12 +54,18 @@ test_that("replace missing data works", {
   example_data_alt$T3 <- NULL
   
   # Testing the function with different parameters
-  expect_message(results_1 <- replace_missing(example_data, c(2)))
+  test_dir <- tempdir()
+  out_prefix <- file.path(test_dir, "metapipe")
+  expect_message(results_1 <- replace_missing(example_data, 
+                                              c(2),
+                                              out_prefix = out_prefix))
   expect_message(results_2 <- replace_missing(example_data, 
                                               c(1, 2), 
-                                              prop_na =  0.25))
+                                              prop_na =  0.25, 
+                                              out_prefix = out_prefix))
   expect_message(results_3 <- replace_missing(example_data, 
                                               c(1, 2), 
+                                              out_prefix = out_prefix,
                                               replace_na =  TRUE))
   
   # Comparing results
@@ -68,7 +74,7 @@ test_that("replace missing data works", {
   expect_equivalent(example_data_alt, results_3)  
   
   # Checking for file generated in the test where prop_na =  0.25
-  filename <- "metapipe_NA_raw_data.csv"
+  filename <- paste0(out_prefix, "_NA_raw_data.csv")
   expect_true(file.exists(filename))
   expect_false(dir.exists(filename))
   expect_gt(file.size(filename), 0)
@@ -94,16 +100,22 @@ test_that("normality assessment works", {
   example_data_exp2 <- example_data[,]
   example_data_exp2$T1 <- 2 ^ example_data$T1
   
-  normalised_data <- assess_normality(example_data, c(1, 2))
+  plots_dir <- file.path(tempdir(), "plots")
+  dir.create(plots_dir)
+  out_prefix <- file.path(tempdir(), "metapipe")
+  normalised_data <- assess_normality(example_data, c(1, 2), 
+                                      plots_dir = plots_dir, 
+                                      out_prefix = out_prefix)
   normalised_data2 <- assess_normality(example_data_exp2, 
                                        c(1, 2), 
-                                       plots_dir = here::here("plots"))
+                                       plots_dir = plots_dir, 
+                                       out_prefix = out_prefix)
   
   # Check for generated histograms
-  filenames <- c(here::here("plots/HIST_1_LOG_2_T1.png"), 
-                 here::here("plots/HIST_2_NORM_T2.png"), 
-                 "HIST_1_NORM_T1.png", 
-                 "HIST_2_NORM_T2.png")
+  filenames <- file.path(plots_dir,
+                         c("HIST_1_LOG_2_T1.png", 
+                           "HIST_1_NORM_T1.png", 
+                           "HIST_2_NORM_T2.png"))
   for (f in filenames) {
     expect_true(file.exists(f))
     expect_false(dir.exists(f))
@@ -113,21 +125,23 @@ test_that("normality assessment works", {
   }
   
   # Delete plots directory
-  expect_true(dir.exists(here::here("plots")))
-  unlink(here::here("plots"), recursive = TRUE)
-  expect_false(dir.exists(here::here("plots")))
+  expect_true(dir.exists(plots_dir))
+  unlink(plots_dir, recursive = TRUE)
+  expect_false(dir.exists(plots_dir))
   
   # Testing for all data sets
-  filenames <- c("metapipe_normalisation_stats.csv",
-                 "metapipe_raw_data_non_par.csv",
-                 "metapipe_raw_data_norm.csv",
-                 "metapipe_raw_data_normalised_all.csv")
+  filenames <- paste(out_prefix,
+                     c("normalisation_stats.csv",
+                       "raw_data_non_par.csv",
+                       "raw_data_norm.csv",
+                       "raw_data_normalised_all.csv"),
+                     sep = "_")
   for (f in filenames) {
-    if (f == "metapipe_normalisation_stats.csv")
-      expect_message(assess_normality_stats())
+    if (grepl("metapipe_normalisation_stats.csv", f))
+      expect_message(MetaPipe:::assess_normality_stats(out_prefix = out_prefix))
     expect_true(file.exists(f))
     expect_false(dir.exists(f))
-    if (f != "metapipe_raw_data_non_par.csv")
+    if (!grepl("metapipe_raw_data_non_par.csv", f))
       expect_gt(file.size(f), 0)
     file.remove(f)
     expect_false(file.exists(f))
@@ -140,7 +154,8 @@ test_that("qtl mapping scanone works", {
   population <- 5
   seed <- 123
   set.seed(seed)
-  setwd(here::here())
+  test_dir <- tempdir()
+  out_prefix <- file.path(test_dir, "metapipe")
   example_data <- data.frame(ID = 1:population,
                              P1 = c("one", "two", "three", "four", "five"),
                              T1 = rnorm(population),
@@ -153,14 +168,19 @@ test_that("qtl mapping scanone works", {
                                         transf = "",
                                         transf_val = NA,
                                         stringsAsFactors = FALSE)
-  output <- assess_normality(example_data, excluded_columns)
+  output <- assess_normality(example_data, 
+                             excluded_columns,
+                             out_prefix = out_prefix)
   
   # Create and store random genetic map [for testing only]
-  genetic_map <- random_map(population = population, seed = seed)
-  write.csv(genetic_map, "metapipe_genetic_map.csv", row.names = FALSE)
-  expect_true(file.exists("metapipe_genetic_map.csv"))
+  genetic_map <- MetaPipe:::random_map(population = population, seed = seed)
+  write.csv(genetic_map, 
+            file.path(test_dir, "metapipe_genetic_map.csv"), 
+            row.names = FALSE)
+  expect_true(file.exists(file.path(test_dir, "metapipe_genetic_map.csv")))
   
-  x <- qtl::read.cross("csvs", here::here(),
+  x <- qtl::read.cross("csvs", 
+                       dir = test_dir,
                        genfile = "metapipe_genetic_map.csv",
                        phefile = "metapipe_raw_data_norm.csv")
   traits <- colnames(x$pheno)
@@ -171,11 +191,13 @@ test_that("qtl mapping scanone works", {
   expect_equal(c(190, 4), dim(x_norm_scone))
   
   # Delete temporary files
-  filenames <- c("metapipe_normalisation_stats.csv", 
-                 "metapipe_raw_data_non_par.csv", 
-                 "metapipe_raw_data_norm.csv", 
-                 "metapipe_raw_data_normalised_all.csv", 
-                 "metapipe_genetic_map.csv")
+  filenames <- paste(out_prefix,
+                     c("normalisation_stats.csv",
+                       "raw_data_non_par.csv",
+                       "raw_data_norm.csv",
+                       "raw_data_normalised_all.csv",
+                       "genetic_map.csv"),
+                     sep = "_")
   for (f in filenames) {
     file.remove(f)
     expect_false(file.exists(f))
@@ -188,7 +210,10 @@ test_that("qtl mapping permutation test with scanone works", {
   population <- 5
   seed <- 123
   set.seed(seed)
-  setwd(here::here())
+  test_dir <- tempdir()
+  out_prefix <- file.path(test_dir, "metapipe")
+  plots_dir <- file.path(test_dir, "plots")
+  dir.create(plots_dir)
   example_data <- data.frame(ID = 1:population,
                              P1 = c("one", "two", "three", "four", "five"),
                              T1 = rnorm(population),
@@ -202,25 +227,34 @@ test_that("qtl mapping permutation test with scanone works", {
                                         transf_val = NA,
                                         stringsAsFactors = FALSE)
   
-  output <- assess_normality(example_data, excluded_columns)
+  output <- assess_normality(example_data, 
+                             excluded_columns,
+                             out_prefix = out_prefix)
   
   # Create and store random genetic map [for testing only]
-  genetic_map <- random_map(population = population, seed = seed)
-  write.csv(genetic_map, "metapipe_genetic_map.csv", row.names = FALSE)
-  expect_true(file.exists("metapipe_genetic_map.csv"))
+  genetic_map <- MetaPipe:::random_map(population = population, seed = seed)
+  write.csv(genetic_map, 
+            file.path(test_dir, "metapipe_genetic_map.csv"), 
+            row.names = FALSE)
+  expect_true(file.exists(file.path(test_dir, "metapipe_genetic_map.csv")))
   
-  x <- qtl::read.cross("csvs", here::here(),
+  x <- qtl::read.cross("csvs", 
+                       dir = test_dir,
                        genfile = "metapipe_genetic_map.csv",
                        phefile = "metapipe_raw_data_norm.csv")
   traits <- colnames(x$pheno)
   set.seed(seed)
   x <- qtl::jittermap(x)
   x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
-  x_qtl_perm <- qtl_perm_test(x, n_perm = 5, model = "normal", method = "hk")
+  x_qtl_perm <- MetaPipe::qtl_perm_test(x, 
+                                        n_perm = 5, 
+                                        model = "normal", 
+                                        method = "hk", 
+                                        plots_dir = plots_dir)
   expect_equal(c(9, 20), dim(x_qtl_perm))
 
-  filenames <- c("LOD-T1.png",
-                 "LOD-T2.png")
+  filenames <- file.path(plots_dir, c("LOD-T1.png",
+                                      "LOD-T2.png"))
   for (f in filenames) {
     expect_true(file.exists(f))
     expect_false(dir.exists(f))
@@ -233,7 +267,8 @@ test_that("qtl mapping permutation test with scanone works", {
                                   n_perm = 5, 
                                   raw_data_normalised = example_data_normalised, 
                                   model = "normal", 
-                                  method = "hk")
+                                  method = "hk",
+                                  plots_dir = plots_dir)
   expect_equal(c(9, 20), dim(x_qtl_perm_alt))
   
   for (f in filenames) {
@@ -245,11 +280,13 @@ test_that("qtl mapping permutation test with scanone works", {
   }
   
   # Delete temporary files
-  filenames <- c("metapipe_normalisation_stats.csv", 
-                 "metapipe_raw_data_non_par.csv", 
-                 "metapipe_raw_data_norm.csv", 
-                 "metapipe_raw_data_normalised_all.csv", 
-                 "metapipe_genetic_map.csv")
+  filenames <- paste(out_prefix,
+                     c("normalisation_stats.csv",
+                       "raw_data_non_par.csv",
+                       "raw_data_norm.csv",
+                       "raw_data_normalised_all.csv",
+                       "genetic_map.csv"),
+                     sep = "_")
   for (f in filenames) {
     file.remove(f)
     expect_false(file.exists(f))
