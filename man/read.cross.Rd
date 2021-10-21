@@ -4,7 +4,7 @@
 \alias{read.cross}
 \title{Read QTL data}
 \usage{
-read.cross(geno, pheno, wdir = here::here(), quiet = TRUE, ...)
+read.cross(geno, pheno, wdir = tempdir(), quiet = TRUE, ...)
 }
 \arguments{
 \item{geno}{Data frame or string (filename) to file containing genotype 

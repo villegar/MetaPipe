@@ -4,12 +4,9 @@
 \name{MetaPipe-package}
 \alias{MetaPipe}
 \alias{MetaPipe-package}
-\title{MetaPipe: A High-Performance Computing Pipeline for QTL Mapping of Large Ionomic 
-           and Metabolomic Datasets}
+\title{MetaPipe: A High-Performance Computing Pipeline for QTL Mapping of Large Ionomic and Metabolomic Datasets}
 \description{
-Pipeline for Quantitative Trait Locus (QTL) mapping of large 
-    ionomic and metabolomic datasets. It uses a High-Performance Computing 
-    (HPC) approach to speed up the computations performed.
+Pipeline for Quantitative Trait Locus (QTL) mapping of large ionomic and metabolomic datasets. It uses a High-Performance Computing (HPC) approach to speed up the computations performed.
 }
 \seealso{
 Useful links:

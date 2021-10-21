@@ -4,7 +4,7 @@
 \alias{PCA}
 \title{Simple PCA}
 \usage{
-PCA(data, plot = TRUE, ...)
+PCA(data, name = "PCA", plot = TRUE, width = 6, height = 6, ...)
 }
 \arguments{
 \item{data}{A numeric or complex matrix (or data frame) that will be used to
