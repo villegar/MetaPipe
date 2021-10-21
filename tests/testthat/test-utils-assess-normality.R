@@ -1,5 +1,10 @@
+test_dir <- tempdir()
+out_prefix <- file.path(test_dir, "metapipe")
+plots_dir <- file.path(tempdir(), "plots")
 test_that("normality assessment works", {
   set.seed(123)
+  if (!dir.exists(test_dir))
+    dir.create(test_dir, recursive = TRUE)
   example_data <- data.frame(ID = c(1, 2, 3, 4, 5), 
                              P1 = c("one", "two", "three", "four", "five"), 
                              T1 = rnorm(5), 
@@ -23,14 +28,19 @@ test_that("normality assessment works", {
   
   # Testing for both data sets
   expect_equal(expected_output, 
-               assess_normality_core(example_data, c(1, 2)))
+               MetaPipe:::assess_normality_core(example_data, 
+                                                c(1, 2),
+                                                plots_dir = plots_dir))
   expect_equal(expected_output_exp2, 
-               assess_normality_core(example_data_exp2, c(1, 2)))
+               MetaPipe:::assess_normality_core(example_data_exp2, 
+                                                c(1, 2),
+                                                plots_dir = plots_dir))
   
   # Check for generated histograms
-  filenames <- c("HIST_1_LOG_2_T1.png", 
-                 "HIST_1_NORM_T1.png", 
-                 "HIST_2_NORM_T2.png")
+  filenames <- file.path(plots_dir,
+                         c("HIST_1_LOG_2_T1.png", 
+                           "HIST_1_NORM_T1.png", 
+                           "HIST_2_NORM_T2.png"))
   for (f in filenames) {
     expect_true(file.exists(f))
     expect_false(dir.exists(f))
@@ -42,6 +52,8 @@ test_that("normality assessment works", {
 
 test_that("normality assessment postprocessing works", {
   set.seed(123)
+  if (!dir.exists(test_dir))
+    dir.create(test_dir, recursive = TRUE)
   example_data <- data.frame(ID = c(1, 2, 3, 4, 5), 
                              P1 = c("one", "two", "three", "four", "five"), 
                              T1 = rnorm(5), 
@@ -72,17 +84,21 @@ test_that("normality assessment postprocessing works", {
   expected_output_non_par$flag <- rep(c("Skewed", "Normal"), each = 5)
   
   # Test format of normalised data
-  expect_error(assess_normality_postprocessing(example_data, 
-                                               c(1, 2), 
-                                               expected_output[, -1]), 
+  expect_error(MetaPipe:::assess_normality_postprocessing(example_data, 
+                                                          c(1, 2), 
+                                                          expected_output[, -1]), 
                "raw_data must be the output*")
   
   # Testing for all data sets
-  assess_normality_postprocessing(example_data, c(1, 2), expected_output)
-  filenames <- c("metapipe_normalisation_stats.csv", 
-                 "metapipe_raw_data_non_par.csv", 
-                 "metapipe_raw_data_norm.csv", 
-                 "metapipe_raw_data_normalised_all.csv")
+  MetaPipe:::assess_normality_postprocessing(example_data, 
+                                             c(1, 2), 
+                                             expected_output, 
+                                             out_prefix = out_prefix)
+  filenames <- file.path(test_dir,
+                         c("metapipe_normalisation_stats.csv", 
+                           "metapipe_raw_data_non_par.csv", 
+                           "metapipe_raw_data_norm.csv", 
+                           "metapipe_raw_data_normalised_all.csv"))
   for (f in filenames) {
     expect_true(file.exists(f))
     expect_false(dir.exists(f))
@@ -92,13 +108,15 @@ test_that("normality assessment postprocessing works", {
     expect_false(file.exists(f))
   }
   
-  assess_normality_postprocessing(example_data_exp2, 
-                                  c(1, 2), 
-                                  expected_output_exp2)
-  filenames <- c("metapipe_normalisation_stats.csv", 
-                 "metapipe_raw_data_non_par.csv", 
-                 "metapipe_raw_data_norm.csv", 
-                 "metapipe_raw_data_normalised_all.csv")
+  MetaPipe:::assess_normality_postprocessing(example_data_exp2, 
+                                             c(1, 2), 
+                                             expected_output_exp2, 
+                                             out_prefix = out_prefix)
+  filenames <- file.path(test_dir,
+                         c("metapipe_normalisation_stats.csv", 
+                           "metapipe_raw_data_non_par.csv", 
+                           "metapipe_raw_data_norm.csv", 
+                           "metapipe_raw_data_normalised_all.csv"))
   for (f in filenames) {
     expect_true(file.exists(f))
     expect_false(dir.exists(f))
@@ -108,13 +126,15 @@ test_that("normality assessment postprocessing works", {
     expect_false(file.exists(f))
   }
   
-  assess_normality_postprocessing(example_data_non_par, 
-                                  c(1, 2), 
-                                  expected_output_non_par)
-  filenames <- c("metapipe_normalisation_stats.csv", 
-                 "metapipe_raw_data_non_par.csv", 
-                 "metapipe_raw_data_norm.csv", 
-                 "metapipe_raw_data_normalised_all.csv")
+  MetaPipe:::assess_normality_postprocessing(example_data_non_par, 
+                                             c(1, 2), 
+                                             expected_output_non_par, 
+                                             out_prefix = out_prefix)
+  filenames <- file.path(test_dir,
+                         c("metapipe_normalisation_stats.csv", 
+                           "metapipe_raw_data_non_par.csv", 
+                           "metapipe_raw_data_norm.csv", 
+                           "metapipe_raw_data_normalised_all.csv"))
   for (f in filenames) {
     expect_true(file.exists(f))
     expect_false(dir.exists(f))
@@ -127,6 +147,8 @@ test_that("normality assessment postprocessing works", {
 
 test_that("normality assessment statistics work", {
   set.seed(123)
+  if (!dir.exists(test_dir))
+    dir.create(test_dir, recursive = TRUE)
   example_data <- data.frame(ID = c(1, 2, 3, 4, 5), 
                              P1 = c("one", "two", "three", "four", "five"), 
                              T1 = rnorm(5), 
@@ -149,17 +171,21 @@ test_that("normality assessment statistics work", {
   expected_output_exp2$transf_val <- rep(c(2, NA), each = 5)
   
   # Testing for non-existing input file
-  expect_error(assess_normality_stats(), "The file *")
+  expect_error(MetaPipe:::assess_normality_stats(), "The file *")
   
   # Testing for all data sets
-  assess_normality_postprocessing(example_data, c(1, 2), expected_output)
-  filenames <- c("metapipe_normalisation_stats.csv", 
-                 "metapipe_raw_data_non_par.csv", 
-                 "metapipe_raw_data_norm.csv", 
-                 "metapipe_raw_data_normalised_all.csv")
+  MetaPipe:::assess_normality_postprocessing(example_data, 
+                                             c(1, 2), 
+                                             expected_output,
+                                             out_prefix = out_prefix)
+  filenames <- file.path(test_dir,
+                         c("metapipe_normalisation_stats.csv", 
+                           "metapipe_raw_data_non_par.csv", 
+                           "metapipe_raw_data_norm.csv", 
+                           "metapipe_raw_data_normalised_all.csv"))
   for (f in filenames) {
     if (f == "metapipe_normalisation_stats.csv")
-      expect_message(assess_normality_stats())
+      expect_message(MetaPipe:::assess_normality_stats(out_prefix))
     expect_true(file.exists(f))
     expect_false(dir.exists(f))
     if (f != "metapipe_raw_data_non_par.csv")
@@ -168,16 +194,18 @@ test_that("normality assessment statistics work", {
     expect_false(file.exists(f))
   }
   
-  assess_normality_postprocessing(example_data_exp2, 
-                                  c(1, 2), 
-                                  expected_output_exp2)
-  filenames <- c("metapipe_normalisation_stats.csv", 
-                 "metapipe_raw_data_non_par.csv", 
-                 "metapipe_raw_data_norm.csv", 
-                 "metapipe_raw_data_normalised_all.csv")
+  MetaPipe:::assess_normality_postprocessing(example_data_exp2, 
+                                             c(1, 2), 
+                                             expected_output_exp2,
+                                             out_prefix = out_prefix)
+  filenames <- file.path(test_dir,
+                         c("metapipe_normalisation_stats.csv", 
+                           "metapipe_raw_data_non_par.csv", 
+                           "metapipe_raw_data_norm.csv", 
+                           "metapipe_raw_data_normalised_all.csv"))
   for (f in filenames) {
     if (f == "metapipe_normalisation_stats.csv")
-      expect_message(assess_normality_stats())
+      expect_message(MetaPipe:::assess_normality_stats(out_prefix))
     expect_true(file.exists(f))
     expect_false(dir.exists(f))
     if (f != "metapipe_raw_data_non_par.csv")
