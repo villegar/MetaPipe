@@ -290,7 +290,7 @@ load_data <- function(input, wdir = here::here(), contents = "raw", ...) {
 #' MetaPipe:::tidy_up(c("HIST_", "ionomics_"))
 #' 
 #' @family QTL mapping functions
-read.cross <- function(geno, pheno, wdir = here::here(), quiet = TRUE, ...) {
+read.cross <- function(geno, pheno, wdir = tempdir(), quiet = TRUE, ...) {
   # Local binding
   ID <- NULL
   
