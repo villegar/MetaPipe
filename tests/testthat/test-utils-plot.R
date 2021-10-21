@@ -1,7 +1,8 @@
+test_dir <- tempdir()
 test_that("plot in PDF format works", {
-  save_plotPDF(hist(rnorm(100), main = "Histogram of Normal Distribution"),
-              "hist")
-  filename <- "hist.pdf"
+  MetaPipe:::save_plotPDF(hist(rnorm(100)),
+                          file.path(test_dir, "hist"))
+  filename <- paste0(file.path(test_dir, "hist"), ".pdf")
   expect_true(file.exists(filename))
   expect_false(dir.exists(filename))
   expect_gt(file.size(filename), 0)
@@ -10,9 +11,9 @@ test_that("plot in PDF format works", {
 })
 
 test_that("plot in PNG format works", {
-  save_plot(hist(rnorm(100), main = "Histogram of Normal Distribution"),
-           "hist")
-  filename <- "hist.png"
+  MetaPipe:::save_plot(hist(rnorm(100)),
+                       file.path(test_dir, "hist"))
+  filename <- paste0(file.path(test_dir, "hist"), ".png")
   expect_true(file.exists(filename))
   expect_false(dir.exists(filename))
   expect_gt(file.size(filename), 0)
@@ -21,9 +22,9 @@ test_that("plot in PNG format works", {
 })
 
 test_that("plot in TIFF format works", {
-  save_plotTIFF(hist(rnorm(100), main = "Histogram of Normal Distribution"),
-               "hist")
-  filename <- "hist.tiff"
+  MetaPipe:::save_plotTIFF(hist(rnorm(100)),
+                           file.path(test_dir, "hist"))
+  filename <- paste0(file.path(test_dir, "hist"), ".tiff")
   expect_true(file.exists(filename))
   expect_false(dir.exists(filename))
   expect_gt(file.size(filename), 0)
@@ -33,8 +34,8 @@ test_that("plot in TIFF format works", {
 
 test_that("plot in PNG format generated with GGPLOT2 works", {
   myplot <- ggplot2::qplot(rnorm(100))
-  ggplot_save(myplot, "hist")
-  filename <- "hist.png"
+  ggplot_save(myplot, file.path(test_dir, "hist"))
+  filename <- paste0(file.path(test_dir, "hist"), ".png")
   expect_true(file.exists(filename))
   expect_false(dir.exists(filename))
   expect_gt(file.size(filename), 0)
@@ -56,9 +57,9 @@ test_that("compare histograms works", {
 
 test_that("generate histogram works", {
   norm_dist <- rnorm(100)
-  generate_hist(norm_dist, "XYZ", "hist", "x")
-  generate_hist(norm_dist, "ABC", "hist", "x", is_trait = TRUE)
-  output <- generate_hist(norm_dist, "XYZ", "hist", "x", FALSE)
+  MetaPipe:::generate_hist(norm_dist, "XYZ", "hist", "x")
+  MetaPipe:::generate_hist(norm_dist, "ABC", "hist", "x", is_trait = TRUE)
+  output <- MetaPipe:::generate_hist(norm_dist, "XYZ", "hist", "x", FALSE)
   expect_equal(class(output), c("gg", "ggplot"))
   filename <- c("hist_XYZ.png", "hist_ABC.png")
   for(f in filename) {
@@ -80,11 +81,12 @@ test_that("generate histogram works", {
 #   expect_false(file.exists(filename))
 # })
 
-test_that("PCA works", {
-  # Toy dataset
-  example_data <- data.frame(ID = c(1,2,3,4,5), 
-                             P1 = c("one", "two", "three", "four", "five"), 
-                             T1 = rnorm(5), 
-                             T2 = rnorm(5))
-  expect_warning(example_data_pca <- PCA(example_data[, -c(1)]))
-})
+# test_that("PCA works", {
+#   # Toy dataset
+#   example_data <- data.frame(ID = c(1,2,3,4,5), 
+#                              P1 = c("one", "two", "three", "four", "five"), 
+#                              T1 = rnorm(5), 
+#                              T2 = rnorm(5))
+#   # expect_warning(example_data_pca <- PCA(example_data[, -c(1)],
+#   #                                        name = file.path(test_dir, "PCA")))
+# })
