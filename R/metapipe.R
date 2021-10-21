@@ -395,7 +395,7 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
   # `%dopar%` <- foreach::`%dopar%`
   
   # Compute trait indices, accounting for the offset of ID and properties
-  trait_indices <- 2:ncol(x_data$pheno)
+  trait_indices <- seq_len(ncol(x_data$pheno))[-1]
   
   # Extract trait names
   traits <- colnames(x_data$pheno)
@@ -403,7 +403,13 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
   x_scone <- foreach::foreach(i = trait_indices,
                      .combine = cbind) %dopar% {
                        # Run single scan
-                       scone <- qtl::scanone(x_data, pheno.col = i, ...)
+                       scone <- tryCatch({
+                         qtl::scanone(x_data, pheno.col = i, ...)
+                       }, error = function(e) {
+                         list(chr = NA,
+                              pos = NA,
+                              lod = NA)
+                       })
                        if(i == 2) {
                          record <- data.frame(
                            chr = scone$chr,
@@ -549,7 +555,7 @@ qtl_perm_test <- function(x_data,
   # `%dopar%` <- foreach::`%dopar%`
   
   # Compute trait indices, accounting for the offset of ID and properties
-  trait_indices <- 2:ncol(x_data$pheno)
+  trait_indices <- seq_len(ncol(x_data$pheno))[-1]
   
   # Extract trait names
   traits <- colnames(x_data$pheno)
@@ -595,7 +601,14 @@ qtl_perm_test <- function(x_data,
                        )
                        
                        # Run single scan
-                       x_scone <- qtl::scanone(x_data, pheno.col = i, ...)
+                       x_scone <- tryCatch({
+                         qtl::scanone(x_data, pheno.col = i, ...)
+                       }, error = function(e) {
+                         NA
+                       })
+                       if (length(x_scone) == 1 && is.na(x_scone)) {
+                         return(record)
+                       }
                        sum_x_scone <- summary(x_scone, 
                                               threshold = lod_threshold)
                        lod_cnt <- nrow(sum_x_scone)
