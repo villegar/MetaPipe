@@ -56,14 +56,10 @@
 #' ionomics_normalised <- 
 #'   MetaPipe:::assess_normality_core(ionomics_rev,
 #'                                    excluded_columns = c(1, 2),
-#'                                    out_prefix = "ionomics",
 #'                                    transf_vals = c(2, exp(1)))
 #' # Show one entry for each of the first ten traits (left to right)
 #' knitr::kable(ionomics_normalised[nrow(ionomics) * c(1:10), ])
 #' }
-#' 
-#' # Clean up example outputs
-#' MetaPipe:::tidy_up("HIST")
 #' 
 #' @seealso \code{\link{assess_normality_postprocessing}} and 
 #' \code{\link{assess_normality_stats}}
@@ -73,7 +69,7 @@
 assess_normality_core <- function(raw_data, 
                              excluded_columns, 
                              cpus = 1, 
-                             out_prefix = "metapipe", 
+                             out_prefix = file.path(tempdir(), "metapipe"), 
                              plots_dir = tempdir(), 
                              transf_vals = c(2, 
                                              exp(1), 
@@ -226,13 +222,11 @@ assess_normality_core <- function(raw_data,
 #' ionomics_normalised <- 
 #'   MetaPipe:::assess_normality_core(ionomics_rev,
 #'                                    excluded_columns = c(1, 2),
-#'                                    out_prefix = "ionomics",
 #'                                    transf_vals = c(2, exp(1)))
 #' ionomics_normalised_post <- 
 #'   MetaPipe:::assess_normality_postprocessing(ionomics_rev, 
 #'                                              c(1, 2), 
-#'                                              ionomics_normalised,
-#'                                              out_prefix = "ionomics")
+#'                                              ionomics_normalised)
 #' ionomics_norm <- ionomics_normalised_post$norm
 #' ionomics_skew <- ionomics_normalised_post$skew
 #' # Normal traits
@@ -242,9 +236,6 @@ assess_normality_core <- function(raw_data,
 #' knitr::kable(ionomics_skew[1:5, 1:10])
 #' }
 #' 
-#' # Clean up example outputs
-#' MetaPipe:::tidy_up(c("HIST_", "ionomics_", "metapipe_"))
-#' 
 #' @seealso \code{\link{assess_normality_core}} and 
 #' \code{\link{assess_normality_stats}}
 #' 
@@ -253,7 +244,8 @@ assess_normality_core <- function(raw_data,
 assess_normality_postprocessing <- function(raw_data, 
                                             excluded_columns,
                                             raw_data_normalised,
-                                            out_prefix = "metapipe", 
+                                            out_prefix = file.path(tempdir(), 
+                                                                   "metapipe"), 
                                             pareto_scaling = FALSE) {
   trait <- transf_val <- NULL # Local binding
   # Verify the raw_data_normalised object has the right structure
@@ -407,25 +399,21 @@ assess_normality_postprocessing <- function(raw_data,
 #' ionomics_normalised <- 
 #'   MetaPipe:::assess_normality_core(ionomics_rev,
 #'                                    excluded_columns = c(1, 2),
-#'                                    out_prefix = "ionomics",
 #'                                    transf_vals = c(2, exp(1)))
 #' ionomics_normalised_post <- 
 #'   MetaPipe:::assess_normality_postprocessing(ionomics_rev, 
 #'                                             c(1, 2), 
-#'                                             ionomics_normalised,
-#'                                             out_prefix = "ionomics")
-#' MetaPipe:::assess_normality_stats(out_prefix = "ionomics")
+#'                                             ionomics_normalised)
+#' MetaPipe:::assess_normality_stats()
 #' }
-#' 
-#' # Clean up example outputs
-#' MetaPipe:::tidy_up(c("HIST_", "ionomics_", "metapipe_"))
 #' 
 #' @seealso \code{\link{assess_normality_core}} and 
 #' \code{\link{assess_normality_postprocessing}}
 #' 
 #' @keywords internal
 #' @noRd
-assess_normality_stats <- function(out_prefix = "metapipe") {
+assess_normality_stats <- function(out_prefix = file.path(tempdir(), 
+                                                          "metapipe")) {
   stats_filename <- paste0(out_prefix, "_normalisation_stats.csv")
   if (!file.exists(stats_filename))
     stop(paste0("The file ", stats_filename, " was not found"))

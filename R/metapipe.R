@@ -27,12 +27,16 @@
 #'                            P1 = c("one", "two", "three", "four", "five"), 
 #'                            T1 = rnorm(5), 
 #'                            T2 = rnorm(5))
-#' write.csv(example_data, "example_data.csv", row.names = FALSE)
-#' write.csv(example_data[c(1:5, 1, 2), ], 
-#'           "example_data_dup.csv", 
+#' write.csv(example_data, 
+#'           file.path(tempdir(), "example_data.csv"), 
 #'           row.names = FALSE)
-#' knitr::kable(MetaPipe::load_raw("example_data.csv", c(1, 2)))
-#' knitr::kable(MetaPipe::load_raw("example_data_dup.csv", c(1, 2)))
+#' write.csv(example_data[c(1:5, 1, 2), ], 
+#'           file.path(tempdir(), "example_data_dup.csv"), 
+#'           row.names = FALSE)
+#' knitr::kable(MetaPipe::load_raw(file.path(tempdir(), "example_data.csv"), 
+#'                                 c(1, 2)))
+#' knitr::kable(MetaPipe::load_raw(file.path(tempdir(), "example_data_dup.csv"), 
+#'                                 c(1, 2)))
 #' 
 #' 
 #' # F1 Seedling Ionomics dataset
@@ -42,9 +46,6 @@
 #'                              mustWork = TRUE)
 #' ionomics <- MetaPipe::load_raw(ionomics_path)
 #' knitr::kable(ionomics[1:5, 1:8])
-#' 
-#' # Clean up example outputs
-#' MetaPipe:::tidy_up("example_data")
 load_raw <- function(raw_data_filename, excluded_columns = NULL) {
   # Load and clean raw data
   raw_data <- read.csv(raw_data_filename, stringsAsFactors = FALSE)
@@ -111,27 +112,36 @@ load_raw <- function(raw_data_filename, excluded_columns = NULL) {
 #'                            T3 = c(NA, rnorm(4)),                  #  20 % NAs
 #'                            T4 = c(NA, 1.2, -0.5, NA, 0.87),       #  40 % NAs
 #'                            T5 = NA)                               # 100 % NAs
-#' MetaPipe::replace_missing(example_data, c(1, 2))
-#' MetaPipe::replace_missing(example_data, c(1, 2), prop_na =  0.25)
-#' MetaPipe::replace_missing(example_data, c(1, 2), replace_na =  TRUE)
+#' out_prefix = file.path(tempdir(), "metapipe")
+#' MetaPipe::replace_missing(example_data, c(1, 2), out_prefix = out_prefix)
+#' MetaPipe::replace_missing(example_data, 
+#'                           c(1, 2), 
+#'                           prop_na =  0.25,
+#'                           out_prefix = out_prefix)
+#' MetaPipe::replace_missing(example_data, 
+#'                           c(1, 2), 
+#'                           replace_na =  TRUE,
+#'                           out_prefix = out_prefix)
 #' 
 #' 
 #' # F1 Seedling Ionomics dataset
 #' data(ionomics) # Includes some missing data
-#' ionomics_rev <- MetaPipe::replace_missing(ionomics, c(1, 2))
+#' out_prefix <- file.path(tempdir(), "ionomics")
+#' ionomics_rev <- MetaPipe::replace_missing(ionomics, 
+#'                                           c(1, 2), 
+#'                                           out_prefix = out_prefix)
 #' ionomics_rev <- MetaPipe::replace_missing(ionomics, 
 #'                                           excluded_columns = c(1, 2), 
-#'                                           prop_na =  0.025)
+#'                                           prop_na =  0.025, 
+#'                                           out_prefix = out_prefix)
 #' ionomics_rev <- MetaPipe::replace_missing(ionomics, 
 #'                                           excluded_columns = c(1, 2),
-#'                                           replace_na =  TRUE)
+#'                                           replace_na =  TRUE, 
+#'                                           out_prefix = out_prefix)
 #' knitr::kable(ionomics_rev[1:5, 1:8])
-#' 
-#' # Clean up example outputs
-#' MetaPipe:::tidy_up("metapipe_")
 replace_missing <- function(raw_data,
                             excluded_columns = NULL,
-                            out_prefix = "metapipe",
+                            out_prefix = file.path(tempdir(), "metapipe"),
                             prop_na = 0.5,
                             replace_na = FALSE) {
   # Exclude column 1, ID
@@ -232,7 +242,13 @@ replace_missing <- function(raw_data,
 #'                            P1 = c("one", "two", "three", "four", "five"), 
 #'                            T1 = rnorm(5), 
 #'                            T2 = rnorm(5))
-#' example_data_normalised <- MetaPipe::assess_normality(example_data, c(1, 2))
+#' out_prefix <- file.path(tempdir(), "metapipe")
+#' plots_dir <- file.path(tempdir(), "plots")
+#' example_data_normalised <- 
+#'   MetaPipe::assess_normality(example_data, 
+#'                              c(1, 2),
+#'                              out_prefix = out_prefix,
+#'                              plots_dir = plots_dir)
 #' example_data_norm <- example_data_normalised$norm
 #' example_data_skew <- example_data_normalised$skew
 #' 
@@ -245,13 +261,17 @@ replace_missing <- function(raw_data,
 #' 
 #' # F1 Seedling Ionomics dataset
 #' data(ionomics) # Includes some missing data
+#' out_prefix <- file.path(tempdir(), "ionomics")
+#' plots_dir <- file.path(tempdir(), "plots")
 #' ionomics_rev <- MetaPipe::replace_missing(ionomics, 
 #'                                           excluded_columns = c(1, 2),
-#'                                           replace_na =  TRUE)
+#'                                           replace_na = TRUE,
+#'                                           out_prefix = out_prefix)
 #' ionomics_normalised <- 
 #'   MetaPipe::assess_normality(ionomics_rev,
 #'                              excluded_columns = c(1, 2),
-#'                              out_prefix = "ionomics",
+#'                              out_prefix = out_prefix,
+#'                              plots_dir = plots_dir,
 #'                              transf_vals = c(2, exp(1)))
 #'                              
 #' ionomics_norm <- ionomics_normalised$norm
@@ -262,14 +282,11 @@ replace_missing <- function(raw_data,
 #' 
 #' # Skewed traits (partial output)
 #' knitr::kable(ionomics_skew[1:5, 1:8])
-#' 
-#' # Clean up example outputs
-#' MetaPipe:::tidy_up(c("HIST_", "ionomics_", "metapipe_"))
 #' }
 assess_normality <- function(raw_data, 
                              excluded_columns, 
                              cpus = 1, 
-                             out_prefix = "metapipe", 
+                             out_prefix = file.path(tempdir(), "metapipe"), 
                              plots_dir = tempdir(), 
                              transf_vals = c(2, 
                                              exp(1), 
@@ -326,16 +343,14 @@ assess_normality <- function(raw_data,
 #' @export
 #'
 #' @examples
-#' \donttest{
-#' # Create temp dir
-#' tmp <- tempdir()
-#' dir.create(tmp, showWarnings = FALSE, recursive = TRUE)
-#' 
+#' \donttest{ 
 #' # Toy dataset
 #' excluded_columns <- c(1, 2)
 #' population <- 5
 #' seed <- 123
 #' set.seed(seed)
+#' out_prefix <- file.path(tempdir(), "metapipe")
+#' plots_dir <- file.path(tempdir(), "plots")
 #' example_data <- data.frame(ID = 1:population,
 #'                            P1 = c("one", "two", "three", "four", "five"),
 #'                            T1 = rnorm(population),
@@ -344,7 +359,8 @@ assess_normality <- function(raw_data,
 #' output <- MetaPipe::assess_normality(example_data, 
 #'                                      excluded_columns, 
 #'                                      show_stats = FALSE,
-#'                                      out_prefix = paste0(tmp, "/tmp"))
+#'                                      out_prefix = out_prefix,
+#'                                      plots_dir = plots_dir)
 #' 
 #' # Create and store random genetic map (for testing only)
 #' genetic_map <- MetaPipe:::random_map(population = population, 
@@ -358,14 +374,17 @@ assess_normality <- function(raw_data,
 #' # F1 Seedling Ionomics dataset
 #' data(ionomics) # Includes some missing data
 #' data(father_riparia) # Genetic map
+#' out_prefix <- file.path(tempdir(), "ionomics")
+#' plots_dir <- file.path(tempdir(), "plots")
 #' ionomics_rev <- MetaPipe::replace_missing(ionomics, 
 #'                                           excluded_columns = c(1, 2),
 #'                                           replace_na =  TRUE,
-#'                                           out_prefix = paste0(tmp, "/tmp"))
+#'                                           out_prefix = out_prefix)
 #' ionomics_normalised <- 
 #'   MetaPipe::assess_normality(ionomics_rev,
 #'                              excluded_columns = c(1, 2),
-#'                              out_prefix = file.path(tmp, "ionomics"),
+#'                              out_prefix = out_prefix,
+#'                              plots_dir = plots_dir,
 #'                              transf_vals = c(2, exp(1)),
 #'                              show_stats = FALSE)
 #'                              
@@ -379,10 +398,6 @@ assess_normality <- function(raw_data,
 #' x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
 #' 
 #' x_scone <- MetaPipe::qtl_scone(x, 1, model = "normal", method = "hk")
-#' 
-#' # Clean temporal directory
-#' # unlink(tmp, recursive = TRUE, force = TRUE)
-#' MetaPipe:::tidy_up(tmp)
 #' }
 #' @family QTL mapping functions
 qtl_scone <- function(x_data, cpus = 1, ...) {
@@ -457,15 +472,13 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
 #' 
 #' @examples
 #' \donttest{
-#' # Create temp dir
-#' tmp <- tempdir()
-#' dir.create(tmp, showWarnings = FALSE, recursive = TRUE)
-#' 
 #' # Toy dataset
 #' excluded_columns <- c(1, 2)
 #' population <- 5
 #' seed <- 123
 #' set.seed(seed)
+#' out_prefix <- file.path(tempdir(), "metapipe")
+#' plots_dir <- file.path(tempdir(), "plots")
 #' example_data <- data.frame(ID = 1:population,
 #'                            P1 = c("one", "two", "three", "four", "five"),
 #'                            T1 = rnorm(population),
@@ -474,7 +487,8 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
 #' output <- MetaPipe::assess_normality(example_data, 
 #'                                      excluded_columns, 
 #'                                      show_stats = FALSE,
-#'                                      out_prefix = paste0(tmp, "/tmp"))
+#'                                      out_prefix = out_prefix,
+#'                                      plots_dir = plots_dir)
 #' 
 #' # Create and store random genetic map (for testing only)
 #' genetic_map <- MetaPipe:::random_map(population = population, 
@@ -494,19 +508,22 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
 #'                                            n_perm = 1000, 
 #'                                            model = "normal", 
 #'                                            method = "hk",
-#'                                            plots_dir = tmp)
+#'                                            plots_dir = plots_dir)
 #' 
 #' # F1 Seedling Ionomics dataset
 #' data(ionomics) # Includes some missing data
 #' data(father_riparia) # Genetic map
+#' out_prefix <- file.path(tempdir(), "ionomics")
+#' plots_dir <- file.path(tempdir(), "plots")
 #' ionomics_rev <- MetaPipe::replace_missing(ionomics, 
 #'                                           excluded_columns = c(1, 2),
 #'                                           replace_na =  TRUE,
-#'                                           out_prefix = paste0(tmp, "/tmp"))
+#'                                           out_prefix = out_prefix)
 #' ionomics_normalised <- 
 #'   MetaPipe::assess_normality(ionomics_rev,
 #'                              excluded_columns = c(1, 2),
-#'                              out_prefix = file.path(tmp, "ionomics"),
+#'                              out_prefix = out_prefix,
+#'                              plots_dir = plots_dir,
 #'                              transf_vals = c(2, exp(1)),
 #'                              show_stats = FALSE)
 #' 
@@ -524,16 +541,12 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
 #'                                       n_perm = 5, 
 #'                                       model = "normal", 
 #'                                       method = "hk",
-#'                                       plots_dir = tmp)
+#'                                       plots_dir = plots_dir)
 #' x_qtl_perm_1000 <- MetaPipe::qtl_perm_test(x, 
 #'                                            n_perm = 1000, 
 #'                                            model = "normal", 
 #'                                            method = "hk",
-#'                                            plots_dir = tmp)
-#' 
-#' # Clean temporal directory
-#' # unlink(tmp, recursive = TRUE, force = TRUE)
-#' MetaPipe:::tidy_up(tmp)
+#'                                            plots_dir = plots_dir)
 #' }
 #' 
 #' @family QTL mapping functions

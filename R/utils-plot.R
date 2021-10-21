@@ -8,12 +8,8 @@
 #' @param height Height in inches.
 #'
 #' @examples
-#' MetaPipe:::save_plot(hist(rnorm(100), 
-#'                      main = "Histogram of Normal Distribution"), 
-#'                      "hist")
-#' 
-#' # Clean up example outputs
-#' MetaPipe:::tidy_up("hist")
+#' MetaPipe:::save_plot(hist(rnorm(100)), 
+#'                      file.path(tempdir(), "hist"))
 #' 
 #' @keywords internal
 #' @noRd
@@ -38,12 +34,8 @@ save_plot <- function(plt_obj, name, width = 6, height = 6) {
 #' @param height Height in inches.
 #'
 #' @examples
-#' MetaPipe:::save_plotTIFF(hist(rnorm(100), 
-#'                          main = "Histogram of Normal Distribution"), 
-#'                          "hist")
-#' 
-#' # Clean up example outputs
-#' MetaPipe:::tidy_up("hist")
+#' MetaPipe:::save_plotTIFF(hist(rnorm(100)), 
+#'                          file.path(tempdir(), "hist"))
 #' 
 #' @keywords internal
 #' @noRd
@@ -68,12 +60,8 @@ save_plotTIFF <- function(plt_obj, name, width = 6, height = 6) {
 #' @param height Height in inches.
 #'
 #' @examples
-#' MetaPipe:::save_plotPDF(hist(rnorm(100), 
-#'                         main = "Histogram of Normal Distribution"), 
-#'                         "hist")
-#'
-#' # Clean up example outputs
-#' MetaPipe:::tidy_up("hist")
+#' MetaPipe:::save_plotPDF(hist(rnorm(100)), 
+#'                         file.path(tempdir(), "hist"))
 #' 
 #' @keywords internal
 #' @noRd
@@ -97,10 +85,7 @@ save_plotPDF <- function(plt_obj, name, width = 6, height = 6) {
 #'
 #' @examples
 #' plt_obj <- ggplot2::qplot(rnorm(100))
-#' MetaPipe:::ggplot_save(plt_obj, "hist")
-#' 
-#' # Clean up example outputs
-#' MetaPipe:::tidy_up("hist")
+#' MetaPipe:::ggplot_save(plt_obj, file.path(tempdir(), "hist"))
 #' 
 #' @keywords internal
 #' @noRd
@@ -139,11 +124,8 @@ ggplot_save <- function(plt_obj, name, width = 6, height = 6) {
 #' MetaPipe:::compare_hist(norm_dist, 
 #'                         norm_dist_transformed, 
 #'                         "XYZ", 
-#'                         "xyz_hist", 
+#'                         file.path(tempdir(), "xyz_hist"), 
 #'                         "x")
-#'
-#' # Clean up example outputs
-#' MetaPipe:::tidy_up("xyz")
 #' }
 #' @keywords internal
 #' @noRd
@@ -206,11 +188,9 @@ compare_hist <- function(original, transformed, trait, prefix, xlab) {
 #' @examples
 #' \donttest{
 #' norm_dist <- rnorm(100)
-#' MetaPipe:::generate_hist(norm_dist, "XYZ", "xyz_hist", "x")
-#' MetaPipe:::generate_hist(norm_dist, "XYZ", "xyz_hist", "x", is_trait = TRUE)
-#' 
-#' # Clean up example outputs
-#' MetaPipe:::tidy_up("xyz")
+#' prefix <- file.path(tempdir(), "xyz_hist")
+#' MetaPipe:::generate_hist(norm_dist, "XYZ", prefix, "x")
+#' MetaPipe:::generate_hist(norm_dist, "XYZ", prefix, "x", is_trait = TRUE)
 #' }
 #' @keywords internal
 #' @noRd
@@ -263,6 +243,7 @@ generate_hist <- function(data,
 #' @param data A numeric or complex matrix (or data frame) that will be used to
 #'     perform the Principal Components Analysis.
 #' @param plot Boolean flag to indicate whether or not to create a PCA biplot.
+#' @inheritParams save_plot
 #' @param ... Arguments passed on to 
 #'     \code{\link[factoextra:fviz_pca_biplot]{factoextra::fviz_pca_biplot}}.
 # @inheritDotParams factoextra::fviz_pca_biplot -X -col.var -gradient.cols 
@@ -281,10 +262,13 @@ generate_hist <- function(data,
 #' 
 #' # F1 Seedling Ionomics dataset
 #' data(ionomics) # Includes some missing data
+#' out_prefix <- file.path(tempdir, "metapipe")
 #' ionomics_rev <- MetaPipe::replace_missing(ionomics, 
 #'                                           excluded_columns = c(1, 2),
-#'                                           replace_na =  TRUE)
-#' ionomics_pca <- PCA(ionomics_rev[, -c(1:2)])
+#'                                           replace_na =  TRUE,
+#'                                           out_prefix = out_prefix)
+#' ionomics_pca <- PCA(ionomics_rev[, -c(1:2)], 
+#'                     name = file.path(tempdir, "PCA"))
 #' }
 PCA <- function(data, name = "PCA", plot = TRUE, width = 6, height = 6, ...) {
   idx <- check_types(data, quiet = FALSE)

@@ -108,9 +108,6 @@ check_transformation <-
 #' data <- rnorm(100, 5)
 #' transformed <- MetaPipe::log_transformation(2 ^ data, "EXP_2")
 #' 
-#' # Clean up example outputs
-#' MetaPipe:::tidy_up("HIST")
-#' 
 #' @family Transformation functions
 log_transformation <- function(data, 
                                trait = "DATA", 
@@ -125,7 +122,7 @@ log_transformation <- function(data,
                                                8, 
                                                9, 
                                                10),
-                               plots_prefix = "HIST",
+                               plots_prefix = file.path(tempdir(), "HIST"),
                                digits = 6, 
                                plot = TRUE,
                                quiet = FALSE) {
@@ -202,9 +199,6 @@ log_transformation <- function(data,
 #' data <- rnorm(100, 5)
 #' transformed <- MetaPipe::power_transformation(sqrt(data), "ROOT_2")
 #' 
-#' # Clean up example outputs
-#' MetaPipe:::tidy_up("HIST")
-#' 
 #' @family Transformation functions
 power_transformation <- function(data, 
                                  trait = "DATA", 
@@ -219,7 +213,7 @@ power_transformation <- function(data,
                                                  8, 
                                                  9, 
                                                  10),
-                                 plots_prefix = "HIST",
+                                 plots_prefix = file.path(tempdir(), "HIST"),
                                  digits = 6, 
                                  plot = TRUE,
                                  quiet = FALSE) {
@@ -295,9 +289,6 @@ power_transformation <- function(data,
 #' data <- rnorm(100, 5)
 #' transformed <- MetaPipe::root_transformation(data ^ 2, "EXP_2")
 #' 
-#' # Clean up example outputs
-#' MetaPipe:::tidy_up("HIST")
-#' 
 #' @family Transformation functions
 root_transformation <- function(data, 
                                 trait = "DATA", 
@@ -312,7 +303,7 @@ root_transformation <- function(data,
                                                 8, 
                                                 9, 
                                                 10),
-                                plots_prefix = "HIST",
+                                plots_prefix = file.path(tempdir(), "HIST"),
                                 digits = 6, 
                                 plot = TRUE,
                                 quiet = FALSE) {
@@ -393,15 +384,12 @@ root_transformation <- function(data,
 #' knitr::kable(head(out_exp2))
 #' knitr::kable(head(out_root2))
 #' knitr::kable(head(out_pow2))
-#' 
-#' # Clean up example outputs
-#' MetaPipe:::tidy_up("HIST")
 transform_data <- function(data,
                            trait = "DATA",
                            alpha = 0.05,
                            index = NULL,
                            transf_vals = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10),
-                           plots_prefix = "HIST",
+                           plots_prefix = file.path(tempdir(), "HIST"),
                            digits = 6) {
   
   check_alpha(alpha = alpha) # Check the significance level
