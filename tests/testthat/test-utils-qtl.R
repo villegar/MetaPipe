@@ -1,6 +1,9 @@
+test_dir <- tempdir()
+out_prefix <- file.path(test_dir, "metapipe")
+plots_dir <- file.path(tempdir(), "plots")
 test_that("is pseudo-marker works", {
-  expect_true(is_pseudo_marker('c1.loc1'))
-  expect_false(is_pseudo_marker('S1_2345'))
+  expect_true(MetaPipe:::is_pseudo_marker('c1.loc1'))
+  expect_false(MetaPipe:::is_pseudo_marker('S1_2345'))
 })
 
 test_that("transform pseudo-marker works", {
@@ -9,8 +12,6 @@ test_that("transform pseudo-marker works", {
   population <- 5
   seed <- 123
   set.seed(seed)
-  old_path <- setwd(here::here())
-  on.exit(setwd(old_path))
   example_data <- data.frame(ID = 1:population,
                              P1 = c("one", "two", "three", "four", "five"),
                              T1 = rnorm(population),
@@ -22,29 +23,36 @@ test_that("transform pseudo-marker works", {
                                         transf = "",
                                         transf_val = NA,
                                         stringsAsFactors = FALSE)
-  output <- assess_normality(example_data, excluded_columns)
+  output <- MetaPipe::assess_normality(example_data, 
+                                       excluded_columns, 
+                                       out_prefix = out_prefix,
+                                       plots_dir = plots_dir)
   
   # Create and store random genetic map [for testing only]
   genetic_map <- MetaPipe:::random_map(population = population, seed = seed)
-  write.csv(genetic_map, "metapipe_genetic_map.csv", row.names = FALSE)
-  expect_true(file.exists("metapipe_genetic_map.csv"))
+  write.csv(genetic_map, 
+            file.path(test_dir, "metapipe_genetic_map.csv"), 
+            row.names = FALSE)
+  expect_true(file.exists(file.path(test_dir, "metapipe_genetic_map.csv")))
   
-  x <- qtl::read.cross("csvs", here::here(),
+  x <- qtl::read.cross("csvs", 
+                       test_dir,
                        genfile = "metapipe_genetic_map.csv",
                        phefile = "metapipe_raw_data_norm.csv")
   traits <- colnames(x$pheno)
   set.seed(seed)
   x <- qtl::jittermap(x)
   x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
-  markerp <- transform_pseudo_marker(x, 'loc1', 1, 2.0)
+  markerp <- MetaPipe:::transform_pseudo_marker(x, 'loc1', 1, 2.0)
   expect_equal(c('S1_2', '2.000001'), markerp)
   
   # Delete temporary files
-  filenames <- c("metapipe_normalisation_stats.csv", 
-                 "metapipe_raw_data_non_par.csv", 
-                 "metapipe_raw_data_norm.csv", 
-                 "metapipe_raw_data_normalised_all.csv", 
-                 "metapipe_genetic_map.csv")
+  filenames <- file.path(test_dir,
+                         c("metapipe_normalisation_stats.csv", 
+                           "metapipe_raw_data_non_par.csv", 
+                           "metapipe_raw_data_norm.csv", 
+                           "metapipe_raw_data_normalised_all.csv", 
+                           "metapipe_genetic_map.csv"))
   for (f in filenames) {
     file.remove(f)
     expect_false(file.exists(f))
@@ -57,8 +65,6 @@ test_that("effect plots work", {
   population <- 5
   seed <- 123
   set.seed(seed)
-  old_path <- setwd(here::here())
-  on.exit(setwd(old_path))
   example_data <- data.frame(ID = 1:population,
                              P1 = c("one", "two", "three", "four", "five"),
                              T1 = rnorm(population),
@@ -71,21 +77,30 @@ test_that("effect plots work", {
                                         transf = "",
                                         transf_val = NA,
                                         stringsAsFactors = FALSE)
-  output <- assess_normality(example_data, excluded_columns)
+  output <- MetaPipe::assess_normality(example_data, 
+                                       excluded_columns,  
+                                       out_prefix = out_prefix,
+                                       plots_dir = plots_dir)
   
   # Create and store random genetic map [for testing only]
   genetic_map <- MetaPipe:::random_map(population = population, seed = seed)
-  write.csv(genetic_map, "metapipe_genetic_map.csv", row.names = FALSE)
-  expect_true(file.exists("metapipe_genetic_map.csv"))
+  write.csv(genetic_map, 
+            file.path(test_dir, "metapipe_genetic_map.csv"), 
+            row.names = FALSE)
+  expect_true(file.exists(file.path(test_dir, "metapipe_genetic_map.csv")))
   
-  x <- qtl::read.cross("csvs", here::here(),
+  x <- qtl::read.cross("csvs",
+                       test_dir,
                        genfile = "metapipe_genetic_map.csv",
                        phefile = "metapipe_raw_data_norm.csv")
   traits <- colnames(x$pheno)
   set.seed(seed)
   x <- qtl::jittermap(x)
   x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
-  x_qtl_perm <- qtl_perm_test(x, n_perm = 5, model = "normal", method = "hk")
+  x_qtl_perm <- MetaPipe::qtl_perm_test(x, 
+                                        n_perm = 5, 
+                                        model = "normal", 
+                                        method = "hk")
   x_sim <- qtl::sim.geno(x)
   
   # Modify QTL data to include transformation data [for testing only]
@@ -98,17 +113,18 @@ test_that("effect plots work", {
   idx <- which(colnames(x_qtl_perm) %in% c("method"))
   x_qtl_perm[4, idx] <- "skw-scanone"
   
-  effect_plots(x_sim, x_qtl_perm)
+  MetaPipe::effect_plots(x_sim, x_qtl_perm, plots_dir = plots_dir)
   
-  filenames <- c("EFF-T1-S6_4.png",
-                 "EFF-T1-S7_1.png",
-                 "EFF-T1-S8_3.png",
-                 "EFF-NP-T1-S10_4.png",
-                 "EFF-T2-S2_8.png",
-                 "EFF-T2-S4_9.png",
-                 "EFF-T2-S6_3.png",
-                 "EFF-T2-S7_9.png",
-                 "EFF-T2-S9_5.png")
+  filenames <- file.path(plots_dir,
+                         c("EFF-T1-S6_4.png",
+                           "EFF-T1-S7_1.png",
+                           "EFF-T1-S8_3.png",
+                           "EFF-NP-T1-S10_4.png",
+                           "EFF-T2-S2_8.png",
+                           "EFF-T2-S4_9.png",
+                           "EFF-T2-S6_3.png",
+                           "EFF-T2-S7_9.png",
+                           "EFF-T2-S9_5.png"))
   for (f in filenames) {
     expect_true(file.exists(f))
     expect_false(dir.exists(f))
@@ -118,13 +134,14 @@ test_that("effect plots work", {
   }
   
   # Delete temporary files
-  filenames <- c("LOD-T1.png",
-                 "LOD-T2.png",
-                 "metapipe_normalisation_stats.csv", 
-                 "metapipe_raw_data_non_par.csv", 
-                 "metapipe_raw_data_norm.csv", 
-                 "metapipe_raw_data_normalised_all.csv", 
-                 "metapipe_genetic_map.csv")
+  filenames <- file.path(test_dir,
+                         c("LOD-T1.png",
+                           "LOD-T2.png",
+                           "metapipe_normalisation_stats.csv", 
+                           "metapipe_raw_data_non_par.csv", 
+                           "metapipe_raw_data_norm.csv", 
+                           "metapipe_raw_data_normalised_all.csv", 
+                           "metapipe_genetic_map.csv"))
   for (f in filenames) {
     file.remove(f)
     expect_false(file.exists(f))
@@ -144,7 +161,9 @@ test_that("read cross file works", {
   
   output <- MetaPipe::assess_normality(example_data, 
                                        excluded_columns, 
-                                       show_stats = FALSE)
+                                       show_stats = FALSE, 
+                                       out_prefix = out_prefix,
+                                       plots_dir = plots_dir)
   
   # Create and store random genetic map [for testing only]
   genetic_map <- MetaPipe:::random_map(population = population, seed = seed)
@@ -158,13 +177,20 @@ test_that("read cross file works", {
   genetic_map[2, 2:3] <- 2 # Alter markers position (Warning expected)
   expect_warning(x_data <- MetaPipe::read.cross(genetic_map, output$norm))
   
-  write.csv(example_data, "geno.csv")
-  write.table(c(1:10), "pheno.txt")
-  expect_error(MetaPipe::read.cross("geno.csv", "pheno.txt"))
-  expect_error(MetaPipe::read.cross(TRUE, "pheno.txt"))
-  expect_error(MetaPipe::read.cross("geno.csv", "phenoS.txt"))
+  write.csv(example_data, file.path(test_dir, "geno.csv"))
+  write.table(c(1:10), file.path(test_dir, "pheno.txt"))
+  expect_error(MetaPipe::read.cross("geno.csv", "pheno.txt", wdir = test_dir))
+  expect_error(MetaPipe::read.cross(TRUE, "pheno.txt", wdir = test_dir))
+  expect_error(MetaPipe::read.cross("geno.csv", "phenoS.txt", wdir = test_dir))
   expect_error(MetaPipe::read.cross(genetic_map, output$norm, wdir = "GBS"))
   output$norm$ID <- output$norm$ID + 100
-  expect_error(MetaPipe::read.cross(genetic_map, output$norm))
-  . <- sapply(c("geno.csv", "pheno.txt"), file.remove)
+  expect_error(MetaPipe::read.cross(genetic_map, output$norm, wdir = test_dir))
+  # Delete temporary files
+  filenames <- file.path(test_dir,
+                         c("geno.csv",
+                           "pheno.txt"))
+  for (f in filenames) {
+    file.remove(f)
+    expect_false(file.exists(f))
+  }
 })
