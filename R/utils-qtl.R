@@ -132,7 +132,7 @@ transform_pseudo_marker <- function(x_data, marker, chr, pos) {
 #' genetic_map <- 
 #'   MetaPipe:::random_map(population = population, seed = seed)
 #' write.csv(genetic_map, 
-#'           file.path(tempdir(), metapipe_genetic_map.csv"), 
+#'           file.path(tempdir(), "metapipe_genetic_map.csv"), 
 #'           row.names = FALSE)
 #' # Load cross file with genetic map and raw data for normal traits
 #' x <- qtl::read.cross(format = "csvs", 
@@ -147,9 +147,6 @@ transform_pseudo_marker <- function(x_data, marker, chr, pos) {
 #' x_sim <- qtl::sim.geno(x)
 #' MetaPipe::effect_plots(x_sim, x_qtl_perm)
 #' }
-#' 
-#' # Clean up example outputs
-#' MetaPipe:::tidy_up(c("EFF-", "LOD-", "metapipe"))
 #' 
 #' @seealso \code{\link{qtl_perm_test}}
 effect_plots <- function(x_data_sim, 
@@ -285,9 +282,6 @@ load_data <- function(input, wdir = tempdir(), contents = "raw", ...) {
 #'                                ionomics_normalised$norm,
 #'                                genotypes = c("nn", "np", "--"))
 #' }
-#' 
-#' # Clean up example outputs
-#' MetaPipe:::tidy_up(c("HIST_", "ionomics_"))
 #' 
 #' @family QTL mapping functions
 read.cross <- function(geno, pheno, wdir = tempdir(), quiet = TRUE, ...) {
