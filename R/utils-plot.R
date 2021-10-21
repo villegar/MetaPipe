@@ -104,12 +104,15 @@ save_plotPDF <- function(plt_obj, name, width = 6, height = 6) {
 #' 
 #' @keywords internal
 #' @noRd
-ggplot_save <- function(plt_obj, name, width = 6, height = 6){
+ggplot_save <- function(plt_obj, name, width = 6, height = 6) {
+  if (!dir.exists(dirname(name)))
+    try(dir.create(dirname(name), recursive = TRUE))
   R.devices::suppressGraphics({
     ggplot2::ggsave(
-      paste0(name, ".png"),
+      filename = paste0(basename(name), ".png"),
       plot   = plt_obj,
       device = "png",
+      path   = dirname(name),
       width  = width,
       height = height,
       dpi    = 300,
@@ -175,10 +178,13 @@ compare_hist <- function(original, transformed, trait, prefix, xlab) {
     ggplot2::labs(x="", y="") +
     ggplot2::xlab(latex2exp::TeX(xlab))
   
-  ggplot_save(grid::grid.draw(rbind(ggplot2::ggplotGrob(original.plot),
-                                    ggplot2::ggplotGrob(transformed.plot), 
-                                    size = "last")
-                              ),
+  ggplot_save(gridExtra::grid.arrange(original.plot,
+                                      transformed.plot,
+                                      nrow = 2),
+              # grid::grid.draw(rbind(ggplot2::ggplotGrob(original.plot),
+              #                       ggplot2::ggplotGrob(transformed.plot), 
+              #                       size = "last")
+              #                 ),
               paste0(prefix,"_",trait))
 }
 
@@ -280,7 +286,7 @@ generate_hist <- function(data,
 #'                                           replace_na =  TRUE)
 #' ionomics_pca <- PCA(ionomics_rev[, -c(1:2)])
 #' }
-PCA <- function(data, plot = TRUE, ...) {
+PCA <- function(data, name = "PCA", plot = TRUE, width = 6, height = 6, ...) {
   idx <- check_types(data, quiet = FALSE)
   if (length(idx) > 0)
     data <- data[, -idx]
@@ -295,11 +301,18 @@ PCA <- function(data, plot = TRUE, ...) {
   # ) + xlim(-10, 10) + ylim (-10, 10),
   # paste0(PLOTS.DIR,"/PCA-biplot-top10"),8,8)
   if (plot) {
+    grDevices::png(paste0(name, ".png"), 
+                   width = width, 
+                   height = height, 
+                   units = "in", 
+                   res = 300, 
+                   type = "cairo")
+    
     print(
       factoextra::fviz_pca_biplot(
         res.pca,
         col.var = "contrib",
-        # gradient.cols = c("green", "yello", "blue"),
+        # gradient.cols = c("green", "yellow", "blue"),
         gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
         select.var = list(contrib = 2),
         label = "var",
@@ -309,6 +322,7 @@ PCA <- function(data, plot = TRUE, ...) {
         ...
       )
     )
+    grDevices::dev.off()
   }
   return(res.pca)
 }
