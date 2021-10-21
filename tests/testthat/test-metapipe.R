@@ -113,8 +113,7 @@ test_that("normality assessment works", {
   
   # Check for generated histograms
   filenames <- file.path(plots_dir,
-                         c("HIST_1_LOG_2_T1.png", 
-                           "HIST_1_NORM_T1.png", 
+                         c("HIST_1_NORM_T1.png", 
                            "HIST_2_NORM_T2.png"))
   for (f in filenames) {
     expect_true(file.exists(f))
