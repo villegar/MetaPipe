@@ -167,7 +167,7 @@ rplc_na <- function(x) {
 #' 
 #' @keywords internal
 #' @noRd
-tidy_up <- function(patterns, path = here::here()) {
+tidy_up <- function(patterns, path = tempdir()) {
   # List files
   filenames <- unlist(lapply(patterns,
                              function(x) list.files(path, 

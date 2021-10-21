@@ -48,7 +48,7 @@ is_pseudo_marker <- function(marker) {
 #'              transf_val = NA,
 #'              stringsAsFactors = FALSE)
 #' 
-#' out_prefix <- here::here("metapipe")
+#' out_prefix <- file.path(tempdir(), "metapipe")
 #' example_data_normalised_post <- 
 #'   MetaPipe:::assess_normality_postprocessing(example_data, 
 #'                                             excluded_columns, 
@@ -59,11 +59,11 @@ is_pseudo_marker <- function(marker) {
 #' genetic_map <- 
 #'   MetaPipe:::random_map(population = population, seed = seed)
 #' write.csv(genetic_map, 
-#'           here::here("metapipe_genetic_map.csv"), 
+#'           file.path(tempdir(), "metapipe_genetic_map.csv"), 
 #'           row.names = FALSE)
 #' # Load cross file with genetic map and raw data for normal traits
 #' x <- qtl::read.cross(format = "csvs", 
-#'                      dir = here::here(),
+#'                      dir = tempdir(),
 #'                      genfile = "metapipe_genetic_map.csv",
 #'                      phefile = "metapipe_raw_data_norm.csv")
 #' set.seed(seed)
@@ -121,7 +121,7 @@ transform_pseudo_marker <- function(x_data, marker, chr, pos) {
 #'              transf_val = NA,
 #'              stringsAsFactors = FALSE)
 #' 
-#' out_prefix <- here::here("metapipe")
+#' out_prefix <- file.path(tempdir(), "metapipe")
 #' example_data_normalised_post <- 
 #'   MetaPipe:::assess_normality_postprocessing(example_data, 
 #'                                             excluded_columns, 
@@ -132,11 +132,11 @@ transform_pseudo_marker <- function(x_data, marker, chr, pos) {
 #' genetic_map <- 
 #'   MetaPipe:::random_map(population = population, seed = seed)
 #' write.csv(genetic_map, 
-#'           here::here("metapipe_genetic_map.csv"), 
+#'           file.path(tempdir(), metapipe_genetic_map.csv"), 
 #'           row.names = FALSE)
 #' # Load cross file with genetic map and raw data for normal traits
 #' x <- qtl::read.cross(format = "csvs", 
-#'                      dir = here::here(),
+#'                      dir = tempdir(),
 #'                      genfile = "metapipe_genetic_map.csv",
 #'                      phefile = "metapipe_raw_data_norm.csv")
 #' set.seed(seed)
@@ -226,7 +226,7 @@ effect_plots <- function(x_data_sim,
 #' 
 #' @keywords internal
 #' @noRd
-load_data <- function(input, wdir = here::here(), contents = "raw", ...) {
+load_data <- function(input, wdir = tempdir(), contents = "raw", ...) {
     # Verify if input is a string with the filename
     if (class(input) == "character") {
       filename <- file.path(wdir, input)

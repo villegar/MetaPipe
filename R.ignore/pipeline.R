@@ -133,7 +133,7 @@ tictoc::toc(log = TRUE) # Loading and pre-processing
 tictoc::tic("Normality Assessment")
 features <- colnames(raw_data)
 raw_data_normalised <- MetaPipe::assess_normality(raw_data, excluded_columns, CPUS, OUT_PREFIX, PLOTS_DIR, transf_vals)
-# MetaPipe::assess_normality(raw_data, excluded_columns, cpus = 1, out_prefix = "metapipe", plots_dir = here::here("../testbed/"), transf_vals = c(2, exp(1)))
+# MetaPipe::assess_normality(raw_data, excluded_columns, cpus = 1, out_prefix = "metapipe", plots_dir = file.path(tempdir(), "../testbed/"), transf_vals = c(2, exp(1)))
 tictoc::toc(log = TRUE) # Normality Assessment
 tictoc::tic("Transformed data post-processing")
 #MetaPipe::assess_normality_postprocessing(raw_data, excluded_columns, raw_data_normalised, OUT_PREFIX, PARETO_SCALING)
@@ -206,7 +206,7 @@ write.csv(pheno_non_par, file = paste0(OUT_PREFIX, "_pheno_non_par.csv"), row.na
 tictoc::toc(log = TRUE) # QTL analysis preprocessing
 tictoc::tic("Normal QTL analysis")
 # QTL Analysis
-x_norm <- qtl::read.cross("csvs", here::here(),
+x_norm <- qtl::read.cross("csvs", tempdir(),
                           paste0(OUT_PREFIX, "_geno_norm.csv"),
                           paste0(OUT_PREFIX, "_pheno_norm.csv"))
 features <- colnames(x_norm$pheno)
@@ -381,7 +381,7 @@ write.csv(x_norm_sum_map, file = paste0(OUT_PREFIX, "_norm_summ_map.csv"), row.n
 tictoc::toc(log = TRUE) # Normal QTL analysis
 tictoc::tic("Non-parametric QTL analysis")
 # Non-parametric QTL
-x_non_par <- qtl::read.cross("csvs", here::here(),
+x_non_par <- qtl::read.cross("csvs", tempdir(),
                              paste0(OUT_PREFIX, "_geno_non_par.csv"),
                              paste0(OUT_PREFIX, "_pheno_non_par.csv"))
 features_np <- colnames(x_non_par$pheno)
@@ -534,7 +534,8 @@ write.csv(x_non_par_sum_map, file = paste0(OUT_PREFIX, "_non_par_summ_map.csv"),
 
 tictoc::toc(log = TRUE) # Non-parametric QTL analysis
 tictoc::tic("QTL analysis postprocessing")
-x_norm <- qtl::read.cross("csvs", here::here(),
+x_norm <- qtl::read.cross("csvs", 
+                          tempdir(),
                           paste0(OUT_PREFIX, "_geno_norm.csv"),
                           paste0(OUT_PREFIX, "_pheno_norm.csv"))
 features <- colnames(x_norm$pheno)
@@ -544,7 +545,8 @@ x_norm <- qtl::calc.genoprob(x_norm, step=1, error.prob=0.001)
 num_indv_phend_n <- summary(x_norm)[[2]]
 
 # Non-parametric QTL
-x_non_par <- qtl::read.cross("csvs", here::here(),
+x_non_par <- qtl::read.cross("csvs", 
+                             tempdir(),
                              paste0(OUT_PREFIX, "_geno_non_par.csv"),
                              paste0(OUT_PREFIX, "_pheno_non_par.csv"))
 features_np <- colnames(x_non_par$pheno)

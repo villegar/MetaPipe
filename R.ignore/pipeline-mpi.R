@@ -205,7 +205,8 @@ write.csv(pheno_non_par, file = paste0(OUT_PREFIX, "_pheno_non_par.csv"), row.na
 toc(log = TRUE) # QTL analysis preprocessing
 tic("Normal QTL Analysis: Single scanone")
 # QTL Analysis
-x.normal <- read.cross("csvs", here::here(),
+x.normal <- read.cross("csvs", 
+                       tempdir(),
                        paste0(OUT_PREFIX, "_geno_norm.csv"),
                        paste0(OUT_PREFIX, "_pheno_norm.csv"))
 features <- colnames(x.normal$pheno)
@@ -214,7 +215,8 @@ x.normal <- jittermap(x.normal)
 x.normal <- calc.genoprob(x.normal, step = 1, error.prob = 0.001)
 individuals.phenotyped <- summary(x.normal)[[2]]
 
-x.non.parametric <- read.cross("csvs", here::here(),
+x.non.parametric <- read.cross("csvs", 
+                               tempdir(),
                                paste0(OUT_PREFIX, "_geno_non_par.csv"),
                                paste0(OUT_PREFIX, "_pheno_non_par.csv"))
 features.np <- colnames(x.non.parametric$pheno)
