@@ -45,9 +45,6 @@ x_data <- MetaPipe::read.cross(father_riparia,
                                genotypes = c("nn", "np", "--"))
 }
 
-# Clean up example outputs
-MetaPipe:::tidy_up(c("HIST_", "ionomics_"))
-
 }
 \seealso{
 Other QTL mapping functions: 
