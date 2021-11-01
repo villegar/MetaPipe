@@ -63,7 +63,7 @@ where the first column (`ID`) should be an unique identifier for each entry, if 
 
 The function call is as follows:
 ```{r loading-raw-data-fx-call, eval = FALSE}
-load_raw(raw_data_filename = "FILE.CSV", 
+load_raw(raw_data_filename = "/path/to/FILE.CSV", 
          excluded_columns = c(2, 3, ..., M))
 ```
 where `raw_data_filename` is the filename containing the raw data, either absolute or relative paths are accepted. The argument `excluded_columns` is a vector containing the indices of the properties, e.g. `c(2, 3, ..., M)`.
@@ -78,19 +78,26 @@ example_data <- data.frame(ID = c(1,2,3,4,5),
                            T3 = c(NA, rnorm(4)),                     #  20 % NAs
                            T4 = c(NA, 1.2, -0.5, NA, 0.87),          #  40 % NAs
                            T5 = NA)                                  # 100 % NAs
+
+workdir <- tempdir()
+
 ## Write to disk
-write.csv(example_data, "example_data.csv", row.names = FALSE)
+write.csv(example_data, 
+          file.path(workdir, "example_data.csv"), 
+          row.names = FALSE)
 ## Create copy with duplicated rows
-write.csv(example_data[c(1:5, 1, 2), ], "example_data_dup.csv", row.names = FALSE)
+write.csv(example_data[c(1:5, 1, 2), ], 
+          file.path(workdir, "example_data_dup.csv"), 
+          row.names = FALSE)
 
 # Load the data
-load_raw("example_data.csv", c(2))
-load_raw("example_data_dup.csv", c(2))
+load_raw(file.path(workdir, "example_data.csv"), c(2))
+load_raw(file.path(workdir, "example_data_dup.csv"), c(2))
 ```
 
 Next, see either [Replace Missing Data](replace-missing-data.html) [Optional] or [Assess Normality](assess-normality.html). 
 
-```{r clean-knitting-output, echo = FALSE}
-filenames <- c(list.files(".", "example_*"))
+```{r clean-knitting-output, echo = FALSE, warning = FALSE, message = FALSE}
+filenames <- c(list.files(workdir, "example_*"))
 output <- lapply(filenames, file.remove)
 ```

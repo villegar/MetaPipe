@@ -85,12 +85,18 @@ data set:
 example_data <- data.frame(ID = 1:500,
                            T1 = test_data,
                            T2 = 2^test_data)
-normalised_data <- MetaPipe::assess_normality(example_data, c(1))
+workdir <- tempdir()
+out_prefix <- file.path(workdir, "metapipe")
+plots_dir <- workdir
+normalised_data <- MetaPipe::assess_normality(example_data, c(1), 
+                                              out_prefix = out_prefix, 
+                                              plots_dir = plots_dir)
 
 normalised_data_norm <- normalised_data$norm
 normalised_data_skew <- normalised_data$skew
 
-transformed_data <- read.csv("metapipe_raw_data_normalised_all.csv")
+transformed_data <- read.csv(file.path(workdir, 
+                                       "metapipe_raw_data_normalised_all.csv"))
 ```
 The output of this function is a long table of each trait, with the following
 format:
@@ -161,7 +167,7 @@ MetaPipe:::generate_hist(test_data, NULL, xlab = latex2exp::TeX("data"), save = 
 MetaPipe:::generate_hist(log(2^test_data), NULL, xlab = latex2exp::TeX("log_2(2^{data})"), save = FALSE, alpha = 1, fill = hcolor) 
 ```
 
-```{r clean-knitting-output, echo = FALSE}
-filenames <- c(list.files(".", "metapipe_*"))
+```{r clean-knitting-output, echo = FALSE, warning = FALSE, message = FALSE}
+filenames <- c(list.files(workdir, "example_*"))
 output <- lapply(filenames, file.remove)
 ```

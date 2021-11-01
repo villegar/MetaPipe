@@ -52,11 +52,14 @@ example_data <- data.frame(ID = 1:5,
                            T4 = c(NA, 1.2, -0.5, NA, 0.87),          #  40 % NAs
                            T5 = NA)                                  # 100 % NAs
 
+workdir <- tempdir()
+out_prefix <- file.path(workdir, "metapipe")
+
 # Default parameters: NA proportion = 50%
-replace_missing(example_data, c(2))
+replace_missing(example_data, c(2), out_prefix = out_prefix)
 
 # NA proportion = 30%
-replace_missing(example_data, c(2), prop_na = 0.3)
+replace_missing(example_data, c(2), prop_na = 0.3, out_prefix = out_prefix)
 ```
 
 ## Replace NAs
@@ -76,11 +79,18 @@ example_data <- data.frame(ID = 1:5,
                            T4 = c(NA, 1.2, -0.5, NA, 0.87),          #  40 % NAs
                            T5 = NA)                                  # 100 % NAs
 
+workdir <- tempdir()
+out_prefix <- file.path(workdir, "metapipe")
+
 # Default parameters: NA proportion = 50%
-replace_missing(example_data, c(2), replace_na = TRUE)
+replace_missing(example_data, c(2), replace_na = TRUE, out_prefix = out_prefix)
 
 # NA proportion = 30%
-replace_missing(example_data, c(2), prop_na = 0.3, replace_na = TRUE)
+replace_missing(example_data, 
+                c(2), 
+                prop_na = 0.3, 
+                replace_na = TRUE, 
+                out_prefix = out_prefix)
 ```
 
 From the last example can be seen that `prop_na` and `replace_na` are mutually
@@ -88,7 +98,7 @@ exclusive, and `replace_na` has precedence over `prop_na`.
 
 Next, see [Assess Normality](assess-normality.html). 
 
-```{r clean-knitting-output, echo = FALSE}
-filenames <- c(list.files(".", "metapipe_*"))
+```{r clean-knitting-output, echo = FALSE, warning = FALSE, message = FALSE}
+filenames <- c(list.files(workdir, "example_*"))
 output <- lapply(filenames, file.remove)
 ```
