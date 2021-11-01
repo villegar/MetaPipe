@@ -503,7 +503,7 @@ qtl_scone <- function(x_data, cpus = 1, ...) {
 #'                                       n_perm = 5, 
 #'                                       model = "normal", 
 #'                                       method = "hk",
-#'                                       plots_dir = tmp)
+#'                                       plots_dir = plots_dir)
 #' x_qtl_perm_1000 <- MetaPipe::qtl_perm_test(x, 
 #'                                            n_perm = 1000, 
 #'                                            model = "normal", 

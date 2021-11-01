@@ -243,7 +243,9 @@ generate_hist <- function(data,
 #' @param data A numeric or complex matrix (or data frame) that will be used to
 #'     perform the Principal Components Analysis.
 #' @param plot Boolean flag to indicate whether or not to create a PCA biplot.
-#' @inheritParams save_plot
+#' @param name Output name with or without path.
+#' @param width Width in inches.
+#' @param height Height in inches.
 #' @param ... Arguments passed on to 
 #'     \code{\link[factoextra:fviz_pca_biplot]{factoextra::fviz_pca_biplot}}.
 # @inheritDotParams factoextra::fviz_pca_biplot -X -col.var -gradient.cols 
@@ -253,22 +255,23 @@ generate_hist <- function(data,
 #'
 #' @examples
 #' \donttest{
+#' out_prefix <- file.path(tempdir(), "metapipe_PCA")
 #' # Toy dataset
 #' example_data <- data.frame(ID = c(1,2,3,4,5), 
 #'                            P1 = c("one", "two", "three", "four", "five"), 
 #'                            T1 = rnorm(5), 
 #'                            T2 = rnorm(5))
-#' example_data_pca <- PCA(example_data[, -c(1:2)])
+#' example_data_pca <- MetaPipe::PCA(example_data[, -c(1:2)],
+#'                                   name = out_prefix)
 #' 
 #' # F1 Seedling Ionomics dataset
 #' data(ionomics) # Includes some missing data
-#' out_prefix <- file.path(tempdir, "metapipe")
 #' ionomics_rev <- MetaPipe::replace_missing(ionomics, 
 #'                                           excluded_columns = c(1, 2),
 #'                                           replace_na =  TRUE,
 #'                                           out_prefix = out_prefix)
-#' ionomics_pca <- PCA(ionomics_rev[, -c(1:2)], 
-#'                     name = file.path(tempdir, "PCA"))
+#' ionomics_pca <- MetaPipe::PCA(ionomics_rev[, -c(1:2)],
+#'                               name = out_prefix)
 #' }
 PCA <- function(data, name = "PCA", plot = TRUE, width = 6, height = 6, ...) {
   idx <- check_types(data, quiet = FALSE)
