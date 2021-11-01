@@ -9,7 +9,7 @@ power_transformation(
   trait = "DATA",
   alpha = 0.05,
   transf_vals = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10),
-  plots_prefix = "HIST",
+  plots_prefix = file.path(tempdir(), "HIST"),
   digits = 6,
   plot = TRUE,
   quiet = FALSE
@@ -44,9 +44,6 @@ Normalise data with a power transformation.
 set.seed(123)
 data <- rnorm(100, 5)
 transformed <- MetaPipe::power_transformation(sqrt(data), "ROOT_2")
-
-# Clean up example outputs
-MetaPipe:::tidy_up("HIST")
 
 }
 \seealso{

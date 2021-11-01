@@ -22,16 +22,14 @@ Perform QTL mapping using the \code{\link[qtl:scanone]{qtl:scanone(...)}}
 function to obtain LOD scores for all traits, peak positions, and markers.
 }
 \examples{
-\donttest{
-# Create temp dir
-tmp <- tempdir()
-dir.create(tmp, showWarnings = FALSE, recursive = TRUE)
-
+\donttest{ 
 # Toy dataset
 excluded_columns <- c(1, 2)
 population <- 5
 seed <- 123
 set.seed(seed)
+out_prefix <- file.path(tempdir(), "metapipe")
+plots_dir <- file.path(tempdir(), "plots")
 example_data <- data.frame(ID = 1:population,
                            P1 = c("one", "two", "three", "four", "five"),
                            T1 = rnorm(population),
@@ -40,7 +38,8 @@ example_data <- data.frame(ID = 1:population,
 output <- MetaPipe::assess_normality(example_data, 
                                      excluded_columns, 
                                      show_stats = FALSE,
-                                     out_prefix = paste0(tmp, "/tmp"))
+                                     out_prefix = out_prefix,
+                                     plots_dir = plots_dir)
 
 # Create and store random genetic map (for testing only)
 genetic_map <- MetaPipe:::random_map(population = population, 
@@ -54,14 +53,17 @@ x_scone <- MetaPipe::qtl_scone(x, 1, model = "normal", method = "hk")
 # F1 Seedling Ionomics dataset
 data(ionomics) # Includes some missing data
 data(father_riparia) # Genetic map
+out_prefix <- file.path(tempdir(), "ionomics")
+plots_dir <- file.path(tempdir(), "plots")
 ionomics_rev <- MetaPipe::replace_missing(ionomics, 
                                           excluded_columns = c(1, 2),
                                           replace_na =  TRUE,
-                                          out_prefix = paste0(tmp, "/tmp"))
+                                          out_prefix = out_prefix)
 ionomics_normalised <- 
   MetaPipe::assess_normality(ionomics_rev,
                              excluded_columns = c(1, 2),
-                             out_prefix = file.path(tmp, "ionomics"),
+                             out_prefix = out_prefix,
+                             plots_dir = plots_dir,
                              transf_vals = c(2, exp(1)),
                              show_stats = FALSE)
                              
@@ -75,10 +77,6 @@ x <- qtl::jittermap(x)
 x <- qtl::calc.genoprob(x, step = 1, error.prob = 0.001)
 
 x_scone <- MetaPipe::qtl_scone(x, 1, model = "normal", method = "hk")
-
-# Clean temporal directory
-# unlink(tmp, recursive = TRUE, force = TRUE)
-MetaPipe:::tidy_up(tmp)
 }
 }
 \seealso{

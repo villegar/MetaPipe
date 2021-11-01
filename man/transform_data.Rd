@@ -10,7 +10,7 @@ transform_data(
   alpha = 0.05,
   index = NULL,
   transf_vals = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10),
-  plots_prefix = "HIST",
+  plots_prefix = file.path(tempdir(), "HIST"),
   digits = 6
 )
 }
@@ -47,7 +47,4 @@ out_pow2 <- MetaPipe::transform_data(data ^ 2, "POW_2")
 knitr::kable(head(out_exp2))
 knitr::kable(head(out_root2))
 knitr::kable(head(out_pow2))
-
-# Clean up example outputs
-MetaPipe:::tidy_up("HIST")
 }

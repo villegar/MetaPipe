@@ -7,7 +7,7 @@
 replace_missing(
   raw_data,
   excluded_columns = NULL,
-  out_prefix = "metapipe",
+  out_prefix = file.path(tempdir(), "metapipe"),
   prop_na = 0.5,
   replace_na = FALSE
 )
@@ -54,22 +54,31 @@ example_data <- data.frame(ID = c(1,2,3,4,5),
                            T3 = c(NA, rnorm(4)),                  #  20 \% NAs
                            T4 = c(NA, 1.2, -0.5, NA, 0.87),       #  40 \% NAs
                            T5 = NA)                               # 100 \% NAs
-MetaPipe::replace_missing(example_data, c(1, 2))
-MetaPipe::replace_missing(example_data, c(1, 2), prop_na =  0.25)
-MetaPipe::replace_missing(example_data, c(1, 2), replace_na =  TRUE)
+out_prefix = file.path(tempdir(), "metapipe")
+MetaPipe::replace_missing(example_data, c(1, 2), out_prefix = out_prefix)
+MetaPipe::replace_missing(example_data, 
+                          c(1, 2), 
+                          prop_na =  0.25,
+                          out_prefix = out_prefix)
+MetaPipe::replace_missing(example_data, 
+                          c(1, 2), 
+                          replace_na =  TRUE,
+                          out_prefix = out_prefix)
 
 
 # F1 Seedling Ionomics dataset
 data(ionomics) # Includes some missing data
-ionomics_rev <- MetaPipe::replace_missing(ionomics, c(1, 2))
+out_prefix <- file.path(tempdir(), "ionomics")
+ionomics_rev <- MetaPipe::replace_missing(ionomics, 
+                                          c(1, 2), 
+                                          out_prefix = out_prefix)
 ionomics_rev <- MetaPipe::replace_missing(ionomics, 
                                           excluded_columns = c(1, 2), 
-                                          prop_na =  0.025)
+                                          prop_na =  0.025, 
+                                          out_prefix = out_prefix)
 ionomics_rev <- MetaPipe::replace_missing(ionomics, 
                                           excluded_columns = c(1, 2),
-                                          replace_na =  TRUE)
+                                          replace_na =  TRUE, 
+                                          out_prefix = out_prefix)
 knitr::kable(ionomics_rev[1:5, 1:8])
-
-# Clean up example outputs
-MetaPipe:::tidy_up("metapipe_")
 }

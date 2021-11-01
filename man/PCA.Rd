@@ -10,7 +10,13 @@ PCA(data, name = "PCA", plot = TRUE, width = 6, height = 6, ...)
 \item{data}{A numeric or complex matrix (or data frame) that will be used to
 perform the Principal Components Analysis.}
 
+\item{name}{Output name with or without path.}
+
 \item{plot}{Boolean flag to indicate whether or not to create a PCA biplot.}
+
+\item{width}{Width in inches.}
+
+\item{height}{Height in inches.}
 
 \item{...}{Arguments passed on to 
 \code{\link[factoextra:fviz_pca_biplot]{factoextra::fviz_pca_biplot}}.}
@@ -26,18 +32,22 @@ Optionally, it will create a PCA biplot using
 }
 \examples{
 \donttest{
+out_prefix <- file.path(tempdir(), "metapipe_PCA")
 # Toy dataset
 example_data <- data.frame(ID = c(1,2,3,4,5), 
                            P1 = c("one", "two", "three", "four", "five"), 
                            T1 = rnorm(5), 
                            T2 = rnorm(5))
-example_data_pca <- PCA(example_data[, -c(1:2)])
+example_data_pca <- MetaPipe::PCA(example_data[, -c(1:2)],
+                                  name = out_prefix)
 
 # F1 Seedling Ionomics dataset
 data(ionomics) # Includes some missing data
 ionomics_rev <- MetaPipe::replace_missing(ionomics, 
                                           excluded_columns = c(1, 2),
-                                          replace_na =  TRUE)
-ionomics_pca <- PCA(ionomics_rev[, -c(1:2)])
+                                          replace_na =  TRUE,
+                                          out_prefix = out_prefix)
+ionomics_pca <- MetaPipe::PCA(ionomics_rev[, -c(1:2)],
+                              name = out_prefix)
 }
 }

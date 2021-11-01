@@ -8,7 +8,7 @@ assess_normality(
   raw_data,
   excluded_columns,
   cpus = 1,
-  out_prefix = "metapipe",
+  out_prefix = file.path(tempdir(), "metapipe"),
   plots_dir = tempdir(),
   transf_vals = c(2, exp(1), 3, 4, 5, 6, 7, 8, 9, 10),
   alpha = 0.05,
@@ -71,7 +71,13 @@ example_data <- data.frame(ID = c(1,2,3,4,5),
                            P1 = c("one", "two", "three", "four", "five"), 
                            T1 = rnorm(5), 
                            T2 = rnorm(5))
-example_data_normalised <- MetaPipe::assess_normality(example_data, c(1, 2))
+out_prefix <- file.path(tempdir(), "metapipe")
+plots_dir <- file.path(tempdir(), "plots")
+example_data_normalised <- 
+  MetaPipe::assess_normality(example_data, 
+                             c(1, 2),
+                             out_prefix = out_prefix,
+                             plots_dir = plots_dir)
 example_data_norm <- example_data_normalised$norm
 example_data_skew <- example_data_normalised$skew
 
@@ -84,13 +90,17 @@ knitr::kable(example_data_norm)
 
 # F1 Seedling Ionomics dataset
 data(ionomics) # Includes some missing data
+out_prefix <- file.path(tempdir(), "ionomics")
+plots_dir <- file.path(tempdir(), "plots")
 ionomics_rev <- MetaPipe::replace_missing(ionomics, 
                                           excluded_columns = c(1, 2),
-                                          replace_na =  TRUE)
+                                          replace_na = TRUE,
+                                          out_prefix = out_prefix)
 ionomics_normalised <- 
   MetaPipe::assess_normality(ionomics_rev,
                              excluded_columns = c(1, 2),
-                             out_prefix = "ionomics",
+                             out_prefix = out_prefix,
+                             plots_dir = plots_dir,
                              transf_vals = c(2, exp(1)))
                              
 ionomics_norm <- ionomics_normalised$norm
@@ -101,8 +111,5 @@ knitr::kable(ionomics_norm[1:5, ])
 
 # Skewed traits (partial output)
 knitr::kable(ionomics_skew[1:5, 1:8])
-
-# Clean up example outputs
-MetaPipe:::tidy_up(c("HIST_", "ionomics_", "metapipe_"))
 }
 }
