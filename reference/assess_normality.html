@@ -218,84 +218,89 @@ logarithmic (<code>log_a(x)</code>), power (<code>x^a</code>), and
 radical/root (<code>x^(1/a)</code>) functions.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
-<span class='co'># Toy dataset</span>
-<span class='va'>example_data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>ID <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>4</span>,<span class='fl'>5</span><span class='op'>)</span>, 
-                           P1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"one"</span>, <span class='st'>"two"</span>, <span class='st'>"three"</span>, <span class='st'>"four"</span>, <span class='st'>"five"</span><span class='op'>)</span>, 
-                           T1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>5</span><span class='op'>)</span>, 
-                           T2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>example_data_normalised</span> <span class='op'>&lt;-</span> <span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>assess_normality</span><span class='op'>(</span><span class='va'>example_data</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Total traits (excluding all NAs traits):     2</span>
-#&gt; <span class='message'>Normal traits (without transformation):      2</span>
-#&gt; <span class='message'>Normal traits (transformed):                 0</span>
-#&gt; <span class='message'>Total normal traits:                         2</span>
-#&gt; <span class='message'>Total skewed traits:                         0</span></div><div class='input'><span class='va'>example_data_norm</span> <span class='op'>&lt;-</span> <span class='va'>example_data_normalised</span><span class='op'>$</span><span class='va'>norm</span>
-<span class='va'>example_data_skew</span> <span class='op'>&lt;-</span> <span class='va'>example_data_normalised</span><span class='op'>$</span><span class='va'>skew</span>
-
-<span class='co'># Normal traits</span>
-<span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span><span class='va'>example_data_norm</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; 
-#&gt; 
-#&gt; | ID|         T1|         T2|
-#&gt; |--:|----------:|----------:|
-#&gt; |  1|  0.5124269| -0.9140748|
-#&gt; |  2| -1.8630115|  0.4681544|
-#&gt; |  3| -0.5220125|  0.3629513|
-#&gt; |  4| -0.0526019| -1.3045435|
-#&gt; |  5|  0.5429963|  0.7377763|</div><div class='input'>
-<span class='co'># Skewed traits (empty)</span>
-<span class='co'># knitr::kable(example_data_skew)</span>
-
-
-<span class='co'># F1 Seedling Ionomics dataset</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>ionomics</span><span class='op'>)</span> <span class='co'># Includes some missing data</span>
-<span class='va'>ionomics_rev</span> <span class='op'>&lt;-</span> <span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'><a href='replace_missing.html'>replace_missing</a></span><span class='op'>(</span><span class='va'>ionomics</span>, 
-                                          excluded_columns <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>,
-                                          replace_na <span class='op'>=</span>  <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='va'>ionomics_normalised</span> <span class='op'>&lt;-</span> 
-  <span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>assess_normality</span><span class='op'>(</span><span class='va'>ionomics_rev</span>,
-                             excluded_columns <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>,
-                             out_prefix <span class='op'>=</span> <span class='st'>"ionomics"</span>,
-                             transf_vals <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Total traits (excluding all NAs traits):     21</span>
-#&gt; <span class='message'>Normal traits (without transformation):      2</span>
-#&gt; <span class='message'>Normal traits (transformed):                 4</span>
-#&gt; <span class='message'>Total normal traits:                         6</span>
-#&gt; <span class='message'>Total skewed traits:                         15</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>Transformations summary:</span>
-#&gt; <span class='message'>	f(x)      Value     # traits  </span>
-#&gt; <span class='message'>	log       2         3         </span>
-#&gt; <span class='message'>	root      e         1         </span></div><div class='input'>                             
-<span class='va'>ionomics_norm</span> <span class='op'>&lt;-</span> <span class='va'>ionomics_normalised</span><span class='op'>$</span><span class='va'>norm</span>
-<span class='va'>ionomics_skew</span> <span class='op'>&lt;-</span> <span class='va'>ionomics_normalised</span><span class='op'>$</span><span class='va'>skew</span>
-
-<span class='co'># Normal traits</span>
-<span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span><span class='va'>ionomics_norm</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>, <span class='op'>]</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; 
-#&gt; 
-#&gt; |ID    |     Ca44|      B11|     Na23|     Mg26|     Rb85|      Sr88|
-#&gt; |:-----|--------:|--------:|--------:|--------:|--------:|---------:|
-#&gt; |E_001 | 15894.22| 4.222397| 2.042740| 10.77021| 1.555742|  7.347059|
-#&gt; |E_002 | 13155.45| 3.855684| 1.917202| 10.54095| 2.058711|  6.890243|
-#&gt; |E_004 | 14182.51| 3.879033| 2.354263| 10.51931| 2.198422|  9.025915|
-#&gt; |E_005 | 22550.82| 4.329576| 2.477233| 11.13450| 1.791578| 15.292360|
-#&gt; |E_006 | 15982.76| 3.697997| 2.419593| 11.72734| 2.229866| 13.901449|</div><div class='input'>
-<span class='co'># Skewed traits (partial output)</span>
-<span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span><span class='va'>ionomics_skew</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>8</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; 
-#&gt; 
-#&gt; |ID    |      K39|      P31|       Li7|      Al27|      S34|     Fe54|     Mn55|
-#&gt; |:-----|--------:|--------:|---------:|---------:|--------:|--------:|--------:|
-#&gt; |E_001 | 5888.311| 1743.118| 0.0128699|  3.845879| 1152.944| 27.59340| 54.53991|
-#&gt; |E_002 | 7013.400| 2244.684| 0.0119316|  5.825639| 1600.442| 35.49159| 52.57114|
-#&gt; |E_004 | 7966.273| 2311.057| 0.0212316|  8.036047| 1039.098| 39.13434| 36.66475|
-#&gt; |E_005 | 7514.089| 2315.675| 0.0233063|  9.482051| 1091.607| 40.22041| 43.24368|
-#&gt; |E_006 | 7608.464| 1995.193| 0.0588128| 29.329605| 1096.871| 75.23614| 53.64705|</div><div class='input'>
-<span class='co'># Clean up example outputs</span>
-<span class='fu'>MetaPipe</span><span class='fu'>:::</span><span class='fu'>tidy_up</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"HIST_"</span>, <span class='st'>"ionomics_"</span>, <span class='st'>"metapipe_"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='co'># }</span>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># \donttest{</span></span>
+<span class='r-in'><span class='co'># Toy dataset</span></span>
+<span class='r-in'><span class='va'>example_data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>ID <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>4</span>,<span class='fl'>5</span><span class='op'>)</span>, </span>
+<span class='r-in'>                           P1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"one"</span>, <span class='st'>"two"</span>, <span class='st'>"three"</span>, <span class='st'>"four"</span>, <span class='st'>"five"</span><span class='op'>)</span>, </span>
+<span class='r-in'>                           T1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>5</span><span class='op'>)</span>, </span>
+<span class='r-in'>                           T2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>example_data_normalised</span> <span class='op'>&lt;-</span> <span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>assess_normality</span><span class='op'>(</span><span class='va'>example_data</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Total traits (excluding all NAs traits):     2</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Normal traits (without transformation):      2</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Normal traits (transformed):                 0</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Total normal traits:                         2</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Total skewed traits:                         0</span>
+<span class='r-in'><span class='va'>example_data_norm</span> <span class='op'>&lt;-</span> <span class='va'>example_data_normalised</span><span class='op'>$</span><span class='va'>norm</span></span>
+<span class='r-in'><span class='va'>example_data_skew</span> <span class='op'>&lt;-</span> <span class='va'>example_data_normalised</span><span class='op'>$</span><span class='va'>skew</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Normal traits</span></span>
+<span class='r-in'><span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span><span class='va'>example_data_norm</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> | ID|         T1|         T2|</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> |--:|----------:|----------:|</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> |  1|  0.5124269| -0.9140748|</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> |  2| -1.8630115|  0.4681544|</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> |  3| -0.5220125|  0.3629513|</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> |  4| -0.0526019| -1.3045435|</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> |  5|  0.5429963|  0.7377763|</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Skewed traits (empty)</span></span>
+<span class='r-in'><span class='co'># knitr::kable(example_data_skew)</span></span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># F1 Seedling Ionomics dataset</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>ionomics</span><span class='op'>)</span> <span class='co'># Includes some missing data</span></span>
+<span class='r-in'><span class='va'>ionomics_rev</span> <span class='op'>&lt;-</span> <span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'><a href='replace_missing.html'>replace_missing</a></span><span class='op'>(</span><span class='va'>ionomics</span>, </span>
+<span class='r-in'>                                          excluded_columns <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>,</span>
+<span class='r-in'>                                          replace_na <span class='op'>=</span>  <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>ionomics_normalised</span> <span class='op'>&lt;-</span> </span>
+<span class='r-in'>  <span class='fu'>MetaPipe</span><span class='fu'>::</span><span class='fu'>assess_normality</span><span class='op'>(</span><span class='va'>ionomics_rev</span>,</span>
+<span class='r-in'>                             excluded_columns <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>,</span>
+<span class='r-in'>                             out_prefix <span class='op'>=</span> <span class='st'>"ionomics"</span>,</span>
+<span class='r-in'>                             transf_vals <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Total traits (excluding all NAs traits):     21</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Normal traits (without transformation):      2</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Normal traits (transformed):                 4</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Total normal traits:                         6</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Total skewed traits:                         15</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Transformations summary:</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> 	f(x)      Value     # traits  </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> 	log       2         3         </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> 	root      e         1         </span>
+<span class='r-in'>                             </span>
+<span class='r-in'><span class='va'>ionomics_norm</span> <span class='op'>&lt;-</span> <span class='va'>ionomics_normalised</span><span class='op'>$</span><span class='va'>norm</span></span>
+<span class='r-in'><span class='va'>ionomics_skew</span> <span class='op'>&lt;-</span> <span class='va'>ionomics_normalised</span><span class='op'>$</span><span class='va'>skew</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Normal traits</span></span>
+<span class='r-in'><span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span><span class='va'>ionomics_norm</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>, <span class='op'>]</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> |ID    |     Ca44|      B11|     Na23|     Mg26|     Rb85|      Sr88|</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> |:-----|--------:|--------:|--------:|--------:|--------:|---------:|</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> |E_001 | 15894.22| 4.222397| 2.042740| 10.77021| 1.555742|  7.347059|</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> |E_002 | 13155.45| 3.855684| 1.917202| 10.54095| 2.058711|  6.890243|</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> |E_004 | 14182.51| 3.879033| 2.354263| 10.51931| 2.198422|  9.025915|</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> |E_005 | 22550.82| 4.329576| 2.477233| 11.13450| 1.791578| 15.292360|</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> |E_006 | 15982.76| 3.697997| 2.419593| 11.72734| 2.229866| 13.901449|</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Skewed traits (partial output)</span></span>
+<span class='r-in'><span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span><span class='va'>ionomics_skew</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>8</span><span class='op'>]</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> |ID    |      K39|      P31|       Li7|      Al27|      S34|     Fe54|     Mn55|</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> |:-----|--------:|--------:|---------:|---------:|--------:|--------:|--------:|</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> |E_001 | 5888.311| 1743.118| 0.0128699|  3.845879| 1152.944| 27.59340| 54.53991|</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> |E_002 | 7013.400| 2244.684| 0.0119316|  5.825639| 1600.442| 35.49159| 52.57114|</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> |E_004 | 7966.273| 2311.057| 0.0212316|  8.036047| 1039.098| 39.13434| 36.66475|</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> |E_005 | 7514.089| 2315.675| 0.0233063|  9.482051| 1091.607| 40.22041| 43.24368|</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> |E_006 | 7608.464| 1995.193| 0.0588128| 29.329605| 1096.871| 75.23614| 53.64705|</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Clean up example outputs</span></span>
+<span class='r-in'><span class='fu'>MetaPipe</span><span class='fu'>:::</span><span class='fu'>tidy_up</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"HIST_"</span>, <span class='st'>"ionomics_"</span>, <span class='st'>"metapipe_"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'># }</span></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
