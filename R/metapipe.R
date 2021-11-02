@@ -718,14 +718,24 @@ qtl_perm_test <- function(x_data,
                                     lty = "dashed",
                                     col = "blue"
                              )
-                             legend("topleft", 
+                             legend("topleft",
                                     legend = c("5 %", "10 %"), 
                                     col = c("red", "blue"), 
                                     lty = c("solid", "dashed"), 
                                     lwd = 2
                                    )
                            },
-                           paste0(plots_dir, "/LOD-", traits[i]),
+                           paste0(plots_dir, 
+                                  ifelse(any(record$lod_peak >= p10),
+                                         "/signif",
+                                         ""),
+                                  "/LOD-", 
+                                  traits[i],
+                                  ifelse(any(record$lod_peak >= p5),
+                                         "_p5",
+                                         ifelse(any(record$lod_peak >= p10),
+                                                "_p10",
+                                                ""))),
                            width = 18
                          )
                          
