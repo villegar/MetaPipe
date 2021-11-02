@@ -14,6 +14,8 @@
 #' @keywords internal
 #' @noRd
 save_plot <- function(plt_obj, name, width = 6, height = 6) {
+  if (!dir.exists(dirname(name)))
+    try(dir.create(dirname(name), recursive = TRUE, showWarnings = FALSE))
   grDevices::png(paste0(name, ".png"), 
                  width = width, 
                  height = height, 
@@ -40,6 +42,8 @@ save_plot <- function(plt_obj, name, width = 6, height = 6) {
 #' @keywords internal
 #' @noRd
 save_plotTIFF <- function(plt_obj, name, width = 6, height = 6) {
+  if (!dir.exists(dirname(name)))
+    try(dir.create(dirname(name), recursive = TRUE, showWarnings = FALSE))
   grDevices::tiff(paste0(name, ".tiff"), 
                   width = width, 
                   height = height, 
@@ -66,6 +70,8 @@ save_plotTIFF <- function(plt_obj, name, width = 6, height = 6) {
 #' @keywords internal
 #' @noRd
 save_plotPDF <- function(plt_obj, name, width = 6, height = 6) {
+  if (!dir.exists(dirname(name)))
+    try(dir.create(dirname(name), recursive = TRUE, showWarnings = FALSE))
   grDevices::pdf(paste0(name, ".pdf"),
                  width = width,
                  height = height)
@@ -91,7 +97,7 @@ save_plotPDF <- function(plt_obj, name, width = 6, height = 6) {
 #' @noRd
 ggplot_save <- function(plt_obj, name, width = 6, height = 6) {
   if (!dir.exists(dirname(name)))
-    try(dir.create(dirname(name), recursive = TRUE))
+    try(dir.create(dirname(name), recursive = TRUE, showWarnings = FALSE))
   R.devices::suppressGraphics({
     ggplot2::ggsave(
       filename = paste0(basename(name), ".png"),
