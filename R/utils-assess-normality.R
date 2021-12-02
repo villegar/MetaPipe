@@ -438,7 +438,7 @@ assess_normality_stats <- function(out_prefix = file.path(tempdir(),
                 (total_traits - norm_traits_count))
   
   if (nrow(transformations) > 0) {
-    msg <- paste0(msg, "\n\nTransformations summary:")
+    msg <- paste0(msg, "\n\nTransformations' summary:")
     msg <- paste0(msg, 
                   sprintf("\n\t%-10s%-10s%-10s", "f(x)", "Value", "# traits"))
                   #"\n\tf(x)\tValue \t# traits")
