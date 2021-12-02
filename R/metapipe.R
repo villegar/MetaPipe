@@ -574,7 +574,10 @@ qtl_perm_test <- function(x_data,
   traits <- colnames(x_data$pheno)
   
   # Obtain number of individuals (population)
-  num_indv <- nrow(x_data$pheno) #summary(x_data)[[2]]
+  tmp <- dplyr::select(x_data$pheno, -1)
+  tmp <- dplyr::filter(tmp, 
+                       dplyr::if_all(.cols = dplyr::everything(), ~is.na(.)))
+  num_indv <- nrow(x_data$pheno) - nrow(tmp) #summary(x_data)[[2]]
   
   x_sum_map <- 
     foreach::foreach(i = trait_indices,
