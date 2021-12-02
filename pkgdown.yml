@@ -1,9 +1,9 @@
 pandoc: 2.7.3
-pkgdown: 1.6.1
+pkgdown: 2.0.0
 pkgdown_sha: ~
 articles:
   assess-normality: assess-normality.html
   load-raw-data: load-raw-data.html
   replace-missing-data: replace-missing-data.html
-last_built: 2021-11-02T23:11Z
+last_built: 2021-12-02T21:37Z
 
