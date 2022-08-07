@@ -50,7 +50,7 @@ Imports:
     foreach, 
     ggplot2,
     grDevices, 
-    grid,
+    gridExtra,
     here, 
     latex2exp,
     qtl, 

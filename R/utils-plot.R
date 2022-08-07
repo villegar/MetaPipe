@@ -175,10 +175,7 @@ compare_hist <- function(original, transformed, trait, prefix, xlab) {
     ggplot2::labs(x="", y="") +
     ggplot2::xlab(latex2exp::TeX(xlab))
   
-  ggplot_save(grid::grid.draw(rbind(ggplot2::ggplotGrob(original.plot),
-                                    ggplot2::ggplotGrob(transformed.plot), 
-                                    size = "last")
-                              ),
+  ggplot_save(gridExtra::arrangeGrob(original.plot, transformed.plot),
               paste0(prefix,"_",trait))
 }
 
