@@ -91,9 +91,6 @@ assess_normality_core <- function(raw_data,
   cl <- parallel::makeCluster(cpus)# , setup_strategy = "sequential")
   doParallel::registerDoParallel(cl)
   
-  # Load binary operator for backend
-  #`%dopar%` <- foreach::`%dopar%`
-  
   # Verify that plots_dir exists
   if (!dir.exists(plots_dir))
     dir.create(plots_dir, FALSE)
