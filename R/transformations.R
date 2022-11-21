@@ -422,14 +422,17 @@ transform_data <- function(data,
   )
   
   pvals <- data.frame(matrix(vector(), 3, length(transf_vals)))
-  for (k in 1:ncol(pvals)) {
+  for (k in seq_len(ncol(pvals))) {
     suppressWarnings({
-      pvals[1, k] <- round(shapiro.test(log(data, transf_vals[k]))[[2]], 
-                           digits)
-      pvals[2, k] <- round(shapiro.test(data ^ transf_vals[k])[[2]], 
-                           digits)
-      pvals[3, k] <- round(shapiro.test(data ^ (1 / transf_vals[k]))[[2]], 
-                           digits)
+      pvals[1, k] <- tryCatch(
+        round(shapiro.test(log(data, transf_vals[k]))[[2]], digits),
+        error = function(e) NA) # capture conversion errors
+      pvals[2, k] <- tryCatch(
+        round(shapiro.test(data ^ transf_vals[k])[[2]], digits),
+        error = function(e) NA)  # capture conversion errors
+      pvals[3, k] <- tryCatch(
+        round(shapiro.test(data ^ (1 / transf_vals[k]))[[2]], digits),
+        error = function(e) NA) # capture conversion errors
     })
   }
   
