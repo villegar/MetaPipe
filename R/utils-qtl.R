@@ -100,6 +100,7 @@ transform_pseudo_marker <- function(x_data, marker, chr, pos) {
 #' @param cpus Number of CPUs to be used in the computation.
 #' @param plots_dir Output directory for plots.
 #'
+#' @return Effect plots (PNG files) for each trait-marker combination.
 #' @export
 #'
 #' @examples
